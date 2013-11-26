@@ -1,4 +1,4 @@
 Majordesk
 =========
 
-Majordesk Web app in cooperation with Majorclass
+Majordesk Web app en coopération avec Majorclass
