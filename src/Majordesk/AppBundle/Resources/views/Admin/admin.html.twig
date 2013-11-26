@@ -1,0 +1,26 @@
+{% extends "::layout.html.twig" %}
+
+{% if is_granted("ROLE_ADMIN") %}
+	{% block title %}
+		Admin - {{ parent() }}
+	{% endblock %}
+	 
+	{% block body %}
+		{% block admin %}
+		{% endblock %}
+	{% endblock %}
+{% endif %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/common/bootstrap-timepicker.min.js' 
+		'js/common/bootstrap-datepicker.min.js' 
+		'js/locales/bootstrap-datepicker.fr.js' 
+		'js/common/jsxgraphcore.js' 
+		'js/common/highcharts.js' 
+		'js/common/mathquill.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

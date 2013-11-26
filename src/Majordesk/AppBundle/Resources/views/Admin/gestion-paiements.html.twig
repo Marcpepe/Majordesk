@@ -1,0 +1,98 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Gestion des paiements - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des paiements</a></li>
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+	<div class="col-lg-12">
+		<h3>Historique des paiements</h3><br>
+		{% if paiements|length > 0 %}
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Date du paiement</th>
+						<th>Famille</th>
+						<th>Description</th>
+						<th>Montant</th>
+						<th>Pack</th>
+						<th>Transaction</th>
+						<th>Statut</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for paiement in paiements %}
+					<tr>
+						<td>{{ paiement.datePaiement|date('d/m/Y') }}</td>
+						<td>
+							{{ paiement.famille.id }}
+						</td>
+						<td>
+							{{ paiement.description|raw }}
+						</td>
+						<td>
+							{% if paiement.pack >= 100 and paiement.pack < 200 %}
+								<em>Décompte
+								{% if paiement.pack == 110 %}
+									1h
+								{% elseif paiement.pack == 115 %}
+									1h30
+								{% elseif paiement.pack == 120 %}
+									2h 
+								{% elseif paiement.pack == 125 %}
+									2h30 
+								{% elseif paiement.pack == 130 %}
+									3h
+								{% elseif paiement.pack == 140 %}
+									4h 
+								{% elseif paiement.pack == 150 %}
+									5h
+								{% endif %}
+								</em>
+							{% else %}
+								{{ (paiement.montant / 100)|number_format(2, ',', ' ') }} €
+							{% endif %}
+						</td>
+						<td>
+							{{ paiement.pack }}
+						</td>
+						<td>
+							{{ paiement.transaction }}
+						</td>
+						<td>
+							{% if paiement.transaction == 0 %}
+								<i rel="tooltip" data-title="Paiement annulé" class="icon-remove text-red cursor-help"></i>
+							{% elseif paiement.transaction == 1 %}
+								<i rel="tooltip" data-title="Paiement en cours" class="icon-spin icon-spinner text-orange cursor-help"></i>
+							{% elseif paiement.transaction == 2 %}
+								<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
+							{% elseif paiement.transaction == 3 %}
+								<i rel="tooltip" data-title="Paiement non validé" class="icon-exclamation-sign text-red cursor-help"></i>
+							{% else %}
+								<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% else %}
+			Aucun paiement à ce jour.
+		{% endif %}
+	</div>
+	<div class="clearfix"></div><br><br>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

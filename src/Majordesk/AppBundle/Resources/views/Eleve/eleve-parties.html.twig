@@ -1,0 +1,121 @@
+{% extends "MajordeskAppBundle:Eleve:navigation.html.twig" %}
+
+{% block title %}
+	Liste des parties - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_chapitres") }}"><i class="icon-angle-right"></i> Liste des chapitres</a></li>
+	<li><a><i class="icon-angle-right"></i> Liste des exercices</a></li>
+{% endblock %}
+
+{% block eleve %}
+	{% if is_granted("ROLE_ELEVE") %}
+	
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+		
+		{% for message in app.session.flashbag.get('info') %}	
+		<div class="col-lg-12">
+			<div class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{ message }}
+			</div>
+		</div>
+		{% endfor %}
+		
+		<div class="col-lg-12">
+			<h3><i class="icon-book icon-large text-red pull-left"></i> {{ chapitre.nom }}</h3><br>
+		</div>
+		<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Parties</strong></div>
+				<div class="list-group accordion" id="collapsible-parties">
+					{% for partie in parties %}
+						{% set isVide = 0 %}
+						{% for modExercice in partie.modExercices if modExercice.statut == statut_en_ligne %}
+							{% set isVide = isVide + 1 %}
+						{% endfor %}
+					<a class="list-group-item partie cursor" data-id="{{ partie.id }}" data-vide="{{ isVide }}" data-toggle="collapse" data-target="#partie_{{ loop.index }}" data-parent="#collapsible-parties">{{ partie.numero }}. {{ partie.nom|raw }} <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+					<div class="hide">{{ partie.nom|raw }}</div>
+					<div class="accordion-group">
+						<div id="partie_{{ loop.index }}" class="collapse">
+						  <div class="container">
+							<br>
+							<div class="col-lg-6">
+								<div class="blockprof">
+									{% for exercice in exercices if exercice.modExercice.partie == partie and not exercice.autonomie %}
+										<span class="partie-partie">
+											{% if exercice.modExercice.statut != statut_en_ligne %}
+												<i class="icon-exclamation-sign text-grey" rel="tooltip" data-title="Exercice en maintenance"></i> 
+												<span class="text-grey">Exercice {{ loop.index }}</span>
+											{% else %}
+												{% if exercice.statut == statut_resolu %}
+													<i class="icon-ok text-success" rel="tooltip" data-title="Terminé"></i> 
+												{% elseif exercice.statut == statut_non_resolu %}
+													<i class="icon-remove text-red" rel="tooltip" data-title="En cours..."></i>
+												{% else %}
+													<i class="icon-remove text-light-grey" rel="tooltip" data-title="Non commencé"></i>
+												{% endif %}
+												<a href="{{ path('majordesk_app_exercice', {'id_exercice' : exercice.id }) }}">Exercice {{ loop.index }}</a> 
+											{% endif %}
+										</span>
+									{% else %}
+										Aucun exercice fait avec ton professeur dans cette partie pour l'instant.
+									{% endfor %}
+								</div>
+							</div>
+							<br><br>
+							<div class="col-lg-6">
+								<div class="blockauton">
+									{% for exercice in exercices if exercice.modExercice.partie == partie and exercice.autonomie %}
+										<span class="partie-partie">
+											{% if exercice.modExercice.statut != statut_en_ligne %}
+												<i class="icon-exclamation-sign text-grey" rel="tooltip" data-title="Exercice en maintenance"></i> 
+												<span class="text-grey">Exercice {{ loop.index }}</span>
+											{% else %}
+												{% if exercice.statut == statut_resolu %}
+													<i class="icon-ok text-success" rel="tooltip" data-title="Terminé"></i> 
+												{% elseif exercice.statut == statut_non_resolu %}
+													<i class="icon-remove text-red" rel="tooltip" data-title="En cours..."></i>
+												{% else %}
+													<i class="icon-remove text-light-grey" rel="tooltip" data-title="Non commencé"></i>
+												{% endif %}
+												<a href="{{ path('majordesk_app_exercice', {'id_exercice' : exercice.id }) }}">Exercice {{ loop.index }}</a> 
+											{% endif %}
+										</span>
+									{% else %}
+										Aucun exercice fait en autonomie dans cette partie pour l'instant
+									{% endfor %}
+								</div>
+							</div>
+						  </div>
+						</div>
+					</div>
+					{% else %}
+						Ce chapitre ne contient visiblement aucune partie pour l'instant !
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		{% if parties|length != 0 %}
+		<div class="col-lg-6" id="partie-stats">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<i class="icon-info-sign icon-4x text-light-grey pull-left"></i><hr><hr>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		<div id="id-eleve" class="hide">{{ app.user.id }}</div>
+	{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/eleve/eleve-parties.js' 	
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

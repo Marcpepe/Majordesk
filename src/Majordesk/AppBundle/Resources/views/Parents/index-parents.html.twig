@@ -1,0 +1,91 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+<div id="select-enfant" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Sélectionner un enfant</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>
+			{% for eleve in eleves %}
+				<a href="{{ path('majordesk_app_suivi_enfant', {'id_eleve' : eleve.id }) }}" class="btn btn-default">{{ eleve.username }}</a> 
+			{% else %}
+				Aucun enfant inscrit.
+			{% endfor %}
+			</p>
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="col-lg-4">
+	{% if famille.hasSuivi %}
+		<a class="btn btn-info-inverted btn-block" data-toggle="modal" data-target="#select-enfant">{% if eleves|length > 1 %}<i class="icon-group icon-4x"></i>{% else %}<i class="icon-user icon-4x"></i>{% endif %} <span class="position-relative-up-12">Suivi de {% if eleves|length > 1 %}vos enfants{% else %}votre enfant{% endif %}</span></a>			
+	{% else %}
+		<a rel="tooltip" data-title="Cet accès est désactivé" class="btn btn-info-inverted btn-block inactif">{% if eleves|length > 1 %}<i class="icon-group icon-4x"></i>{% else %}<i class="icon-user icon-4x"></i>{% endif %} <span class="position-relative-up-12">Suivi de {% if eleves|length > 1 %}vos enfants{% else %}votre enfant{% endif %}</span></a>			
+	{% endif %}
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-purple-inverted btn-block" href="{{ path('majordesk_app_calendrier_famille') }}"><i class="icon-calendar icon-4x"></i> <span class="position-relative-up-12">Calendrier des cours {% if cal_events_proches|length > 0 %}<span rel="tooltip" data-title="{{ cal_events_proches|length }} cours programmé(s)" class="badge">{{ cal_events_proches|length }}</span>{% endif %}</span></a>			
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Factures et abonnements</span></a>
+</div>
+<div class="clearfix"></div>
+<br><br>
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-body">
+				<div class="col-lg-6">
+				
+					{% if famille.heuresPrises == 0 %}
+					<h4><i class="icon-info-sign icon-large text-light-green"></i> Information</h4><br>
+					Nous vous informons que la Plateforme est en constante mutation. Nous travaillons chaque jour pour la rendre la plus efficace et facile d'utilisation pour vous.
+					<br><br><br>
+					{% endif %}
+					<h4><i class="icon-calendar text-purple"></i> Prochain(s) cours :</h4>
+					<ul>{% set mois = {1:'Janvier',2:'Février',3:'Mars',4:'Avril',5:'Mai',6:'Juin',7:'Juillet',8:'Août',9:'Septembre',10:'Octobre',11:'Novembre',12:'Décembre'} %}
+						{% set jour = {1:'Lundi',2:'Mardi',3:'Mercredi',4:'Jeudi',5:'Vendredi',6:'Samedi',7:'Dimanche'} %}
+						{% for cal_event in cal_events_proches %}
+							<li>{{ jour[cal_event.dateCours|date('N')] ~ ' ' ~ cal_event.dateCours|date('j') ~ ' ' ~ mois[cal_event.dateCours|date('n')] }} ({{ cal_event.heureDebut}}-{{ cal_event.heureFin}}) </li>
+						{% else %}
+							<li><a href="{{ path('majordesk_app_calendrier_famille') }}">Programmer un cours</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="col-lg-6">				
+					{% if famille.heuresPrises == 0 %}
+					<h4><i class="icon-question-sign icon-large text-blue"></i> Comment faire pour programmer le premier cours ?</h4><br>
+					<ul>
+						<li>Nous sélectionnons dans notre équipe le professeur le plus adéquate pour votre enfant : vous recevrez un mail (<em>{{ app.user.mail }}</em>) pour vous indiquez qu'un professeur a été assigné à votre enfant.</li>
+						<br>
+						<li>Lorsqu'un professeur a été assigné à votre enfant, vous pouvez vous rendre dans le <a href="{{ path('majordesk_app_calendrier_famille') }}">calendrier</a>, aussi accessible depuis l'accueil <i class="icon-calendar text-purple"></i>, pour programmer un cours.</li>
+						<br>
+						<li>Une demande de cours de votre part apparaîtra avec le statut <i rel="tooltip" data-title="En attente d'une confirmation du professeur" class="icon-spinner icon-spin text-orange"></i>. Dès que cette demande aura été confirmée, le cours apparaîtra avec le statut <i rel="tooltip" data-title="Cours programmé" class="icon-ok text-success"></i></li>
+					</ul>
+					{% else %}
+					<h4><i class="icon-info-sign icon-large text-light-green"></i> Information</h4><br>
+					Nous vous informons que la Plateforme est en constante mutation. Nous travaillons chaque jour pour la rendre la plus efficace et facile d'utilisation pour vous.<br>
+					{% endif %}
+				</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

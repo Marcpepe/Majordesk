@@ -1,0 +1,62 @@
+{% extends "::layout-main.html.twig" %}
+				
+				{% block title %}
+					{{ parent() }}
+				{% endblock %}
+				
+				{% block navbar %}
+				    <li class="active"><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
+				{% endblock %}
+
+{% block body %}
+	<div id="home-banner-0">
+		<br>
+		<div class="home-container intro-container">
+			<div class="col-lg-12 text-center">
+				<span class="marque-tall">Majorclass</span><br>
+				<span class="hidden-xs font-size-28">réinvente les cours particuliers</span>
+			</div>
+		</div>
+	</div>	
+	<div id="home-banner-1" class="col-lg-6 cursor">
+		<a href="{{ path('majordesk_app_presentation_cours') }}">
+		<div class="container col-lg-12 home-container cours-container">
+			<div class="col-lg-4">
+				<img src="{{ asset('img/home/prof.png') }}" class="img-responsive pull-right" />
+			</div>
+			<div class="col-lg-8 text-white">
+				<h1 class="font-responsive">Les cours particuliers</h1>
+				<span class="hidden-xs font-size-20 font-responsive">Des professeurs issus des Grandes Ecoles françaises</span>
+			</div>
+		</div>
+		<br>
+		</a>
+	</div>	
+	<div id="home-banner-2" class="col-lg-6 cursor">
+		<a href="{{ path('majordesk_app_presentation_plateforme') }}">
+		<div class="container col-lg-12 home-container plateforme-container">
+			<div class="col-lg-4">
+				<img src="{{ asset('img/home/plateforme.png') }}" class="img-responsive pull-right" />
+			</div>
+			<div class="col-lg-8 text-white">
+				<h1 class="font-responsive">L'environnement de travail</h1>
+				<span class="hidden-xs font-size-20 font-responsive">Une plateforme utilisée pendant et entre les cours</span>
+			</div>
+		</div>
+		<br>
+		</a>
+	</div>	
+	<div class="clearfix"></div>
+{% endblock %}	
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/home/index.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

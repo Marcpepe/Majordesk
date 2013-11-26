@@ -1,0 +1,760 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Nouvel abonnnement - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Abonnements et factures</a></li>
+	<li><a href="{{ path('majordesk_app_gestion_abonnements') }}"><i class="icon-angle-right"></i> Gestion des abonnements</a></li>
+	<li><a><i class="icon-angle-right"></i> Nouvelle inscription</a></li>
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+	
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="col-lg-4">
+				<p class="text-center">{% if app.session.get('new_inscription') >= 1 %}<a href="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':1}) }}" class="{% if etape_inscription != 1 %}text-mid-grey{% endif %}">1. Inscription Eleve</a>{% else %}<span class="text-mid-grey cursor-forbidden">1. Inscription Eleve</span>{% endif %}</p>
+			</div>
+			<div class="col-lg-4">
+				<p class="text-center">{% if app.session.get('new_inscription') >= 2 %}<a href="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':2}) }}" class="{% if etape_inscription != 2 %}text-mid-grey{% endif %}">2. Options</a>{% else %}<span class="text-mid-grey cursor-forbidden">2. Options</span>{% endif %}</p>
+			</div>
+			<div class="col-lg-4">
+				<p class="text-center">{% if app.session.get('new_inscription') >= 3 %}<a href="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':3}) }}" class="{% if etape_inscription != 3 %}text-mid-grey{% endif %}">3. Paiement</a>{% else %}<span class="text-mid-grey cursor-forbidden">3. Paiement</span>{% endif %}</p>
+			</div>
+			<br>
+		</div>
+	</div>
+</div>
+<br>
+	
+<div class="col-lg-12">
+	{% if etape_inscription == 1 %}
+		<form method="post" action="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':1}) }}">
+		
+			<div class="row">
+				<div class="col-md-offset-3 col-lg-6">
+				
+					<h3><i class="icon-user icon-large text-yellow pull-left"></i> <p class="pull-left">Inscription de l'élève</p></h3>
+					
+					<br><br><br>
+						{% if app.session.flashbag.get('info') %}
+						<div class="alert alert-warning">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Champs incorrects :</strong><br><br>
+							<ul><li>Programme : vous devez renseigné le niveau scolaire (Programme)</li></ul>
+						</div>
+						{% elseif app.session.flashbag.get('warning') %}
+						<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Champs incorrects :</strong><br><br>
+							{% for field in form %}
+								{{ form_errors(field) }}
+							{% endfor %}
+							{{ form_errors(form.password.pass) }} 
+							{{ form_errors(form.password.confirm) }}
+						</div>
+						{% endif %}
+				
+					<br>
+					<h4>Information sur l'élève</h4>
+					<br>	
+					
+					<table class="table table-borderless table-hover">
+					  <tbody>
+						
+						<tr>
+						  <td class="col-lg-3">Prénom</td>
+						  <td>
+							{{ form_widget(form.username) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td class="col-lg-3">Nom</td>
+						  <td>
+							{{ form_widget(form.nom) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td class="col-lg-3">Programme <i rel="tooltip" data-title="Seuls certains programmes disposent d'une Plateforme. Vous serez aiguillé en fonction de votre choix." class="icon-question-sign cursor-help"></i></td>
+						  <td>
+							{{ form_widget(form.programme) }}
+							<!--<select id="inscriptionelevetype_programme" name="inscriptionelevetype[programme]" required="required"    class="form-control"><option  disabled="disabled" selected="selected">Choisir un programme</option><option {% if app.session.get('prog') == 1 %}selected="selected"{% endif %} value="1">Terminale S</option><option disabled="disabled" value="2">Terminale ES</option><option disabled="disabled" value="3">1ère S</option><option disabled="disabled" value="4">1ère ES</option><option {% if app.session.get('prog') == 5 %}selected="selected"{% endif %} value="5">2nde</option><option {% if app.session.get('prog') == 6 %}selected="selected"{% endif %} value="6">3ème</option><option disabled="disabled" value="7">4ème</option></select>-->
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td class="col-lg-3">Lycée</td>
+						  <td>
+							{{ form_widget(form.lycee) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td class="col-lg-3">Téléphone (optionnel)</td>
+						  <td>
+							{{ form_widget(form.telephone) }}
+						  </td>
+						</tr>
+
+					  </tbody>
+					</table>
+			
+			<br>
+			<h4>Pour se connecter à la plateforme</h4>
+			<br>		
+					<table class="table table-borderless table-hover">
+					  <tbody>
+						
+						<tr>
+						  <td class="col-lg-3">Email</td>
+						  <td>
+							{{ form_widget(form.mail) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td class="col-lg-3">Mot de passe</td>
+						  <td>
+								{{ form_widget(form.password.pass, {'attr' : {'value' : app.session.get('password')} } ) }}
+								{{ form_label(form.password.confirm) }}
+								{{ form_widget(form.password.confirm, {'attr' : {'value' : app.session.get('password')} } ) }}
+						  </td>
+						</tr>
+
+					  </tbody>
+					</table>
+
+			
+			<br>
+			<h4>Disponibilités de l'élève pour les cours</h4>
+			<br>
+			{% for disponibilite in form.disponibilites %}
+			<div class="row">
+				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+					<div class="input-group">
+						{{ form_widget(disponibilite.jour ) }}
+						<span class="input-group-addon"><i class="icon-calendar"></i></span>
+					</div>
+				</div>
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 position-relative-down-8">
+					<p class="text-center">à partir de</p>
+				</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+					<span class="bootstrap-timepicker ">
+						{{ form_widget(disponibilite.heureDebut ) }}
+					</span>
+				</div>
+				<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+					<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+				</div>
+			</div>
+				<br>
+			{% endfor %}
+		  
+			  <span class="disponibilites" data-prototype='
+				<span>
+					<div class="row">
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+							<div class="input-group">
+								{{ form_widget(form.disponibilites.vars.prototype.jour ) }}
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 position-relative-down-8">
+							<p class="text-center">à partir de</p>
+						</div>
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+							<span class="bootstrap-timepicker ">
+								{{ form_widget(form.disponibilites.vars.prototype.heureDebut ) }}
+							</span>
+						</div>
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+							<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+						</div>
+					</div>
+					<br>
+				</span>
+			  '></span>
+			
+			<br>
+
+					<button type="submit" class="btn btn-success pull-right">Valider <i class="icon-angle-right icon-large"></i></button>
+				</div>
+			</div>
+			
+			
+		{{ form_widget(form._token) }}
+		</form>
+		<div class="clearfix"></div><br><br>
+	{% elseif etape_inscription == 2 %}
+	
+	{% set programme_avec_plateforme = [1, 5, 6] %}
+	{% set programme_avec_maths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] %}
+	{% set programme_avec_physique = [6, 5, 3, 1] %}
+	{% set programme_avec_svt = [6, 5, 3, 1] %}
+	
+		{% for message in app.session.flashbag.get('warning-pack') %}
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-warning-sign"></i> <strong>Erreur:</strong> {{ message }}
+		</div>
+		{% endfor %}
+		
+		
+		{% if app.session.get('prog') in programme_avec_plateforme %}
+		
+		<form method="post" action="{{ path('majordesk_app_nouvel_abonnement', { 'etape_inscription' : 2 }) }}">
+		
+		<h3>Choix des matières :</h3><br>
+		{% for message in app.session.flashbag.get('warning-matiere') %}
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-warning-sign"></i> <strong>Erreur:</strong> {{ message }}
+		</div>
+		{% endfor %}
+		<span class="choix-matiere form-inline">	
+				{% if app.session.get('prog') in programme_avec_maths %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					<div class="checkbox">
+						<label>
+						  <input type="checkbox" class="matiere maths" name="matiere_maths" > <h3 style="display:inline-block"><span class="label label-info">Mathématiques</span></h3>
+						</label>
+					</div>
+				</div>
+				{% endif %}
+				{% if app.session.get('prog') in programme_avec_physique %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					<div class="checkbox">
+						<label>
+						  <input type="checkbox" class="matiere physique" name="matiere_physique" > <h3 style="display:inline-block"><span class="label label-success" >Physique-Chimie</span></h3> 
+						</label>
+					</div>
+				</div>
+				{% endif %}
+				{% if app.session.get('prog') in programme_avec_svt %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					<div class="checkbox">
+						<label>
+						  <input type="checkbox" disabled="disabled" class="matiere" name="matiere_svt" > <h3 style="display:inline-block"><span class="label label-default" rel="tooltip" data-title="Indisponible pour l'instant" >S.V.T.</span></h3> 
+						</label>
+					</div>
+				</div>
+				{% endif %}
+
+			<div class="clearfix"></div>
+		</span>
+		<span class="choix-situation">
+		<br><br>
+		<h3>Votre situation est la suivante :</h3><br>
+		
+		<div class="row">		
+			<div class="col-lg-4 separateur-droit">
+				<h4 rel="tooltip" data-title="Non disponible pour l'instant">Votre enfant est autonome<!--, mais voudrait pouvoir s'entraîner plus simplement--></h4><br><br>
+						Ce que nous recommandons :<br><br>
+				<div class="situation panel panel-default">
+					<div class="panel-body">
+						<p class="text-center">Plateforme <span class="marque">majorClass</span></p>
+						<p class="text-center"><img src="{{ asset('img/inscription/plateforme-0.png') }}" class="img-responsive"></p>
+						<!--(non disponible <i class="icon-question-sign cursor-help" rel="tooltip" data-title="Ce mode sera disponible à partir de la rentrée scolaire 2014"></i>)-->
+						<br>
+						<span class="option-text option-1-details">En choisissant ce mode de fonctionnement :<br><br>
+							<ul>
+								<li>votre enfant dispose d'un accès illimité à la Plateforme d'entraînement par abonnement mensuel, résiliable à tout moment sans préavis</li>
+								<br>
+							</ul>
+						</span>
+						<br>
+						<div class="pull-right">
+							<button type="button" class="btn btn-success option-select option-1"><i class="icon-ok-circle"></i> Sélectionner</button>
+							<button type="button" class="btn btn-warning option-details"><i class="icon-plus-sign"></i> Détails</button>									
+						</div><br><br>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 separateur-droit text-mid-grey">
+				<h4 rel="tooltip" data-title="Non disponible pour l'instant">Votre enfant a déjà un professeur particulier<!--, mais vous souhaitez renforcer ce soutien--></h4><br><br>
+						Ce que nous recommandons :<br><br>
+				<div class="situation panel panel-default">
+					<div class="panel-body">
+						<p class="text-center">Plateforme <span class="marque">majorClass</span> + votre professeur</p>
+						<p class="text-center"><img src="{{ asset('img/inscription/plateforme-1.png') }}" class="img-responsive" style="opacity:0.5" rel="tooltip" data-title="Non disponible pour l'instant"></p>
+						<br>
+						<span class="option-text option-2-details">
+							En choisissant ce mode de fonctionnement :<br><br>
+							<ul>
+								<li>votre enfant dispose d'un accès illimité à la Plateforme d'entraînement par abonnement mensuel, résiliable à tout moment sans préavis</li>
+								<br>
+								<li>
+								si vous avez déjà recours aux services d'un professeur particulier, ce dernier peut avoir accès à certaines fonctionnalités de la Plateforme afin d'améliorer la qualité de son suivi
+								</li>
+							</ul>
+							<br>
+						</span>
+						<br>
+						<div class="pull-right">
+							<div style="display:inline-block" rel="tooltip" data-title="Non disponible pour l'instant"><button type="button" class="btn btn-success option-select option-2 disabled"><i class="icon-ok-circle"></i> Sélectionner</button></div>
+							<div style="display:inline-block" rel="tooltip" data-title="Non disponible pour l'instant"><button type="button" class="btn btn-warning option-details disabled"><i class="icon-plus-sign"></i> Détails</button></div>							
+						</div><br><br>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<h4>Votre enfant a besoin de l'accompagnement complet par l'équipe Majorclass</h4><br>
+						Ce que nous recommandons :<br><br>
+				<div class="situation panel panel-default">
+					<div class="panel-body">
+						<p class="text-center">Plateforme <span class="marque">majorClass</span> + Professeur <span class="marque">majorClass</span></p>
+						<p class="text-center"><img src="{{ asset('img/inscription/plateforme-2.png') }}" class="img-responsive" ></p>
+						<br>
+						<span class="option-text option-3-details">
+						En choisissant ce mode de fonctionnement :<br><br>
+							<ul>
+								<li>votre enfant dispose d'un accès illimité à la Plateforme d'entraînement par abonnement mensuel, résiliable à tout moment sans préavis</li>
+								<br>
+								<li>
+								un professeur de l'équipe <span class="marque">majorClass</span> est mis à la disposition de votre enfant</li>
+								<br>
+								<li>ce professeur est formé à l'utilisation de la Plateforme d'entraînement et soigneusement sélectionné parmi les Grandes Ecoles d'ingénieurs suivantes : <br>
+								<ul><li>Ecole Centrale Paris</li><li>Ecole Polytechnique</li><li>Ecole des Mines de Paris</li></ul>
+								</li>		
+							</ul>
+							<br>
+						</span>
+						<br>
+						<div class="pull-right">
+							<button type="button" class="btn btn-success option-select option-3"><i class="icon-ok-circle"></i> Sélectionner</button> 
+							<button type="button" class="btn btn-warning option-details"><i class="icon-plus-sign"></i> Détails</button>									
+						</div><br><br>
+						
+					</div>
+				</div>
+			</div>
+		</div>			
+		</span>
+		
+		<br><br>	
+		<h3>Choix du pack</h3>
+		<span id="no-pack">	
+			<br>
+			Veuillez sélectionner ci-dessus la situation qui vous correspond...
+			<br><br><br>
+		</span>
+		<span id="no-matiere">	
+			<br>
+			Veuillez sélectionner une matière...
+			<br><br><br>
+		</span>
+		<span id="packs-1" class="{% if app.session.get('new_inscription')==4 %}pack-selected{% endif %}">	
+			<div class="row">				
+				<div class="col-lg-12">
+					<div class="pack-plateforme panel panel-default {% if app.session.get('pack')==11 %}panel-primary{% endif %}">
+						<div class="panel-heading"><h4><i class="icon-ok text-green"></i> Pack Plateforme</h4></div>
+						<br>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-offset-1 col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									<label class="checkbox cursor">
+										<input type="checkbox" name="pack" value="11" class="pack-1-1" {% if app.session.get('pack')==11 %}checked="checked"{% endif %} /> <strong>Abonnement illimité à la Plateforme :</strong>
+										<br><small>abonnement sans engagement et résiliable sans préavis</small>
+										<br>
+										<small>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€ par mois<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 299,50€ après réduction d'impôts"></i>-->
+										</small>
+									</label>
+								</div>
+								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 position-relative-up-12">
+									<img class="pull-right img-responsive" src="{{ asset('img/inscription/plateforme.jpg') }}" >
+								</div>
+							</div>
+							
+							{% if app.session.get('pack')==11 %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</span>
+		<span id="packs-2" class="{% if app.session.get('new_inscription')==4 %}pack-selected{% endif %}">	
+			<br>
+			<div class="row">				
+				<div class="col-lg-6">
+					<div class="pack-complet panel panel-default {% if app.session.get('pack')==21 or app.session.get('pack')==22 %}panel-primary{% endif %}">
+						<div class="panel-heading"><h4><i class="icon-ok icon-large"></i> Packs confirmés</h4></div>
+						<div class="panel-body">
+							
+							<br>
+							<div class="row">
+								<div class="col-md-offset-1 col-xs-12 col-sm-7 col-md-7 col-lg-7">
+									<label class="radio cursor">
+										<input type="radio" name="pack" value="21" class="pack-2-1" {% if app.session.get('pack')==21 %}checked="checked"{% endif %} /> Formule 10h de cours : 
+										<br>
+										<small>
+											Vous donne accès à 10 heures de cours avec un professeur de l'équipe.<br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 10 &times; 59,90€ = 599,00€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 299,50€ après réduction d'impôts"></i>-->
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 10 &times; 29,95€ = 299,50€
+										</small>
+									</label>
+									<br>
+									<label class="radio cursor">
+										<input type="radio" name="pack" value="22" class="pack-2-2" {% if app.session.get('pack')==22 %}checked="checked"{% endif %} /> Formule "A la carte" : 
+										<br>
+										<small>
+											Vous êtes débité à chaque heure de cours.<br>
+											<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 29,95€ après réduction d'impôts"></i>-->
+											<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+								</div>
+								<div class="hidden-xs col-sm-4 col-md-4 col-lg-4">
+									<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
+								</div>
+							</div>
+							<br>
+							
+							{% if app.session.get('pack') in [21,22] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="pack-decouverte panel panel-default {% if app.session.get('pack')==23 or app.session.get('pack')==24 %}panel-primary{% endif %}">
+						<div class="panel-heading"><h4><i class="icon-ok icon-large text-mid-grey"></i> Packs d'essai</h4></div>
+						<div class="panel-body">
+							<br>
+							<div class="row">
+								<div class="col-md-offset-1 col-lg-7">
+									<label class="radio cursor"><input type="radio" name="pack" value="23" class="pack-2-3" {% if app.session.get('pack')==23 %}checked="checked"{% endif %} />Cours de 1 heure avec un professeur de l'équipe : 
+										<br>
+										<small>
+											recommandé pour les classes de 4<sup>ème</sup> et 3<sup>ème</sup><br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 29,95€ après réduction d'impôts"></i>-->
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+									<br>
+									<label class="radio cursor"><input type="radio" name="pack" value="24" class="pack-2-4" {% if app.session.get('pack')==24 %}checked="checked"{% endif %} />Cours de 2 heures avec un professeur de l'équipe : 
+										<br>
+										<small>
+											recommandé pour les classes de 2<sup>nde</sup> à T<sup>ale</sup><br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 59,90€ après réduction d'impôts"></i>-->
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 59,90€
+										</small>
+									</label>
+								</div>
+								<div class="col-lg-4">
+									<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
+								</div>
+							</div>
+							
+							{% if app.session.get('pack') in [23,24] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="alert alert-info">
+				<i class="icon-info-sign"></i> <strong>Info :</strong> Les heures achetées ne sont pas associées à une matière en particulier et pourront donner lieu à un cours dans n'importe laquelle des matières que vous avez sélectionnées.
+			</div>
+			<br>
+		</span>
+		<span id="packs-3" class="{% if app.session.get('new_inscription')==4 %}pack-selected{% endif %}">	
+			<div class="row">				
+				<div class="col-lg-6">
+					<div class="pack-complet panel panel-default {% if app.session.get('pack')==31 or app.session.get('pack')==32 %}panel-primary{% endif %}">
+						<div class="panel-heading"><h4><i class="icon-ok"></i> Pack complet</h4></div>
+						<div class="panel-body">
+							<br>
+							<div class="row">
+								<div class="col-md-offset-1 col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<i class="icon-ok text-green"></i> <strong>Abonnement à la plateforme : </strong>
+									<br><small>sans engagement et résiliable sans préavis<br>
+										<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€ par mois<br>
+									</small>
+								</div>
+								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 position-relative-up-30">
+									<img class="pull-right img-responsive" src="{{ asset('img/inscription/plateforme.jpg') }}" >
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-offset-1 col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<label class="radio cursor"><input type="radio" name="pack" value="31" class="pack-3-1" {% if app.session.get('pack')==31 %}checked="checked"{% endif %} />Inscription simple : 
+										<br>
+										<small>
+											Chaque heure de cours est décomptée de votre crédit d'heures.<br>
+											<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br>
+											<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+									<br>
+									<label class="radio cursor"><input type="radio" name="pack" value="32" class="pack-3-2" {% if app.session.get('pack')==32 %}checked="checked"{% endif %} />Inscription "A la carte" : 
+										<br>
+										<small>
+											Vous êtes débité à chaque heure de cours.<br>
+											<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br>
+											<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+								</div>
+								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+									<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
+								</div>
+							</div>
+							
+							{% if app.session.get('pack') in [31,32] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="pack-decouverte panel panel-default {% if app.session.get('pack')==33 or app.session.get('pack')==34 %}panel-primary{% endif %}">
+						<div class="panel-heading"><h4><i class="icon-ok text-mid-grey"></i> Pack Découverte</h4></div>
+						<div class="panel-body">
+							<br>
+							<div class="row">
+								<div class="col-md-offset-1 col-lg-7">
+									<i class="icon-ok text-green"></i> <strong>Essai de la Plateforme :</strong>
+									<br>
+									<small>pendant le cours avec un professeur de l'équipe<br>
+										<i class="icon-tag icon-large text-light-grey"></i> Prix : Offert<br>
+									</small>
+								</div>
+								<div class="col-lg-4 position-relative-up-30">
+									<img class="pull-right img-responsive" src="{{ asset('img/inscription/plateforme.jpg') }}" >
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-offset-1 col-lg-7">
+									<label class="radio cursor"><input type="radio" name="pack" value="33" class="pack-3-3" {% if app.session.get('pack')==33 %}checked="checked"{% endif %} disabled/>Cours d'1 heure avec un professeur de l'équipe : 
+										<br>
+										<small>
+											recommandé pour les classes de 4<sup>ème</sup> et 3<sup>ème</sup><br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br>
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+									<br>
+									<label class="radio cursor"><input type="radio" name="pack" value="34" class="pack-3-4" {% if app.session.get('pack')==34 %}checked="checked"{% endif %} disabled/>Cours de 2 heures avec un professeur de l'équipe : 
+										<br>
+										<small>
+											recommandé pour les classes de 2<sup>nde</sup> à T<sup>ale</sup><br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br>
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 59,90€
+										</small>
+									</label>
+								</div>
+								<div class="col-lg-4">
+									<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
+								</div>
+							</div>
+							<br>
+							<div class="alert alert-warning">
+								<i class="icon-exclamation-sign"></i> <strong>Info :</strong> Le Pack Découverte n'est disponible qu'une seule fois et a pour but de faire découvrir la Plateforme d'entraînement à vous et votre enfant.
+							</div>
+							
+							{% if app.session.get('pack') in [33,34] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</span>
+		
+		<br>
+		<h3>Informations sur le paiement</h3>
+		<span class="marque">majorClass</span> fonctionne le plus possible par internet, c'est pourquoi tous les paiements se font en ligne. En contrepartie, il n'y a <strong>aucun frais d'inscription</strong>.
+		<br><br>Le module de paiement est délégué à Merc@net, solution e-commerce de BNP-Paribas. <img src="{{ asset('img/inscription/mercanet.gif') }}" class="img-responsive">
+		<br><br>Votre carte bancaire est sauvegardée comme moyen de paiement, afin de procéder au débit de l'abonnement à la Plateforme et/ou de chaque heure de cours prises si vous optez pour la Formule "à la carte".
+		<br><br>Vous pouvez à tout moment annuler l'utilisation de la carte enregistrée en tant que moyen de paiement. Ceci aura pour effet de geler l'accès à la plateforme dès le prochain mois et/ou la programmation de nouveaux cours.
+		<br><br>Vous pouvez retrouver les détails concernant l'abonnement dans les <a href="{{ path('majordesk_app_cgv_majordesk') }}" target="_blank">conditions générales d'abonnement</a>, et concernant l'achat de cours dans les <a href="{{ path('majordesk_app_cgv_majorclass') }}" target="_blank">conditions générales de ventes</a>.
+		<br><br>Pour toute demande spéciale concernant les moyens de paiement, vous pouvez nous contacter à l'adresse <a href="mailto:contact@majorclass.fr">contact@majorclass.fr</a>
+		<br><br>
+		
+		<br>
+		<span id="deduction">
+			<h3>Déduction ou crédit d'impôts</h3>
+			<span class="text-red">*</span> : L'achat d'heures de cours particuliers peut, dans le cadre des services à la personne, donner lieu à une déduction ou un crédit d'impôts d'un montant égal à 50% des dépenses engagées.
+			<br><br>Pour plus d'informations, vous pouvez consulter <a href="http://www.servicesalapersonne.gouv.fr/avantages-fiscaux-lies-aux-sap-(2815).cml" target="_blank">le lien suivant</a>
+		</span>
+		<br><br>
+		
+		{% else %}
+		
+		<form method="post" action="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':2}) }}" role="form">
+		
+		<h3>Choix des matières :</h3><br>
+		{% for message in app.session.flashbag.get('warning-matiere') %}
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-warning-sign"></i> <strong>Erreur:</strong> {{ message }}
+		</div>
+		{% endfor %}
+		<span class="choix-matiere form-inline">	
+				{% if app.session.get('prog') in programme_avec_maths %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					<div class="checkbox">
+						<label>
+						  <input type="checkbox" class="matiere-no-plateforme" name="matiere_maths" > <h3 style="display:inline-block"><span class="label label-info">Mathématiques</span></h3>
+						</label>
+					</div>
+				</div>
+				{% endif %}
+				{% if app.session.get('prog') in programme_avec_physique %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					<div class="checkbox">
+						<label>
+						  <input type="checkbox" class="matiere-no-plateforme" name="matiere_physique" > <h3 style="display:inline-block"><span class="label label-success" >Physique-Chimie</span></h3> 
+						</label>
+					</div>
+				</div>
+				{% endif %}
+				{% if app.session.get('prog') in programme_avec_svt %}
+				<div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+					<div class="checkbox">
+						<label>
+						  <input type="checkbox" disabled="disabled" class="matiere-no-plateforme" name="matiere_svt" > <h3 style="display:inline-block"><span class="label label-default" rel="tooltip" data-title="Indisponible pour l'instant" >S.V.T.</span></h3> 
+						</label>
+					</div>
+				</div>
+				{% endif %}
+
+			<div class="clearfix"></div>
+		</span>
+		<br><br>		  
+		<h3>Choix du pack</h3>
+		{% for message in app.session.flashbag.get('warning-formule') %}
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-warning-sign"></i> <strong>Erreur:</strong> {{ message }}
+		</div>
+		{% endfor %}
+		<span id="no-matiere-no-plateforme">	
+			<br>
+			Veuillez sélectionner une matière...
+			<br><br><br>
+		</span>
+		<span id="packs-2">	
+			<br>
+			<div class="row">				
+				<div class="col-lg-6">
+					<div class="panel panel-default {% if app.session.get('pack')==21 or app.session.get('pack')==22 %}panel-primary{% endif %}" id="pack-complet">
+						<div class="panel-heading"><h4><i class="icon-ok icon-large"></i> Packs confirmés</h4></div>
+						<div class="panel-body">
+							
+							<br>
+							<div class="row">
+								<div class="col-md-offset-1 col-xs-12 col-sm-7 col-md-7 col-lg-7">
+									<label class="radio cursor">
+										<input type="radio" name="pack" value="21" class="pack-2-1" {% if app.session.get('pack')==21 %}checked="checked"{% endif %} /> Inscription simple : 
+										<br>
+										<small>
+											Chaque heure de cours est décomptée de votre crédit d'heures.<br>
+											<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br>
+											<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+									<br>
+									<label class="radio cursor">
+										<input type="radio" name="pack" value="22" class="pack-2-2" {% if app.session.get('pack')==22 %}checked="checked"{% endif %} /> Inscription "A la carte" : 
+										<br>
+										<small>
+											Vous êtes débité à chaque heure de cours.<br>
+											<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br>
+											<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+								</div>
+								<div class="hidden-xs col-sm-4 col-md-4 col-lg-4">
+									<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
+								</div>
+							</div>
+							<br>
+							
+							{% if app.session.get('pack') in [21,22] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="panel panel-default {% if app.session.get('pack')==23 or app.session.get('pack')==24 %}panel-primary{% endif %}" id="pack-decouverte">
+						<div class="panel-heading"><h4><i class="icon-ok icon-large text-mid-grey"></i> Packs d'essai</h4></div>
+						<div class="panel-body">
+							<br>
+							<div class="row">
+								<div class="col-md-offset-1 col-lg-7">
+									<label class="radio cursor"><input type="radio" name="pack" value="23" class="pack-2-3" {% if app.session.get('pack')==23 %}checked="checked"{% endif %} disabled/>Cours de 1 heure avec un professeur de l'équipe : 
+										<br>
+										<small>
+											recommandé pour les classes de 4<sup>ème</sup> et 3<sup>ème</sup><br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 29,95€ après réduction d'impôts"></i>-->
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 29,95€
+										</small>
+									</label>
+									<br>
+									<label class="radio cursor"><input type="radio" name="pack" value="24" class="pack-2-4" {% if app.session.get('pack')==24 %}checked="checked"{% endif %} disabled/>Cours de 2 heures avec un professeur de l'équipe : 
+										<br>
+										<small>
+											recommandé pour les classes de 2<sup>nde</sup> à T<sup>ale</sup><br>
+											<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 59,90€ après réduction d'impôts"></i>-->
+											<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 59,90€
+										</small>
+									</label>
+								</div>
+								<div class="col-lg-4">
+									<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
+								</div>
+							</div>
+							
+							{% if app.session.get('pack') in [23,24] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="alert alert-info">
+				<i class="icon-info-sign"></i> <strong>Info :</strong> Votre crédit d'heures est valable pour toute la famille : une heure peut être consommée dans n'importe quelle matière, par n'importe lequel de vos enfants !
+			</div>
+			<br>
+		</span>
+
+		</form>
+		<div class="clearfix"></div>
+		<br>
+		<h3>Informations sur le paiement</h3>
+		<span class="marque">majorClass</span> fonctionne le plus possible par internet, c'est pourquoi tous les paiements se font en ligne. En contrepartie, il n'y a <strong>aucun frais d'inscription</strong>.
+		<br><br>Le module de paiement est délégué à Merc@net, solution e-commerce de BNP-Paribas. <img src="{{ asset('img/inscription/mercanet.gif') }}" class="img-responsive">
+		<br><br>Si vous optez pour la Formule "à la carte", votre carte bancaire est sauvegardée comme moyen de paiement, afin de procéder au débit de chaque heure de cours prises .
+		<br><br>Vous pouvez à tout moment annuler l'utilisation de la carte enregistrée en tant que moyen de paiement. Ceci aura pour effet d'annuler toute nouvelle programmation de cours.
+		<br><br>Vous pouvez retrouver les détails concernant l'achat de cours dans les <a href="{{ path('majordesk_app_cgv_majorclass') }}" target="_blank">conditions générales de ventes</a>.
+		<br><br>Pour toute demande spéciale concernant les moyens de paiement, vous pouvez nous contacter à l'adresse <a href="mailto:contact@majorclass.fr">contact@majorclass.fr</a>
+		<br><br>
+		
+		<br>
+		<span id="deduction">
+			<h3>Déduction ou crédit d'impôts</h3>
+			<span class="text-red">*</span> : L'achat d'heures de cours particuliers peut, dans le cadre des services à la personne, donner lieu à une déduction ou un crédit d'impôts d'un montant égal à 50% des dépenses engagées.
+			<br><br>Pour plus d'informations, vous pouvez consulter <a href="http://www.servicesalapersonne.gouv.fr/avantages-fiscaux-lies-aux-sap-(2815).cml" target="_blank">le lien suivant</a>.
+		</span>
+		<br><br>
+		
+		{% endif %}
+
+		
+	{% endif %}
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/common/bootstrap-timepicker.min.js' 
+		'js/common/typeahead.min.js'
+		'js/home/inscription.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

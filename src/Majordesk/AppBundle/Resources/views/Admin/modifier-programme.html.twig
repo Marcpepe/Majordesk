@@ -1,0 +1,69 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Modifier un programme - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_contenu") }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+	<li><a href="{{ path("majordesk_app_gestionnaire_chapitres", {'id' : matiere.id}) }}"><i class="icon-angle-right"></i> Gestionnaire de chapitres</a></li>
+	<li><a><i class="icon-angle-right"></i> Modifier un programme</a></li>
+{% endblock %}
+ 
+{% block admin %}
+			<form method="post" action="{{ path('majordesk_app_modifier_programme', {'id_matiere' : matiere.id, 'id_programme' : programme.id}) }}">
+				<h3>
+					<i class="icon-th-list icon-large text-grey pull-left"></i> <p class="pull-left">Programme : {{ programme.nom }}</p>
+				</h3>
+					
+				<br><br><br>	
+				
+				{% if app.session.flashbag.get('warning') %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Champs incorrects :</strong><br><br>
+					{% for field in form %}
+						{{ form_errors(field) }}
+					{% endfor %}
+				</div>
+				{% endif %}	
+
+					{% for chapitre in form.chapitres %}
+						<span>
+							<div class="col-lg-1">
+							{{ form_widget(chapitre.numero) }}
+							</div>
+							<div class="col-lg-10">
+							{{ form_widget(chapitre.nom) }}
+							</div>
+							<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+							<br><br>
+						</span>
+					{% endfor %}
+					   <span class="abonnements" data-prototype='
+						<span>
+							<div class="col-lg-1">
+							{{ form_widget(form.chapitres.vars.prototype.numero)|e }}
+							</div>
+							<div class="col-lg-10">
+							{{ form_widget(form.chapitres.vars.prototype.nom)|e }}
+							</div>
+							<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+							<br><br>
+						</span>
+					  '></span>
+				
+			{{ form_widget(form._token) }}
+			<button rel="fix-tooltip" data-title="Valider" data-placement="right" type="submit" class="btn btn-success"><i class="icon-ok"></i></button>
+			</form>
+			<br><br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/modifier-programme-chapitre.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -1,0 +1,307 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Profil d'un élève - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_eleves") }}"><i class="icon-angle-right"></i> Gestion des élèves</a></li>
+	<li><a><i class="icon-angle-right"></i> Profil élève</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Profil : {{ eleve.username }} {{ eleve.nom }}</p>
+				</h3>
+					<div class="col-lg-4 pull-right">
+						<div class="btn-group pull-right">
+						  <a class="btn btn-primary" href="{{ path('majordesk_app_modifier_eleve', {'id' : eleve.id}) }}">Modifier</a>
+						  <button class="btn btn-warning" id="flag"><i class="icon-flag"></i></button>
+						  <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#actif-modal" id="actif-trigger"><i class="icon-ban-circle"></i></button>
+						  <button class="btn btn-default"><i class="icon-trash"></i></button>
+						</div>
+					</div>
+					
+					<div id="actif-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+						  </div>
+						  <div class="modal-body">
+							<p><i class="icon-ban-circle icon-large text-red"></i> Bloquer/Débloquer cet élève ?</p>
+						  </div>
+						  <div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><i class="icon-angle-left"></i> Annuler</button>
+							<button class="btn btn-primary" data-dismiss="modal" id="actif">Confirmer</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				
+					
+				<br><br><br>
+				
+				
+				{% for message in app.session.flashbag.get('info') %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ message }}
+				</div>
+				{% endfor %}
+				
+				<br>
+				<h4>Disponibilités</h4>
+				<br>
+			
+				<ul>
+				{% for disponibilite in disponibilites %}	
+					<li>
+					{% if disponibilite.actif == '0' %}
+						<del>{{ disponibilite.jour }}</del>
+					{% elseif disponibilite.actif == '1' %}
+						<span class="text-green"><strong>{{ disponibilite.jour }}</strong></span>
+					{% elseif disponibilite.actif == '2' %}
+						<span class="text-orange"><strong>{{ disponibilite.jour }}</strong></span>
+					{% elseif disponibilite.actif == '3' %}
+						<span class="text-red"><strong>{{ disponibilite.jour }}</strong></span>
+					{% endif %}
+					: à partir de {{ disponibilite.heureDebut|date('H:i') }} {% if disponibilite.actif == false %}</del>(INACTIF){% endif %}</li>
+				{% else %}
+					Aucune disponibilité pour le moment
+				{% endfor %}
+				</ul>
+				
+				<br>
+				<h4>Majorclass</h4>
+				<br>
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						
+						<tr>
+						  <td>Prénom</td>
+						  <td>
+							{{ eleve.username }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nom</td>
+						  <td>
+							{{ eleve.nom }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Programme</td>
+						  <td>
+							{{ eleve.programme.nom }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Lycée</td>
+						  <td>
+							{{ eleve.lycee }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Téléphone</td>
+						  <td>
+							{{ eleve.telephone }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre d'heures prises</td>
+						  <td>
+							{{ eleve.heuresPrises }}
+						  </td>
+						</tr>
+						
+						<tr class="
+						{% if eleve.flag %}
+							warning 
+						{% endif %}
+						flag">
+						  <td>Flag</td>
+						  <td>
+						  {% if eleve.flag %}
+							Oui
+							<i class="icon-flag icon-large pull-right text-yellow"></i>
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+
+					  </tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Majordesk</h4>
+				<br>
+				
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+
+						<tr>
+						  <td>Id</td>
+						  <td id="id-eleve">{{ eleve.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Id Famille</td>
+						  <td>{{ eleve.famille.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mail</td>
+						  <td>
+							{{ eleve.mail }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Mot de passe</td>
+						  <td>
+							{{ eleve.password[:25] }}...
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Salt</td>
+						  <td>
+							{{ eleve.salt }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Abonnement(s)</td>
+						  <td>
+							{% for matiere in eleve.matieres %}
+								{% if matiere.nom == matiere_mathematiques %}
+									<span class="label label-info">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_physique %}
+									<span class="label label-success">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_biologie %}
+									<span class="label label-warning">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_anglais %}
+									<span class="label label-important">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_francais %}
+									<span class="label label-default">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_histoire %}
+									<span class="label">{{ matiere.nom }}</span>
+								{% endif %}
+							{% else %}
+								 - 
+							{% endfor %}
+						  </td>
+						</tr>
+						
+						{#<tr>
+						  <td>Date d'abonnement</td>
+						  <td>
+							{{ eleve.dateAbonnement|date('d/m/Y') }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Situation</td>
+						  <td>
+							{% if eleve.situation == null %}
+								Aucune
+							{% elseif eleve.situation == 1 %}
+								Plateforme
+							{% elseif eleve.situation == 2 %}
+								Cours
+							{% elseif eleve.situation == 3 %}
+								Cours et Plateforme
+							{% endif %}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Autorisation de prélèvement</td>
+						  <td>
+							{% if eleve.autorisationPrelevement == 0 %}
+								Non
+							{% elseif eleve.autorisationPrelevement == 1 %}
+								Oui (Plateforme)
+							{% elseif eleve.autorisationPrelevement == 2 %}
+								Oui(Cours)
+							{% elseif eleve.autorisationPrelevement == 3 %}
+								Oui (Cours et Plateforme)
+							{% endif %}
+						  </td>
+						</tr>#}
+						
+						<tr>
+						  <td>Rythme d'exercices</td>
+						  <td>
+							{{ eleve.rythme }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre de notifications</td>
+						  <td>
+							{{ eleve.notifications }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Date d'inscription</td>
+						  <td>
+							{{ eleve.dateInscription|date('d/m/Y') }}
+						  </td>
+						</tr>
+						
+						<tr class="
+						{% if eleve.actif == false %}
+							danger 
+						{% endif %}
+						actif">
+						  <td>Bloqué</td>
+						  <td>
+						  {% if eleve.actif %}
+							Non
+						  {% else %}
+							Oui
+							<i class="icon-ban-circle icon-large pull-right text-red"></i>
+						  {% endif %}
+						  </td>
+						</tr>
+
+					  </tbody>
+					</table>
+				</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/profil-eleve.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

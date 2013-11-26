@@ -1,0 +1,31 @@
+parameters:
+#    majordesk_app.example.class: Majordesk\AppBundle\Example
+
+services:
+    majordesk_app.service.exercice_editor:
+        class: Majordesk\AppBundle\Service\ExerciceEditor
+        arguments: [@doctrine.orm.entity_manager, %statut_en_edition%, %macro_type_normal%, %macro_type_erreur%, %macro_type_indice%, %macro_type_info%, %macro_type_correction%, %element_type_text%]
+
+    majordesk_app.service.contenu_manager:
+        class: Majordesk\AppBundle\Service\ContenuManager
+        arguments: [@doctrine.orm.entity_manager]
+
+    majordesk_app.service.doctrine_manager:
+        class: Majordesk\AppBundle\Service\DoctrineManager
+        arguments: [@doctrine.orm.entity_manager]
+
+    majordesk_app.twig.majordesk_extension:
+        class: Majordesk\AppBundle\Twig\MajordeskExtension
+        tags:
+            - { name: twig.extension }
+
+    majordesk_app.service.ai:
+        class: Majordesk\AppBundle\Service\AI
+        arguments: [@doctrine.orm.entity_manager, %statut_resolu%, %statut_non_resolu%, %statut_non_commence%, %statut_en_ligne%]
+
+    majordesk_app.service.reponse_validator:
+        class: Majordesk\AppBundle\Service\ReponseValidator
+        arguments: [@session, @doctrine.orm.entity_manager, @majordesk_app.service.math_validator, %statut_resolu%, %statut_non_resolu%, %statut_non_commence%, %statut_en_ligne%, %macro_type_tableau%, %macro_type_tableau_analyse%, %macro_type_normal%, %macro_type_indice%, %macro_type_correction%, %element_type_maths%, %element_type_br%, %element_type_jsgbox%, %element_type_jsggraph%, %element_type_text%, %element_type_tr%, %element_type_td%]
+
+    majordesk_app.service.math_validator:
+        class: Majordesk\AppBundle\Service\MathValidator

@@ -1,0 +1,668 @@
+{% extends "MajordeskAppBundle:Eleve:navigation.html.twig" %}
+
+{% block title %}
+	Exercice en cours - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	{% if is_granted("ROLE_ELEVE") and not is_granted("ROLE_PROF") %}
+		{% if app.session.get('etape_cours') is not empty and app.session.get('etape_cours') == 1 %}
+			<li><a href="{{ path("majordesk_app_verification_devoirs") }}"><i class="icon-angle-right"></i> Vérification des devoirs</a></li>
+			<li><a><i class="icon-angle-right"></i> Exercice en cours</a></li>
+		{% else %}
+			<li><a href="{{ path("majordesk_app_chapitres") }}"><i class="icon-angle-right"></i> Liste des chapitres</a></li>
+			<li><a href="{{ path("majordesk_app_parties", {'id_chapitre' : mod_exercice.chapitre.id}) }}"><i class="icon-angle-right"></i> Liste des exercices</a></li>
+			<li><a><i class="icon-angle-right"></i> Exercice en cours</a></li>
+		{% endif %}	
+	{% elseif is_granted("ROLE_PROF") and not is_granted('ROLE_ADMIN') %}
+		<li><a href="{{ path("majordesk_app_gestion_devoirs", {'id_eleve' : exercice.eleve.id }) }}"><i class="icon-angle-right"></i> Gestion des devoirs et exercices faits</a></li>
+		<li><a><i class="icon-angle-right"></i> Exercice en cours</a></li>
+	{% endif %}
+{% endblock %}
+{% block controlbar %}
+	{{ parent() }}
+	{% if is_granted("ROLE_ELEVE") and not is_granted("ROLE_PROF") and not is_granted("ROLE_PARENTS") and not is_granted("ROLE_ADMIN")  %}
+	<li>
+		<a>
+			<i {% if app.session.get('etape_cours') != 1 %}id="control-lock"{% endif %} class="icon-large control-btn {% if app.session.get('etape_cours') != 1 %}cursor-help{% else %}cursor-forbidden{% endif %} {% if app.session.get('chapitre_only') != 0 or app.session.get('partie_only') != 0 %}icon-lock text-purple{% else %}icon-unlock-alt text-mid-grey{% endif %}" data-content="Dans ce chapitre uniquement {% if app.session.get('chapitre_only') != 0 %}<button class='btn btn-purple chapitre-unlock lock-unlock' data-loading-text='Désactivation...'><i class='icon-unlock-alt'></i> Désactiver</button> {% else %}<button class='btn btn-purple-inverted chapitre-lock lock-unlock' data-loading-text='Activation...'><i class='icon-lock'></i> Activer</button>{% endif %}<br><br>Dans cette partie uniquement {% if app.session.get('partie_only') != 0 %}<button class='btn btn-purple partie-unlock lock-unlock' data-loading-text='Désactivation...'><i class='icon-unlock-alt'></i> Désactiver</button> {% else %}<button class='btn btn-purple-inverted partie-lock lock-unlock' data-loading-text='Activation...'><i class='icon-lock'></i> Activer</button>{% endif %}"></i>
+			<i {% if app.session.get('etape_cours') != 1 %}id="control-selection"{% endif %} style="margin-left:12px" class="icon-bullseye icon-large control-btn {% if app.session.get('etape_cours') != 1 %}cursor-help{% else %}cursor-forbidden{% endif %} {% if exercice.selection != 0 %}text-blue{% else %}text-mid-grey{% endif %}" data-content="{% if exercice.selection != 0 %}Cet exercice est à faire en devoir.{% else %}Cet exercice ne t'a été pas donné en devoir,<br>tu le fais pour t'entrainer.{% endif %}"></i> 
+			<i {% if app.session.get('etape_cours') != 1 %}id="control-favoris"{% endif %} style="margin-left:10px" class="icon-star icon-large control-btn {% if app.session.get('etape_cours') != 1 %}cursor-help{% else %}cursor-forbidden{% endif %} {% if exercice.favoris == 1 %}text-yellow{% else %}text-mid-grey{% endif %}" data-content="{% if exercice.favoris == 1 %}Cet exercice a été mis de côté.<br><br>Tu pourras le revoir plus tard ou avec ton professeur,<br>en y accédant facilement depuis l'accueil.{% else %}<span class='hidden-xs'>Si tu as du mal avec cet exercice, tu peux<br> le mettre de côté et revenir dessus plus tard.<br><br></span>Veux-tu le mettre de côté ?<br><br><span class='pull-right'><button class='btn btn-warning to-favoris'><i class='icon-star'></i> Mettre de côté</button></span>{% endif %}"></i> 
+			<i {% if app.session.get('etape_cours') != 1 %}id="control-navigation"{% endif %} data-id-matiere="{{ id_matiere }}" style="margin-left:10px" class="icon-fast-forward control-btn text-mid-grey {% if app.session.get('etape_cours') != 1 %}cursor-help{% else %}cursor-forbidden{% endif %}" data-content="{% if app.session.get('etape_cours') is not empty %}<a href='{{ path('majordesk_app_recherche_exercices', {'id_matiere' : id_matiere }) }}' class='btn btn-default'><i class='icon-forward'></i> Changer d'exercice</a>{% else %}<a href='{{ path('majordesk_app_chapitre_selection_queue', {'id_matiere':id_matiere}) }}' class='btn btn-default'><i class='icon-book'></i> Changer de chapitre</a><br><br><a {% if exercice.favoris == 1 or exercice.statut == statut_resolu %}href='{{ path('majordesk_app_exercice_next_in_queue', {'id_matiere':id_matiere}) }}'{% endif %} class='btn btn-default{% if exercice.favoris != 1 and exercice.statut != 2 %} to-favoris-before-next{% endif %}'><i class='icon-forward'></i> Passer à l'exercice suivant</a>{% endif %}"></i>
+		</a>
+	</li>
+	{% endif %}
+{% endblock %}
+
+{% block eleve %}
+	{% if is_granted("ROLE_ELEVE") %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				
+				<!-- new feedback --> 
+				<div id="new-feedback" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-case" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title"><i class="icon-flag icon-large text-red"></i> Signaler un problème</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<select name="feedback-type" class="form-control">
+								<option value="1">Problème d'affichage</option>
+								<option value="2">Erreur dans l'énoncé</option>
+								<option value="3">Faute d'orthographe</option>
+								<option value="4">Correction pas assez claire</option>
+								<option value="5">Une question ne valide pas</option>
+								<option value="6">Indice inutile</option>
+								<option value="7">Bug</option>
+							</select>
+							<br>
+							Si possible, précisez le problème :<br><br>
+							<textarea name="feedback-commentaire" class="form-control"></textarea>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+						<button type="button" class="btn btn-danger send-feedback" data-loading-text="Envoi..." data-id-exercice="{{ mod_exercice.id }}"> Envoyer</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<div class="hidden-xs">	
+					<div class="col-sm-1 col-md-1 col-lg-1">
+						<br><i id="clock" class="icon-time icon-large cursor-help" rel="tooltip" data-placement="bottom" data-animation="false" data-title="{{ exercice.temps|date('H:i:s') }}" ></i>
+					</div>
+					<div class="col-sm-11 col-md-11 col-lg-11">		
+						<h4>Exercice (Id : {{ mod_exercice.id }}{#, Partie : {{ mod_exercice.partie.nom }}#})</h4>	
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<br>
+				
+				<div id="modal-stack"></div>
+				
+				<!--INTRO-->
+				<div id="intro" data-id-matiere="{{ id_matiere }}">	
+					{% if mod_exercice.niveau == 0 %}
+					<div class="col-md-offset-1 col-lg-11">
+						<div class="alert alert-info">
+							<i class="icon icon-info-sign"></i> <strong>Cours : </strong><br><br>
+						<!--Enoncé-->
+							{% for macro in mod_macros_exercice %}
+								{% if macro.type == macro_type_normal or macro.type == macro_type_info %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+											<div class="row">
+												<div class="col-md-offset-2 col-lg-6"><div id="{{ element.clavier }}"></div></div><div class="col-lg-4"></div>
+											</div>
+										{% endif %}
+									{% endfor %}
+								{% elseif macro.type == macro_type_tableau %}
+								<div class="table-responsive">
+									<table class="table table-bordered borders-cours" style="border-color: #3987ad;">
+										<thead style="border-color: #3987ad;">
+										{% set tr_count = 0 %}
+										{% set td_opened = 0 %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_count = tr_count + 1 %}
+											{% if tr_count != 1 %}</td></tr>{% if tr_count == 2 %}</thead><tbody style="border-color: #3987ad;">{% endif %}{% endif %}<tr style="border-color: #3987ad;">
+										{% elseif element.type == element_type_td %}
+											{% if td_opened == 1 %}</td>{% set td_opened = 0 %}{% endif %}<td style="border-color: #3987ad;">{% set td_opened = 1 %}
+										{% endif %}
+									{% endfor %}
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% elseif macro.type == macro_type_tableau_analyse %}
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+										{% set tr_count = 0 %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_opened = 1 %}
+											{% set tr_count = tr_count + 1 %}
+											{% if not loop.first %}</tr>{% if tr_count == 2 %}</thead><tbody>{% endif %}{% endif %}<tr>
+										{% elseif element.type == element_type_td %}
+											{% if loop.index != 2 %}</div></td>{% endif %}<td class="col-lg-1" style="border-color:#3987ad;{% if tr_opened == 1 %}{% set tr_opened = 0 %} {% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}border-top:none;{% endif %}border-right: 1px solid #3987ad;{% else %} {% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}border-top:none;{% endif %} {% endif %}"><div class="text-center">
+										{% endif %}
+									{% endfor %}
+												</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% endif %}
+							{% endfor %}
+						<!---------->
+						</div>
+					</div>
+					{% else %}
+					<div class="col-md-offset-1 col-lg-6">
+						<!--Enoncé-->
+							{% for macro in mod_macros_exercice %}
+								{% if macro.type == macro_type_normal or macro.type == macro_type_info %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+											<div class="row">
+												<div id="{{ element.clavier }}" ></div>
+											</div>
+										{% endif %}
+									{% endfor %}	
+								{% elseif macro.type == macro_type_tableau %}
+								<div class="table-responsive">
+									<table class="table table-bordered" style="border-color: #dddddd;">
+										<thead style="border-color: #dddddd;">
+										{% set tr_count = 0 %}
+										{% set td_opened = 0 %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_count = tr_count + 1 %}
+											{% if tr_count != 1 %}</td></tr>{% if tr_count == 2 %}</thead><tbody style="border-color: #dddddd;">{% endif %}{% endif %}<tr style="border-color: #dddddd;">
+										{% elseif element.type == element_type_td %}
+											{% if td_opened == 1 %}</td>{% set td_opened = 0 %}{% endif %}<td style="border-color: #dddddd;">{% set td_opened = 1 %}
+										{% endif %}
+									{% endfor %}
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% elseif macro.type == macro_type_tableau_analyse %}
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+										{% set tr_count = 0 %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_opened = 1 %}
+											{% set tr_count = tr_count + 1 %}
+											{% if not loop.first %}</tr>{% if tr_count == 2 %}</thead><tbody>{% endif %}{% endif %}<tr>
+										{% elseif element.type == element_type_td %}
+											{% if loop.index != 2 %}</div></td>{% endif %}<td class="col-lg-1"{% if tr_opened == 1 %}{% set tr_opened = 0 %} style="{% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}border-top:none; {% endif %}border-right: 1px solid #dddddd;"{% else %} {% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}style="border-top:none;"{% endif %} {% endif %}><div class="text-center">
+										{% endif %}
+									{% endfor %}
+												</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% endif %}
+							{% endfor %}
+						<!---------->
+					</div>
+					<div class="col-lg-5"></div>
+					{% endif %}
+				</div>
+				<div class="clearfix"></div>
+				<br>
+				<!--------->
+				
+				{% for mod_question in mod_questions %}
+				{% set question = exercice.selectQuestionByNumero(mod_question.numero) %}
+				{% set couche_max = mod_question.getNbCouches() %}
+				{% set numero_reponse = 0 %}
+				<!--QUESTION-->
+				<div class="question-container">	
+					<div class="col-xs-12 col-lg-1">
+						{% if question.statut == statut_resolu %}
+							<i class="icon-ok text-success cursor-help" rel="tooltip" data-title="Terminé"></i> 
+						{% elseif question.statut == statut_non_resolu or question.nombreEssais > 0 %}
+							<i class="icon-remove text-red cursor-help" rel="tooltip" data-title="En cours..."></i>
+						{% else %}
+							<i class="icon-remove text-light-grey cursor-help" rel="tooltip" data-title="Non commencé"></i>
+						{% endif %}
+						<span class="badge cursor-help" rel="tooltip" data-title="Nombre d'essai(s)">{{ question.nombreEssais }}</span>
+						<span class="visible-xs"><br></span>
+						{#{% if is_granted("ROLE_PROF") %}
+							<br><br>
+							Réponse :<br>
+							<button class="btn btn-default btn-xs" type="button" rel="tooltip" data-title="Réponse précédente (à venir)"><i class="icon-double-angle-left"></i></button>
+							 {{ question.nombreEssais }} 
+							<button class="btn btn-default btn-xs" type="button" rel="tooltip" data-title="Réponse suivante (à venir)"><i class="icon-double-angle-right"></i></button>
+						{% endif %}#}
+					</div>
+					<div class="col-xs-12 col-lg-6 question-body">
+						<form method="post" action="#">
+						<!--Enoncé-->
+							{% for macro in mod_macros if macro.modQuestion.id == mod_question.id and macro.type != macro_type_indice and macro.type != macro_type_correction and macro.fond == 0  %}
+								{% if lastCouche is defined and lastCouche != 0 and macro.couche != lastCouche %}</div>{% endif %}
+								{% if macro.couche < couche_max and macro.couche != 0 and macro.couche != lastCouche %}<div class="alert alert-light-grey {% if question.couche != macro.couche and macro.couche != 0 %}hide{% endif %}"><span style="color:#d2d2d2;"><i class="icon-lightbulb"></i> <strong>Piste de réflexion :</strong></span><br>{% endif %}
+								{% set lastCouche = macro.couche %}
+								<span data-couche="{{ macro.couche }}" data-couche-max="{{ couche_max }}" {% if question.couche != macro.couche and macro.couche != 0 %}class="hide"{% endif %} >
+								{% if macro.type == macro_type_normal %}
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_case %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_puissance %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-puissance cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_indice %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-indice cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_liste_der %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<select class="liste-deroulante input-eleve form-special" data-numero-reponse="{{ numero_reponse }}">
+												<option value=""> </option>
+											{% for contenu in element.contenu|split('##') %}
+												<option value="{{ loop.index }}" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ contenu }}</option>
+											{% endfor %}
+											</select>
+										{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+											<div id="{{ element.clavier }}" ></div>
+										{% endif %}
+									{% endfor %}
+								{% elseif macro.type == macro_type_radio %}
+									{% set radio_numero = 1 %}
+									{% set numero_reponse = numero_reponse + 1 %}
+									{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_radiotick %}
+											{% if not loop.first %} </label> {% endif %}<label class="radio"><input class="input-eleve" type="radio" data-numero-reponse="{{ numero_reponse }}" data-radio-numero="{{ radio_numero }}" {% if reponse is not null and reponse.contenu == radio_numero %}checked="checked"{% endif %} name="radio-{{ mod_question.numero }}-{{ macro.numero }}" />
+											{% set radio_numero = radio_numero + 1 %}
+										{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+											<div id="{{ element.clavier }}" ></div>
+										{% endif %}
+									{% endfor %}
+									</label>
+								{% elseif macro.type == macro_type_checkbox %}
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_checkboxtick %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											{% if not loop.first %} </label> {% endif %}<label class="checkbox"><input class="input-eleve" type="checkbox" data-numero-reponse="{{ numero_reponse }}" {% if reponse is not null and reponse.contenu == 1 %}checked="checked"{% endif %} />
+										{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+											<div id="{{ element.clavier }}" ></div>
+										{% endif %}
+									{% endfor %}
+									</label>
+								{% elseif macro.type == macro_type_vignettes %}
+									{% set numero_shift  = numero_reponse %}
+									{% if question.statut != statut_resolu %}<button type="button" class="btn btn-default-inverted btn-small pull-right vignettes-reset">Remettre à zéro</button>{% endif %}
+									<br><br>
+										<div class="hide data-reset">
+											{% set vignettesUnshuffled = [] %}
+											{% for i in 1..macro.getElementsNumberByType(element_type_vignette) %}
+												{% set vignettesUnshuffled = vignettesUnshuffled|merge([i]) %}
+											{% endfor %}
+											{% for i in vignettesUnshuffled|shuffle %}
+												{% for element in mod_elements if element.modMacro.id == macro.id and element.clavier[9:] == i  %}
+													{% if element.type == element_type_text and element.contenu is not null %}
+														{{ element.contenu|raw }}
+													{% elseif element.type == element_type_maths and element.contenu is not null %}
+														<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+													{% elseif element.type == element_type_br %}
+														<br>
+													{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+														<div id="{{ element.clavier }}" ></div>
+													{% elseif element.type == element_type_vignette %}
+														<li><div class="well vignette input-eleve cursor-move" data-numero-shift="{{ numero_shift }}" data-numero-vignette="{{ i }}"><button type="button" class="close fade-vignette">&times;</button>
+													{% endif %}
+												{% else %}
+													Aucune vignette !
+												{% endfor %}								
+												</div></li>
+											{% endfor %}
+										</div>
+									<ul class="list-unstyled vignettes">									
+									{% for i in 1..macro.getElementsNumberByType(element_type_vignette) if question.reponses|length != 0 and question.reponses[numero_shift] is defined %}	
+										{% set numero_reponse = numero_reponse + 1 %}
+										{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+										{% if reponse is not empty %}
+											{% for element in mod_elements if element.modMacro.id == macro.id and (element.clavier[9:] == reponse.contenu or (reponse.contenu == 0 and element.clavier[9:] == reponse.numero)) %}
+												{% if element.type == element_type_text and element.contenu is not null %}
+													{{ element.contenu|raw }}
+												{% elseif element.type == element_type_maths and element.contenu is not null %}
+													<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+												{% elseif element.type == element_type_br %}
+													<br>
+												{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+													<div id="{{ element.clavier }}" ></div>
+												{% elseif element.type == element_type_vignette %}
+													{% if not loop.first %}</div></li>{% endif %}<li {% if reponse.contenu == 0 %}class="hide"{% endif %}><div class="well vignette input-eleve cursor-move" data-numero-shift="{{ numero_shift }}" data-numero-vignette="{{ reponse.contenu }}"><button type="button" class="close fade-vignette">&times;</button>
+												{% endif %}
+											{% endfor %}								
+											{% if reponse.contenu != 0 %}</div></li>{% endif %}
+										{% endif %}
+									{% else %}
+										{% set vignettesUnshuffled = [] %}
+										{% for i in 1..macro.getElementsNumberByType(element_type_vignette) %}
+											{% set vignettesUnshuffled = vignettesUnshuffled|merge([i]) %}
+										{% endfor %}
+										{% for i in vignettesUnshuffled|shuffle %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% for element in mod_elements if element.modMacro.id == macro.id and element.clavier[9:] == i  %}
+												{% if element.type == element_type_text and element.contenu is not null %}
+													{{ element.contenu|raw }}
+												{% elseif element.type == element_type_maths and element.contenu is not null %}
+													<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+												{% elseif element.type == element_type_br %}
+													<br>
+												{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+													<div id="{{ element.clavier }}" ></div>
+												{% elseif element.type == element_type_vignette %}
+													{% if not loop.first %}</div></li>{% endif %}<li><div class="well vignette input-eleve cursor-move" data-numero-shift="{{ numero_shift }}" data-numero-vignette="{{ i }}"><button type="button" class="close fade-vignette">&times;</button>
+												{% endif %}
+											{% else %}
+												Aucune vignette !
+											{% endfor %}								
+											</div></li>
+										{% endfor %}
+									{% endfor %}	
+									</ul>
+								{% elseif macro.type == macro_type_tableau %}
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover">
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_case %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_puissance %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-puissance cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_indice %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-indice cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_tr %}
+											{% if not loop.first %}</tr>{% endif %}<tr>
+										{% elseif element.type == element_type_td %}
+											{% if loop.index != 2 %}</td>{% endif %}<td>
+										{% elseif element.type == element_type_liste_der %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<select class="liste-deroulante input-eleve form-special" data-numero-reponse="{{ numero_reponse }}">
+												<option value=""> </option>
+											{% for contenu in element.contenu|split('##') %}
+												<option value="{{ loop.index }}" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ contenu }}</option>
+											{% endfor %}
+											</select>
+										{% endif %}
+									{% endfor %}
+										</tr>
+									</table>
+								</div>
+								{% elseif macro.type == macro_type_tableau_analyse %}
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+										{% set tr_count = 0 %}
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_case %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_puissance %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-puissance cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_indice %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-indice cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_opened = 1 %}
+											{% set tr_count = tr_count + 1 %}
+											{% if not loop.first %}</tr>{% if tr_count == 2 %}</thead><tbody>{% endif %}{% endif %}<tr>
+										{% elseif element.type == element_type_td %}
+											{% if loop.index != 2 %}</div></td>{% endif %}<td class="col-lg-1"{% if tr_opened == 1 %}{% set tr_opened = 0 %} style="{% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}border-top:none; {% endif %}border-right: 1px solid #dddddd;"{% else %} {% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}style="border-top:none;"{% endif %} {% endif %}><div class="text-center">
+										{% elseif element.type == element_type_liste_der %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<select class="liste-deroulante input-eleve form-special" data-numero-reponse="{{ numero_reponse }}">
+												<option value=""> </option>
+											{% for contenu in element.contenu|split('##') %}
+												<option value="{{ loop.index }}" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ contenu }}</option>
+											{% endfor %}
+											</select>
+										{% endif %}
+									{% endfor %}
+												</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% elseif macro.type == macro_type_fraction %}
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_case %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_puissance %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-puissance cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_case_indice %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<div class="mathscase case-indice cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+											<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+										{% elseif element.type == element_type_numerateur %}
+											<div class="fraction"><span class="numerator">
+										{% elseif element.type == element_type_denominateur %}
+											</span><span class="barre"></span><span class="denominator">
+										{% elseif element.type == element_type_liste_der %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<select class="liste-deroulante input-eleve form-special" data-numero-reponse="{{ numero_reponse }}">
+												<option value=""> </option>
+											{% for contenu in element.contenu|split('##') %}
+												<option value="{{ loop.index }}" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ contenu }}</option>
+											{% endfor %}
+											</select>
+										{% endif %}
+									{% endfor %}
+									</span></div>
+								{% elseif macro.type == macro_type_integrale %}	
+									{% for element in mod_elements if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_maths and element.contenu is not null %}
+											{% if loop.index == 1 %}
+												<span class="position-relative-up-5"><script type="math/mml"><math>{{ element.contenu|raw }}</math></script></span><br>
+											{% elseif loop.index == 2 %}
+												<span style="font-size:35px">∫</span> <script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+											{% elseif loop.index == 3 %}
+												<script type="math/mml"><math><mi>d</mi>{{ element.contenu|raw }}</math></script><br>
+											{% elseif loop.index == 4 %}
+												<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>	
+											{% endif %}
+										{% elseif element.type == element_type_case %}
+											{% if loop.index == 1 %}
+												{% set numero_reponse = numero_reponse + 1 %}
+												{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+												<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+												<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+												<br>
+											{% elseif loop.index == 2 %}
+												<span style="font-size:38px" class="position-relative-down-5">∫</span> 
+												{% set numero_reponse = numero_reponse + 1 %}
+												{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+												<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+												<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+											{% elseif loop.index == 3 %}
+												{% set numero_reponse = numero_reponse + 1 %}
+												{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+												<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+												<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+												<br>
+											{% elseif loop.index == 4 %}
+												{% set numero_reponse = numero_reponse + 1 %}
+												{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+												<div class="mathscase case cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+												<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+											{% endif %}
+										{% elseif element.type == element_type_case_indice %}
+											{% if loop.index == 1 %}
+												<span class="position-relative-down-5">
+												{% set numero_reponse = numero_reponse + 1 %}
+												{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+												<div class="mathscase case-indice cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+												<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+												</span><br><br>
+											{% elseif loop.index == 4 %}
+												<span class="position-relative-up-5">
+												{% set numero_reponse = numero_reponse + 1 %}
+												{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+												<div class="mathscase case-indice cursor" data-clavier="{{ element.clavier }}" data-layer="0"><script type="math/mml"><math>{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}</math></script></div>
+												<input class="input-eleve" type="hidden" data-numero-reponse="{{ numero_reponse }}" value="{% if reponse is not null %}{{ reponse.contenu|raw }}{% endif %}"/>
+												</span><br><br>
+											{% endif %}
+										{% elseif element.type == element_type_liste_der %}
+											{% set numero_reponse = numero_reponse + 1 %}
+											{% set reponse = question.selectLastReponseByNumero(numero_reponse) %}
+											<select class="liste-deroulante input-eleve form-special" data-numero-reponse="{{ numero_reponse }}">
+												<option value=""> </option>
+											{% for contenu in element.contenu|split('##') %}
+												<option value="{{ loop.index }}" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ contenu }}</option>
+											{% endfor %}
+											</select>
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+								</span>
+							{% endfor %}
+						<!---------->
+						{% if is_granted("ROLE_ELEVE") and not is_granted("ROLE_PROF") %}
+							{% if question.statut != statut_resolu %}<span><br><button class="btn btn-success pull-right valider" type="button" data-loading-text="Validation..." data-id-exercice="{{ exercice.id }}" data-id-question="{{ question.id }}" >Valider <i class="icon-ok text-white"></i></button></span>{% endif %}
+						{% endif %}
+						</form>
+					</div>
+					<div class="visible-xs visible-sm clearfix"><br><br></div>
+					<div class="col-xs-12 col-lg-5 commentaire">
+						<!--Correction-->	
+						{{ question.commentaire|raw }}
+						<!-------------->
+					</div>
+				</div>
+				<!-------------->
+				<div class="clearfix"></div>
+				<br>
+				{% endfor %}
+	{% endif %}
+{% endblock %}
+
+{% block footer %}
+	<span class="position-relative-down-8"><small>Signaler un problème sur cet exercice : <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#new-feedback"><i class="icon-flag"></i></button></small></span> 
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/eleve/eleve-exercices.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script type="text/javascript">
+		/* Jsg Scripts
+		 * =========== */
+		var boards = new Array();
+		{% for element in mod_elements_exercice %}
+			{% if element.type == element_type_jsgbox or element.type == element_type_jsggraph %}	
+				$("#{{element.clavier}}").height(300*$("#{{element.clavier}}").width()/570);
+				{{ element.contenu|raw }}
+			{% endif %}
+		{% endfor %}
+		{% for element in mod_elements %}
+			{% if element.type == element_type_jsgbox or element.type == element_type_jsggraph %}	
+				$("#{{element.clavier}}").height(300*$("#{{element.clavier}}").width()/570);
+				{{ element.contenu|raw }}
+			{% endif %}
+		{% endfor %}
+	</script>
+{% endblock %}
+
+
+
+

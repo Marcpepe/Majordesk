@@ -1,0 +1,121 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Résumé de cours
+{% endblock %}
+
+{% block navbar %}
+		<li><a href="{{ path('majordesk_app_consulter_resumes') }}"><i class="icon-angle-right"></i> Résumés de cours</a></li>
+		<li><a><i class="icon-angle-right"></i> Résumé de cours</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+
+			<h3><i class="icon-file-text-alt icon-large text-light-blue"></i> {{ chapitre.nom }}</h3><br>
+			
+			{% for partie in parties if resume[partie.id] is defined%}
+				{% set mod_macros_exercice = resume[partie.id]['mod_macros_exercice'] %}
+				{% set mod_elements_exercice = resume[partie.id]['mod_elements_exercice'] %}
+				<h4>{{ partie.numero }}) <em>{{ partie.nom|raw }}</em></h4><br>
+					<div class="alert alert-info">
+						<i class="icon icon-info-sign"></i> <strong>Cours : </strong><br><br>
+						<!--Enoncé-->
+							{% for macro in mod_macros_exercice %}
+								{% if macro.type == macro_type_info %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_jsgbox or element.type == element_type_jsggraph %}
+											<div class="row">
+												<div class="col-md-offset-2 col-lg-6"><div id="{{ element.clavier }}"></div></div><div class="col-lg-4"></div>
+											</div>
+										{% endif %}
+									{% endfor %}
+								{% elseif macro.type == macro_type_tableau %}
+								<div class="table-responsive">
+									<table class="table table-bordered borders-cours" style="border-color: #3987ad;">
+										<thead style="border-color: #3987ad;">
+										{% set tr_count = 0 %}
+										{% set td_opened = 0 %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_count = tr_count + 1 %}
+											{% if tr_count != 1 %}</td></tr>{% if tr_count == 2 %}</thead><tbody style="border-color: #3987ad;">{% endif %}{% endif %}<tr style="border-color: #3987ad;">
+										{% elseif element.type == element_type_td %}
+											{% if td_opened == 1 %}</td>{% set td_opened = 0 %}{% endif %}<td style="border-color: #3987ad;">{% set td_opened = 1 %}
+										{% endif %}
+									{% endfor %}
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% elseif macro.type == macro_type_tableau_analyse %}
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+										{% set tr_count = 0 %}
+									{% for element in mod_elements_exercice if element.modMacro.id == macro.id %}
+										{% if element.type == element_type_text and element.contenu is not null %}
+											{{ element.contenu|raw }}
+										{% elseif element.type == element_type_maths and element.contenu is not null %}
+											<script type="math/mml"><math>{{ element.contenu|raw }}</math></script>
+										{% elseif element.type == element_type_br %}
+											<br>
+										{% elseif element.type == element_type_tr %}
+											{% set tr_opened = 1 %}
+											{% set tr_count = tr_count + 1 %}
+											{% if not loop.first %}</tr>{% if tr_count == 2 %}</thead><tbody>{% endif %}{% endif %}<tr>
+										{% elseif element.type == element_type_td %}
+											{% if loop.index != 2 %}</div></td>{% endif %}<td class="col-lg-1" style="border-color:#3987ad;{% if tr_opened == 1 %}{% set tr_opened = 0 %} {% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}border-top:none;{% endif %}border-right: 1px solid #3987ad;{% else %} {% if tr_count != 2 and tr_count != 7 and tr_count != 12 %}border-top:none;{% endif %} {% endif %}"><div class="text-center">
+										{% endif %}
+									{% endfor %}
+												</div></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								{% endif %}
+							{% endfor %}
+						<!---------->
+					</div>
+			
+			{% else %}
+				<em>Aucune résumé de cours pour l'instant</em>
+			{% endfor %}
+			<br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/common/jsxgraphcore.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script type="text/javascript">
+		/* Jsg Scripts
+		 * =========== */
+		var boards = new Array();
+		{% for partie in parties if resume[partie.id] is defined%}
+				{% set mod_elements_exercice = resume[partie.id]['mod_elements_exercice'] %}
+					{% for element in mod_elements_exercice %}
+						{% if element.type == element_type_jsgbox or element.type == element_type_jsggraph %}	
+							$("#{{element.clavier}}").height(300*$("#{{element.clavier}}").width()/570);
+							{{ element.contenu|raw }}
+						{% endif %}
+					{% endfor %}
+		{% endfor %}
+	</script>
+{% endblock %}

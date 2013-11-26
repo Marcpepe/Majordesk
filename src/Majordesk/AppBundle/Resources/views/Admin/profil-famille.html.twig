@@ -1,0 +1,320 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Profil d'une famille - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_familles") }}"><i class="icon-angle-right"></i> Gestion des familles</a></li>
+	<li><a><i class="icon-angle-right"></i> Profil famille</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Profil : famille {% if parents[0] is defined %}{{ parents[0].nom }}{% endif %}</p>
+				</h3>	
+				
+					<div id="actif-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h3><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+							  </div>
+							  <div class="modal-body">
+								<p><i class="icon-ban-circle icon-large text-red"></i> Bloquer/Débloquer cette famille ?</p>
+							  </div>
+							  <div class="modal-footer">
+								<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><i class="icon-angle-left"></i> Annuler</button>
+								<button class="btn btn-primary" data-dismiss="modal" id="actif">Confirmer</a>
+							  </div>
+							</div>
+					    </div>
+					</div>
+					
+				{% for parent in parents %}		
+					<div id="actif-modal-{{ loop.index }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h3><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+							  </div>
+							  <div class="modal-body">
+								<p><i class="icon-ban-circle icon-large text-red"></i> Bloquer/Débloquer ce parent ?</p>
+							  </div>
+							  <div class="modal-footer">
+								<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><i class="icon-angle-left"></i> Annuler</button>
+								<button class="btn btn-primary" data-dismiss="modal" id="actif-{{ loop.index }}">Confirmer</a>
+							  </div>
+							</div>
+					    </div>	
+					</div>
+				{% endfor %}
+				
+					
+				<br><br><br>
+				
+				
+				{% for message in app.session.flashbag.get('info') %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ message }}
+				</div>
+				{% endfor %}
+				
+				<br>	
+					<div class="col-lg-4 pull-right">
+						<div class="btn-group pull-right">
+						  <a class="btn btn-primary" href="{{ path('majordesk_app_modifier_famille', {'id' : famille.id}) }}">Modifier</a>
+						  <button class="btn btn-warning" id="flag"><i class="icon-flag"></i></button>
+						  <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#actif-modal" id="actif-trigger"><i class="icon-ban-circle"></i></button>
+						  <button class="btn btn-default"><i class="icon-trash"></i></button>
+						</div>
+					</div>		
+				<h4>Famille</h4>
+				<br>
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+					  
+						<tr>
+						  <td>Id</td>
+						  <td id="id-famille">{{ famille.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre d'heures achetées</td>
+						  <td>{{ famille.heuresAchetees / 10 }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre d'heures restantes</td>
+						  <td>{{ famille.heuresRestantes / 10 }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre total d'heures prises</td>
+						  <td>{{ famille.heuresPrises / 10 }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Alerte (heures restantes)</td>
+						  <td>{{ famille.alerteHeures }}</td>
+						</tr>
+						
+						<tr>
+						  <td>N° d'abonné</td>
+						  <td>{{ famille.abonnement }}</td>
+						</tr>
+						
+						<!--<tr>
+						  <td>N° Immatriculation Urssaf</td>
+						  <td>{{ famille.immatriculationUrssaf }}</td>
+						</tr>
+						
+						<tr>
+						  <td>N° Sécurité sociale</td>
+						  <td>{{ famille.securiteSociale }}</td>
+						</tr>
+						
+						<tr>
+						  <td>RIB</td>
+						  <td>{{ famille.rib }}</td>
+						</tr>-->
+						
+						<tr class="
+						{% if famille.flag %}
+							warning 
+						{% endif %}
+						flag">
+						  <td>Flag</td>
+						  <td>
+						  {% if famille.flag %}
+							Oui
+							<i class="icon-flag icon-large pull-right text-yellow"></i>
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						<tr class="
+						{% if famille.actif == false %}
+							danger							
+						{% endif %}
+						actif">
+						  <td>Bloquée</td>
+						  <td>
+						  {% if famille.actif %}
+							Non
+						  {% else %}
+							Oui
+							<i class="icon-ban-circle icon-large pull-right text-red"></i>
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+			{% for parent in parents %}	
+				<br>
+					<div class="col-lg-4 pull-right">
+						<div class="btn-group pull-right">
+						  <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#actif-modal-{{ loop.index }}" id="actif-trigger-{{ loop.index }}"><i class="icon-ban-circle"></i></button>
+						  <button class="btn btn-default"><i class="icon-trash"></i></button>
+						</div>
+					</div>	
+				<h4>
+				{% if parent.gender == "1" %}
+					Mère
+			    {% elseif parent.gender == "2" %}
+					Père
+				{% elseif parent.gender == "3" %}
+					Grand-Mère
+				{% elseif parent.gender == "4" %}
+					Grand-Père
+				{% elseif parent.gender == "5" %}
+					Tante
+				{% elseif parent.gender == "6" %}
+					Oncle
+				{% elseif parent.gender == "7" %}
+					Autre
+			    {% endif %}
+				</h4>
+				<br>
+				
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+					  
+						<tr>
+						  <td>Id</td>
+						  <td id="id-parent-{{ loop.index }}">{{ parent.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Prénom</td>
+						  <td>{{ parent.username }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nom</td>
+						  <td>{{ parent.nom }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Téléphone</td>
+						  <td>{{ parent.telephone }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Adresse</td>
+						  <td>{{ parent.adresse }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Code postal</td>
+						  <td>{{ parent.codePostal }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Ville</td>
+						  <td>{{ parent.ville }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mail</td>
+						  <td>{{ parent.mail }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mot de passe</td>
+						  <td>{{ parent.password[:25] }}...</td>
+						</tr>
+						
+						<tr>
+						  <td>Salt</td>
+						  <td>{{ parent.salt }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Abonné(e) à la newsletter</td>
+						  <td>
+						  {% if parent.newsletter %}
+							Oui
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Averti(e) par alerte</td>
+						  <td>
+						  {% if parent.alertes == "1" %}
+							Oui
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						{% if parent.alertes != "0" %}
+						<tr>
+						  <td>Horaire de l'alerte</td>
+						  <td>{{ parent.heureAlertes }}</td>
+						</tr>
+						{% endif %}
+						
+						<tr>
+						  <td>Date d'inscription</td>
+						  <td>{{ parent.dateInscription|date('d/m/Y') }}</td>
+						</tr>
+						
+						<tr class="
+						{% if parent.actif == false %}
+							danger 
+						{% endif %}
+						actif-{{ loop.index }}">
+						  <td>Bloqué(e)</td>
+						  <td>
+						  {% if parent.actif %}
+							Non
+						  {% else %}
+							Oui
+							<i class="icon-ban-circle icon-large pull-right text-red"></i>
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+			{% endfor %}		
+			
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/profil-famille.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -1,0 +1,963 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Editeur d'exercices - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_contenu") }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+	<li><a href="{{ path("majordesk_app_gestionnaire_exercices") }}"><i class="icon-angle-right"></i> Gestionnaire d'exercices</a></li>
+	<li><a><i class="icon-angle-right"></i> Modifier un exercice</a></li>
+{% endblock %}
+ 
+{% block admin %}	
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				
+				<div id="id-exercice" data-exercice-id="{{ mod_exercice.id }}" class="hidden"></div>
+				
+				<!-- slide out keyboard --> 
+				<nav class="cbp-clavier cbp-clavier-vertical cbp-clavier-right" id="cbp-clavier">
+					<section class="cbp-select">
+						<div class="cbp-slide-left cbp-slide"><i class="icon-angle-left"></i></div>
+						<div class="cbp-slide-right cbp-slide"><i class="icon-angle-right"></i></div>
+					</section>
+					<section class="cbp-quick-select">
+						<div class="cbp-tile pull-left active" data-clavier-numero="1"></div>
+						<div class="cbp-tile pull-left" data-clavier-numero="2"></div>
+						<div class="cbp-tile pull-left" data-clavier-numero="3"></div>
+						<div class="cbp-tile pull-left" data-clavier-numero="4"></div>
+						<div class="cbp-tile pull-left" data-clavier-numero="5"></div>
+					</section>
+					<section class="cbp-children position-relative">
+						<section class="cbp-child display-inline-block">
+							<div class="cbp-inner-child">
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{N}" left="0">$\mathbb{N}$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{Z}" left="0">$\mathbb{Z}$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{R}" left="0">$\mathbb{R}$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{R}^*" left="0">$\mathbb{R}^*$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{R}_+" left="0">$\mathbb{R}_+$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{R}_+^*" left="0">$\mathbb{R}_+^*$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{C}" left="0">$\mathbb{C}$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\mathbb{Q}" left="0">$\mathbb{Q}$</div>
+							</div>
+						</section>
+						<section class="cbp-child display-inline-block" data-clavier-numero="2">
+							<div class="cbp-inner-child">
+								<div class="touche text-center height-60" latex="+" left="0">$+$</div>
+								<div class="touche text-center height-60" latex="-" left="0">$-$</div>
+								<div class="touche text-center height-60" latex="\times" left="0">$\times$</div>
+								<div class="touche text-center height-60" latex="\frac{}{}" left="2">$\div$</div>
+								<div class="touche text-center height-60" latex="\sqrt{}" left="1">$\sqrt{a}$</div>
+								<div class="touche text-center height-60" latex="^{}" left="1">$a^b$</div>
+								<div class="touche text-center height-60" latex="_{}" left="1">$a_b$</div>
+								<div class="touche text-center height-60" latex="=" left="0">$=$</div>
+								<div class="touche text-center height-60" latex=">" left="0">$>$</div>
+								<div class="touche text-center height-60" latex="\geq" left="0">$\geq$</div>
+								<div class="touche text-center height-60" latex="<" left="0">$<$</div>
+								<div class="touche text-center height-60" latex="\leq" left="0">$\leq$</div>
+								<div class="touche text-center height-60" latex="\ne" left="0">$\ne$</div>
+								<div class="touche text-center height-60" latex="\simeq" left="0">$\simeq$</div>
+								<div class="touche text-center height-60" latex="\pm" left="0">$\pm$</div>
+								<div class="touche text-center height-60" latex="\Rightarrow" left="0">$\Rightarrow$</div>
+								<div class="touche text-center height-60" latex="\Leftrightarrow" left="0">$\Leftrightarrow$</div>
+							</div>
+						</section>
+						<section class="cbp-child display-inline-block" data-clavier-numero="3">
+							<div class="cbp-inner-child">
+								<div class="touche text-center height-60" latex="\int_{}^{} f(x) \text{ }dx" left="9">$\int$</div>	
+								<div class="touche text-center height-60" latex="\lim_{}{}" left="1">$\lim$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\overline{}" left="1">$\overline{z}$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\vec{}" left="1">$\vec{\text{AB}}$</div>
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\widehat{}" left="1">$\widehat{\text{ABC}}$</div>	
+								<div class="touche text-center height-60" latex="\left(\right)" left="1">$\left(\text{...}\right)$</div>
+								<div class="touche text-center height-60" latex="\left\{\right\}" left="1">$\left\{\text{...}\right\}$</div>
+								<div class="touche text-center height-60" latex="\left[\right]" left="1">$\left[\text{...}\right]$</div>
+								<div class="touche text-center height-60" latex="\left|\right|" left="1">$\left|\text{...}\right|$</div>
+								<div class="touche text-center height-60" latex="\left||\right||" left="2">$\left||\text{...}\right||$</div>
+								<div class="touche text-center height-60" latex="[[" left="1">$\left[\text{...}\right[$</div>
+								<div class="touche text-center height-60" latex="]]" left="1">$\left]\text{...}\right]$</div>
+								<div class="touche text-center height-60" latex="][" left="1">$\left]\text{...}\right[$</div>
+							</div>
+						</section>
+						<section class="cbp-child display-inline-block" data-clavier-numero="4">
+							<div class="cbp-inner-child">	
+								<div class="touche text-center height-60" latex="\pi" left="0">$\pi$</div>	
+								<div class="touche text-center height-60" latex="\infty" left="0">$\infty$</div>
+								<div class="touche text-center height-60" latex="\forall" left="0">$\forall$</div>
+								<div class="touche text-center height-60" latex="\in" left="0">$\in$</div>	
+								<div class="touche text-center height-60" latex="\notin" left="0">$\notin$</div>	
+								<div class="touche text-center height-60" latex="\subset" left="0">$\subset$</div>	
+								<div class="touche text-center height-60" latex="\cap" left="0">$\cap$</div>	
+								<div class="touche text-center height-60" latex="\cup" left="0">$\cup$</div>	
+								<div class="touche text-center height-60" latex="\rightarrow" left="0">$\rightarrow$</div>	
+								<div class="touche text-center height-60" latex="\mapsto" left="0">$\mapsto$</div>	
+								<div class="touche text-center height-60" latex="\circ" left="0">$\circ$</div>	
+								<div class="touche text-center height-60" latex="\ldots" left="0">$\ldots$</div>	
+								<div class="touche text-center height-60" latex="\cdots" left="0">$\cdots$</div>	
+								<div class="touche text-center height-60" style="font-size:28px;" latex="\vdots" left="0">$\vdots$</div>
+								<div class="touche text-center height-60" latex="\alpha" left="0">$\alpha$</div>
+								<div class="touche text-center height-60" latex="\beta" left="0">$\beta$</div>
+								<div class="touche text-center height-60" latex="\gamma" left="0">$\gamma$</div>
+								<div class="touche text-center height-60" latex="\delta" left="0">$\delta$</div>
+								<div class="touche text-center height-60" latex="\zeta" left="0">$\zeta$</div>
+								<div class="touche text-center height-60" latex="\eta" left="0">$\eta$</div>
+								<div class="touche text-center height-60" latex="\theta" left="0">$\theta$</div>
+								<div class="touche text-center height-60" latex="\iota" left="0">$\iota$</div>
+								<div class="touche text-center height-60" latex="\kappa" left="0">$\kappa$</div>
+								<div class="touche text-center height-60" latex="\lambda" left="0">$\lambda$</div>
+								<div class="touche text-center height-60" latex="\mu" left="0">$\mu$</div>
+								<div class="touche text-center height-60" latex="\nu" left="0">$\nu$</div>
+								<div class="touche text-center height-60" latex="\xi" left="0">$\xi$</div>
+								<div class="touche text-center height-60" latex="\rho" left="0">$\rho$</div>
+								<div class="touche text-center height-60" latex="\sigma" left="0">$\sigma$</div>
+								<div class="touche text-center height-60" latex="\tau" left="0">$\tau$</div>
+								<div class="touche text-center height-60" latex="\chi" left="0">$\chi$</div>
+								<div class="touche text-center height-60" latex="\psi" left="0">$\psi$</div>
+								<div class="touche text-center height-60" latex="\omega" left="0">$\omega$</div>
+								<div class="touche text-center height-60" latex="\Gamma" left="0">$\Gamma$</div>
+								<div class="touche text-center height-60" latex="\Delta" left="0">$\Delta$</div>
+								<div class="touche text-center height-60" latex="\Theta" left="0">$\Theta$</div>
+								<div class="touche text-center height-60" latex="\Lambda" left="0">$\Lambda$</div>
+								<div class="touche text-center height-60" latex="\Xi" left="0">$\Xi$</div>
+								<div class="touche text-center height-60" latex="\Pi" left="0">$\Pi$</div>
+								<div class="touche text-center height-60" latex="\Sigma" left="0">$\Sigma$</div>
+								<div class="touche text-center height-60" latex="\Phi" left="0">$\Phi$</div>
+								<div class="touche text-center height-60" latex="\Psi" left="0">$\Psi$</div>
+								<div class="touche text-center height-60" latex="\Omega" left="0">$\Omega$</div>
+							</div>
+						</section>
+						<section class="cbp-child display-inline-block" data-clavier-numero="5">
+							<div class="cbp-inner-child">	
+								<div class="touche text-center height-60" latex="cos\left(\right)" left="1">$cos$</div>	
+								<div class="touche text-center height-60" latex="sin\left(\right)" left="1">$sin$</div>	
+								<div class="touche text-center height-60" latex="tan\left(\right)" left="1">$tan$</div>	
+								<div class="touche text-center height-60" latex="ln\left(\right)" left="1">$ln$</div>	
+								<div class="touche text-center height-60" latex="log\left(\right)" left="1">$log$</div>	
+								<div class="touche text-center height-60" latex="arg\left(\right)" left="1">$arg$</div>	
+								<div class="touche text-center height-60" latex="\Re\left(\right)" left="1">$\Re$</div>	
+								<div class="touche text-center height-60" latex="\Im\left(\right)" left="1">$\Im$</div>	
+								<div class="touche text-center height-60" latex="\text{ }" left="1">$txt$</div>
+							</div>
+						</section>
+					</section>
+				</nav>
+				
+				
+				<!-- case modal --> 
+				<div id="add-case" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-case" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer une case réponse</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							Clavier prioritaire associé :
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-select" clavier="1">1</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-select" clavier="2">2</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-select" clavier="3">3</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-select" clavier="4">4</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-case" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<form method="post" action="{{ path('majordesk_app_modifier_exercice', {'id' : form.vars.value.id }) }}">
+					<div id="panel panel-default" class="well">	
+						<h3>
+							<i class="icon-edit icon-large text-grey"></i> Editeur d'exercices
+						
+						<div class="btn-group pull-right">
+							<a href="{{ path('majordesk_app_afficher_exercice', {'id' : form.vars.value.id }) }}" class="btn btn-default"><i class="icon-lock"></i></a>
+							<button type="button" class="btn btn-default cursor-forbidden cannot-disable active"><i class="icon-unlock"></i></button>
+						</div> 
+						</h3>
+					</div>
+					
+					<div class="well-white clearfix">	
+						<div class="col-lg-2">
+						{{ form_widget(form.matiere) }}
+						</div>
+						<div class="col-lg-2">
+						{{ form_widget(form.programme) }}		
+						</div>
+						<div class="col-lg-3">
+						{% if form.chapitre is defined %}
+							{{ form_widget(form.chapitre) }}
+						{% else %}
+							<select id="modexercicetype_chapitre" name="modexercicetype[chapitre]" required="required" class="form-control"><option  disabled="disabled" selected="selected">Choisir un chapitre </option></select>
+						{% endif %}
+						</div>
+						<div class="col-lg-3">
+						{% if form.partie is defined %}
+							{{ form_widget(form.partie) }}
+						{% else %}
+							<select id="modexercicetype_partie" name="modexercicetype[partie]" required="required" class="form-control"><option  disabled="disabled" selected="selected">Choisir une partie</option></select>
+						{% endif %}
+						</div>
+						<div class="col-lg-1">
+							{{ form_widget(form.niveau) }}
+						</div>
+						<div class="col-lg-1">
+							<button rel="fix-tooltip" data-title="Enregistrer ces informations" type="submit" class="btn btn-default"><i class="icon-ok"></i></button>
+						</div>
+					</div>
+				{{ form_widget(form._token) }}
+				</form>
+				
+				{% for message in app.session.flashbag.get('info') %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ message }}
+				</div>
+				{% endfor %}
+				
+				<div class="hidden-xs">
+					<div class="col-sm-1 col-md-1 col-lg-1">
+						<br><i class="icon-time icon-large container-fluid" id="clock" ></i>
+					</div>
+					<div class="col-sm-11 col-md-11 col-lg-11">		
+						<h4>Exercice</h4>			
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<br>
+				<div class="superbrique" data-superbrique-numero="0" >
+					<div class="col-md-offset-1 col-lg-11">
+						<div class="add-superbrique" style="min-height:24px"></div>
+					</div>
+				</div>
+
+				<!--QUESTION-->
+				{% for question in mod_questions %}
+					<div class="superbrique {{ question.type }}" data-superbrique-id="{{ question.id }}" data-superbrique-numero="{{ question.numero }}" data-superbrique-type="{{ question.type }}">	
+						{% if question.type == 'question' %}
+						<div class="col-xs-12 col-lg-1">
+							<i class="icon-remove icon-large text-light-grey" rel="tooltip" data-title="Etat"></i> 
+							<span class="badge" rel="tooltip" data-title="Nombre d'essai(s)">0</span>
+							<div class="add-remove-superbrique" style="min-height:24px"></div>
+							<span class="visible-xs"><br><br></span>
+						</div>
+						<div class="col-lg-6">
+						{% elseif question.type == 'entete' %}
+						<div class="col-xs-12 col-lg-1">
+							<i rel="tooltip" data-title="Entête" class="icon-info icon-large text-light-grey"></i>
+							<div class="add-remove-superbrique" style="min-height:24px"></div>
+							<span class="visible-xs"><br><br></span>
+						</div>
+						<div class="col-lg-6">
+						{% elseif question.type == 'tutocours' %}
+						<div class="col-xs-12 col-lg-1">
+							<i rel="tooltip" data-title="Tutocours" class="icon-compass icon-large text-light-grey"></i>
+							<div class="add-remove-superbrique" style="min-height:24px"></div>
+							<span class="visible-xs"><br><br></span>
+						</div>
+						<div class="col-lg-11">
+							<div class="alert alert-info">
+								<i class="icon icon-info-sign"></i> <strong>Cours : </strong><br><br>
+						{% endif %}
+							<div class="brique position-relative" data-brique-numero="0" data-brique-couche="0">	
+								<div class="add-brique" style="min-height:24px"></div>
+							</div>
+							<!--Enoncé-->
+						{% for brique in mod_briques if brique.modQuestion.id == question.id %}
+							{% if brique.type == 'textnmaths' %}
+							<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique">
+									<span class="mathquill-textbox is-editable">{{ brique.contenu }}</span>	
+								</div>
+							</div>
+							{% elseif brique.type == 'retour_ligne' %}
+							<div class="brique position-relative" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique">
+									<em class="structure" style="opacity:0.5;color:#c8c8c8;">retour à la ligne</em><br>
+								</div>
+							</div>
+							{% elseif brique.type == 'saut_ligne' %}
+							<div class="brique position-relative" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique">
+									<em class="structure" style="opacity:0.5;color:#c8c8c8;">saut de ligne</em><br><br>
+								</div>
+							</div>
+							{% elseif brique.type == 'figure' or brique.type == 'graphique' %}
+							<div class="brique position-relative" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div id="{{ element.clavier }}" ></div>
+								</div>
+							</div>
+							{% elseif brique.type == 'case' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse">
+									<div class="case is-input"></div>
+								</div>
+							</div>
+							{% elseif brique.type == 'case maths' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse">
+									<span class="mathquill-embedded-latex">{{ brique.contenu }}</span>
+								</div>
+							</div>
+							{#{% elseif brique.type == 'case puissance' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse">
+									<div class="case-puissance is-input"></div>
+								</div>
+							</div>
+							{% elseif brique.type == 'case indice' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse">
+									<div class="case-indice is-input"></div>
+								</div>
+							</div>#}
+							{% elseif brique.type == 'case maths' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse">
+									<span class="mathquill-editable is-editable">{{ brique.contenu }}</span>	
+								</div>
+							</div>								
+							{% elseif brique.type == 'radio' %}	
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-add-choice">
+									<span class="is-input"></span>
+									{% for key, radio in brique.contenu|json_decode %}
+									<div class="position-relative">
+										<div class="radio remove-choice">
+											<input type="radio" name="radio-{{ brique.id }}" />
+											<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ radio.contenu|raw }}</span>	
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'checkbox' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-add-choice">
+									{% for key, checkbox in brique.contenu|json_decode %}
+									<div class="position-relative">
+										<div class="checkbox is-input remove-choice">
+											<input type="checkbox" />
+											<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ checkbox.contenu|raw }}</span>	
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'equations' %}	
+							<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-add-choice">
+									{% for key, equation in brique.contenu|json_decode %}
+									<div class="position-relative">
+										<div class="radio remove-choice">
+											<span data-key="{{ key }}" class="mathquill-editable is-multiple">{{ equation.contenu|raw }}</span>	
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'systeme' %}	
+							<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-add-choice">
+									{% for key, syst in brique.contenu|json_decode %}
+									<div class="position-relative">
+										<div class="radio remove-choice">
+											<span data-key="{{ key }}" class="mathquill-editable is-multiple">{{ syst.contenu|raw }}</span>	
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'liste' %}	
+							<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-add-choice">
+									<ul>
+										{% for key, liste in brique.contenu|json_decode %}
+										<li class="position-relative">
+											<div class="radio remove-choice">
+												<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ liste.contenu|raw }}</span>	
+											</div>
+										</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'liste ordonnee' %}	
+							<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-add-choice">
+									<ol>
+										{% for key, liste in brique.contenu|json_decode %}
+										<li class="position-relative">
+											<div class="radio remove-choice">
+												<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ liste.contenu|raw }}</span>	
+											</div>
+										</li>
+										{% endfor %}
+									</ol>
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'liste deroulante' %}	
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-add-choice">
+									<small class="text-light-grey">Liste déroulante : attention, ne pas inclure de mathématiques entre $</small><br>
+									<span class="is-input"></span>
+									{% for key, radio in brique.contenu|json_decode %}
+									<div class="position-relative">
+										<div class="radio remove-choice">
+											<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ radio.contenu|raw }}</span>	
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'vignettes' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle width-100" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-add-choice">
+									<br>
+									{% for key, vignette in brique.contenu|json_decode %}
+										<div class="position-relative"> 
+											<div class="well is-input remove-choice"> 
+												<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ vignette.contenu|raw }}</span>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+								<br>
+							</div>
+							{% elseif brique.type == 'tableau' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle width-100" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-edit-tableau">
+									<br>
+									<div class="table-responsive">
+										<table class="table table-bordered">
+											<tbody>
+												{% for row in brique.contenu|json_decode %}
+												{% set ind_row = loop.index %}
+												<tr data-cell-row="{{ind_row}}">
+													{% for cell in row %}
+													{% set ind_col = loop.index %}
+													<td data-cell-row="{{ind_row}}" data-cell-col="{{ind_col}}">
+														<div class="position-relative"><div class="edit-cell text-center" data-cell-input="{{ cell.input }}" style="min-height:24px">
+														{% if cell.input == 1 %}
+															<div class="case is-input"></div>
+														{% else %}
+															<span class="mathquill-textbox is-cell">{{ cell.contenu }}</span>	
+														{% endif %}
+														</div></div>
+													</td>
+													{% endfor %}
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<br>
+							{% elseif brique.type == 'tableau analyse' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle width-100" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-edit-tableau-analyse">
+									<br>
+									<div class="table-responsive">
+										<table class="table table-borderless">
+											<tbody>
+											{% for row_key, row in brique.contenu|json_decode %}
+											<tr {% if not loop.last %}style="border-bottom:1px solid black"{% endif %} class="tableau-analyse" data-type="{{ row.type }}" data-cell-row="{{ row_key }}">
+												{% if row.type == 'entete' %}
+													{% for cell_key, cell in row.contenu %}
+													<td data-cell-col="{{ cell_key }}" {% if loop.first %}class="col-lg-2 position-relative" style="border-right:1px solid black;{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% else %}class="cursor position-relative" style="{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% endif %}>
+														<div class="text-center">{% if loop.index == 1 or loop.index in [2,4,6,8,10,12] %}<span class="mathquill-editable is-cell-analyse">{{ cell.contenu|raw }}</span>{% endif %}</div>
+													</td>
+													{% endfor %}
+												{% elseif row.type == 'signe' %}
+													{% for cell_key, cell in row.contenu %}
+														{% if cell.contenu == '%valeur-nulle%' %}
+																<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-nulle.png');background-repeat:repeat-y;background-position:center;vertical-align-center">
+																	<div class="text-center">0</div>
+																</td>
+														{% elseif cell.contenu == '%valeur-interdite%' %}
+																<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:center;vertical-align-center">
+																	<div class="text-center"></div>
+																</td>
+														{% else %}
+															<td data-cell-col="{{ cell_key }}" {% if loop.first %}class="col-lg-2 position-relative" style="border-right:1px solid black;{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% else %}class="cursor position-relative" style="{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% endif %}>
+																{% if loop.first %}
+																	<div class="text-center"><span class="mathquill-editable is-cell-analyse">{{ cell.contenu }}</span></div>
+																{% else %}
+																	<div class="text-center">{{ cell.contenu }}</div>
+																{% endif %}
+															</td>
+														{% endif %}
+													{% endfor %}
+												{% elseif row.type == 'variations' %}
+													{% set flecheType = row.contenu|length / 2 - 1 %}
+													{% for cell_key, cell in row.contenu %}
+														{% if cell.contenu == '%vide%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding-left:0;padding-right:0;{% if cell.input %}background-color:#d8f1f5;{% endif %}">
+															</td>
+														{% elseif cell.contenu == '%asc%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding-left:0;padding-right:0;{% if cell.input %}background-color:#d8f1f5;{% endif %}">
+															{% if flecheType == 1 %}<div class="text-center"><img src="{{ asset('img/maths/asc-1.png') }}"/></div>
+															{% elseif cell.position == 'haut' %}<div class="text-center"><img src="{{ asset('img/maths/asc-haut-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'milieu' %}<div class="text-center"><img src="{{ asset('img/maths/asc-milieu-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'bas' %}<div class="text-center"><img src="{{ asset('img/maths/asc-bas-' ~ flecheType ~ '.png') }}"/></div>
+															{% endif %}
+															</td>
+														{% elseif cell.contenu == '%desc%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding-left:0;padding-right:0;{% if cell.input %}background-color:#d8f1f5;{% endif %}">
+															{% if flecheType == 1 %}<div class="text-center"><img src="{{ asset('img/maths/desc-1.png') }}"/></div>
+															{% elseif cell.position == 'haut' %}<div class="text-center"><img src="{{ asset('img/maths/desc-haut-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'milieu' %}<div class="text-center"><img src="{{ asset('img/maths/desc-milieu-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'bas' %}<div class="text-center"><img src="{{ asset('img/maths/desc-bas-' ~ flecheType ~ '.png') }}"/></div>
+															{% endif %}
+															</td>
+														{% elseif cell.contenu == '%valeur-interdite%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding:0;height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:center;font-size:10px;">
+																<div class="text-center">
+																	<div class="display-inline-block" style="width:22px;{% if cell.positiong == 'bas' %}position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}{% endif %}"><span class="mathquill-editable is-cell-borneg">{{ cell.borneg }}</span></div><div class="display-inline-block" style="width:5px;"></div><div class="display-inline-block" style="width:22px;{% if cell.positiond == 'bas' %}position:relative;{% if flecheType == 1 %}80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}{% endif %}"><span class="mathquill-editable is-cell-borned">{{ cell.borned }}</span></div>
+																</div>
+															</td>
+														{% elseif cell.contenu == '%bg-interdite%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding:0;height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:left;{% if flecheType > 2 %}font-size:10px;{% endif %}">
+																<div class="text-center" 
+																{% if cell.position == 'bas' %}
+																	style="position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}"
+																{% endif %}
+																>
+																	<div class="display-inline-block" style="width:12px;"></div><div class="display-inline-block" style="width:22px;"><span class="mathquill-editable is-cell-borned">{{ cell.borned }}</span></div>
+																</div>
+															</td>
+														{% elseif cell.contenu == '%bd-interdite%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding:0;height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:right;{% if flecheType > 2 %}font-size:10px;{% endif %}">
+																<div class="text-center" 
+																{% if cell.position == 'bas' %}
+																	style="position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}"
+																{% endif %}
+																>
+																	<div class="display-inline-block" style="width:22px;"><span class="mathquill-editable is-cell-borneg">{{ cell.borneg }}</span></div><div class="display-inline-block" style="width:8px;"></div>
+																</div>
+															</td>
+														{% else %}
+															<td data-cell-col="{{ cell_key }}" {% if loop.first %}class="col-lg-2 position-relative" style="border-right:1px solid black{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% else %}class="cursor position-relative" style="{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% endif %}>
+																{% if loop.first %}
+																	<div class="text-center"><span class="mathquill-editable is-cell-analyse">{{ cell.contenu }}</span></div>
+																{% else %}
+																	<div class="text-center" 
+																	{% if cell.position == 'milieu' %}
+																		style="position:relative;{% if flecheType == 1 %}top:40px{% elseif flecheType == 2 %}top:40px{% elseif flecheType == 3 %}top:30px{% elseif flecheType == 4 %}top:20px{% endif %}"
+																	{% elseif cell.position == 'bas' %}
+																		style="position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}"
+																	{% endif %}
+																	><span class="mathquill-editable is-cell-analyse">{{ cell.contenu }}</span></div>
+																{% endif %}
+															</td>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+											</tr>
+											{% endfor %}
+										</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<br>
+							{% endif %}
+						{% endfor %}
+						<!---------->
+						
+					{% if question.type == 'question' %}	
+						
+						<span><br><button rel="tooltip" data-title="Valider" class="btn btn-mini btn-success pull-right" type="button" disabled>Valider <i class="icon-ok text-white"></i></button></span>
+							<div class="clearfix"></div><br>
+						</div>
+						<div class="col-lg-5">
+						<!--Correction-->	
+					{% for complement in mod_complements if complement.modQuestion.id == question.id %}
+					<div class="complement {{ complement.type }}" data-complement-id="{{ complement.id }}" data-complement-numero="{{ complement.numero }}" data-complement-type="{{ complement.type }}">	
+						{% if complement.type == 'erreur' %}
+						<div class="alert alert-warning">
+							<i class="icon icon-warning-sign"></i> <strong>Erreur : </strong> <br><br>
+						{% elseif complement.type == 'indice' %}
+						<div class="alert alert-warning">
+							<i class="icon icon-info-sign"></i> <strong>Indice : </strong> <br><br>
+						{% elseif complement.type == 'correction' %}
+						<div class="alert alert-success">
+							<i class="icon icon-ok-sign"></i> <strong>Correction : </strong> <br><br>
+						{% endif %}
+							<div class="brique position-relative" data-brique-numero="0" data-brique-couche="0">	
+								<div class="add-brique" style="min-height:24px"></div>
+							</div>
+						{% for brique in mod_briques_c if brique.modComplement is not null and brique.modComplement.id == complement.id %}
+							{% if brique.type == 'textnmaths' %}
+							<div class="brique {{ brique.type }} position-relative" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique">
+									<span class="mathquill-textbox is-editable">{{ brique.contenu|raw }}</span>	
+								</div>
+							</div>									
+							{% elseif brique.type == 'retour_ligne' %}
+							<div class="brique {{ brique.type }} position-relative" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique">
+									<em class="structure" style="opacity:0.5;color:#c8c8c8;">retour à la ligne</em><br>
+								</div>
+							</div>
+							{% elseif brique.type == 'saut_ligne' %}
+							<div class="brique {{ brique.type }} position-relative" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique">
+									<em class="structure" style="opacity:0.5;color:#c8c8c8;">saut de ligne</em><br><br>
+								</div>
+							</div>
+							{% elseif brique.type == 'equations' %}	
+								<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+									<div class="add-remove-brique-add-choice">
+										{% for key, equation in brique.contenu|json_decode %}
+										<div class="position-relative">
+											<div class="radio remove-choice">
+												<span data-key="{{ key }}" class="mathquill-editable is-multiple">{{ equation.contenu|raw }}</span>	
+											</div>
+										</div>
+										{% endfor %}
+									</div>
+								</div>
+								<br>
+							{% elseif brique.type == 'systeme' %}	
+								<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+									<div class="add-remove-brique-add-choice">
+										{% for key, syst in brique.contenu|json_decode %}
+										<div class="position-relative">
+											<div class="radio remove-choice">
+												<span data-key="{{ key }}" class="mathquill-editable is-multiple">{{ syst.contenu|raw }}</span>	
+											</div>
+										</div>
+										{% endfor %}
+									</div>
+								</div>
+								<br>
+							{% elseif brique.type == 'liste' %}	
+								<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+									<div class="add-remove-brique-add-choice">
+										<ul>
+											{% for key, radio in brique.contenu|json_decode %}
+											<li class="position-relative">
+												<div class="radio remove-choice">
+													<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ radio.contenu|raw }}</span>	
+												</div>
+											</li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+							{% elseif brique.type == 'liste ordonnee' %}	
+								<div class="brique position-relative display-inline-block vertical-align-middle" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+									<div class="add-remove-brique-add-choice">
+										<ol>
+											{% for key, radio in brique.contenu|json_decode %}
+											<li class="position-relative">
+												<div class="radio remove-choice">
+													<span data-key="{{ key }}" class="mathquill-textbox is-multiple">{{ radio.contenu|raw }}</span>	
+												</div>
+											</li>
+											{% endfor %}
+										</ol>
+									</div>
+								</div>
+								<br>
+							{% elseif brique.type == 'figure' or brique.type == 'graphique' %}
+								<div id="{{ element.clavier }}" ></div>
+							{% elseif brique.type == 'tableau' %}
+								<div class="brique has-inputs position-relative display-inline-block vertical-align-middle width-100" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+									<div class="add-remove-brique-reponse-edit-tableau">
+										<br>
+										<div class="table-responsive">
+											<table class="table table-bordered">
+												<tbody>
+													{% for row in brique.contenu|json_decode %}
+													{% set ind_row = loop.index %}
+													<tr data-cell-row="{{ind_row}}">
+														{% for cell in row %}
+														{% set ind_col = loop.index %}
+														<td data-cell-row="{{ind_row}}" data-cell-col="{{ind_col}}">
+															<div class="position-relative"><div class="edit-cell text-center" data-cell-input="{{ cell.input }}" style="min-height:24px">
+															{% if cell.input == 1 %}
+																<div class="case is-input"></div>
+															{% else %}
+																<span class="mathquill-textbox is-cell">{{ cell.contenu }}</span>	
+															{% endif %}
+															</div></div>
+														</td>
+														{% endfor %}
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<br>
+							{% elseif brique.type == 'tableau analyse' %}
+							<div class="brique has-inputs position-relative display-inline-block vertical-align-middle width-100" data-brique-contenu="{{ brique.contenu }}" data-brique-id="{{ brique.id }}" data-brique-numero="{{ brique.numero }}" data-brique-type="{{ brique.type }}" data-brique-couche="{{ brique.couche }}">	
+								<div class="add-remove-brique-reponse-edit-tableau-analyse">
+									<br>
+									<div class="table-responsive">
+										<table class="table table-borderless">
+											<tbody>
+											{% for row_key, row in brique.contenu|json_decode %}
+											<tr {% if not loop.last %}style="border-bottom:1px solid black"{% endif %} class="tableau-analyse" data-type="{{ row.type }}" data-cell-row="{{ row_key }}">
+												{% if row.type == 'entete' %}
+													{% for cell_key, cell in row.contenu %}
+													<td data-cell-col="{{ cell_key }}" {% if loop.first %}class="col-lg-2 position-relative" style="border-right:1px solid black;{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% else %}class="cursor position-relative" style="{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% endif %}>
+														<div class="text-center">{% if loop.index == 1 or loop.index in [2,4,6,8,10,12] %}<span class="mathquill-editable is-cell-analyse">{{ cell.contenu|raw }}</span>{% endif %}</div>
+													</td>
+													{% endfor %}
+												{% elseif row.type == 'signe' %}
+													{% for cell_key, cell in row.contenu %}
+														{% if cell.contenu == '%valeur-nulle%' %}
+																<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-nulle.png');background-repeat:repeat-y;background-position:center;vertical-align:center">
+																	<div class="text-center">0</div>
+																</td>
+														{% elseif cell.contenu == '%valeur-interdite%' %}
+																<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:center;vertical-align:center">
+																	<div class="text-center"></div>
+																</td>
+														{% else %}
+															<td data-cell-col="{{ cell_key }}" {% if loop.first %}class="col-lg-2 position-relative" style="border-right:1px solid black;{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% else %}class="cursor position-relative" style="{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% endif %}>
+																{% if loop.first %}
+																	<div class="text-center"><span class="mathquill-editable is-cell-analyse">{{ cell.contenu }}</span></div>
+																{% else %}
+																	<div class="text-center">{{ cell.contenu }}</div>
+																{% endif %}
+															</td>
+														{% endif %}
+													{% endfor %}
+												{% elseif row.type == 'variations' %}
+													{% set flecheType = row.contenu|length / 2 - 1 %}
+													{% for cell_key, cell in row.contenu %}
+														{% if cell.contenu == '%vide%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding-left:0;padding-right:0;{% if cell.input %}background-color:#d8f1f5;{% endif %}">
+															</td>
+														{% elseif cell.contenu == '%asc%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding-left:0;padding-right:0;{% if cell.input %}background-color:#d8f1f5;{% endif %}">
+															{% if flecheType == 1 %}<div class="text-center"><img src="{{ asset('img/maths/asc-1.png') }}"/></div>
+															{% elseif cell.position == 'haut' %}<div class="text-center"><img src="{{ asset('img/maths/asc-haut-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'milieu' %}<div class="text-center"><img src="{{ asset('img/maths/asc-milieu-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'bas' %}<div class="text-center"><img src="{{ asset('img/maths/asc-bas-' ~ flecheType ~ '.png') }}"/></div>
+															{% endif %}
+															</td>
+														{% elseif cell.contenu == '%desc%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding-left:0;padding-right:0;{% if cell.input %}background-color:#d8f1f5;{% endif %}">
+															{% if flecheType == 1 %}<div class="text-center"><img src="{{ asset('img/maths/desc-1.png') }}"/></div>
+															{% elseif cell.position == 'haut' %}<div class="text-center"><img src="{{ asset('img/maths/desc-haut-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'milieu' %}<div class="text-center"><img src="{{ asset('img/maths/desc-milieu-' ~ flecheType ~ '.png') }}"/></div>
+															{% elseif cell.position == 'bas' %}<div class="text-center"><img src="{{ asset('img/maths/desc-bas-' ~ flecheType ~ '.png') }}"/></div>
+															{% endif %}
+															</td>
+														{% elseif cell.contenu == '%valeur-interdite%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding:0;height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:center;font-size:10px;">
+																<div class="text-center">
+																	<div class="display-inline-block" style="width:22px;{% if cell.positiong == 'bas' %}position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}{% endif %}"><span class="mathquill-editable is-cell-borneg">{{ cell.borneg }}</span></div><div class="display-inline-block" style="width:5px;"></div><div class="display-inline-block" style="width:22px;{% if cell.positiond == 'bas' %}position:relative;{% if flecheType == 1 %}80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}{% endif %}"><span class="mathquill-editable is-cell-borned">{{ cell.borned }}</span></div>
+																</div>
+															</td>
+														{% elseif cell.contenu == '%bg-interdite%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding:0;height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:left;{% if flecheType > 2 %}font-size:10px;{% endif %}">
+																<div class="text-center" 
+																{% if cell.position == 'bas' %}
+																	style="position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}"
+																{% endif %}
+																>
+																	<div class="display-inline-block" style="width:12px;"></div><div class="display-inline-block" style="width:22px;"><span class="mathquill-editable is-cell-borned">{{ cell.borned }}</span></div>
+																</div>
+															</td>
+														{% elseif cell.contenu == '%bd-interdite%' %}
+															<td data-cell-col="{{ cell_key }}" class="cursor position-relative" style="padding:0;height:100%;{% if cell.input %}background-color:#d8f1f5;{% endif %}background-image: url('../img/maths/valeur-interdite.png');background-repeat:repeat-y;background-position:right;{% if flecheType > 2 %}font-size:10px;{% endif %}">
+																<div class="text-center" 
+																{% if cell.position == 'bas' %}
+																	style="position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}"
+																{% endif %}
+																>
+																	<div class="display-inline-block" style="width:22px;"><span class="mathquill-editable is-cell-borneg">{{ cell.borneg }}</span></div><div class="display-inline-block" style="width:8px;"></div>
+																</div>
+															</td>
+														{% else %}
+															<td data-cell-col="{{ cell_key }}" {% if loop.first %}class="col-lg-2 position-relative" style="border-right:1px solid black{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% else %}class="cursor position-relative" style="{% if cell.input %}background-color:#d8f1f5;{% endif %}"{% endif %}>
+																{% if loop.first %}
+																	<div class="text-center"><span class="mathquill-editable is-cell-analyse">{{ cell.contenu }}</span></div>
+																{% else %}
+																	<div class="text-center" 
+																	{% if cell.position == 'milieu' %}
+																		style="position:relative;{% if flecheType == 1 %}top:40px{% elseif flecheType == 2 %}top:40px{% elseif flecheType == 3 %}top:30px{% elseif flecheType == 4 %}top:20px{% endif %}"
+																	{% elseif cell.position == 'bas' %}
+																		style="position:relative;{% if flecheType == 1 %}top:80px{% elseif flecheType == 2 %}top:80px{% elseif flecheType == 3 %}top:60px{% elseif flecheType == 4 %}top:40px{% endif %}"
+																	{% endif %}
+																	><span class="mathquill-editable is-cell-analyse">{{ cell.contenu }}</span></div>
+																{% endif %}
+															</td>
+														{% endif %}
+													{% endfor %}
+												{% endif %}
+											</tr>
+											{% endfor %}
+										</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<br>	
+							{% endif %}
+						{% endfor %}
+						</div> <!-- fin du div alert-xxx -->
+					</div>
+					{% endfor %}
+					</div> <!-- fin du div col-lg-5 -->
+					<!--REPONSE-->	
+					<div class="reponse">	
+					<br>
+						<div class="col-md-offset-1 col-lg-10 well">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Réponse</th>
+											<th>Type de réponse</th>
+											<th>Dépendances</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for reponse in mod_reponses if reponse.modMapping.modQuestion.id == question.id %}
+											<tr data-superbrique-id="{{ question.id }}" data-brique-id="{{ reponse.modBrique.id }}" data-reponse-id="{{ reponse.id }}" data-reponse-numero="{{ reponse.numero }}" data-reponse-clavier="{{ reponse.clavier }}" data-reponse-type="{{ reponse.type }}" >
+												<td>
+													<strong>{{ reponse.numero }}</strong>
+												</td>
+												<td class="position-relative">
+												{% if reponse.type == 'radio' or reponse.type == 'liste deroulante' or reponse.type == 'vignette' %}
+													<select class="form-control reponse-contenu-select is-reponse radio-highlight"><option value="" {% if reponse.contenu == '' %}selected="selected"{% endif %}></option>{% for i in 1..reponse.clavier %}<option value="{{ i }}" {% if reponse.contenu == i %}selected="selected"{% endif %}>{{ i }}</option>{% endfor %}</select>
+												{% elseif reponse.type == 'checkbox' %}
+													<select class="form-control reponse-contenu-select is-reponse checkbox-highlight">
+														<option value="0" {% if reponse.contenu == 0 %}selected="selected"{% endif %}>Non cochée</option>
+														<option value="1" {% if reponse.contenu == 1 %}selected="selected"{% endif %}>Cochée</option>
+													</select>
+												{% elseif reponse.type == 'tableau analyse' %}
+													 - 
+												{% else %}
+													<div class="mathquill-editable is-reponse" data-clavier="{{ reponse.clavier }}">{{ reponse.contenu|raw }}</div>  
+												{% endif %}
+												{#<br><span> <!--class="position-relative-down-8"--> {% for tag in reponse.tags %}<span class="existing-tag"> <span class="label">{{ tag.nom }}</span> <button type="button" rel="tooltip" data-title="Supprimer" data-placement="right" class="btn btn-mini btn-danger remove-tag"><i class="icon-remove"></i></button> </span>{% endfor %} <button type="button" rel="fix-tooltip" data-title="Ajouter un tag" data-placement="right" class="btn btn-default btn-sm add-tag"><i class="icon-plus"></i></button> </span>#}
+												</td>	
+													
+												<td>
+													{% if reponse.type == 'radio' %}
+														<span class="position-relative-right-17">Radio</span>
+													{% elseif reponse.type == 'checkbox' %}
+														<span class="position-relative-right-17">Checkbox</span>
+													{% elseif reponse.type == 'vignette' %}
+														<span class="position-relative-right-17">Vignette</span>
+													{% elseif reponse.type == 'liste deroulante' %}
+														<span class="position-relative-right-17">Liste déroulante</span>
+													{% elseif reponse.type == 'tableau analyse' %}
+														<span class="position-relative-right-17">Tableau d'analyse</span>
+													{% else %}
+														<select class="form-control reponse-type-select">
+															<option value="expression exacte" {% if reponse.type == 'expression exacte' %}selected="selected"{% endif %}>Expression exacte</option>
+															<option value="expression" {% if reponse.type == 'expression' %}selected="selected"{% endif %}>Expression</option>
+															<option value="triangle" {% if reponse.type == 'triangle' %}selected="selected"{% endif %}>Triangle</option>
+															<option value="angle" {% if reponse.type == 'angle' %}selected="selected"{% endif %}>Angle</option>
+															<option value="distance" {% if reponse.type == 'distance' %}selected="selected"{% endif %}>Distance/Segment</option>
+														</select>
+													{% endif %}
+												</td>
+												<td>
+													{% set nb_dependances = 0 %}
+													{% for mapping in mod_mappings if mapping.modQuestion.id == question.id %}
+														{% if mapping.modReponses|length > 1 %}
+															{% set nb_dependances = nb_dependances + 1 %}
+															{% if mapping.id == reponse.modMapping.id %}
+																<input data-check-numero="{{ nb_dependances }}" class="cursor dependance-checkbox" type="checkbox" checked="checked">
+															{% else %}
+																<input data-check-numero="{{ nb_dependances }}" class="cursor dependance-checkbox" type="checkbox">
+															{% endif %}
+														{% endif %}
+													{% endfor %}
+													<input data-check-numero="{{ nb_dependances + 1 }}" class="cursor dependance-checkbox" type="checkbox">
+												</td>
+											</tr>
+										{% endfor %}
+										<tr>
+											<td>
+											</td>
+											
+											<td>
+											</td>
+											
+											<td>	
+												<strong>Type de dépendance :</strong><br><br>
+												Association <br>
+												Association par groupes<br>
+												Permutation totale<br>
+											</td>
+											
+											<td class="dependance_td">
+												{% set radio_numero = 1 %}
+												{% for mapping in mod_mappings if mapping.modQuestion.id == question.id %}
+														{% if mapping.modReponses|length > 1 %}
+														<div class="pull-left mapping-type-adjuster">
+															<br><br>
+															{% set mappingTypes = ['association', 'association groupe', 'permut tot'] %}
+															{% for type in mappingTypes %}
+																{% if mapping.type == type %}
+																	<input data-radio-numero="{{ radio_numero }}" type="radio" name="mapping-radio-type-{{ radio_numero }}" class="cursor select-mapping-type" value="{{ type }}" checked="checked" /><br>
+																{% else %}	
+																	<input data-radio-numero="{{ radio_numero }}" type="radio" name="mapping-radio-type-{{ radio_numero }}" class="cursor select-mapping-type" value="{{ type }}" /><br>
+																{% endif %}
+															{% endfor %}
+															<span class="cursor text-red" rel="tooltip" data-title="Remettre à zéro"><i data-radio-numero="{{ radio_numero }}" class="icon-remove reset-mapping-type"></i></span>
+														</div>
+														{% set radio_numero = radio_numero + 1 %}
+														{% endif %}
+												{% endfor %}
+													<div class="pull-left">
+														<br><br>
+														 - <br>
+														 - <br>
+														 - 
+													</div>
+											</td>									
+											</tr>
+										</tbody>						
+									</table>
+								</div>
+							</div>
+							 <div class="clearfix"></div>
+							 <br>
+						<!----------->
+					</div>			
+					{% elseif question.type == 'entete' %}
+						<br><br>
+						</div><div class="col-lg-5"></div><div class="clearfix"></div>
+					{% elseif question.type == 'tutocours' %}
+						</div> <!--fin du div.alert-info-->
+						</div>
+					{% endif %}	
+					</div>
+				{% endfor %}
+			
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/modifier-exercice-new.js'
+		'js/common/clavier-slide-out.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

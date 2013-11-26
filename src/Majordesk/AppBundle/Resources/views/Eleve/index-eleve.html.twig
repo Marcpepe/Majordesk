@@ -1,0 +1,250 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+<div id="load-queue" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"><i class="icon-play-circle icon-large text-yellow"></i> Que veux-tu faire ?</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>
+			<h5>Faire ses devoirs / S'entraîner seul</h5>
+			{% for matiere in matieres_avec_plateforme %}
+				{% if matiere.nom == matiere_mathematiques %}
+					<a href="{{ path("majordesk_app_exercice_next_in_queue", {'id_matiere' : matiere.id }) }}" class="btn btn-info">
+				{% elseif matiere.nom == matiere_physique %}
+					<a rel="tooltip" data-title="Cette Plateforme n'est pas encore disponible" data-placement="right" href="{{ path("majordesk_app_exercice_next_in_queue", {'id_matiere' : matiere.id }) }}" class="btn btn-success">
+				{% elseif matiere.nom == matiere_biologie %}
+					<a href="{{ path("majordesk_app_exercice_next_in_queue", {'id_matiere' : matiere.id }) }}" class="btn btn-warning">
+				{% elseif matiere.nom == matiere_anglais %}
+					<a href="{{ path("majordesk_app_exercice_next_in_queue", {'id_matiere' : matiere.id }) }}" class="btn btn-danger">
+				{% elseif matiere.nom == matiere_francais %}
+					<a href="{{ path("majordesk_app_exercice_next_in_queue", {'id_matiere' : matiere.id }) }}" class="btn btn-inverse">
+				{% elseif matiere.nom == matiere_histoire %}
+					<a href="{{ path("majordesk_app_exercice_next_in_queue", {'id_matiere' : matiere.id }) }}" class="btn">
+				{% endif %}
+					{{ matiere.nom }}
+					</a> 
+			{% endfor %}
+			</p>
+			<br>
+			<p>
+			<h5>Commencer un cours avec ton professeur (<a href="{{ path('majordesk_app_calendrier_des_cours') }}"><i class="icon-calendar icon-large text-purple"></i> Calendrier des cours</a>)</h5>
+				{% for matiere in matieres_avec_plateforme %}
+					{% if matiere.nom == matiere_mathematiques %}
+						{% for cal_event in cal_events_now if cal_event.matiere == matiere %}
+							{% for professeur in professeurs if matiere in professeur.matieres %}
+								<a rel="tooltip" data-title="Cours avec {{ professeur.username }} à {{ cal_event.heureDebut|date('G:i') }}" data-matiere-id="{{ matiere.id }}" data-prof-id="{{ professeur.id }}" data-prof-prenom="{{ professeur.username }}" class="btn btn-info prof-password-input">{{ matiere.nom }}</a> 
+							{% endfor %}
+						{% else %}
+							<a rel="tooltip" data-title="Aucun cours programmé pour maintenant" class="btn btn-info" disabled>{{ matiere.nom }}</a> 
+						{% endfor %}
+					{% elseif matiere.nom == matiere_physique %}
+						{% for cal_event in cal_events_now if cal_event.matiere == matiere %}
+							{% for professeur in professeurs if matiere in professeur.matieres %}
+								<!--<a rel="tooltip" data-title="Cours avec {{ professeur.username }} à {{ cal_event.heureDebut|date('G:i') }}" data-matiere-id="{{ matiere.id }}" data-prof-id="{{ professeur.id }}" data-prof-prenom="{{ professeur.username }}" class="btn btn-success prof-password-input">{{ matiere.nom }}</a> -->
+								<a rel="tooltip" data-title="Cette Plateforme n'est pas encore disponible" class="btn btn-success" disabled>{{ matiere.nom }}</a> 
+							{% endfor %}
+						{% else %}
+							<a rel="tooltip" data-title="Aucun cours programmé pour maintenant" class="btn btn-success" disabled>{{ matiere.nom }}</a> 
+						{% endfor %}
+					{% elseif matiere.nom == matiere_biologie %}
+						{% for cal_event in cal_events_now if cal_event.matiere == matiere %}
+							{% for professeur in professeurs if matiere in professeur.matieres %}
+								<a rel="tooltip" data-title="Cours avec {{ professeur.username }} à {{ cal_event.heureDebut|date('G:i') }}" data-matiere-id="{{ matiere.id }}" data-prof-id="{{ professeur.id }}" data-prof-prenom="{{ professeur.username }}" class="btn btn-warning prof-password-input">{{ matiere.nom }}</a> 
+							{% endfor %}
+						{% else %}
+							<a rel="tooltip" data-title="Aucun cours programmé pour maintenant" class="btn btn-warning" disabled>{{ matiere.nom }}</a> 
+						{% endfor %}
+					{% elseif matiere.nom == matiere_anglais %}
+						{% for cal_event in cal_events_now if cal_event.matiere == matiere %}
+							{% for professeur in professeurs if matiere in professeur.matieres %}
+								<a rel="tooltip" data-title="Cours avec {{ professeur.username }} à {{ cal_event.heureDebut|date('G:i') }}" data-matiere-id="{{ matiere.id }}" data-prof-id="{{ professeur.id }}" data-prof-prenom="{{ professeur.username }}" class="btn btn-danger prof-password-input">{{ matiere.nom }}</a> 
+							{% endfor %}
+						{% else %}
+							<a rel="tooltip" data-title="Aucun cours programmé pour maintenant" class="btn btn-danger" disabled>{{ matiere.nom }}</a> 
+						{% endfor %}
+					{% elseif matiere.nom == matiere_francais %}
+						{% for cal_event in cal_events_now if cal_event.matiere == matiere %}
+							{% for professeur in professeurs if matiere in professeur.matieres %}
+								<a rel="tooltip" data-title="Cours avec {{ professeur.username }} à {{ cal_event.heureDebut|date('G:i') }}" data-matiere-id="{{ matiere.id }}" data-prof-id="{{ professeur.id }}" data-prof-prenom="{{ professeur.username }}" class="btn btn-inverse prof-password-input">{{ matiere.nom }}</a> 
+							{% endfor %}
+						{% else %}
+							<a rel="tooltip" data-title="Aucun cours programmé pour maintenant" class="btn btn-inverse" disabled>{{ matiere.nom }}</a> 
+						{% endfor %}
+					{% elseif matiere.nom == matiere_histoire %}
+						{% for cal_event in cal_events_now if cal_event.matiere == matiere %}
+							{% for professeur in professeurs if matiere in professeur.matieres %}
+								<a rel="tooltip" data-title="Cours avec {{ professeur.username }} à {{ cal_event.heureDebut|date('G:i') }}" data-matiere-id="{{ matiere.id }}" data-prof-id="{{ professeur.id }}" data-prof-prenom="{{ professeur.username }}" class="btn prof-password-input">{{ matiere.nom }}</a> 
+							{% endfor %}
+						{% else %}
+							<a rel="tooltip" data-title="Aucun cours programmé pour maintenant" class="btn" disabled>{{ matiere.nom }}</a> 
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			</p>
+			<p>
+				<form class="form-inline" id="prof-password-check">
+					<div class="alert alert-danger hide">
+						<a class="close" data-dismiss="alert">&times;</a>
+						Mot de passe incorrect
+					</div>
+					
+					<span id="prof-password-input-box" class="hide">
+						Confirmation de présence : <br>
+						<div class="col-lg-6">
+							<input type="password" name="prof-password" class="form-control" placeholder="Mot de passe de.." />
+						</div>
+						<input type="hidden" name="prof-id" />
+						<input type="hidden" name="matiere-id" />
+						<button class="btn btn-primary prof-password-check" type="submit"><i class="icon-ok"></i></button>
+					</span>
+				</form>					
+			</p>
+		  </div>
+		</div>  
+	</div>
+</div>
+
+{% for message in app.session.flashbag.get('info') %}
+	<div class="col-lg-12">	
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-info-sign"></i> <strong>Info :</strong> {{ message }}
+		</div>
+	</div>
+{% endfor %}
+
+<div class="col-lg-12">	
+	{% if hasPlateforme %}
+	<a class="btn btn-primary-inverted btn-block" href="#load-queue" role="button" data-toggle="modal">
+	{% elseif matieres_avec_plateforme|length > 0 and not hasPlateforme %}
+	<a class="btn btn-primary-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé">
+	{% else %}
+	<a class="btn btn-primary-inverted btn-block inactif" rel="tooltip" data-title="Oups! Tu n'es abonné à aucune matière!">
+	{% endif %}
+		<h3><i class="icon-play-circle icon-4x"></i> <span class="start-btn"><strong>Commencer</strong> {% if nb_devoirs > 0 %}<span rel="tooltip" data-title="{{ nb_devoirs }} exercice(s) à faire en devoir" class="label label-default">{{ nb_devoirs }}</span>{% endif %}</span></h3>
+	</a>
+</div>
+<br>
+<div class="col-lg-4">
+	{% if hasPlateforme %}
+		<a class="btn btn-warning-inverted btn-block" href="{{ path('majordesk_app_consulter_favoris') }}"><i class="icon-star icon-4x"></i> <span class="position-relative-up-12">Exercices mis de côté{% if favoris|length > 0 %} <span rel="tooltip" data-title="{{ favoris|length }} exercice(s) mis de côté" class="label label-default">{{ favoris|length }}</span>{% endif %}</span> </a>
+	{% else %}
+		<a class="btn btn-warning-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé" ><i class="icon-star icon-4x"></i> <span class="position-relative-up-12">Exercices mis de côté</span> </a>
+	{% endif %}
+</div>
+<div class="col-lg-4">
+	{% if hasPlateforme %}
+		<a class="btn btn-danger-inverted btn-block" href="{{ path('majordesk_app_chapitres') }}"><i class="icon-book icon-4x"></i> <span class="position-relative-up-12">Exercices faits</span></a>
+	{% else %}
+		<a class="btn btn-danger-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé" ><i class="icon-book icon-4x"></i> <span class="position-relative-up-12">Exercices faits</span></a>
+	{% endif %}
+</div>
+<div class="col-lg-4">
+	{% if hasPlateforme %}
+		<a class="btn btn-success-inverted btn-block" href="#"><i class="icon-refresh icon-4x"></i> <span class="position-relative-up-12">Révisions</span> </a>
+	{% else %}
+		<a class="btn btn-success-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé" ><i class="icon-refresh icon-4x"></i> <span class="position-relative-up-12">Révisions</span> </a>
+	{% endif %}
+</div>
+<div class="clearfix"></div>
+<br>
+<div class="col-lg-4">
+	{% if hasCours %}
+		<a class="btn btn-purple-inverted btn-block" href="{{ path('majordesk_app_calendrier_des_cours') }}"><i class="icon-calendar icon-4x"></i> <span class="position-relative-up-12">Calendrier des cours {% if cal_events_proches|length > 0 %}<span rel="tooltip" data-title="{{ cal_events_proches|length }} cours programmé(s)" class="label label-default">{{ cal_events_proches|length }}</span>{% endif %}</span></a>			
+	{% else %}
+		<a class="btn btn-purple-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé" ><i class="icon-calendar icon-4x"></i> <span class="position-relative-up-12">Calendrier des cours</span></a>			
+	{% endif %}
+</div>
+<div class="col-lg-4">
+	{% if hasPlateforme %}
+		<a class="btn btn-info-inverted btn-block" href="{{ path('majordesk_app_consulter_resumes') }}"><i class="icon-file-text-alt icon-4x"></i> <span class="position-relative-up-12">Résumés de cours</span></a>
+	{% else %}
+		<a class="btn btn-info-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé" ><i class="icon-file-text-alt icon-4x"></i> <span class="position-relative-up-12">Résumés de cours</span></a>
+	{% endif %}
+</div>
+<div class="col-lg-4">
+	{% if hasPlateforme %}
+		<a class="btn btn-default-inverted btn-block" href="{{ path('majordesk_app_consulter_fiches') }}"><i class="icon-paper-clip icon-4x"></i> <span class="position-relative-up-12">Fiches de cours</span></a>
+	{% else %}
+		<a class="btn btn-default-inverted btn-block inactif" rel="tooltip" data-title="Cet accès est désactivé" ><i class="icon-paper-clip icon-4x"></i> <span class="position-relative-up-12">Fiches de cours</span></a>
+	{% endif %}
+</div>
+<div class="clearfix"></div>
+<br><br>
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-body">
+				<div class="col-lg-4">
+					{% if hasPlateforme %}
+						<h5><i rel="tooltip" data-title="" class="icon-check icon-large text-light-green cursor-help"></i> Objectifs :</h5>
+						<ul>
+							<li>S'entraîner régulièrement</li>
+							<li>Ne pas attendre le dernier moment pour faire tes devoirs</li>
+						</ul>
+						<br>
+					{% endif %}
+					<h5><i class="icon-calendar icon-large text-purple"></i> Prochain(s) cours :</h5>
+					<ul>{% set mois = {1:'Janvier',2:'Février',3:'Mars',4:'Avril',5:'Mai',6:'Juin',7:'Juillet',8:'Août',9:'Septembre',10:'Octobre',11:'Novembre',12:'Décembre'} %}
+						{% set jour = {1:'Lundi',2:'Mardi',3:'Mercredi',4:'Jeudi',5:'Vendredi',6:'Samedi',7:'Dimanche'} %}
+						{% for cal_event in cal_events_proches %}
+							<li>{{ jour[cal_event.dateCours|date('N')] ~ ' ' ~ cal_event.dateCours|date('j') ~ ' ' ~ mois[cal_event.dateCours|date('n')] }} ({{ cal_event.heureDebut}}-{{ cal_event.heureFin}}) </li>
+						{% else %}
+							<li><a href="{{ path('majordesk_app_calendrier_des_cours') }}">Programmer un cours</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="visible-xs clearfix"><br></div>
+				<div class="col-lg-8">
+					{% if hasPlateforme %}
+						<h5><i rel="tooltip" data-title="Pour faire tes devoirs, clique sur 'Commencer' puis 'Faire ses devoirs'" class="icon-bullseye icon-large text-blue cursor-help"></i> Devoirs pour le prochain cours :</h5>
+						<ul>
+						{% for devoir in devoirs %}
+							{% if devoir.selection > 0 %}
+								<li><strong>{{ devoir.selection }}</strong> exercice{% if devoir.selection > 1%}s{% endif %} dans la partie <em>{{ devoir.modExercice.partie.nom|raw }}</em>.</li>
+							{% elseif devoir.selection < 0 %}
+								<li><strong>{{ devoir.selection|abs }}</strong> exercice{% if devoir.selection < -1%}s{% endif %} dans le chapitre <em>{{ devoir.modExercice.chapitre.nom|raw }}</em>.</li>
+							{% endif %}
+						{% else %}
+							<li>Aucun devoir pour l'instant</li>
+						{% endfor %}
+						</ul>
+						<br>
+					{% endif %}
+					<h5><i rel="tooltip" data-title="Pour faire tes devoirs, clique sur 'Commencer' puis 'Faire ses devoirs'" class="icon-time icon-large text-purple cursor-help"></i> Déclarer des heures :</h5>
+					<ul>
+						{% for matiere in matieres %}
+							{% if matiere.nom == matiere_mathematiques %}
+								<li><a href="{{ path('majordesk_app_declarer_cours', {'id_matiere' : matiere.id }) }}">Déclarer un cours de {{ matiere_mathematiques }}</a></li>
+							{% elseif matiere.nom == matiere_physique %}
+								<li><a href="{{ path('majordesk_app_declarer_cours', {'id_matiere' : matiere.id }) }}">Déclarer un cours de {{ matiere_physique }}</a></li>
+							{% endif %}
+						{% else %}
+							<li>Tu n'es inscrit(e) à aucune matière !</li>
+						{% endfor %}
+					</ul>
+				</div>
+
+		</div>
+	</div>
+</div>	
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/eleve/index-eleve.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

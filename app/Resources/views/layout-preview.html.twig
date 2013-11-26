@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Majorclass - Plateforme de prochaine génération{% endblock %}</title>
+	
+	<link rel="icon" type="image/png" href="{{ asset('img/home/favicon.png') }}" />
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	
+	{% block stylesheets %}
+		{% stylesheets filter='yui_css' 
+			'css/common/bootstrap.min.css' 
+			'css/common/bootstrap-calendar.min.css' 
+			'css/common/bootstrap-timepicker.min.css'
+			'css/common/bootstrap-datepicker.min.css'
+			'css/common/mathquill.css' 
+			'css/common/majordesk.css' 
+			'css/common/jsxgraph.css' 
+			'css/common/font-awesome.min.css' 
+			'css/common/typeahead.css'
+		%}
+			<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+		{% endstylesheets %}
+	{% endblock %}
+</head>
+
+<body class="preview">
+	{% block body %}
+	{% endblock %}
+</body>
+</html>

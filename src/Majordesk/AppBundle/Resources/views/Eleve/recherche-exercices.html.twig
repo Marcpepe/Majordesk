@@ -1,0 +1,51 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	{% if is_granted('ROLE_PROF') %}
+		Recherche d'exercices
+	{% elseif is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') %}
+		Recherche d'exercices
+	{% endif %}
+	 - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+		<li><a><i class="icon-angle-right"></i> Recherche d'exercices</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+			<div id="programme" data-programme-id="{{ programme.id }}"></div>
+			<h3><i class="icon-search icon-large text-emerald"></i> Recherche rapide</h3><br>
+			<br>
+			<input id="search-exercices" class="form-control typeahead input-lg" type="text" autocomplete="off" placeholder="Rechercher une partie, un chapitre ou un mot-clé">
+			<br><br>
+			<div id="parties"></div>
+			<div id="results"></div>
+			<br><br>
+			<h3><i class="icon-search icon-large text-peterriver"></i> Sommaire</h3><br>
+			{% for chapitre in chapitres %}
+			<div class="col-lg-4 pull-left">
+			<strong>{{ chapitre.nom }}</strong>
+				<ul>
+				{% for partie in parties if partie.chapitre.id == chapitre.id %}
+					<li class="cursor search-partie" data-id="{{ partie.id }}">{{ partie.nom }}</li>
+				{% endfor %}
+				</ul>
+				<br>
+				
+			</div>
+			{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/common/typeahead.min.js'
+		'js/common/mathquill.js'
+		'js/eleve/recherche-exercices.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

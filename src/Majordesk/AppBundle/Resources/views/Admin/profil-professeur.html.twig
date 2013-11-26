@@ -1,0 +1,287 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Profil d'un professeur - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_professeurs") }}"><i class="icon-angle-right"></i> Gestion des professeurs</a></li>
+	<li><a><i class="icon-angle-right"></i> Profil professeur</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-user-md icon-large text-red pull-left"></i> <p class="pull-left">Profil : {{ professeur.username }} {{ professeur.nom }}</p>
+				</h3>	
+					
+					<div class="col-lg-4 pull-right">
+						<div class="btn-group pull-right">
+						  <a class="btn btn-primary" href="{{ path('majordesk_app_modifier_professeur', {'id' : professeur.id}) }}">Modifier</a>
+						  <button class="btn btn-warning" id="flag"><i class="icon-flag"></i></button>
+						  <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#actif-modal" id="actif-trigger"><i class="icon-ban-circle"></i></button>
+						  <button class="btn btn-default"><i class="icon-trash"></i></button>
+						</div>
+					</div>	
+				
+					<div id="actif-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h3><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+							  </div>
+							  <div class="modal-body">
+								<p><i class="icon-ban-circle icon-large text-red"></i> Bloquer/Débloquer ce professeur ?</p>
+							  </div>
+							  <div class="modal-footer">
+								<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><i class="icon-angle-left"></i> Annuler</button>
+								<button class="btn btn-primary" data-dismiss="modal" id="actif">Confirmer</a>
+							  </div>
+							</div>
+						</div>
+					</div>		
+					
+				<br><br><br>
+				
+				
+				{% for message in app.session.flashbag.get('info') %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ message }}
+				</div>
+				{% endfor %}
+				
+				<br>
+				<h4>Disponibilités</h4>
+				<br>
+			
+				<ul>
+				{% for disponibilite in disponibilites %}	
+					<li>
+					{% if disponibilite.actif == '0' %}
+						<del>{{ disponibilite.jour }}</del>
+					{% elseif disponibilite.actif == '1' %}
+						<span class="text-green"><strong>{{ disponibilite.jour }}</strong></span>
+					{% elseif disponibilite.actif == '2' %}
+						<span class="text-orange"><strong>{{ disponibilite.jour }}</strong></span>
+					{% elseif disponibilite.actif == '3' %}
+						<span class="text-red"><strong>{{ disponibilite.jour }}</strong></span>
+					{% endif %}
+					: de {{ disponibilite.heureDebut|date('H:i') }} à {{ disponibilite.heureFin|date('H:i') }} {% if disponibilite.actif == false %}</del>(INACTIF){% endif %}</li>
+				{% endfor %}							
+				</ul>
+				
+				<br>			
+				<h4>Majorclass</h4>
+				<br>
+
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+					  
+						<tr>
+						  <td>Id</td>
+						  <td id="id-professeur">{{ professeur.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Prénom</td>
+						  <td>{{ professeur.username }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nom</td>
+						  <td>{{ professeur.nom }}</td>
+						</tr>
+						
+						<tr class="info">
+						  <td>Elève(s)</td>
+						  <td>
+						  {% for eleve in professeur.eleves %}
+							{{ eleve.username }} {{ eleve.nom }}
+							{% if loop.last == false %}<br>{% endif %}
+						  {% endfor %}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Téléphone</td>
+						  <td>{{ professeur.telephone }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Adresse</td>
+						  <td>{{ professeur.adresse }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Code postal</td>
+						  <td>{{ professeur.codePostal }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Ville</td>
+						  <td>{{ professeur.ville }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Prépa</td>
+						  <td>{{ professeur.prepa }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Lycée</td>
+						  <td>{{ professeur.lycee }}</td>
+						</tr>
+						
+						<tr>
+						  <td>N° Sécurité sociale</td>
+						  <td>{{ professeur.securiteSociale }}</td>
+						</tr>
+						
+						<tr>
+						  <td>RIB</td>
+						  <td>{{ professeur.rib }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Moyen de transport</td>
+						  <td>{{ professeur.transport }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre maximum d'heures par semaine</td>
+						  <td>{{ professeur.nbHeuresMax }}</td>
+						</tr>
+
+						<tr>
+						  <td>Matiere(s)</td>
+						  <td>
+							{% for matiere in professeur.matieres %}
+								{% if matiere.nom == matiere_mathematiques %}
+									<span class="label label-info">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_physique %}
+									<span class="label label-success">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_biologie %}
+									<span class="label label-warning">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_anglais %}
+									<span class="label label-important">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_francais %}
+									<span class="label label-default">{{ matiere.nom }}</span>
+								{% elseif matiere.nom == matiere_histoire %}
+									<span class="label">{{ matiere.nom }}</span>
+								{% endif %}
+							{% else %}
+								 - 
+							{% endfor %}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre total d'heures donnees</td>
+						  <td>{{ professeur.heuresDonnees }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Date d'inscription</td>
+						  <td>{{ professeur.dateInscription|date('d/m/Y') }}</td>
+						</tr>
+						
+						<tr class="
+						{% if professeur.flag %}
+							warning 
+						{% endif %}
+						flag">
+						  <td>Flag</td>
+						  <td>
+						  {% if professeur.flag %}
+							Oui
+							<i class="icon-flag icon-large pull-right text-yellow"></i>
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Majordesk</h4>
+				<br>
+				
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+
+						<tr>
+						  <td>Mail</td>
+						  <td>{{ professeur.mail }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mot de passe</td>
+						  <td>{{ professeur.password[:25] }}...</td>
+						</tr>
+						
+						<tr>
+						  <td>Salt</td>
+						  <td>{{ professeur.salt }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Notifications</td>
+						  <td>{{ professeur.notifications }}</td>
+						</tr>
+						
+						<tr class="
+						{% if professeur.actif == false %}
+							danger 
+						{% endif %}
+						actif">
+						  <td>Bloqué</td>
+						  <td>
+						  {% if professeur.actif %}
+							Non
+						  {% else %}
+							Oui
+							<i class="icon-ban-circle icon-large pull-right text-red"></i>
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Fin de disponibilité</h4>
+				<br>
+			<ul>
+				<li>{{ professeur.finDispo|date('d/m/Y') }}</li>
+			</ul>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/profil-professeur.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

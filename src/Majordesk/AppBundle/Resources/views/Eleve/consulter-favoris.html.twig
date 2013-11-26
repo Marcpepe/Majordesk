@@ -1,0 +1,82 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	{% if is_granted('ROLE_PROF') %}
+		Gestion des devoirs et exercices faits
+	{% elseif is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') %}
+		Vérification des devoirs
+	{% endif %}
+	 - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+		<li><a><i class="icon-angle-right"></i> Exercices mis de côté</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+
+			<h3><i class="icon-star icon-large text-yellow"></i> Exercices mis de côté</h3><br>
+			
+			Tu peux mettre un exercice de côté grâce à l'icône <i rel="tooltip" data-title="Mis de côté" class="icon-star text-mid-grey"></i> en haut à droite d'un exercice, lorsque :
+			<br>
+			<ul>
+				<li>tu ne trouves pas la solution d'un exercice, mais tu voudrais passer à la suite</li>
+				<li>tu voudrais poser une question sur un exercice à ton professeur</li>
+			</ul>
+
+			Les exercices résolus <i rel="tooltip" data-title="Résolu" class="icon-ok text-green"></i> disparaissent de la liste ci-dessous.
+			<br>
+			<br>
+			{% if favoris|length > 0 %}
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Statut</th>
+							<th><i class="icon-eye-open"></i></th>
+							<th>Chapitre</th>
+							<th>Partie</th>
+							<th>Temps</th>
+							<th>Dernier essai</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for exercice in favoris %}
+						<tr>
+							<td>
+								{% if exercice.statut == statut_resolu %}
+									<i class="icon-ok text-success cursor-help" rel="tooltip" data-title="Terminé"></i> 
+								{% elseif exercice.statut == statut_non_resolu %}
+									<i class="icon-remove text-red cursor-help" rel="tooltip" data-title="En cours..."></i>
+								{% else %}
+									<i class="icon-remove text-light-grey cursor-help" rel="tooltip" data-title="Non commencé"></i>
+								{% endif %}
+								{% if exercice.favoris %}
+									<i class="icon-star text-yellow cursor-help" rel="tooltip" data-title="Mis de côté"></i>
+								{% endif %}
+								{% if exercice.selection %}
+									<i class="icon-bullseye text-blue cursor-help" rel="tooltip" data-title="Devoir à faire"></i>
+								{% endif %}
+							</td>
+							<td> {% if exercice.modExercice.statut == statut_en_ligne %}<a href="{{ path('majordesk_app_exercice', {'id_exercice' : exercice.id }) }}" rel="tooltip" data-title="Voir l'exercice"><i class="icon-external-link"></i></a>{% else %}<i class="icon-external-link" rel="tooltip" data-title="Exercice en maintenance"></i>{% endif %} </td>
+							<td>{{ exercice.modExercice.chapitre.nom }}</td>
+							<td>{{ exercice.modExercice.partie.nom|raw }}</td>
+							<td>{{ exercice.temps|date("i\\m\\i\\n s\\s") }}</td>
+							<td>{{ exercice.getDerniereDate|date("d/m/y \\à G:i")}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<br>
+			{% else %}
+				<em>Aucun exercice mis de côté pour l'instant</em>
+			{% endif %}
+			<br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

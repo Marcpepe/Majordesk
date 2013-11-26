@@ -1,0 +1,80 @@
+parameters:
+    database_driver:           pdo_mysql
+    database_host:             127.0.0.1
+    database_port:             ~
+    # database_name:             majorcla_maindb
+    # database_user:             root
+    # database_password:         ~
+    database_name:             majorcla_maindb
+    database_user:             majorcla_Marc
+    database_password:         MPBlqcK19
+
+    mailer_transport:          smtp
+    mailer_host:               mail.majorclass.fr        
+    mailer_user:               marc@majorclass.fr
+    mailer_password:           MBlqcK19
+
+    locale:                    fr
+    secret:                    !@MJBlqcK19
+
+    statut_a_supprimer:        0
+    statut_en_edition:         1
+    statut_en_ligne:           2
+
+    statut_non_commence:       0
+    statut_non_resolu:         1
+    statut_resolu:             2
+
+    macro_type_normal:         normal
+    macro_type_erreur:         erreur
+    macro_type_indice:         indice
+    macro_type_info:           info
+    macro_type_correction:     correction
+    macro_type_radio:          radio
+    macro_type_checkbox:       checkbox
+    macro_type_vignettes:      vignettes
+    macro_type_fraction:       fraction
+    macro_type_tableau:        tableau
+    macro_type_tableau_analyse: tableau analyse
+    macro_type_integrale:      integrale
+
+    element_type_text:         text
+    element_type_maths:        maths
+    element_type_br:           br
+    element_type_case:         case
+    element_type_case_puissance: case puissance
+    element_type_case_indice:  case indice
+    element_type_lien:         lien
+    element_type_image:        image
+    element_type_jsgbox:       jsgbox
+    element_type_jsggraph:     jsggraph
+    element_type_jsgdiag:      jsgdiag
+    element_type_radiotick:    radiotick
+    element_type_checkboxtick: checkboxtick
+    element_type_vignette:     vignette
+    element_type_numerateur:   numerateur
+    element_type_denominateur: denominateur
+    element_type_tr:           tr
+    element_type_td:           td
+    element_type_liste_der:    liste_der
+
+    clavier_type_simple:       simple
+    clavier_type_avancee:      avancee
+    clavier_type_vecteur:      vecteur
+    clavier_type_point:        point
+
+    mapping_types:
+        0:                     association
+        1:                     association groupe
+        2:                     fraction
+        3:                     permut circ
+        4:                     permut circ couple
+        5:                     permut tot
+        6:                     permut tot couple
+
+    matiere_mathematiques:     Mathématiques
+    matiere_physique:          Physique-Chimie
+    matiere_biologie:          Biologie
+    matiere_anglais:           Anglais
+    matiere_francais:          Français
+    matiere_histoire:          Histoire-Géographie

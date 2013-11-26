@@ -1,0 +1,79 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+<div id="select-eleve" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Sélectionner un élève</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>
+			{% for eleve in eleves %}
+				<a href="{{ path('majordesk_app_gestion_devoirs', {'id_eleve' : eleve.id }) }}" class="btn btn-default">{{ eleve.username }} {{ eleve.nom }}</a> 
+			{% else %}
+				Tu n'as pas encore d'élève assigné
+			{% endfor %}
+			</p>
+		  </div>
+		</div>
+	</div>
+</div>
+
+<div class="col-lg-4">
+	<a class="btn btn-danger-inverted btn-block" data-toggle="modal" href="#select-eleve"><i class="icon-book icon-4x"></i> <span class="position-relative-up-12">Devoirs et exercices</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-purple-inverted btn-block" href="{{ path('majordesk_app_calendrier') }}"><i class="icon-calendar icon-4x"></i> <span class="position-relative-up-12">Emploi du temps {% if cal_events_proches_to_confirm > 0 %}<span rel="tooltip" data-title="{{ cal_events_proches_to_confirm }} nouvelle(s) demande(s) de cours" class="badge">{{ cal_events_proches_to_confirm }}</span>{% endif %}</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_cours_donnes') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Cours donnés</span></a>
+</div>
+<div class="clearfix"></div>
+<br><br>
+
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="col-lg-6">
+				<h4><i class="icon-calendar icon-large text-purple"></i> Cours programmés pour les 2 prochaines semaines :</h4><br>
+				{% set mois = {1:'Janvier',2:'Février',3:'Mars',4:'Avril',5:'Mai',6:'Juin',7:'Juillet',8:'Août',9:'Septembre',10:'Octobre',11:'Novembre',12:'Décembre'} %}
+				{% set jour = {1:'Lundi',2:'Mardi',3:'Mercredi',4:'Jeudi',5:'Vendredi',6:'Samedi',7:'Dimanche'} %}
+				<h5><i class="icon-ok text-success"></i> Cours confirmé(s) :</h5>
+				<ul>
+					{% for cal_event in cal_events_proches if cal_event.reservation == 2 %}
+						<li>{{ jour[cal_event.dateCours|date('N')] ~ ' ' ~ cal_event.dateCours|date('j') ~ ' ' ~ mois[cal_event.dateCours|date('n')] }} ({{ cal_event.heureDebut}}-{{ cal_event.heureFin}}) </li>
+					{% else %}
+						<li>Aucun cours confirmé pour l'instant</li>
+					{% endfor %}
+				</ul>
+				<h5><i class="icon-spinner icon-spin text-orange"></i> Cours en attente de ta confirmation :</h5>
+				<ul>
+					{% for cal_event in cal_events_proches if cal_event.reservation == 1 %}
+						<li>{{ jour[cal_event.dateCours|date('N')] ~ ' ' ~ cal_event.dateCours|date('j') ~ ' ' ~ mois[cal_event.dateCours|date('n')] }} ({{ cal_event.heureDebut}}-{{ cal_event.heureFin}}) </li>
+					{% else %}
+						<li>Aucune nouvelle demande de cours pour l'instant</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-lg-6">
+				<h4><i class="icon-info-sign icon-large text-blue"></i> Informations :</h4><br>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

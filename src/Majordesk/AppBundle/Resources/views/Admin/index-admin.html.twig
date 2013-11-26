@@ -1,0 +1,57 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+<div class="col-lg-12">
+	<h4>Utilisateurs</h4><br>
+</div>
+
+<div class="col-lg-4">
+	<a class="btn btn-warning-inverted btn-block" href="{{ path('majordesk_app_gestion_eleves') }}"><i class="icon-group icon-4x"></i> <span class="position-relative-up-12">Gestion des élèves</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-purple-inverted btn-block" href="{{ path('majordesk_app_gestion_familles') }}"><i class="icon-user icon-4x"></i> <span class="position-relative-up-12">Gestion des familles</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-danger-inverted btn-block" href="{{ path('majordesk_app_gestion_professeurs') }}"><i class="icon-user-md icon-4x"></i> <span class="position-relative-up-12">Gestion des professeurs</span></a>
+</div>
+
+<div class="clearfix"></div>
+<br>
+
+<div class="col-lg-12">
+	<h4>Création de contenu</h4><br>
+</div>
+
+
+<div class="col-lg-4">
+	<a class="btn btn-default-inverted btn-block" href="{{ path('majordesk_app_gestion_contenu') }}"><i class="icon-book icon-4x"></i> <span class="position-relative-up-12">Gestion du contenu</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-orange-inverted btn-block" href="{{ path('majordesk_app_gestion_feedbacks') }}"><i class="icon-flag icon-4x"></i> <span class="position-relative-up-12">Gestion des feedbacks</span></a>			
+</div>
+
+<div class="clearfix"></div>
+<br>
+
+<div class="col-lg-12">
+	<h4>Administratif</h4><br>
+</div>
+
+<div class="col-lg-4">
+	<a class="btn btn-info-inverted btn-block" href="{{ path('majordesk_app_gestion_heures') }}"><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Gestion des heures de cours</span></a>			
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_gestion_paiements') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Gestion des paiements</span></a>
+</div>
+
+<div class="clearfix"></div>
+<br><br>
+
+{% endblock %}

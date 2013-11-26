@@ -1,0 +1,38 @@
+{% extends "::layout-main.html.twig" %}
+				
+				{% block title %}
+					Equipe
+				{% endblock %}
+				
+				{% block navbar %}
+				    <li><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_plateforme') }}">La plateforme</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li class="active"><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
+				{% endblock %}
+
+{% block body %}
+	<div id="home-banner-purple">
+		<br><br>
+		<div class="container home-container">
+			<div class="text-center" style="font-size:35px">
+				Une équipe dynamique
+			</div>
+		</div>
+		<br>
+	</div>
+	<div class="container home-container">
+		<br><span class="hidden-xs"><br><br><br></span>
+		<div class="col-lg-12">
+			<h3>Les fondateurs</h3>
+		</div>
+		<div class="clearfix"></div>
+		<div class="col-lg-12">
+			<br>
+			<strong>Marc Perrin-Pelletier</strong> et <strong>Jonathan Menet</strong> sont deux jeunes entrepreneurs diplômés de l'Ecole Centrale Paris (Promotion 2012). Après avoir suivi la filière Centrale Entrepreneurs, et forts d'une longue expérience de professeur particulier, ils décident de mettre en commun
+			 leurs expériences pour concevoir une plateforme innovante qui facilitera la vie de tous. 
+		</div>
+		<br><br>
+	</div>
+{% endblock %}	

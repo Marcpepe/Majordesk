@@ -1,0 +1,13 @@
+app/bootstrap*
+app/cache/
+app/logs/
+app/sessions/
+vendor/
+app/config/parameters.yml
+cgv/
+fiches/
+mercanet/
+web/bundles/
+web/css/majordesk.less
+web/img/LOCAL/
+web/originals/

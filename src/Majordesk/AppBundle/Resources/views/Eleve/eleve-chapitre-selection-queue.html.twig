@@ -1,0 +1,44 @@
+{% extends "MajordeskAppBundle:Eleve:navigation.html.twig" %}
+
+{% block title %}
+	Liste des chapitres - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Liste des chapitres</a></li>
+{% endblock %}
+
+{% block eleve %}
+	{% if is_granted("ROLE_ELEVE") %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+		{% for message in app.session.flashbag.get('info') %}
+		<div class="col-lg-12">
+			<div class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{ message }}
+			</div>
+		</div>
+		{% endfor %}
+		<div class="col-lg-12">
+			<h3><i class="icon-book icon-large text-red pull-left"></i> Sélectionner un chapitre à travailler</h3>
+		</div>
+		<br><br>
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Chapitres</strong></div>
+				<ul class="list-group">
+					{% for chapitre in chapitres %}
+					  <a href="{{ path('majordesk_app_exercice_next_in_queue', { 'id_matiere' : id_matiere, 'id_chapitre' : chapitre.id }) }}" class="chapitre cursor list-group-item" >{{ chapitre.nom }} <i class="icon-chevron-right position-relative-down-5 pull-right"></i></a>
+					{% else %}
+					<div class="panel-body">
+					  La Plateforme de cette matière n'est pas encore disponible !
+					</div>
+					{% endfor %}
+				</ul>
+			</div>	
+		</div>	
+		<br><br>
+	{% endif %}
+{% endblock %}
+	

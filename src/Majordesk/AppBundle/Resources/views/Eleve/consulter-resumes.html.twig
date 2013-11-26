@@ -1,0 +1,51 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Résumés de cours
+{% endblock %}
+
+{% block navbar %}
+		<li><a><i class="icon-angle-right"></i> Résumés de cours</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+
+			<h3><i class="icon-file-text-alt icon-large text-light-blue"></i> Résumés de cours</h3><br>
+			
+			{% for matiere in app.user.matieres %}
+				{% if matiere.nom == matiere_mathematiques %}
+				<span class="label label-info">{{ matiere_mathematiques }}</span><br><br>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Chapitre</th>
+								<th><div class="text-center">Résumé de cours</div></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for chapitre in app.user.programme.chapitres %}
+							<tr>
+								<td>{{ chapitre.nom }}</td>
+								<td><div class="text-center"><a href="{{ path('majordesk_app_afficher_resume', { 'id_chapitre' : chapitre.id }) }}"><i class="icon-eye-open"></i></a></div></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<br>
+				{% elseif matiere.nom == matiere_physique %}
+				<span class="label label-success">{{ matiere_physique }}</span><br><br>
+				<em>Aucune résumé de cours pour l'instant</em>
+				{% endif %}
+			{% else %}
+				<em>Aucune résumé de cours pour l'instant</em>
+			{% endfor %}
+			<br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

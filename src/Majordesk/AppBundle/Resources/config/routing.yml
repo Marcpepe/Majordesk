@@ -1,0 +1,1020 @@
+## HOME ##
+
+majordesk_app_index:
+    pattern:  /connexion
+    defaults: { _controller: MajordeskAppBundle:Home:connexion }
+
+majordesk_app_principe_index:
+    pattern:  /
+    defaults: { _controller: MajordeskAppBundle:Home:principeIndex }
+
+majordesk_app_presentation_cours:
+    pattern:  /les-cours-Majorclass
+    defaults: { _controller: MajordeskAppBundle:Home:coursPresentation }
+
+majordesk_app_presentation_plateforme:
+    pattern:  /la-plateforme-Majorclass
+    defaults: { _controller: MajordeskAppBundle:Home:plateformePresentation }
+
+majordesk_app_presentation_tarifs:
+    pattern:  /les-tarifs
+    defaults: { _controller: MajordeskAppBundle:Home:tarifsPresentation }
+
+majordesk_app_presentation_equipe:
+    pattern:  /l-equipe
+    defaults: { _controller: MajordeskAppBundle:Home:equipePresentation }
+
+majordesk_app_inscription:
+    pattern:  /inscription-{etape_inscription}
+    defaults: { _controller: MajordeskAppBundle:Home:inscription, etape_inscription:1 }
+    requirements:
+        etape_inscription:      \d{1}
+
+majordesk_app_cgv_majorclass:
+    pattern:  /cvg-majorclass
+    defaults: { _controller: MajordeskAppBundle:Home:cgvMajorclass }
+
+majordesk_app_cgv_majordesk:
+    pattern:  /cvg-majordesk
+    defaults: { _controller: MajordeskAppBundle:Home:cgvMajordesk }
+
+majordesk_app_inscription_paiement:
+    pattern:  /inscription-paiement
+    defaults: { _controller: MajordeskAppBundle:Home:inscriptionPaiement }
+    options:
+        expose: true
+
+majordesk_app_inscription_autoresponse:
+    pattern:  /inscription-autoresponse
+    defaults: { _controller: MajordeskAppBundle:Home:inscriptionAutoresponse }
+
+majordesk_app_inscription_autoresponse_sub:
+    pattern:  /inscription-autoresponse-sub
+    defaults: { _controller: MajordeskAppBundle:Home:inscriptionAutoresponseSub }
+
+majordesk_app_inscription_response:
+    pattern:  /inscription-response
+    defaults: { _controller: MajordeskAppBundle:Home:inscriptionResponse }
+
+majordesk_app_inscription_response_sub:
+    pattern:  /inscription-response-sub
+    defaults: { _controller: MajordeskAppBundle:Home:inscriptionResponseSub }
+
+majordesk_app_achat_response:
+    pattern:  /achat-response
+    defaults: { _controller: MajordeskAppBundle:Parents:achatResponse }
+
+majordesk_app_achat_autoresponse:
+    pattern:  /achat-autoresponse
+    defaults: { _controller: MajordeskAppBundle:Parents:achatAutoresponse }
+
+majordesk_app_phpinfo:
+    pattern: /phpinfo
+    defaults: { _controller: MajordeskAppBundle:Home:phpInfo }
+
+
+## ROLE_PARENTS ##
+
+majordesk_app_index_parents:
+    pattern:  /parents/
+    defaults: { _controller: MajordeskAppBundle:Parents:indexParents }
+
+majordesk_app_calendrier_famille:
+    pattern:  /parents/calendrier-des-cours
+    defaults: { _controller: MajordeskAppBundle:Eleve:calendrier }
+
+majordesk_app_suivi_enfant:
+    pattern:  /parents/suivi-enfant-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Parents:suiviEnfant }
+    requirements:
+        id_eleve:      \d{1,5}
+
+majordesk_app_abonnements_factures:
+    pattern:  /parents/abonnements-et-factures
+    defaults: { _controller: MajordeskAppBundle:Parents:abonnementsFactures }
+
+majordesk_app_gestion_abonnements:
+    pattern:  /parents/gestion-des-abonnements
+    defaults: { _controller: MajordeskAppBundle:Parents:gestionAbonnements }
+
+majordesk_app_parametres_compte:
+    pattern:  /parents/parametres-du-compte
+    defaults: { _controller: MajordeskAppBundle:Parents:parametresCompte }
+
+majordesk_app_nouvel_abonnement:
+    pattern:  /parents/nouvel-abonnement-{etape_inscription}
+    defaults: { _controller: MajordeskAppBundle:Parents:nouvelAbonnement }
+    requirements:
+        etape_inscription:     1|2|3
+
+majordesk_app_nouvelle_inscription_finalisation:
+    pattern:  /parents/nouvelle-inscription-finalisation
+    defaults: { _controller: MajordeskAppBundle:Parents:nouvelleInscriptionFinalisation }
+
+majordesk_app_details_heures:
+    pattern:  /parents/details-des-heures-prises
+    defaults: { _controller: MajordeskAppBundle:Parents:detailsHeures }
+
+majordesk_app_achat_heures:
+    pattern:  /parents/achat-heures
+    defaults: { _controller: MajordeskAppBundle:Parents:achatHeures }
+
+majordesk_app_achat_en_cours:
+    pattern:  /parents/achat-en-cours-{pack}
+    defaults: { _controller: MajordeskAppBundle:Parents:achatEnCours }
+    requirements:
+        pack:     \d{1,2}
+
+majordesk_app_passer_carte:
+    pattern:  /parents/passer-carte
+    defaults: { _controller: MajordeskAppBundle:Parents:passerCarte }
+
+majordesk_app_annuler_abonnement:
+    pattern:  /parents/annuler-abonnement-{id_elevematiere}
+    defaults: { _controller: MajordeskAppBundle:Parents:annulerAbonnement }
+    requirements:
+        id_elevematiere:     \d{1,6}
+    options:
+        expose: true
+
+majordesk_app_populate_matieres:
+    pattern:  /parents/populate-matieres-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Ajax:populateMatieres }
+    requirements:
+        id_eleve:     \d{1,5}
+    options:
+        expose: true
+
+#ajax
+majordesk_app_display_eleve_stats:
+    pattern:  /parents/display-eleve-stats-{id_eleve}-{period}
+    defaults: { _controller: MajordeskAppBundle:Ajax:displayEleveStats }
+    requirements:
+        id_eleve:     \d{1,5}
+        period:       1|2
+    options:
+        expose: true
+
+
+## ROLE_PROF ##
+
+majordesk_app_index_professeur:
+    pattern:  /professeur/
+    defaults: { _controller: MajordeskAppBundle:Professeur:indexProfesseur }
+
+majordesk_app_calendrier:
+    pattern:  /professeur/emploi-du-temps
+    defaults: { _controller: MajordeskAppBundle:Eleve:calendrier }
+
+majordesk_app_gestion_devoirs:
+    pattern:  /professeur/gestion-des-devoirs-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Professeur:gestionDevoirs }
+    requirements:
+        id_eleve:      \d{1,5}
+
+majordesk_app_cours_donnes:
+    pattern:  /professeur/cours-donnes
+    defaults: { _controller: MajordeskAppBundle:Professeur:coursDonnes }
+
+#ajax
+
+
+## ROLE_ELEVE ##
+
+majordesk_app_index_eleve:
+    pattern:  /eleve/
+    defaults: { _controller: MajordeskAppBundle:Eleve:indexEleve }
+
+majordesk_app_profil:
+    pattern:  /eleve/profil
+    defaults: { _controller: MajordeskAppBundle:Eleve:profil }
+
+majordesk_app_modifier_password:
+    pattern:  /eleve/modifier-mot-de-passe
+    defaults: { _controller: MajordeskAppBundle:Eleve:modifierPassword }
+
+majordesk_app_consulter_favoris:
+    pattern:  /eleve/exercice-mis-de-cote
+    defaults: { _controller: MajordeskAppBundle:Eleve:consulterFavoris }
+
+majordesk_app_consulter_resumes:
+    pattern:  /eleve/consulter-resumes
+    defaults: { _controller: MajordeskAppBundle:Eleve:consulterResumes }
+
+majordesk_app_afficher_resume:
+    pattern:  /eleve/afficher-resume-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Eleve:afficherResume }
+    requirements:
+        id_chapitre:       \d{1,3}
+
+majordesk_app_consulter_fiches:
+    pattern:  /eleve/consulter-fiches
+    defaults: { _controller: MajordeskAppBundle:Eleve:consulterFiches }
+
+majordesk_app_afficher_fiche:
+    pattern:  /eleve/afficher-fiche-{id_matiere}-{id_programme}-{chapitre}
+    defaults: { _controller: MajordeskAppBundle:Eleve:afficherFiche }
+    requirements:
+        id_programme:   \d{1,2}
+        id_matiere:     \d{1,2}
+        chapitre:       \d{1,2}
+
+majordesk_app_recherche_exercices:
+    pattern:  /eleve/recherche-exercices-{id_matiere}
+    defaults: { _controller: MajordeskAppBundle:Eleve:rechercheExercices }
+    requirements:
+        id_matiere:   \d{1,2}
+
+majordesk_app_chapitres:
+    pattern:  /eleve/liste-des-chapitres
+    defaults: { _controller: MajordeskAppBundle:Eleve:chapitres }
+
+majordesk_app_parties:
+    pattern:  /eleve/liste-des-exercices-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Eleve:parties }
+    requirements:
+        id_chapitre:   \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_generate_exercice:
+    pattern:  /eleve/generate-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Eleve:generateExercice }
+    requirements:
+        id:   \d{1,8}
+
+majordesk_app_exercice:
+    pattern:  /eleve/exercice-en-cours-{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Eleve:exercice }
+    requirements:
+        id_exercice:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_exercice_next_in_queue:
+    pattern:  /eleve/exercice-next-in-queue-{id_matiere}-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Eleve:selectNextInQueue, id_chapitre: 0 }
+    requirements:
+        id_matiere:    \d{1,2}
+        id_chapitre:   \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_chapitre_selection_queue:
+    pattern:  /eleve/selection-chapitre-{id_matiere}
+    defaults: { _controller: MajordeskAppBundle:Eleve:selectChapitreForQueue }
+    requirements:
+        id_matiere:    \d{1,2}
+    options:
+        expose: true
+
+majordesk_app_exercice_aleatoire_partie:
+    pattern:  /eleve/exercice-en-cours-partie-{id_partie}
+    defaults: { _controller: MajordeskAppBundle:Eleve:selectRandomInPartie }
+    requirements:
+        id_partie:   \d{1,4}
+    options:
+        expose: true
+
+majordesk_app_calendrier_des_cours:
+    pattern:  /eleve/calendrier-des-cours-{etape}
+    defaults: { _controller: MajordeskAppBundle:Eleve:calendrier, etape: 0 }
+    requirements:
+        etape:   \d{1}
+    options:
+        expose: true
+
+majordesk_app_calendrier_annuler_event:
+    pattern:  /eleve/calendrier-annuler-event-{id_event}
+    defaults: { _controller: MajordeskAppBundle:Eleve:cancelEvent }
+    requirements:
+        id_event:   \d{1,6}
+    options:
+        expose: true
+
+majordesk_app_calendrier_prof_event:
+    pattern:  /eleve/calendrier-prof-event-{id_event}-{reservation}
+    defaults: { _controller: MajordeskAppBundle:Eleve:profEvent }
+    requirements:
+        id_event:   \d{1,6}
+        reservation: 0|1|2|3
+    options:
+        expose: true
+
+#en-cours
+majordesk_app_verification_devoirs:
+    pattern:  /eleve/verification-devoirs
+    defaults: { _controller: MajordeskAppBundle:Eleve:verificationDevoirs }
+    options:
+        expose: true
+
+majordesk_app_donner_devoirs:
+    pattern:  /eleve/donner-devoirs
+    defaults: { _controller: MajordeskAppBundle:Eleve:donnerDevoirs }
+    options:
+        expose: true
+
+majordesk_app_declarer_cours:
+    pattern:  /eleve/declarer-cours-{id_matiere}
+    defaults: { _controller: MajordeskAppBundle:Eleve:declarerCours }
+    requirements:
+        id_matiere:    \d{1,2}
+
+#ajax
+majordesk_app_preview_exercice:
+    pattern:  /eleve/preview-exercice-{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Eleve:previewExercice }
+    requirements:
+        id_exercice:    \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_recherche_parties_chapitre:
+    pattern:  /eleve/recherche-parties-chapitre-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Ajax:recherchePartiesChapitre }
+    requirements:
+        id_chapitre:    \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_recherche_exercices_partie:
+    pattern:  /eleve/recherche-exercices-partie-{id_partie}
+    defaults: { _controller: MajordeskAppBundle:Ajax:rechercheExercicesPartie }
+    requirements:
+        id_partie:    \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_recherche_exercices_query:
+    pattern:  /eleve/recherche-exercices-{query}
+    defaults: { _controller: MajordeskAppBundle:Ajax:rechercheExercicesQuery }
+
+majordesk_app_update_chapitre_only:
+    pattern:  /eleve/update-chapitre-only-{chapitre_only}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateChapitreOnly }
+    requirements:
+        chapitre_only:     0|1
+    options:
+        expose: true
+
+majordesk_app_update_partie_only:
+    pattern:  /eleve/update-partie-only-{partie_only}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updatePartieOnly }
+    requirements:
+        partie_only:     0|1
+    options:
+        expose: true
+
+majordesk_app_display_chapitre_stats:
+    pattern:  /eleve/display-chapitre-stats-{id_eleve}-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Ajax:displayChapitreStats }
+    requirements:
+        id_eleve:      \d{1,5}
+        id_chapitre:   \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_display_partie_stats:
+    pattern:  /eleve/display-partie-stats-{id_eleve}-{id_partie}
+    defaults: { _controller: MajordeskAppBundle:Ajax:displayPartieStats }
+    requirements:
+        id_eleve:    \d{1,5}
+        id_partie:   \d{1,4}
+    options:
+        expose: true
+
+majordesk_app_validate_reponses:
+    pattern:  /eleve/validate-reponses-{id_question}-{isLastCouche}
+    defaults: { _controller: MajordeskAppBundle:Ajax:validateReponses, isLastCouche: 0 }
+    requirements:
+        id_question:    \d{1,6}
+        isLastCouche:   0|1
+    options:
+        expose: true
+
+majordesk_app_update_temps_exercice:
+    pattern:  /eleve/update-temps-exercice-{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateTempsExercice }
+    requirements:
+        id_exercice:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_check_professeur_password:
+    pattern:  /eleve/check-professeur-password-{id_professeur}-{password}-{id_matiere}
+    defaults: { _controller: MajordeskAppBundle:Ajax:checkProfesseurPassword }
+    requirements:
+        id_prof:       \d{1,5}
+        id_matiere:    \d{1,2}
+    options:
+        expose: true
+
+majordesk_app_exercice_en_favoris:
+    pattern:  /eleve/exercice-en-favoris-{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Ajax:exerciceToFavoris }
+    requirements:
+        id_exercice:    \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_envoi_feedback:
+    pattern:  /eleve/envoi-feedback-{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Ajax:envoiFeedback }
+    requirements:
+        id_exercice:    \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_calendrier_events:
+    pattern:  /eleve/emploi-du-temps-events
+    defaults: { _controller: MajordeskAppBundle:Ajax:calendrierEvents }
+
+majordesk_app_calendrier_templates:
+    pattern:  /eleve/emploi-du-temps-template-{periode}.{_format}
+    defaults: { _controller: MajordeskAppBundle:Ajax:calendrierTemplates, _format: html }
+
+## ROLE_ADMIN ##
+
+majordesk_app_index_admin:
+    pattern:  /admin/
+    defaults: { _controller: MajordeskAppBundle:Admin:indexAdmin }
+
+#--Editor--#
+
+#ajax
+majordesk_app_editor_add_superbrique:
+    pattern:  /admin/add-superbrique-{id_exercice}-{numero}-{type}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addSuperBrique }
+    requirements:
+        id_exercice:   \d{1,6}
+        numero:        \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_editor_remove_superbrique:
+    pattern:  /admin/remove-superbrique-{id_superbrique}
+    defaults: { _controller: MajordeskAppBundle:Ajax:removeSuperBrique }
+    requirements:
+        id_superbrique:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_add_brique_to_superbrique:
+    pattern:  /admin/add-brique-to-superbrique-{id_superbrique}-{numero}-{type}-{couche}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addBriqueToSuperBrique }
+    requirements:
+        id_superbrique:   \d{1,8}
+        numero:        \d{1,3}
+        couche:        \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_editor_remove_brique_from_superbrique:
+    pattern:  /admin/remove-brique-from-superbrique-{id_brique}
+    defaults: { _controller: MajordeskAppBundle:Ajax:removeBriqueFromSuperBrique }
+    requirements:
+        id_brique:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_add_brique_to_complement:
+    pattern:  /admin/add-brique-to-complement-{id_complement}-{numero}-{type}-{couche}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addBriqueToComplement }
+    requirements:
+        id_complement:   \d{1,8}
+        numero:        \d{1,3}
+        couche:        \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_editor_remove_brique_from_complement:
+    pattern:  /admin/remove-brique-from-complement-{id_brique}
+    defaults: { _controller: MajordeskAppBundle:Ajax:removeBriqueFromComplement }
+    requirements:
+        id_brique:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_update_brique:
+    pattern:  /admin/update-brique-{id_brique}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateBrique }
+    requirements:
+        id_brique:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_add_reponse_to_superbrique:
+    pattern:  /admin/add-reponse-to-superbrique-{id_superbrique}-{id_brique}-{numero}-{clavier}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addReponseToSuperbrique }
+    requirements:
+        id_superbrique:   \d{1,8}
+        id_brique:   \d{1,8}
+        numero:        \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_add_reponse_to_mapping:
+    pattern:  /admin/add-reponse-to-mapping-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addReponseToMapping }
+    requirements:
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_merge_reponses_to_mapping:
+    pattern:  /admin/merge-reponses-to-mapping-{id_superbrique}
+    defaults: { _controller: MajordeskAppBundle:Ajax:mergeReponsesToMapping }
+    requirements:
+        id_superbrique:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_unmerge_reponse_from_mapping:
+    pattern:  /admin/unmerge-reponse-from-mapping-{id_superbrique}-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:unmergeReponseFromMapping }
+    requirements:
+        id_superbrique:   \d{1,8}
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_update_mapping_type:
+    pattern:  /admin/update-mapping-type-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateMappingType }
+    requirements:
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_reset_mapping_type:
+    pattern:  /admin/reset-mapping-type-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:resetMappingType }
+    requirements:
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_remove_brique_and_reponses:
+    pattern:  /admin/remove-brique-and-reponses-{id_brique}
+    defaults: { _controller: MajordeskAppBundle:Ajax:removeBriqueAndReponses }
+    requirements:
+        id_brique:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_remove_reponse:
+    pattern:  /admin/remove-reponse-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:removeReponse }
+    requirements:
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_update_reponse_contenu:
+    pattern:  /admin/update-reponse-contenu-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateReponseContenu }
+    requirements:
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_update_reponse_type:
+    pattern:  /admin/update-reponse-type-{id_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateReponseType }
+    requirements:
+        id_reponse:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_editor_update_reponse_clavier:
+    pattern:  /admin/update-reponse-clavier
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateReponseClavier }
+    options:
+        expose: true
+
+#--Feedbacks--#
+majordesk_app_gestion_feedbacks:
+    pattern:  /admin/gestion-des-feedbacks
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionFeedbacks }
+
+#ajax
+majordesk_app_update_feedback:
+    pattern:  /admin/update-feedback-{id_feedback}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateFeedback }
+    requirements:
+        id_feedback:   \d{1,6}
+    options:
+        expose: true
+
+#--Heures--#
+majordesk_app_gestion_heures:
+    pattern:  /admin/gestion-des-heures
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionHeures }
+
+#--Paiements--#
+majordesk_app_gestion_paiements:
+    pattern:  /admin/gestion-des-paiements
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionPaiements }
+
+#--Eleves--#
+majordesk_app_gestion_eleves:
+    pattern:  /admin/gestion-des-eleves
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionEleves }
+
+majordesk_app_gestion_eleves_filter_famille:
+    pattern:  /admin/gestion-des-eleves-filter-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionElevesFilterFamille }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_gestion_eleves_filter_professeur:
+    pattern:  /admin/gestion-des-eleves-filter-professeur-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionElevesFilterProfesseur }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_profil_eleve:
+    pattern:  /admin/profil-eleve-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:profilEleve }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_modifier_eleve:
+    pattern:  /admin/modifier-eleve-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierEleve }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_ajouter_eleve:
+    pattern:  /admin/ajouter-eleve
+    defaults: { _controller: MajordeskAppBundle:Admin:ajouterEleve }
+
+majordesk_app_consulter_famille:
+    pattern:  /admin/consulter-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierEleve }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_deblocage_exercices:
+    pattern:  /admin/deblocage-exercices-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Admin:deblocageExercices }
+    requirements:
+        id_eleve:   \d{1,5}
+
+majordesk_app_deblocage_remove:
+    pattern:  /admin/deblocage-remove-{id_exercice}-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Admin:deblocageRemove }
+    requirements:
+        id_eleve:      \d{1,5}
+        id_exercice:   \d{1,5}
+
+#ajax
+majordesk_app_toggle_flag_eleve:
+    pattern:  /admin/toggle-flag-eleve-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleFlagEleve }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_eleve:
+    pattern:  /admin/toggle-actif-eleve-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifEleve }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_reinitialiser_exercice:
+    pattern:  /admin/reinitialiser-exercice-{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Ajax:reinitialiserExercice }
+    requirements:
+        id_exercice:   \d{1,5}
+    options:
+        expose: true
+
+#--Parents--#
+majordesk_app_gestion_familles:
+    pattern:  /admin/gestion-des-familles
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionFamilles }
+
+majordesk_app_gestion_familles_filter_eleve:
+    pattern:  /admin/gestion-des-familles-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionFamillesFilterEleve }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_profil_famille:
+    pattern:  /admin/profil-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:profilFamille }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_modifier_famille:
+    pattern:  /admin/modifier-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierFamille }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_ajouter_famille:
+    pattern:  /admin/ajouter-famille
+    defaults: { _controller: MajordeskAppBundle:Admin:ajouterFamille }
+
+#ajax
+majordesk_app_toggle_flag_famille:
+    pattern:  /admin/toggle-flag-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleFlagFamille }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_famille:
+    pattern:  /admin/toggle-actif-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifFamille }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_parent:
+    pattern:  /admin/toggle-actif-parent-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifParent }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+#--Parents--#
+majordesk_app_gestion_familles:
+    pattern:  /admin/gestion-des-familles
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionFamilles }
+
+majordesk_app_gestion_familles_filter_eleve:
+    pattern:  /admin/gestion-des-familles-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionFamillesFilterEleve }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_profil_famille:
+    pattern:  /admin/profil-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:profilFamille }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_modifier_famille:
+    pattern:  /admin/modifier-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierFamille }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_ajouter_famille:
+    pattern:  /admin/ajouter-famille
+    defaults: { _controller: MajordeskAppBundle:Admin:ajouterFamille }
+
+#ajax
+majordesk_app_toggle_flag_famille:
+    pattern:  /admin/toggle-flag-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleFlagFamille }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_famille:
+    pattern:  /admin/toggle-actif-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifFamille }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_parent:
+    pattern:  /admin/toggle-actif-parent-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifParent }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+#--Professeurs--#
+majordesk_app_gestion_professeurs:
+    pattern:  /admin/gestion-des-professeurs
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionProfesseurs }
+
+majordesk_app_gestion_professeurs_filter_eleve:
+    pattern:  /admin/gestion-des-professeurs-filter-eleve-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionProfesseursFilterEleve }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_gestion_professeurs_filter_disponibilites:
+    pattern:  /admin/gestion-des-professeurs-filter-disponibilites-{lu}-{ma}-{me}-{je}-{ve}-{sa}-{di}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionProfesseursFilterDisponibilites }
+    requirements:
+        lu:   0|1
+        ma:   0|1
+        me:   0|1
+        je:   0|1
+        ve:   0|1
+        sa:   0|1
+        di:   0|1
+
+majordesk_app_profil_professeur:
+    pattern:  /admin/profil-professeur-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:profilProfesseur }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_modifier_professeur:
+    pattern:  /admin/modifier-professeur-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierProfesseur }
+    requirements:
+        id:   \d{1,5}
+
+majordesk_app_ajouter_professeur:
+    pattern:  /admin/ajouter-professeur
+    defaults: { _controller: MajordeskAppBundle:Admin:ajouterProfesseur }
+
+#ajax
+majordesk_app_toggle_flag_professeur:
+    pattern:  /admin/toggle-flag-professeur-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleFlagProfesseur }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_professeur:
+    pattern:  /admin/toggle-actif-professeur-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifProfesseur }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_toggle_actif_professeur:
+    pattern:  /admin/toggle-actif-professeur-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:toggleActifProfesseur }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+
+#--Contenu--#
+majordesk_app_gestion_contenu:
+    pattern:  /admin/gestion-du-contenu
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionContenu }
+
+majordesk_app_gestionnaire_exercices:
+    pattern:  /admin/gestionnaire-d-exercices
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionnaireExercices }
+
+majordesk_app_gestionnaire_chapitres:
+    pattern:  /admin/gestionnaire-de-chapitres-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionnaireChapitres }
+    requirements:
+        id:   \d{1,2}
+
+majordesk_app_modifier_programme:
+    pattern:  /admin/modifier-programme-{id_matiere}-{id_programme}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierProgramme }
+    requirements:
+        id_matiere:     \d{1,2}
+        id_programme:   \d{1,2}
+
+majordesk_app_modifier_chapitre:
+    pattern:  /admin/modifier-chapitre-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierChapitre }
+    requirements:
+        id_chapitre:     \d{1,3}
+
+majordesk_app_gestionnaire_tags:
+    pattern:  /admin/gestionnaire-de-tags-{id_matiere}
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionnaireTags }
+    requirements:
+        id_matiere:   \d{1,2}
+
+majordesk_app_modifier_tag:
+    pattern:  /admin/modifier-tag-{id_tag}-{id_matiere}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierTag }
+    requirements:
+        id_tag:       \d{1,4}
+        id_matiere:   \d{1,2}
+
+majordesk_app_supprimer_tag:
+    pattern:  /admin/supprimer-tag-{id_tag}
+    defaults: { _controller: MajordeskAppBundle:Admin:supprimerTag }
+    requirements:
+        id_tag:       \d{1,4}
+
+majordesk_app_ajouter_exercice:
+    pattern:  /admin/ajouter-exercice
+    defaults: { _controller: MajordeskAppBundle:Admin:ajouterExercice }
+    options:
+        expose: true
+
+majordesk_app_modifier_exercice:
+    pattern:  /admin/modifier-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:modifierExercice }
+    requirements:
+        id:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_dupliquer_exercice:
+    pattern:  /admin/dupliquer-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:dupliquerExercice }
+    requirements:
+        id:   \d{1,8}
+    options:
+        expose: true
+
+majordesk_app_afficher_exercice:
+    pattern:  /admin/afficher-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:afficherExercice }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+#ajax
+majordesk_app_delete_exercice:
+    pattern:  /admin/delete-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:deleteExercice }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_delete_famille:
+    pattern:  /admin/delete-famille-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:deleteFamille }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_upload_exercice:
+    pattern:  /admin/upload-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:uploadExercice }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_download_exercice:
+    pattern:  /admin/download-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Ajax:downloadExercice }
+    requirements:
+        id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_get_all_tags:
+    pattern:  /admin/get-all-tags
+    defaults: { _controller: MajordeskAppBundle:Ajax:getAllTags }
+    options:
+        expose: true
+
+majordesk_app_assign_tag:
+    pattern:  /admin/assign-tag-{nom_tag}-{id_mod_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:assignTag }
+    requirements:
+        id_mod_reponse:   \d{1,7}
+    options:
+        expose: true
+
+majordesk_app_unassign_tag:
+    pattern:  /admin/unassign-tag-{nom_tag}-{id_mod_reponse}
+    defaults: { _controller: MajordeskAppBundle:Ajax:unassignTag }
+    requirements:
+        id_mod_reponse:   \d{1,7}
+    options:
+        expose: true
+
+majordesk_app_populate_chapitres:
+    pattern:  /admin/populate-chapitres-{id_matiere}-{id_programme}
+    defaults: { _controller: MajordeskAppBundle:Ajax:populateChapitres }
+    requirements:
+        id_matiere:     \d{1,2}
+        id_programme:   \d{1,2}
+    options:
+        expose: true
+
+majordesk_app_populate_parties:
+    pattern:  /admin/populate-chapitres-{id_chapitre}
+    defaults: { _controller: MajordeskAppBundle:Ajax:populateParties }
+    requirements:
+        id_chapitre:     \d{1,3}
+    options:
+        expose: true
+
+majordesk_app_filter_exercices:
+    pattern:  /admin/filter-exercices-{id_partie}
+    defaults: { _controller: MajordeskAppBundle:Ajax:filterExercices }
+    requirements:
+        id_partie:      \d{1,4}
+    options:
+        expose: true

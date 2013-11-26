@@ -1,0 +1,51 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Gestion du contenu - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3><i class="icon-book icon-large text-grey pull-left"></i> <p>Gestion du contenu</p></h3>
+				<br>	
+				
+				{% for matiere in matieres %}
+				<div class="well clearfix">
+					<h4 class="pull-left">{{ matiere.nom }}</h4>
+					<div class="btn-group pull-right contenu-btn-position">
+						{% if matiere.nom == matiere_mathematiques %}
+							<a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+						{% elseif matiere.nom == matiere_physique %}
+							<a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+						{% elseif matiere.nom == matiere_biologie %}
+							<a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#">
+						{% elseif matiere.nom == matiere_anglais %}
+							<a class="btn btn-danger dropdown-toggle" data-toggle="dropdown" href="#">
+						{% elseif matiere.nom == matiere_francais %}
+							<a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+						{% elseif matiere.nom == matiere_histoire %}
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+						{% else %}
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+						{% endif %}
+						Exercices & Cours <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+							{% if ids_exercices_en_cours[matiere.id] != 0 %}
+								<li><a tabindex="-1" href="{{ path('majordesk_app_afficher_exercice', { 'id' : ids_exercices_en_cours[matiere.id] } ) }}">Exercice en cours</a></li>
+								<li class="divider"></li>
+							{% endif %}			
+							<li><a tabindex="-1" href="{{ path('majordesk_app_gestionnaire_exercices') }}">Gestionnaire d'exercices</a></li>
+							<li class="divider"></li>
+							<li><a tabindex="-1" href="{{ path('majordesk_app_gestionnaire_chapitres', { 'id' : matiere.id } ) }}">Gestionnaire de chapitres</a></li>
+							<li><a tabindex="-1" href="{{ path('majordesk_app_gestionnaire_tags', { 'id_matiere' : matiere.id } ) }}">Gestionnaire des tags</a></li>
+						</ul>
+					</div>
+				</div>
+				{% endfor %}
+{% endblock %}

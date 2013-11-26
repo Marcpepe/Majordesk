@@ -1,0 +1,73 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Déclaration du cours - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Déclaration du cours</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>	
+		{% for message in app.session.flashbag.get('info') %}
+			<div class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<i class="icon-info-sign"></i> <strong>Info :</strong> {{ message }}
+			</div>
+		{% endfor %}
+		{% for message in app.session.flashbag.get('warning') %}
+			<div class="alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<i class="icon-warning-sign"></i> <strong>Erreur :</strong> {{ message }}
+			</div>
+		{% endfor %}
+		<div class="clearfix"></div>
+		{% if prelevementCours != 1 %}
+		<div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-info-sign"></i> <strong>Info :</strong> 
+			Le crédit restant d'heures de cours est de <strong>{{ heuresRestantes / 10 }}h</strong>.
+		</div>
+		{% endif %}
+			<br>
+			<strong>Déclaration du cours</strong><br><br>
+
+		
+		{% if no_calevent_message %}
+			<em>Pour déclarer un cours, il faut qu'il apparaisse dans le calendrier.<br>
+			Il est possible de déclarer un cours lorsque son heure de début est située dans un créneau allant de "il y a 5 heures" à "dans 1 heure".</em><br><br>
+		{% else %}
+			<form class="form-horizontal" action="{{ path('majordesk_app_declarer_cours', { 'id_matiere' : id_matiere }) }}" method="post" role="form">
+				<div class="col-lg-4">
+					<div class="form-group">
+					{{ form_widget(form.cal_event) }}
+					</div>
+				</div>
+				<div class="col-lg-5">
+					<div class="form-group">
+						<div class="col-lg-8 control-label">
+							Durée effective du cours :
+						</div>
+						<div class="col-lg-4">
+						{{ form_widget(form.quantite) }}
+						</div>
+					</div>
+				</div>
+				{% if filtre %}
+				<div class="col-lg-3">
+					<div class="form-group">
+						{{ form_widget(form.passparent) }}
+					</div>
+				</div>
+				{% endif %}
+				<span class="pull-right">
+					<button type="submit" class="btn btn-primary">Déclarer ce cours <i class="icon-angle-right"></i></button>
+				</span>
+			{{ form_widget(form._token) }}
+			</form>
+			<div class="clearfix"></div>
+			<br>
+		{% endif %}
+{% endblock %}

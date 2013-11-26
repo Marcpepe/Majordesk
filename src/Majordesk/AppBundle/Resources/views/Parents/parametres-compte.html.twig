@@ -1,0 +1,62 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Paramètres du compte - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Abonnements et factures</a></li>
+	<li><a href="{{ path('majordesk_app_gestion_abonnements') }}"><i class="icon-angle-right"></i> Gestion des abonnements</a></li>
+	<li><a><i class="icon-angle-right"></i> Paramètres du compte</a></li>
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+{% for message in app.session.flashbag.get('info') %}
+<div class="col-lg-12">
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<i class="icon-info-sign"></i> <strong>Info :</strong> {{ message }}
+	</div>
+</div>
+<br>
+{% endfor %}
+
+<br><br>
+	
+<div class="col-lg-12">
+	<h3>Paramètres du compte</h3><br><br>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Paramètre</th>
+					<th>Valeur</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						La déclaration d'une heure sur la plateforme en fin de cours requiert votre mot de passe<br>
+						<i class="icon-warning-sign"></i> <em>Attention, l'activation de ce filtre nécessite votre présence en fin de cours pour entrer votre mot de passe !</em>
+					</td>
+					<td>
+						{% if famille.filtre %}
+							activé
+						{% else %}
+							désactivé
+						{% endif %}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br><br>
+	<em>La modification des paramètres du compte se fait pour l'instant sur demande.<br>
+	Vous pouvez contacter le service client au 06.76.10.15.98 pour toute requète.</em>
+</div>
+<div class="clearfix"></div><br><br>
+
+{% endblock %}

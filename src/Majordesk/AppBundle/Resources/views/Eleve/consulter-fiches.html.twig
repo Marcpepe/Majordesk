@@ -1,0 +1,51 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Fiches de cours
+{% endblock %}
+
+{% block navbar %}
+		<li><a><i class="icon-angle-right"></i> Fiches de cours</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+
+			<h3><i class="icon-paper-clip icon-large text-grey"></i> Fiches de cours</h3><br>
+			
+			{% for matiere in app.user.matieres %}
+			{% if matiere.nom == matiere_mathematiques %}
+				<span class="label label-info">{{ matiere_mathematiques }}</span><br><br>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Chapitre</th>
+								<th><div class="text-center">Fiches</div></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for chapitre in app.user.programme.chapitres %}
+							<tr>
+								<td>{{ chapitre.nom }}</td>
+								<td><div class="text-center"><a href="{{ path('majordesk_app_afficher_fiche', { 'id_matiere' : matiere.id, 'id_programme' : app.user.programme.id , 'chapitre' : chapitre.numero}) }}"><i class="icon-external-link"></i></a></div></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<br>
+				{% elseif matiere.nom == matiere_physique %}
+				<span class="label label-success">{{ matiere_physique }}</span><br><br>
+				<em>Aucune fiche pour l'instant</em>
+				{% endif %}
+			{% else %}
+				<em>Aucune fiches pour l'instant</em>
+			{% endfor %}
+			<br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

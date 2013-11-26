@@ -1,0 +1,74 @@
+{% extends "MajordeskAppBundle:Eleve:navigation.html.twig" %}
+
+{% block title %}
+	Liste des chapitres - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Liste des chapitres</a></li>
+{% endblock %}
+
+{% block eleve %}
+	{% if is_granted("ROLE_ELEVE") %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+		<div class="col-lg-12">
+			<h3><i class="icon-book icon-large text-red pull-left"></i> Liste des chapitres</h3><br>
+		</div>
+		{% for matiere in matieres %}
+		<div class="col-lg-12">
+			{% if matiere.nom == matiere_mathematiques %}
+				<span class="label label-info">{{ matiere.nom }}</span>
+			{% elseif matiere.nom == matiere_physique %}
+				<span class="label label-success">{{ matiere.nom }}</span>
+			{% elseif matiere.nom == matiere_biologie %}
+				<span class="label label-warning">{{ matiere.nom }}</span>
+			{% elseif matiere.nom == matiere_anglais %}
+				<span class="label label-important">{{ matiere.nom }}</span>
+			{% elseif matiere.nom == matiere_francais %}
+				<span class="label label-default">{{ matiere.nom }}</span>
+			{% elseif matiere.nom == matiere_histoire %}
+				<span class="label">{{ matiere.nom }}</span>
+			{% endif %}
+		</div>
+		<br>
+		<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Chapitres</strong></div>
+				<div class="list-group">
+				{% for chapitre in chapitres if chapitre.matiere == matiere %}
+				  <a class="chapitre cursor list-group-item" data-id="{{ chapitre.id }}" data-nom="{{ chapitre.nom }}" >{{ chapitre.nom }} <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+				{% else %}
+				<div class="panel-body">
+				  La Plateforme de cette matière n'est pas encore disponible !
+				</div>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6" id="chapitre-stats">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<i class="icon-info-sign icon-4x text-light-grey pull-left"></i><hr><hr>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		{% else %}
+			Tu n'es abonné à aucune matière !
+		{% endfor %}
+		
+		<div id="id-eleve" class="hide">{{ app.user.id }}</div>
+	{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/eleve/eleve-chapitres.js' 	
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+	

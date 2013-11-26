@@ -1,0 +1,104 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Details des heures de cours - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Abonnements et factures</a></li>
+	<li><a><i class="icon-angle-right"></i> Détails des heures de cours</a></li>
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+		<div class="col-lg-12">
+			<h3>Détails de heures de cours</h3><br>
+		</div>
+		{% if tickets|length > 0 %}
+		<div class="col-lg-12">
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Matière</th>
+							<th>Date du cours</th>
+							<th>Début prévu</th>
+							<th>Fin prévue</th>
+							<th>Durée effective</th>
+							<th>Eleve</th>
+							<th>Professeur</th>		
+							<!--<th>Paiement</th>-->
+						</tr>
+					</thead>
+					<tbody>
+						{% for ticket in tickets %}
+						<tr>
+							<td>
+								{% if ticket.calEvent.matiere.nom == matiere_mathematiques %}
+									<span class="label label-info">{{ matiere_mathematiques }}</span>
+								{% elseif ticket.calEvent.matiere.nom == matiere_physique %}
+									<span class="label label-success">{{ matiere_physique }}</span>
+								{% elseif ticket.calEvent.matiere.nom == matiere_biologie %}
+									<span class="label label-warning">{{ matiere_biologie }}</span>
+								{% elseif ticket.calEvent.matiere.nom == matiere_anglais %}
+									<span class="label label-important">{{ matiere_anglais }}</span>
+								{% elseif ticket.calEvent.matiere.nom == matiere_francais %}
+									<span class="label label-default">{{ matiere_francais }}</span>
+								{% elseif ticket.calEvent.matiere.nom == matiere_histoire %}
+									<span class="label">{{ matiere_histoire }}</span>
+								{% endif %}
+							</td>
+							<td>{{ ticket.dateCours|date('d/m/Y') }}</td>
+							<td>
+								{% if ticket.calEvent is not null %}
+									{{ ticket.calEvent.heureDebut }}
+								{% else %}
+									Non détaillée
+								{% endif %}
+							</td>
+							<td>
+								{% if ticket.calEvent is not null %}
+									{{ ticket.calEvent.heureFin }}
+								{% else %}
+									Non détaillée
+								{% endif %}
+							</td>
+							<td>
+								{% if ticket.quantite == 10 %}
+									1h
+								{% elseif ticket.quantite == 15 %}
+									1h30
+								{% elseif ticket.quantite == 20 %}
+									2h
+								{% elseif ticket.quantite == 25 %}
+									2h30
+								{% elseif ticket.quantite == 30 %}
+									3h
+								{% elseif ticket.quantite == 40 %}
+									4h
+								{% elseif ticket.quantite == 50 %}
+									5h
+								{% elseif ticket.quantite == 195 %}
+									19h30
+								{% endif %}
+							</td>
+							<td>{{ ticket.eleve.username }}</td>
+							<td>{{ ticket.professeur.username }}</td>
+							<!--<td>
+
+							</td>-->
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{% else %}
+		<div class="col-lg-12">
+			<em>Aucune heure de cours enregistrée pour l'instant.</em>
+		</div>
+		<br>
+		{% endif %}
+		<br><br>
+{% endblock %}

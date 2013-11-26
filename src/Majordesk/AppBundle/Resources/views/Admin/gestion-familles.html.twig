@@ -1,0 +1,138 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Gestion des familles - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des familles</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3><i class="icon-user icon-large text-purple pull-left"></i> <p class="pull-left">Gestion des familles</p></h3>
+					<div class="col-lg-4 pull-right">	
+						{% if filter_eleve is defined %}
+							<a class="btn btn-default" href="{{ path('majordesk_app_gestion_familles') }}">Filtre élève <i class="icon-remove-sign"></i> </a>
+						{% endif %}
+						<div class="btn-group pull-right">
+							<a class="btn btn-info" href="{{ path('majordesk_app_ajouter_famille') }}"><i class="icon-user"></i> <i class="icon-plus"></i></a>
+						</div>
+					</div>
+					
+					<div id="actif-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h3><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+					  </div>
+					  <div class="modal-body">
+						<p><i class="icon-ban-circle icon-large text-red"></i> Bloquer/Débloquer cette famille ?</p>
+					  </div>
+					  <div class="modal-footer">
+						<button class="btn" data-dismiss="modal" aria-hidden="true"><i class="icon-angle-left"></i> Annuler</button>
+						<button class="btn btn-primary" data-dismiss="modal" id="actif">Confirmer</a>
+					  </div>
+					</div>
+				
+				<br><br><br>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th>#</th>
+						  <th>Nom</th>
+						  <th>Hrs achetées</th>
+						  <th>Hrs restantes</th>
+						  <th>Hrs prises</th>
+						  <th>N° Abonné</th>
+						  <th>Flag</th>
+						  <th>Bloqué</th>
+						  <th></th>
+						</tr>
+					  </thead>
+					  <tbody>
+						{% for famille in familles %}
+						<tr class="ligne_famille 
+						{% if famille.flag %}
+							warning
+						{% endif %}"
+						 data-id="{{ famille.id }}">
+						  <td>{{ famille.id }}</td>
+						  <td>
+							{% for parent in parents if parent.famille.id == famille.id %}
+								{% if loop.first %}
+									{{ parent.nom }}
+								{% endif %}
+							{% endfor %}
+						  </td>
+						  <td>{{ famille.heuresAchetees / 10}}</td>
+						  <td>{{ famille.heuresRestantes / 10}}</td>
+						  <td>{{ famille.heuresPrises / 10 }}</td>
+						  <td>{{ famille.abonnement }}</td>
+						  <td>
+							{% if famille.flag %}
+								<i class="icon-flag icon-large text-yellow"></i>
+							{% else %}	
+								 - 
+							{% endif %}
+						  </td>
+						  <td
+							{% if famille.actif %}
+								class="actif"
+							{% endif %}
+						  >
+							{% if famille.actif %}
+								 - 
+							{% else %}	
+								<i class="icon-ban-circle icon-large text-red"></i>
+							{% endif %}
+						  </td>
+						  <td>
+							<div class="btn-group">
+							  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+								<i class="icon-cogs"></i> 
+								<span class="caret"></span>
+							  </a>
+							  <ul class="dropdown-menu">
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_profil_famille', {'id' : famille.id} ) }}"><i class="icon-plus"></i> Profil complet</a></li>
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_eleves_filter_famille', {'id' : famille.id} ) }}"><i class="icon-group"></i> Liste des enfants</a></li>
+								  <li>
+									<a tabindex="-1" class="cursor flag"><i class="icon-flag"></i> 
+										{% if famille.flag %}
+											 Retirer le flag de cette famille
+										{% else %}	
+											 Mettre un flag sur cette famille
+										{% endif %}
+									</a>
+								  </li>
+								  <li>
+									<a tabindex="-1" class="cursor actif"><i class="icon-ban-circle"></i> 
+										{% if famille.actif %}
+											Bloquer cette famille
+										{% else %}
+											Débloquer cette famille
+										{% endif %}
+									</a>
+								  </li>
+								  <li class="divider"></li>
+								  <li><a tabindex="-1" class="remove-famille cursor"><i class="icon-trash"></i> Supprimer cette famille</a></li>
+							  </ul> 
+							   <span class="spinner"></span>
+							</div>
+						  </td>
+						</tr>
+						{% endfor %}
+					  </tbody>
+					</table>	
+				</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}	
+	{% javascripts filter='yui_js' 
+		'js/admin/gestion-familles.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	{% if id_tag == 0 %}Ajouter/Modifier{% endif %} un tag - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_contenu") }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+	<li><a href="{{ path("majordesk_app_gestionnaire_tags", {'id_matiere' : id_matiere }) }}"><i class="icon-angle-right"></i> Gestionnaire de tags</a></li>
+	<li><a><i class="icon-angle-right"></i> {% if id_tag == 0 %}Ajouter{% else %}Modifier{% endif %} un tag</a></li>
+{% endblock %}
+ 
+{% block admin %}
+			<form method="post" action="{{ path('majordesk_app_modifier_tag', {'id_tag' : id_tag, 'id_matiere' : id_matiere}) }}">
+				<h3><i class="icon-tag icon-large text-grey pull-left"></i> <p class="pull-left">Tag : </p></h3>
+				<div class="col-lg-6">
+				{{ form_widget(form.nom) }}
+				</div>
+					
+				<br><br><br>	
+				
+				{% if app.session.flashbag.get('warning') %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Champs incorrects :</strong><br><br>
+					{% for field in form %}
+						{{ form_errors(field) }}
+					{% endfor %}
+				</div>
+				{% endif %}	
+				
+				Tag(s) parent :<br><br> 			
+					{% for p_tag in form.p_tags %}
+						<span>	
+							<div class="col-lg-11">
+							{{ form_widget(p_tag) }}
+							</div>
+							<button type="button" rel="tooltip" data-title="Supprimer ce Tag parent" data-placement="right" class="btn btn-danger remove-tag-btn"><i class="icon-remove"></i></button>
+							<br><br>
+						</span>
+					{% endfor %}	
+				  
+					  <span class="ptags" data-prototype='
+						<span>
+							<div class="col-lg-11">
+							{{ form_widget(form.p_tags.vars.prototype) }}
+							</div>
+							<button type="button" rel="tooltip" data-title="Supprimer ce Tag parent" data-placement="right" class="btn btn-danger remove-tag-btn"><i class="icon-remove"></i></button>
+							<br><br>
+						</span>							
+					  '></span>
+				<br><br>
+				Tag(s) enfant :<br><br> 			
+					{% for c_tag in form.c_tags %}
+						<span>	
+							<div class="col-lg-11">
+							{{ form_widget(c_tag) }}
+							</div>
+							<button type="button" rel="tooltip" data-title="Supprimer ce Tag enfant" data-placement="right" class="btn btn-danger remove-tag-btn"><i class="icon-remove"></i></button>
+							<br><br>
+						</span>
+					{% endfor %}	
+				  
+					  <span class="ctags" data-prototype='
+						<span>
+							<div class="col-lg-11">
+							{{ form_widget(form.c_tags.vars.prototype) }}
+							</div>
+							<button type="button" rel="tooltip" data-title="Supprimer ce Tag enfant" data-placement="right" class="btn btn-danger remove-tag-btn"><i class="icon-remove"></i></button>
+							<br><br>
+						</span>							
+					  '></span>
+				<br><br>
+			{{ form_widget(form._token) }}
+			<button rel="fix-tooltip" data-title="Valider" type="submit" class="btn btn-success"><i class="icon-ok"></i></button>
+			<a rel="fix-tooltip" data-title="Supprimer le Tag et tous ses enfants" id="supprimer-tag" href="{{ path('majordesk_app_supprimer_tag', {'id_tag' : id_tag}) }}" class="btn btn-danger"><i class="icon-remove"></i></a>
+			</form>
+			<br><br>
+			<div id="tags" class="hide">
+				{% for tag in tags %}
+					<span class="one-tag" data-nom-tag="'{{ tag.nom }}'"></span>
+				{% endfor %}
+			</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/modifier-tag.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -1,0 +1,388 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Emploi du temps - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<li><a><i class="icon-angle-right"></i> Calendrier des heures de cours</a></li>
+	{% elseif is_granted('ROLE_PROF') %}
+		<li><a><i class="icon-angle-right"></i> Emploi du temps</a></li>
+	{% elseif is_granted('ROLE_PARENTS') %}
+		<li><a><i class="icon-angle-right"></i> Calendrier des cours</a></li>
+	{% elseif is_granted('ROLE_ELEVE') %}
+		<li><a><i class="icon-angle-right"></i> Calendrier des cours</a></li>
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br></span>
+<span class="visible-lg"><br></span>
+{% if is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') %}
+
+	{% if not is_granted('ROLE_PARENTS') %}
+		{% if professeurs is empty %}
+		<div class="col-lg-12">
+			<div class="alert alert-info">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<i class="icon-info-sign"></i> <strong>Info :</strong> Aucun professeur ne t'est encore assigné. Nous sommes en train de nous en charger !
+			</div>
+		</div>
+		{% endif %}
+	{% else %}
+		{% if professeurs is empty %}
+		<div class="col-lg-12">
+			<div class="alert alert-info">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<i class="icon-info-sign"></i> <strong>Info :</strong> Aucun professeur n'est encore assigné. Nous sommes en train de nous en charger !
+			</div>
+		</div>
+		{% endif %}
+	{% endif %}
+
+<div id="annuler-cours" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>
+				Voulez-vous vraiment annuler ce cours ?<br>
+				<br>
+				<span class="pull-right">
+					<a id="annuler-cours-confirm" href="" class="btn btn-success valider-reservation"><i class="icon-ok"></i></a>
+					<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+				</span>
+				<br>
+			</p>
+		  </div>
+		</div>
+	</div>
+</div>
+
+{% for professeur in professeurs %}
+	<div id="show-dispos-{{ professeur.id }}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel"><i class="icon-calendar icon-large text-yellow"></i> Disponibilités de {{ professeur.username }}</h3>
+			  </div>
+			  <div class="modal-body">
+				<p>
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>Jour</th>
+								<th>Horaires</th>
+							<tr>
+						</thead>
+						<tbody>
+						{% for disponibilite in professeur.disponibilites %}
+							<tr>
+								<td><span class="text-green">{{ disponibilite.jour }}</span></td>
+								<td>{{ disponibilite.heureDebut }} à {{ disponibilite.heureFin }}</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+					<br>
+					<span class="pull-right">
+						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Ok</button>
+					</span>
+					<br>
+				</p>
+			  </div>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+	{% for message in app.session.flashbag.get('info') %}
+	<div class="col-lg-12">
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-info-sign"></i> <strong>Info :</strong> {{ message }}
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('warning') %}
+	<div class="col-lg-12">
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-warning-sign"></i> <strong>Demande rejetée :</strong> {{ message }}
+		</div>
+	</div>
+	{% endfor %}
+{% endif %}
+
+{% if is_granted('ROLE_PROF') %}
+
+<div id="confirmer-cours" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>
+				Seras-tu disponible pour donner ce cours ?<br>
+				<br>
+				<a id="confirm-cours-prof" href="" class="btn btn-success"><i class="icon-ok"> Disponible</i></a>
+				<a id="refuse-cours-prof" href="" class="btn btn-danger"><i class="icon-remove"> Indisponible</i></a>
+				<br>
+			</p>
+		  </div>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+<div class="col-lg-9">
+	<div id="calendar"></div>
+</div>
+<div class="col-lg-3">
+	<div class="calendar-header">
+			<h3></h3>
+		<div class="btn-group btn-group-justified">
+			<a type="button" class="btn btn-sm btn-primary" data-calendar-nav="prev"><< Préc</a>
+			<a type="button" class="btn btn-sm btn-default-inverted" data-calendar-nav="today">Aujourd'hui</a>
+			<a type="button" class="btn btn-sm btn-primary" data-calendar-nav="next">Suiv >></a>
+		</div>
+		<br><br>
+		<div class="btn-group btn-group-justified">
+			<a type="button" class="btn btn-sm btn-warning" data-calendar-view="year">Année</a>
+			<a type="button" class="btn btn-sm btn-warning active" data-calendar-view="month">Mois</a>
+			<a type="button" class="btn btn-sm btn-warning" data-calendar-view="week">Semaine</a>
+			<a type="button" class="btn btn-sm btn-warning" data-calendar-view="day">Jour</a>
+		</div>
+	</div>
+	<br>
+	<h3>Prochain(s) cours</h3>
+	<span id="eventlist"></span>
+	<br>
+{% if is_granted('ROLE_PARENTS') %}
+<form class="form-horizontal" method="post" action="{{ path('majordesk_app_calendrier_famille') }}">
+{% else %}
+<form class="form-horizontal" method="post" action="{{ path('majordesk_app_calendrier_des_cours') }}">
+{% endif %}
+{% if is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') and not is_granted('ROLE_PARENTS') %}
+		<h3> Demander un cours</h3>
+		<div class="input-group">
+			{{ form_widget(form.matiere) }}
+			<span class="input-group-addon"><i class="icon-book"></i></span>
+		</div>
+		<br>
+		<div class="form-group">
+			<div class="col-lg-2 control-label">le </div>
+			<div class="col-lg-10">
+				<div class="input-group">
+					{{ form_widget(form.dateCours) }}
+					<span class="input-group-addon position-relative-down-1"><i class="icon-calendar"></i></span>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-2 control-label">de </div>
+			<div class="col-lg-4">
+				<span class="bootstrap-timepicker ">
+					{{ form_widget(form.heureDebut) }}
+				</span>
+			</div>
+			<div class="col-lg-2 control-label">à </div>
+			<div class="col-lg-4">
+				<span class="bootstrap-timepicker">
+					{{ form_widget(form.heureFin) }}
+				</span>
+			</div>
+		</div>
+		<a id="trigger-reservation-confirm" href="#reserver-cours" role="button" data-toggle="modal" class="btn btn-success btn-sm pull-right"><i class="icon-ok"></i> Valider</a>
+		
+		<div id="reserver-cours" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3 id="myModalLabel"><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+				  </div>
+				  <div class="modal-body">
+					<p>
+						Réserver un Cours de <em id="reservation-matiere"></em> le <strong id="reservation-date-cours"></strong> 
+						de <strong id="reservation-heure-debut"></strong>  à <strong id="reservation-heure-fin"></strong> ?<br>
+						<br>
+						<strong style="color:red">Attention !</strong> Ce cours peut être annulé jusqu'à 5 heures avant cet horaire. Au-delà de ce délai, il sera considéré comme pris.<br><br>
+						<span class="pull-right">
+							<button type="submit" class="btn btn-success valider-reservation"><i class="icon-ok"></i></button>
+							<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+						</span>
+						<br>
+					</p>
+				  </div>
+				</div>
+			</div>
+		</div>
+		<br>
+	
+	<h3>Filtres</h3>
+		<div class="checkbox"><label><input type="checkbox" class="hide-mes-cours" checked/> Tes cours</label></div>
+		{% for professeur in professeurs %}
+			<div class="checkbox"><label><input type="checkbox" data-id-professeur="{{ professeur.id }}" class="hide-cours-prof" checked/> Autres cours de {{ professeur.username }} <a class="text-purple" rel="tooltip" data-title="Disponibilités de {{ professeur.username }}" href="#show-dispos-{{ professeur.id }}" data-toggle="modal"><i class="icon-calendar"></i></a></label></div>
+		{% endfor %}
+{% elseif is_granted('ROLE_PARENTS') %}
+		<h3> Programmer un cours</h3>
+	
+		{% if eleves|length > 1 %}
+			<div class="input-group">
+				{{ form_widget(form.eleve) }}
+				<span class="input-group-addon"><i class="icon-user"></i></span>
+			</div>
+			<br>
+			<div class="input-group">
+				{% if form.matiere is defined %}
+					{{ form_widget(form.matiere) }}
+				{% else %}
+					<select id="matieresselectortype_matiere" name="matieresselectortype[matiere]" required="required" class="form-control"><option disabled="disabled" selected="selected">Sélectionner un enfant</option></select>
+				{% endif %}
+				<span class="input-group-addon"><i class="icon-book"></i></span>
+			</div>
+			<br>
+			<div class="form-group">
+				<div class="col-lg-2 control-label">le </div>
+				<div class="col-lg-10">
+					<div class="input-group">
+						{{ form_widget(form.dateCours) }}
+						<span class="input-group-addon position-relative-down-1"><i class="icon-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-2 control-label">de </div>
+				<div class="col-lg-4">
+					<span class="bootstrap-timepicker ">
+						{{ form_widget(form.heureDebut) }}
+					</span>
+				</div>
+				<div class="col-lg-2 control-label">à </div>
+				<div class="col-lg-4">
+					<span class="bootstrap-timepicker">
+						{{ form_widget(form.heureFin) }}
+					</span>
+				</div>
+			</div>
+			<a id="trigger-parent-reservation-confirm" href="#reserver-cours" role="button" data-toggle="modal" class="btn btn-success btn-sm pull-right"><i class="icon-ok"></i> Valider</a>
+			
+			<div id="reserver-cours" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h3 id="myModalLabel"><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							Réserver un Cours de <em id="reservation-matiere"></em> <!--pour <span id="reservation-enfant"></span> -->le <strong id="reservation-date-cours"></strong> 
+							de <strong id="reservation-heure-debut"></strong>  à <strong id="reservation-heure-fin"></strong> ?<br>
+							<br>
+							<strong style="color:red">Attention !</strong> Ce cours peut être annulé jusqu'à 5 heures avant cet horaire. Au-delà de ce délai, il sera considéré comme pris.<br><br>
+							<span class="pull-right">
+								<button type="submit" class="btn btn-success valider-reservation"><i class="icon-ok"></i></button>
+								<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+							</span>
+							<br>
+						</p>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<br>
+		{% else %}
+			<div class="input-group">
+				{{ form_widget(form.matiere) }}
+				<span class="input-group-addon"><i class="icon-book"></i></span>
+			</div>
+			<br>
+			<div class="form-group">
+				<div class="col-lg-2 control-label">le </div>
+				<div class="col-lg-10">
+					<div class="input-group">
+						{{ form_widget(form.dateCours) }}
+						<span class="input-group-addon position-relative-down-1"><i class="icon-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-2 control-label">de </div>
+				<div class="col-lg-4">
+					<span class="bootstrap-timepicker ">
+						{{ form_widget(form.heureDebut) }}
+					</span>
+				</div>
+				<div class="col-lg-2 control-label">à </div>
+				<div class="col-lg-4">
+					<span class="bootstrap-timepicker">
+						{{ form_widget(form.heureFin) }}
+					</span>
+				</div>
+			</div>
+			<a id="trigger-reservation-confirm" href="#reserver-cours" role="button" data-toggle="modal" class="btn btn-success btn-sm pull-right"><i class="icon-ok"></i> Valider</a>
+			
+			<div id="reserver-cours" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h3 id="myModalLabel"><i class="icon-warning-sign icon-large text-yellow"></i> Confirmation</h3>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							Réserver un Cours de <em id="reservation-matiere"></em> le <strong id="reservation-date-cours"></strong> 
+							de <strong id="reservation-heure-debut"></strong>  à <strong id="reservation-heure-fin"></strong> ?<br>
+							<br>
+							<strong style="color:red">Attention !</strong> Ce cours peut être annulé jusqu'à 5 heures avant cet horaire. Au-delà de ce délai, il sera considéré comme pris.<br><br>
+							<span class="pull-right">
+								<button type="submit" class="btn btn-success valider-reservation"><i class="icon-ok"></i></button>
+								<button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+							</span>
+							<br>
+						</p>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<br>
+		{% endif %}	
+	
+	<h3>Filtres</h3>
+		{% for eleve in eleves %}
+			<div class="checkbox"><label><input type="checkbox" class="hide-cours-enfant" data-id-eleve="{{ eleve.id }}" checked/> Cours de {{ eleve.username }}</label></div>
+		{% endfor %}
+		{% for professeur in professeurs %}
+			<div class="checkbox"><label><input type="checkbox" data-id-professeur="{{ professeur.id }}" class="hide-cours-prof" checked/> Autres cours de {{ professeur.username }} <a class="text-purple" rel="tooltip" data-title="Disponibilités de {{ professeur.username }}" href="#show-dispos-{{ professeur.id }}" data-toggle="modal"><i class="icon-calendar"></i></a></label></div>
+		{% endfor %}
+{% endif %}
+</div>
+{% if is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') %}
+	{{ form_widget(form._token) }}
+</form>
+{% endif %}
+<br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/common/underscore.min.js' 
+		'js/common/bootstrap-calendar.min.js'   
+		'js/locales/bootstrap-calendar.fr.js' 
+		'js/common/bootstrap-calendar-config.js'
+		'js/common/bootstrap-timepicker.min.js'
+		'js/common/bootstrap-datepicker.min.js'
+		'js/locales/bootstrap-datepicker.fr.js' 
+		'js/common/calendrier.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

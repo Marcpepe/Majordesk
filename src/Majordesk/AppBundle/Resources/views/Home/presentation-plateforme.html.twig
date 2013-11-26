@@ -1,0 +1,285 @@
+{% extends "::layout-main.html.twig" %}
+				
+				{% block title %}
+					Plateforme
+				{% endblock %}
+				
+				{% block navbar %}
+				    <li><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
+				{% endblock %}
+
+{% block body %}
+	<div id="home-banner-2" class="col-lg-12">
+		<br>
+		<div class="container col-lg-12 home-container plateforme-container">
+			<div class="col-lg-4">
+				<img src="{{ asset('img/home/plateforme.png') }}" class="img-responsive pull-right" />
+			</div>
+			<div class="col-lg-8 text-white">
+				<h1 class="font-responsive">L'environnement de travail</h1>
+				<span class="hidden-xs font-size-20 font-responsive">Une plateforme utilisée pendant et entre les cours</span>
+			</div>
+		</div>
+		<br>
+	</div>	
+	<div class="container home-container">
+		<br><br><br>
+		<div class="col-lg-12">	
+			<h3>De quoi s'agit-il ?</h3><br>
+			
+			<strong class="font-majorclass">Majorclass</strong> a conçu sa propre plateforme sur internet qui permet à l'élève et à son professeur de travailler dans les meilleurs conditions possibles.
+			<br><br>
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<td>
+								Cours classique
+							</td>
+							<td>
+								Cours <strong class="font-majorclass">Majorclass</strong> avec sa plateforme
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<i class="icon-ok text-grey"></i> un professeur<br>
+								
+							</td>
+							<td>
+								<i class="icon-ok text-green"></i> votre enfant reçoit une validation par la plateforme.. etc
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<!--<strong class="font-majorclass">Majorclass</strong> a élaboré une toute nouvelle façon de travailler les Mathématiques et la Physique-Chimie. 
+			Forts d'une longue expérience en cours particuliers, ses fondateurs Marc et Jonathan ont mis le doigt sur les limites de cette pratique et ont crée cette plateforme pour booster l'efficacité des cours.-->
+			<br><br>
+			<i class="icon-warning-sign"></i> <strong>Attention</strong> : Vous devez disposer d'une <u>connexion à Internet</u> pour que votre enfant puisse utiliser la plateforme !
+		</div>
+		<br><br>
+		<div class="col-lg-12">
+			<h3>La plateforme a été conçue en réponse aux différents besoins de l'élève</h3>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-2">
+			<div class="text-center">
+				<strong class="text-red">Compréhension</strong>
+			</div>
+		</div>
+		<div class="col-lg-10">
+			La plateforme présente chaque notion simplement, et indépendamment du reste du chapitre, permettant une compréhension du cours point par point.
+		</div>
+		<div class="col-lg-2">
+			<br>
+			<div class="text-center">
+				<i class="icon-double-angle-down icon-large"></i>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-2">
+			<div class="text-center">
+				<strong class="text-orange">Prise en main</strong>
+			</div>
+		</div>
+		<div class="col-lg-10">
+			La plateforme permet à l’élève de faire son premier exercice lui-même, parce qu’il est très simple et que le cours est affiché au-dessus de l’exercice. 
+		</div>
+		<div class="col-lg-2">
+			<br>
+			<div class="text-center">
+				<i class="icon-double-angle-down icon-large"></i>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-2">
+			<div class="text-center">
+				<strong class="text-mid-grey">Mémorisation</strong>
+			</div>
+		</div>
+		<div class="col-lg-10">
+			La plateforme aide l’élève à mémoriser son cours en faisant une suite d’exercices simples avec le cours, puis des exercices du même type sans le support de cours. 
+		</div>
+		<div class="col-lg-2">
+			<br>
+			<div class="text-center">
+				<i class="icon-double-angle-down icon-large"></i>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-2">
+			<div class="text-center">
+				<strong class="text-green">Entraînement</strong>
+			</div>
+		</div>
+		<div class="col-lg-10">
+			La plateforme guide l’élève de façon intelligente en sélectionnant les exercices adéquats au rythme de sa progression. Le niveau des exercices s'adapte sans cesse aux dernières performances de l'élève. 
+		</div>
+		<div class="col-lg-2">
+			<br>
+			<div class="text-center">
+				<i class="icon-double-angle-down icon-large"></i>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-2">
+			<div class="text-center">
+				<strong class="text-blue">Maîtrise</strong>
+			</div>
+		</div>
+		<div class="col-lg-10">
+			La plateforme permet d’atteindre un niveau de maîtrise de tous les points de cours en étant capable de détecter les incompréhensions en analysant les erreurs des élèves. 
+		</div>
+		<div class="clearfix"></div>
+		<br><br><br>
+		<div class="col-lg-2">
+			<div class="text-center">
+				<strong>Bonus</strong>
+			</div>
+		</div>
+		<div class="col-lg-10">
+			Fiches, résumés de cours, module de révisions et de nombreuses autres fonctionnalités pour aider l'élève
+		</div>
+		
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-12">
+			<h3>La plateforme vous simplifie la vie</h3>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-2">
+			<i class="icon-ok text-green"></i> <strong>Inscription</strong>
+		</div>
+		<div class="col-lg-10">
+			L'inscription est rapide, simple, <u>sans frais</u> et vous n'avez pas à vous déplacer, ni à remplir un dossier. Une fois inscrit, nous nous chargeons de vous trouver un professeur approprié et vous commandez alors votre premier cours depuis la plateforme !
+		</div>
+		<div class="clearfix"></div>
+		<br>
+		<div class="col-lg-2">
+			<i class="icon-ok text-green"></i> <strong>Calendrier</strong>
+		</div>
+		<div class="col-lg-10">
+			Les créneaux de cours sont facilement consultables dans un calendrier récapitulatif. Le prochain cours est demandé par l'élève ou le parent depuis ce calendrier.
+		</div>
+		<div class="clearfix"></div>
+		<br>
+		<div class="col-lg-2">
+			<i class="icon-ok text-green"></i> <strong>Suivi</strong>
+		</div>
+		<div class="col-lg-10">
+			La plateforme vous permet de suivre la motivation, l'implication et les progrès de votre enfant dans son travail.
+		</div>
+		<br><br>
+		<div class="col-lg-2">
+			<i class="icon-ok text-green"></i> <strong>Paiement</strong>
+		</div>
+		<div class="col-lg-10">
+			Les paiements s'effectuent exclusivement en ligne. Il existe plusieurs modalités de paiement pour s'adapter à tous les besoins (voir <a href="{{ path('majordesk_app_presentation_tarifs') }}">les Tarifs</a>).
+		</div>
+		<div class="clearfix"></div>
+		
+		<div class="clearfix"></div>
+		<br><br><br>
+		<div class="text-center">
+			***
+		</div>
+		<br><br>
+		<div class="col-lg-12">
+			<h3>La plateforme en images</h3>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-12">
+			<div id="carousel-example-generic" class="carousel slide">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators text-grey">
+				<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="3"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="4"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="5"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="6"></li>
+			  </ol>
+
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner">
+				<div class="item active">
+				  <img src="{{ asset('img/home/caroussel/1.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">La plateforme de l'élève</h3>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="{{ asset('img/home/caroussel/2.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">Le calendrier des cours</h3>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="{{ asset('img/home/caroussel/3.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">Exemple d'exercice</h3>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="{{ asset('img/home/caroussel/4.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">Exemple d'exercice</h3>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="{{ asset('img/home/caroussel/5.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">Exemple d'exercice</h3>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="{{ asset('img/home/caroussel/6.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">Résumé de cours</h3>
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="{{ asset('img/home/caroussel/7.jpg') }}">
+				  <div class="carousel-caption">
+					<h3 class="text-grey">Fiche</h3>
+				  </div>
+				</div>
+			  </div>
+
+			  <!-- Controls -->
+			  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+				<span class="icon-prev"></span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+				<span class="icon-next"></span>
+			  </a>
+			</div>
+		</div>
+		<br><br><br>
+	</div>
+{% endblock %}	
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+	  $(document).ready(function() {
+		$('.carousel').carousel({
+		  interval: 4000
+		})
+	  });
+	</script>
+{% endblock %}

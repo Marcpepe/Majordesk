@@ -1,0 +1,184 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	{% if is_granted('ROLE_PROF') %}
+		Gestion des devoirs et exercices faits
+	{% elseif is_granted('ROLE_PARENTS') %}
+		Suivi de votre enfant
+	{% elseif is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') %}
+		Vérification des devoirs
+	{% endif %}
+	 - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<li><a href="{{ path("majordesk_app_gestion_eleves") }}"><i class="icon-angle-right"></i> Gestion des élèves</a></li>
+	{% endif %}
+	{% if is_granted('ROLE_PROF') %}
+		<li><a><i class="icon-angle-right"></i> Gestion des devoirs et exercices faits</a></li>
+	{% elseif is_granted('ROLE_PARENTS') %}
+		<li><a><i class="icon-angle-right"></i> Suivi de votre enfant</a></li>
+	{% elseif is_granted('ROLE_ELEVE') and not is_granted('ROLE_PROF') %}
+		<li><a><i class="icon-angle-right"></i> Vérification des devoirs</a></li>
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+		<span class="visible-md"><br></span>
+		<span class="visible-lg"><br></span>
+		{% if not is_granted('ROLE_ADMIN') and is_granted('ROLE_PROF') %}
+		<div class="col-lg-12">
+			<a class="btn btn-default" disabled>{{ eleve.username }} {{ eleve.nom }}</a> 
+			{% for elv in eleves if elv.id != eleve.id %}
+				<a href="{{ path('majordesk_app_gestion_devoirs', {'id_eleve' : elv.id }) }}" class="btn btn-default">{{ elv.username }} {{ elv.nom }}</a> 
+			{% endfor %}
+			<span class="pull-right">Total : <span class="badge">{{ exercices|length }}</span></span>
+		</div>
+		<br>
+		{% endif %}
+		
+		{% if is_granted('ROLE_PARENTS') %}
+		<div class="col-lg-12">
+			<h3>Cette semaine :</h3><br>
+		</div>
+		<div class="col-lg-4">
+			<div id="id-eleve" data-id-eleve="{{ eleve.id }}"></div>
+			<br>
+			Temps total travaillé : <strong id="temps-week"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>
+			Nombre d'exercices faits : <strong id="ex-faits"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>
+			Nombre d'exercices validés : <strong id="ex-valides"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>
+			Nombre moyen d'essais par question : <strong id="nb-moyen"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>	
+		</div>
+		<div class="col-lg-4">
+			<div id="graph_semaine_exercices" style="height:200px;" ></div>
+		</div>
+		<div class="col-lg-4">
+			<div id="graph_semaine_autonomie" style="height:200px;" ></div>
+		</div>
+		<div class="clearfix"></div><br>
+		<div class="col-lg-12">
+			<h3>Liste des exercices faits depuis le dernier cours</h3><br>
+		</div>
+		{% endif %}
+		
+		{% if not is_granted('ROLE_PROF') and not is_granted('ROLE_PARENTS') and is_granted('ROLE_ELEVE') %}
+		<div class="col-lg-6">
+			<strong>Exercices faits depuis le dernier cours :</strong><br><br>
+			<ul>
+				<li>Vérifier que les devoirs <i class="icon-bullseye text-blue" rel="tooltip" data-title="Devoir à faire"></i> ont bien été faits</li>
+				<li>Travailler les exercices mis de côté <i class="icon-star text-yellow" rel="tooltip" data-title="Mis de côté"></i> et non résolus <i class="icon-remove text-red" rel="tooltip" data-title="En cours..."></i></li>
+			</ul>
+		</div>
+		<div class="col-lg-6">
+			<a href="{{ path('majordesk_app_recherche_exercices', {'id_matiere' : app.session.get('matiere_cours') }) }}" class="btn btn-primary pull-right">Passer à l'entrainement <i class="icon-angle-right"></i></a>
+			<br><br><br>
+			<span class="pull-right"><strong>Temps total : </strong> {{ temps_total|date('G\\h i\\m\\i\\n s\\s') }}</span>
+		</div>
+		<div class="clearfix"></div>
+		<br>
+		{% endif %}
+		<div class="col-lg-12">
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Statut</th>
+							<th><i class="icon-eye-open"></i></th>
+							<th>Chapitre</th>
+							<th>Partie</th>
+							<th>Niveau</th>
+							<th>Essai(s)</th>
+							<th>Temps</th>
+							<th>Date</th>
+							{% if is_granted('ROLE_ADMIN') %}
+								<th>Réinit</th>
+							{% endif %}
+						</tr>
+					</thead>
+					<tbody>
+						{% for exercice in exercices %}
+						<tr>
+							<td>
+								{% if exercice.statut == statut_resolu %}
+									<i class="icon-ok text-success" rel="tooltip" data-title="Terminé"></i> 
+								{% elseif exercice.statut == statut_non_resolu %}
+									<i class="icon-remove text-red" rel="tooltip" data-title="En cours..."></i>
+								{% else %}
+									<i class="icon-remove text-light-grey" rel="tooltip" data-title="Non commencé"></i>
+								{% endif %}
+								{% if exercice.favoris %}
+									<i class="icon-star text-yellow" rel="tooltip" data-title="Mis de côté"></i>
+								{% endif %}
+								{% if exercice.selection %}
+									<i class="icon-bullseye text-blue" rel="tooltip" data-title="Devoir à faire"></i>
+								{% endif %}
+							</td>
+							<td> {% if exercice.modExercice.statut == statut_en_ligne %}<a href="{{ path('majordesk_app_exercice', {'id_exercice' : exercice.id }) }}" rel="tooltip" data-title="Voir l'énoncé"><i class="icon-external-link"></i></a>{% else %}<i class="icon-external-link" rel="tooltip" data-title="Exercice en maintenance"></i>{% endif %} </td>
+							<td>{{ exercice.modExercice.chapitre.nom }}</td>
+							<td>{{ exercice.modExercice.partie.nom|raw }}</td>
+							<td>{{ exercice.modExercice.niveau }}</td>
+							<td>{% if exercice.getNombreEssais > 2.9*exercice.getNombreQuestionsCommencees(statut_non_commence) %}<span class="text-red">{% endif %}{{ exercice.getNombreEssais }}{% if exercice.getNombreEssais >= 3*exercice.getNombreQuestionsCommencees(statut_non_commence) %}</span>{% endif %} sur {{ exercice.getNombreQuestionsCommencees(statut_non_commence) }} q°</td>
+							<td>{{ exercice.temps|date("i\\m\\i\\n s\\s") }}</td>
+							<td>{{ exercice.getDerniereDate|date("d/m/y \\à G:i")}}</td>
+							{% if is_granted('ROLE_ADMIN') %}
+								<td data-id-exercice="{{ exercice.id }}"><button rel="tooltip" data-title="Remettre à zéro" data-placement="right" class="btn btn-default reinit" type="button"><i class="icon-refresh"></i></button> <a href="{{ path('majordesk_app_deblocage_remove', { 'id_exercice' : exercice.id, 'id_eleve' : exercice.eleve.id }) }}" rel="tooltip" data-title="Supprimer" data-placement="right" class="btn btn-default dump" type="button"><i class="icon-trash"></i></a></td>
+							{% endif %}
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			{% if not is_granted('ROLE_ADMIN') and (is_granted('ROLE_PROF') or is_granted('ROLE_PARENTS')) %}
+				<span class="pull-right"><strong>Temps total : </strong> {{ temps_total|date('G\\h i\\m\\i\\n s\\s') }}</span>
+			{% endif %}
+		</div>
+		
+		{% if is_granted('ROLE_PARENTS') %}
+		<div class="clearfix"></div><br>
+		<div class="col-lg-12">
+			<h3>Ce mois :</h3><br>
+		</div>
+		<div class="col-lg-4">
+			<div id="id-eleve" data-id-eleve="{{ eleve.id }}"></div>
+			<br>
+			Temps total travaillé : <strong id="temps-month"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>
+			Nombre d'exercices faits : <strong id="ex-faits-month"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>
+			Nombre d'exercices validés : <strong id="ex-valides-month"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>
+			Nombre moyen d'essais par question : <strong id="nb-moyen-month"><i class="icon-spinner icon-spin"></i></strong>
+			<br><br>	
+		</div>
+		<div class="col-lg-4">
+			<div id="graph_mois_exercices" style="height:200px;" ></div>
+		</div>
+		<div class="col-lg-4">
+			<div id="graph_mois_autonomie" style="height:200px;" ></div>
+		</div>
+		<div class="clearfix"></div><br>
+		{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% if is_granted('ROLE_ADMIN') %}
+		{% javascripts filter='yui_js' 
+			'js/professeur/gestion-devoirs.js' 
+		%}
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+	{% elseif not is_granted('ROLE_ADMIN') and is_granted('ROLE_PARENTS') %}
+		{% javascripts filter='yui_js' 
+			'js/common/highcharts.js' 
+			'js/parents/suivi-enfant.js' 
+		%}
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+	{% endif %}
+{% endblock %}

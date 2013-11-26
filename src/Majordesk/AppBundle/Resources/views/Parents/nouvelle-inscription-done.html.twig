@@ -1,0 +1,115 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Nouvel abonnnement - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Abonnements et factures</a></li>
+	<li><a href="{{ path('majordesk_app_gestion_abonnements') }}"><i class="icon-angle-right"></i> Gestion des abonnements</a></li>
+	<li><a><i class="icon-angle-right"></i> Nouvelle inscription</a></li>
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+	
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="col-lg-4">
+				<p class="text-center">{% if app.session.get('new_inscription') >= 1 %}<a href="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':1}) }}" class="{% if etape_inscription != 1 %}text-mid-grey{% endif %}">1. Inscription Eleve</a>{% else %}<span class="text-mid-grey cursor-forbidden">1. Inscription Eleve</span>{% endif %}</p>
+			</div>
+			<div class="col-lg-4">
+				<p class="text-center">{% if app.session.get('new_inscription') >= 2 %}<a href="{{ path('majordesk_app_nouvel_abonnement', {'etape_inscription':2}) }}" class="{% if etape_inscription != 2 %}text-mid-grey{% endif %}">2. Options</a>{% else %}<span class="text-mid-grey cursor-forbidden">2. Options</span>{% endif %}</p>
+			</div>
+			<div class="col-lg-4">
+				<p class="text-center">{% if app.session.get('new_inscription') >= 3 %}<a href="{{ path('majordesk_app_inscription_paiement') }}" class="{% if etape_inscription != 3 %}text-mid-grey{% endif %}">3. Paiement</a>{% else %}<span class="text-mid-grey cursor-forbidden">3. Paiement</span>{% endif %}</p>
+			</div>
+			<br>
+		</div>
+	</div>
+</div>
+<br>
+	
+<div class="col-lg-12">
+	{% if pack == 11 or pack == 31 or pack == 32 %}
+		<div class="alert alert-info">
+			<i class="icon-info-sign"></i> <strong>Info :</strong> Le total affiché sera débité grâce à votre numéro d'abonné <em>{{ abonnement }}</em>
+		</div>
+	{% endif %}
+
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="col-lg-7">Description</th>
+					<th class="col-lg-2">Matière(s)</th>
+					<th class="col-lg-3">Prix</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if pack == 11 %}
+				<tr>
+					<td class="col-lg-7"><br>Abonnement de <em>{{ app.session.get('username') }}</em> à la Plateforme : <em>Débit du premier mois</em><br></td>
+					<td class="col-lg-2"><br><span class="label label-info">Mathématiques</span><br></td>
+					<td class="col-lg-3"><br>59,90 €<br><br></td>
+				</tr>
+				{% elseif pack == 21 %}
+				<tr>
+					<td class="col-lg-7"><br>Inscription de <em>{{ app.session.get('username') }}</em> en formule simple<br></td>
+					<td class="col-lg-2"><br>{% if '1' in app.session.get('matieres') %}<span class="label label-info">Mathématiques</span><br> {% endif %}{% if '2' in app.session.get('matieres') %}<span class="label label-success">Physique-Chimie</span>{% endif %}</td>
+					<td class="col-lg-3"><br>0,00 €<br><br></td>
+				</tr>
+				{% elseif pack == 22 %}
+				<tr>
+					<td class="col-lg-7"><br>Inscription de <em>{{ app.session.get('username') }}</em> en formule "à la carte"<br></td>
+					<td class="col-lg-2"><br>{% if '1' in app.session.get('matieres') %}<span class="label label-info">Mathématiques</span><br> {% endif %}{% if '2' in app.session.get('matieres') %}<span class="label label-success">Physique-Chimie</span>{% endif %}</td>
+					<td class="col-lg-3"><br>0,00 €<br><br></td>
+				</tr>
+				{% elseif pack == 31 %}
+				<tr>
+					<td class="col-lg-7"><br>Abonnement de <em>{{ app.session.get('username') }}</em> à la Plateforme <span class="label label-info">Mathématiques</span><br><em>Débit du premier mois</em></td>
+					<td class="col-lg-2"><br><span class="label label-info">Mathématiques</span><br></td>
+					<td class="col-lg-3"><br>59,90 €<br><br></td>
+				</tr>
+				<tr>
+					<td class="col-lg-7"><br>Inscription de <em>{{ app.session.get('username') }}</em> en formule simple<br></td>
+					<td class="col-lg-2"><br>{% if '1' in app.session.get('matieres') %}<span class="label label-info">Mathématiques</span><br> {% endif %}{% if '2' in app.session.get('matieres') %}<span class="label label-success">Physique-Chimie</span>{% endif %}</td>
+					<td class="col-lg-3"><br>0,00 €<br><br></td>
+				</tr>
+				{% elseif pack == 32 %}
+				<tr>
+					<td class="col-lg-7"><br>Abonnement de <em>{{ app.session.get('username') }}</em> à la Plateforme <span class="label label-info">Mathématiques</span><br><em>Débit du premier mois</em></td>
+					<td class="col-lg-2"><br><span class="label label-info">Mathématiques</span><br></td>
+					<td class="col-lg-3"><br>59,90 €<br><br></td>
+				</tr>
+				<tr>
+					<td class="col-lg-7"><br>Inscription de <em>{{ app.session.get('username') }}</em> aux cours en formule "à la carte"<br></td>
+					<td class="col-lg-2"><br>{% if '1' in app.session.get('matieres') %}<span class="label label-info">Mathématiques</span><br> {% endif %}{% if '2' in app.session.get('matieres') %}<span class="label label-success">Physique-Chimie</span>{% endif %}</td>
+					<td class="col-lg-3"><br>0,00 €<br><br></td>
+				</tr>
+				{% endif %}
+				{% if pack == 11 or pack == 31 or pack == 32 %}
+				<tr>
+					<td class="col-lg-7"></td>
+					<td class="col-lg-2"><span class="pull-right"><br>Total : </span></td>
+					<td class="col-lg-3"><br><strong>59,90 €</strong><br><br></td>
+				</tr>
+				{% elseif pack == 21 or pack == 22 %}
+				<tr>
+					<td class="col-lg-7"></td>
+					<td class="col-lg-2"><span class="pull-right"><br>Total : </span></td>
+					<td class="col-lg-3"><br><strong>0,00 €</strong><br><br></td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+	<div class="clearfix"></div>
+	<span class="pull-right"><form method="post" action="{{ path('majordesk_app_nouvelle_inscription_finalisation') }}"><button type="submit" class="btn btn-success">Terminer l'inscription <i class="icon-angle-right"></i></button></span>
+	<div class="clearfix"></div>
+	<br>
+</div>
+
+{% endblock %}

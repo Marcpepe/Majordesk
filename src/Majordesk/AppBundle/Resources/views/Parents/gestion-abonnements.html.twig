@@ -1,0 +1,139 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Gestion des abonnements - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Abonnements et factures</a></li>
+	<li><a><i class="icon-angle-right"></i> Gestion des abonnements</a></li>
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+<div id="annuler-abo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"><i class="icon-warning-sign icon-large text-yellow"></i> Désactiver un abonnement</h3>
+		  </div>
+		  <div class="modal-body">
+			<p>
+				Vous pouvez annuler cet abonnement.<br><br>
+				Votre enfant n'aura alors plus accès à la partie entraînement de la Plateforme à partir du <strong id="date-fin-abo"></strong>.
+				<br><br>
+				Vous pouvez à tout moment le réactiver de la même façon.<br><br>
+				<span class="pull-right">
+					<a class="annuler-abonnement-lien btn btn-danger"><i class="icon-ok"></i> Annuler cet abonnement</a>
+					<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"> Ne pas modifier</button>
+				</span>
+				<br>
+			</p>
+		  </div>
+		</div>
+	</div>
+</div>
+
+
+{% for message in app.session.flashbag.get('info') %}
+<div class="col-lg-12">
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<i class="icon-info-sign"></i> <strong>Info :</strong> {{ message }}
+	</div>
+</div>
+<br>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="col-lg-12">
+	<div class="container">
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-info-sign"></i> <strong>Info :</strong> {{ flashMessage|raw }}
+		</div>
+	</div>
+</div>
+{% endfor %}
+
+<div class="col-lg-4">
+	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_nouvel_abonnement', { 'etape_inscription' : 1 }) }}"><i class="icon-book icon-4x"></i> <span class="position-relative-up-12">Inscrire un autre enfant</span></a>
+</div>
+<div class="col-lg-4">
+	<a rel="tooltip" data-title="Désactiver pour l'instant" class="btn btn-info-inverted btn-block" href="#"><i class="icon-credit-card icon-4x"></i> <span class="position-relative-up-12">Modifier vos informations bancaires</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-default-inverted btn-block" href="{{ path('majordesk_app_parametres_compte') }}"><i class="icon-cogs icon-4x"></i> <span class="position-relative-up-12">Réglages du compte</span></a>
+</div>
+<div class="clearfix"></div>
+<br><br>
+	
+<div class="col-lg-12">
+
+	<h3>Vos abonnements</h3><br>
+	Numéro d'abonné : <em>{% if famille.abonnement is not null %}{{ famille.abonnement }}{% else %}Aucun pour l'instant{% endif %}</em><br><br>
+
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Statut</th>
+					<th>Eleve</th>
+					<th>Description</th>
+					<th>Tarif mensuel</th>
+					<th>Renouvellement auto.</th>
+					<th>Date de renouvellement</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for eleve in eleves %}
+				{% for eleve_matiere in eleve.eleveMatieres if eleve_matiere.plateforme == 1 and eleve_matiere.dateAbonnement is not null %}
+				<tr data-id-elevematiere="{{ eleve_matiere.id }}" data-date="{{ eleve_matiere.dateAbonnement|date('d/m/Y') }}" >
+					<td>
+						{% if eleve_matiere.dateAbonnement|date('Y-m-d') >= "now"|date('Y-m-d') %}
+							<i rel="tooltip" data-title="En cours de validité" class="icon-ok icon-large text-green cursor-help"></i>
+						{% else %}
+							<i rel="tooltip" data-title="Désactivé" class="icon-remove icon-large text-red cursor-help"></i>
+						{% endif %}
+					</td>
+					<td>
+						{{ eleve.username }}
+					</td>
+					<td>
+						Abonnement à la Plateforme <span class="label label-info">Mathématiques</span>
+					</td>
+					<td>
+						59,90 €
+					</td>
+					<td>
+						{% if eleve_matiere.prelevementPlateforme == 1 %}
+							Oui <button class="btn btn-xs btn-default annuler-abonnement position-relative-right-3" data-target="#annuler-abo" data-toggle="modal"><i class="icon-gear"></i> modifier</button>
+						{% else %}
+							<strong class="text-red">Non</strong>
+						{% endif %}
+					</td>
+					<td>
+						{{ eleve_matiere.dateAbonnement|date('d/m/Y') }}
+					</td>
+				</tr>
+				{% endfor %}
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+</div>
+<div class="clearfix"></div><br><br>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/parents/gestion-abonnements.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

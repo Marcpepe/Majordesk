@@ -1,0 +1,347 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Modifier un élève - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_gestion_eleves') }}"><i class="icon-angle-right"></i> Gestion des élèves</a></li>
+	<li><a><i class="icon-angle-right"></i> Modifier un élève</a></li>
+{% endblock %}
+ 
+{% block admin %}
+			<form class="form-inline" method="post" action="{{ path('majordesk_app_modifier_eleve', {'id' : eleve.id}) }}">
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Profil : <em>modifications en cours...</em></p>
+				</h3>
+					<div class="col-lg-4 pull-right">
+						<div class="btn-group pull-right">
+							<button type="submit" class="btn btn-success"><i class="icon-ok"></i></button>
+							<a class="btn btn-primary" href="{{ path('majordesk_app_profil_eleve', {'id' : eleve.id}) }}">Annuler</a>
+							<button type="button" class="btn btn-primary disabled"><i class="icon-spinner icon-spin"></i></button>
+							<button type="button" class="btn btn-warning disabled"><i class="icon-flag"></i></button>
+							<button type="button" class="btn btn-danger disabled"><i class="icon-ban-circle"></i></button>
+							<button type="button" class="btn btn-default disabled"><i class="icon-trash"></i></button>
+						</div>
+					</div>	
+					
+				<br><br><br>	
+				
+				{% if app.session.flashbag.get('warning') %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Champs incorrects :</strong><br><br>
+					{% for field in form %}
+						{{ form_errors(field) }}
+					{% endfor %}
+				</div>
+				{% endif %}
+				
+				<br>
+				<h4>Disponibilités</h4>
+				<br>
+				{% for disponibilite in form.disponibilites %}
+					<span>
+						<div class="col-lg-2">
+							<div class="input-group">
+								{{ form_widget(disponibilite.jour ) }}
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<div class="col-lg-2">
+							à partir de 
+						</div>
+						<div class="col-lg-2">
+							<span class="bootstrap-timepicker ">
+								{{ form_widget(disponibilite.heureDebut ) }}
+							</span>
+						</div>
+						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+						<div class="col-lg-5 pull-right">
+							Taux de remplissage : 
+							{{ form_widget(disponibilite.actif ) }}
+							<div class="btn-group" data-toggle="buttons-radio" >
+								  <button type="button" data-actif="0" class="btn btn-default remplissage-btn text-grey {% if disponibilite.vars.value.actif == '0' %}active{% endif %}"><i class="icon-lock"></i></button>
+								  <button type="button" data-actif="1" class="btn btn-default remplissage-btn text-green {% if disponibilite.vars.value.actif == '1' %}active{% endif %}"><strong>~0%</strong></button>
+								  <button type="button" data-actif="2" class="btn btn-default remplissage-btn text-yellow {% if disponibilite.vars.value.actif == '2' %}active{% endif %}"><strong>~50%</strong></button>
+								  <button type="button" data-actif="3" class="btn btn-default remplissage-btn text-red {% if disponibilite.vars.value.actif == '3' %}active{% endif %}"><strong>~100%</strong></button>
+							</div>
+						</div>
+						<br>
+						<br>
+					</span>
+				{% endfor %}
+			  
+				  <span class="disponibilites" data-prototype='
+					<span>
+						<div class="col-lg-2">
+							<div class="input-group">
+								<select id="elevetype_disponibilites___name___jour" name="elevetype[disponibilites][__name__][jour]" required="required" class="form-control"><option value="Lundi">Lundi</option><option value="Mardi">Mardi</option><option value="Mercredi">Mercredi</option><option value="Jeudi">Jeudi</option><option value="Vendredi">Vendredi</option><option value="Samedi">Samedi</option><option value="Dimanche">Dimanche</option></select>
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<div class="col-lg-2">
+						 : à partir de 
+						</div>
+						<div class="col-lg-2">
+							<span class="bootstrap-timepicker ">
+								<input type="text" id="elevetype_disponibilites___name___heureDebut" name="elevetype[disponibilites][__name__][heureDebut]" required="required"    class="form-control timepicker-debut" />
+							</span>
+						</div>
+						<br>
+						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+						<input type="hidden" id="elevetype_disponibilites___name___actif" name="elevetype[disponibilites][__name__][actif]" value="1" />
+						<br>
+					</span>
+				  '></span>	
+				
+				<br><br>
+				<h4>Majorclass</h4>
+				<br>		
+
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						
+						<tr>
+						  <td>Prénom</td>
+						  <td>
+							{{ form_widget(form.username) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nom</td>
+						  <td>
+							{{ form_widget(form.nom) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Programme</td>
+						  <td>
+							{{ form_widget(form.programme) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Lycée</td>
+						  <td>
+							{{ form_widget(form.lycee) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Téléphone</td>
+						  <td>
+							{{ form_widget(form.telephone) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre d'heures prises</td>
+						  <td>
+							{{ form_widget(form.heures_prises) }}
+						  </td>
+						</tr>
+						
+						<tr 
+						{% if eleve.flag %}
+						class="warning"
+						{% endif %}
+						>
+						  <td>Flag</td>
+						  <td>
+						  {% if eleve.flag %}
+							Oui
+							<i class="icon-flag icon-large pull-right text-yellow"></i>
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+
+					  </tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Majordesk</h4>
+				<br>		
+	
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						
+						<tr>
+						  <td>Id</td>
+						  <td>{{ eleve.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Id Famille</td>
+						  <td>{{ eleve.famille.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mail</td>
+						  <td>
+							{{ form_widget(form.mail) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Mot de passe</td>
+						  <td>
+							{{ eleve.password[:25] }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Salt</td>
+						  <td>
+							{{ eleve.salt }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Abonnement(s)</td>
+						  <td>
+							{% for eleve_matiere in form.eleve_matieres %}
+								<span>
+									<div class="col-lg-11 well">
+										Matiere :
+										{{ form_widget(eleve_matiere.matiere) }}
+										Plateforme :
+										{{ form_widget(eleve_matiere.plateforme) }}
+										Prélèvement plateforme :
+										{{ form_widget(eleve_matiere.prelevement_plateforme) }}
+										Cours :
+										{{ form_widget(eleve_matiere.cours) }}
+										Prélèvement cours :
+										{{ form_widget(eleve_matiere.prelevement_cours) }}
+										Heures prises :
+										{{ form_widget(eleve_matiere.heures_prises) }}
+										Date abonnement :
+										{{ form_widget(eleve_matiere.date_abonnement) }}
+									</div>
+									<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>
+							{% endfor %}
+							   <span class="abonnements" data-prototype='
+								<span>
+									<div class="col-lg-11 well">
+										Matiere :
+										{{ form_widget(form.eleve_matieres.vars.prototype.matiere)|e }}
+										Plateforme :
+										{{ form_widget(form.eleve_matieres.vars.prototype.plateforme)|e }}
+										Prélèvement plateforme :
+										{{ form_widget(form.eleve_matieres.vars.prototype.prelevement_plateforme)|e }}
+										Cours :
+										{{ form_widget(form.eleve_matieres.vars.prototype.cours)|e }}
+										Prélèvement cours :
+										{{ form_widget(form.eleve_matieres.vars.prototype.prelevement_cours)|e }}
+										Heures prises :
+										{{ form_widget(form.eleve_matieres.vars.prototype.heures_prises)|e }}
+										Date abonnement :
+										{{ form_widget(form.eleve_matieres.vars.prototype.date_abonnement)|e }}
+									</div>
+									<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+									<div class="clearfix"></div>
+									<br><br>
+								</span>
+							  '></span>
+							  <div class="clearfix"></div>
+						  </td>
+						</tr>
+						
+						{#<tr>
+						  <td>Date d'abonnement</td>
+						  <td>
+							{{ form_widget(form.date_abonnement) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Situtation</td>
+						  <td>
+							{{ form_widget(form.situation) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Autorisation de prélèvement</td>
+						  <td>
+							{{ form_widget(form.autorisation_prelevement) }}
+						  </td>
+						</tr>#}
+						
+						<tr>
+						  <td>Rythme d'exercices</td>
+						  <td>
+							{{ form_widget(form.rythme) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre de notifications</td>
+						  <td>
+							{{ form_widget(form.notifications) }}
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Date d'inscription</td>
+						  <td>
+							{{ form_widget(form.date_inscription) }}
+						  </td>
+						</tr>
+						
+						<tr 
+						{% if eleve.actif == false %}
+						class="danger"
+						{% endif %}
+						>
+						  <td>Bloqué</td>
+						  <td>
+						  {% if eleve.actif %}
+							Non
+						  {% else %}
+							Oui
+							<i class="icon-ban-circle icon-large pull-right text-red"></i>
+						  {% endif %}
+						  </td>
+						</tr>
+
+					  </tbody>
+					</table>
+				</div>
+				
+			{{ form_widget(form._token) }}
+			</form>
+			<br><br>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}	
+	{% javascripts filter='yui_js' 
+		'js/admin/modifier-eleve.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Gestionnaire d'exercices - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_contenu") }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+	<li><a><i class="icon-angle-right"></i> Gestionnaire d'exercices</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-th icon-large text-grey pull-left"></i> <p class="pull-left"><span class="hidden-xs">Gestionnaire d'exercices</span><span class="visible-xs">Gest° d'exercices</span></p>
+					<div class=" pull-right">	 
+						<a rel="fix-tooltip" data-placement="bottom" data-title="Créer un nouvel exercice" class="btn btn-info" href="{{ path('majordesk_app_ajouter_exercice') }}"><i class="icon-plus"></i> <i class="icon-file-text-alt"></i></a>
+					</div>
+				</h3>				
+				<br><br><br>
+				<div class="well well-small clearfix">
+					<h4 class="pull-left">Exercice(s) en cours d'édition</h4>
+					<span class="pull-right position-relative-down-12">Total : <span rel="tooltip" data-title="{{ exercices_en_edition|length }} exercice(s) en cours d'édition" id="badge-en-edition" class="badge cursor">{{ exercices_en_edition|length }}</span></span>
+				</div>
+				
+				{% for exercice in exercices_en_edition %}
+					<div class="exercice-en-edition panel panel-default clearfix" data-id="{{ exercice.id }}">	
+						<div class="panel-heading"><strong>Id :</strong> {{ exercice.id }}<br></div>
+						<div class="panel-body">
+							<div class="pull-left">
+								
+								<strong>Matière :</strong> 
+								{% if exercice.matiere is not null %}
+									{% if exercice.matiere.nom == matiere_mathematiques %}
+										<span class="label label-info">
+									{% elseif exercice.matiere.nom == matiere_physique %}
+										<span class="label label-success">					
+									{% elseif exercice.matiere.nom == matiere_biologie %}
+										<span class="label label-warning">					
+									{% elseif exercice.matiere.nom == matiere_anglais %}
+										<span class="label label-important">				
+									{% elseif exercice.matiere.nom == matiere_francais %}
+										<span class="label label-default">	
+									{% elseif exercice.matiere.nom == matiere_histoire %}
+										<span class="label">
+									{% endif %}										
+								{{ exercice.matiere.nom }}</span>
+								{% endif %}		<br>
+								<strong>Programme :</strong> {% if exercice.programme is not null %}{{ exercice.programme.nom }}{% endif %}<br>
+								<strong>Chapitre :</strong> {% if exercice.programme is not null %}{{ exercice.chapitre.nom }}{% endif %}<br>
+								<strong>Partie :</strong> {% if exercice.programme is not null %}{{ exercice.partie.nom|raw }}{% endif %}<br>
+								<strong>Niveau :</strong> {% if exercice.programme is not null %}{{ exercice.niveau }}{% endif %}
+							</div>
+							
+							<div class="pull-right">
+								<div class="btn-group pull-right">	 
+									<a rel="fix-tooltip" data-title="Afficher l'exercice" class="btn btn-default" href="{{ path('majordesk_app_afficher_exercice', {'id' : exercice.id } ) }}"><i class="icon-eye-open"></i></a>						
+									<a rel="fix-tooltip" data-title="Modifier l'exercice" class="btn btn-default {% if not exercice.isnew %}disabled{% endif %}" {% if exercice.isnew %}href="{{ path('majordesk_app_modifier_exercice', {'id' : exercice.id } ) }}"{% endif %}><i class="icon-edit"></i></a>						
+									<a rel="fix-tooltip" data-title="Dupliquer l'exercice" class="btn btn-default duplicate-exercice {% if not exercice.isnew %}disabled{% endif %}" {% if exercice.isnew %}href="{{ path('majordesk_app_dupliquer_exercice', {'id' : exercice.id } ) }}"{% endif %}><i class="icon-copy"></i></a>						
+									<button rel="fix-tooltip" data-title="Supprimer l'exercice" class="btn btn-default remove-exercice"><i class="icon-trash"></i></button>			  
+									<button rel="fix-tooltip" data-title="Mettre l'exercice en ligne" class="btn btn-default upload-exercice"><i class="icon-cloud-upload"></i></button>			  
+								</div>
+								<br><br><br><br>
+								<strong>Dernière modif :</strong> {{ exercice.dateEnregistrement|date("d/m/Y H:i:s") }}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				
+				<br>
+				<div class="well clearfix">
+					<h4 class="pull-left">Exercice(s) en ligne</h4>
+					<span class="pull-right position-relative-down-12">Total : <span rel="tooltip" data-title="{{ exercices_en_ligne|length }} exercice(s) en ligne" id="badge-en-ligne" class="badge cursor">{{ exercices_en_ligne|length }}</span></span>
+					<br><br>
+					<form class="form-inline">
+						<div class="col-lg-2">
+						{{ form_widget(form.matiere) }}
+						</div>
+						<div class="col-lg-2">
+						{{ form_widget(form.programme) }}	
+						</div>
+						<div class="col-lg-3">
+						{% if form.chapitre is defined %}
+							{{ form_widget(form.chapitre) }}
+						{% else %}
+							<select id="exercicesselectortype_chapitre" name="exercicesselectortype[chapitre]" required="required" class="form-control"><option disabled="disabled" selected="selected">Choisir un chapitre </option></select>
+						{% endif %}
+						</div>
+						<div class="col-lg-3">
+						{% if form.partie is defined %}
+							{{ form_widget(form.partie) }}
+						{% else %}
+							<select id="exercicesselectortype_partie" name="exercicesselectortype[partie]" required="required" class="form-control"><option disabled="disabled" selected="selected">Choisir une partie</option></select>
+						{% endif %}
+						</div>
+					</form>
+					<span class="pull-right position-relative-down-12">Affichés : <span rel="tooltip" data-title="Exercices affichés" id="badge-en-ligne-selection" class="badge cursor">0</span></span>
+				</div>
+				
+				<div id="exercices-en-ligne-selected"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}	
+	{% javascripts filter='yui_js' 
+		'js/admin/gestionnaire-exercices.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

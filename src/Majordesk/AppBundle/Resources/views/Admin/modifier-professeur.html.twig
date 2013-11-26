@@ -1,0 +1,357 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Modifier un professeur - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_professeurs") }}"><i class="icon-angle-right"></i> Gestion des professeurs</a></li>
+	<li><a><i class="icon-angle-right"></i> Modifier un professeur</a></li>
+{% endblock %}
+ 
+{% block admin %}
+			<form class="form-inline" method="post" action="{{ path('majordesk_app_modifier_professeur', {'id' : professeur.id}) }}">
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-user-md icon-large text-red pull-left"></i> <p class="pull-left">Profil : <em>modification en cours...</em></p>
+				</h3>	
+				
+					<div class="col-lg-4 pull-right">
+						<div class="btn-group pull-right">
+						  <button type="submit" class="btn btn-success"><i class="icon-ok"></i></button>
+							<a class="btn btn-primary" href="{{ path('majordesk_app_profil_professeur', {'id' : professeur.id}) }}">Annuler</a>
+							<button type="button" class="btn btn-primary disabled"><i class="icon-spinner icon-spin"></i></button>
+						  <button class="btn btn-warning disabled" id="flag"><i class="icon-flag"></i></button>
+						  <button class="btn btn-danger disabled" type="button" data-toggle="modal" data-target="#actif-modal" id="actif-trigger"><i class="icon-ban-circle"></i></button>
+						  <button class="btn btn-default disabled"><i class="icon-trash"></i></button>
+						</div>
+					</div>	
+				
+				<br><br><br>
+				
+				{% if app.session.flashbag.get('warning') %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Champs incorrects :</strong><br><br>
+					{% for field in form %}
+						{{ form_errors(field) }}
+					{% endfor %}
+				</div>
+				{% endif %}
+				
+				<br>
+				<h4>Disponibilités</h4>
+				<br>
+				{% for disponibilite in form.disponibilites %}
+					<span>
+						<div class="col-lg-2">
+							<div class="input-group">
+								{{ form_widget(disponibilite.jour ) }}
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<div class="col-lg-1">
+							: 
+						</div>
+						<div class="col-lg-1">
+							<span class="bootstrap-timepicker ">
+								{{ form_widget(disponibilite.heureDebut ) }}
+							</span>
+						</div>
+						<div class="col-lg-1">
+							à 
+						</div>
+						<div class="col-lg-1">
+							<span class="bootstrap-timepicker ">
+								{{ form_widget(disponibilite.heureFin ) }}
+							</span>
+						</div>
+						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+						<div class="col-lg-5 pull-right">
+							Taux de remplissage : 
+							{{ form_widget(disponibilite.actif ) }}
+							<div class="btn-group" data-toggle="buttons-radio" >
+								  <button type="button" data-actif="0" class="btn btn-default remplissage-btn text-grey {% if disponibilite.vars.value.actif == '0' %}active{% endif %}"><i class="icon-lock"></i></button>
+								  <button type="button" data-actif="1" class="btn btn-default remplissage-btn text-green {% if disponibilite.vars.value.actif == '1' %}active{% endif %}"><strong>~0%</strong></button>
+								  <button type="button" data-actif="2" class="btn btn-default remplissage-btn text-yellow {% if disponibilite.vars.value.actif == '2' %}active{% endif %}"><strong>~50%</strong></button>
+								  <button type="button" data-actif="3" class="btn btn-default remplissage-btn text-red {% if disponibilite.vars.value.actif == '3' %}active{% endif %}"><strong>~100%</strong></button>
+							</div>
+						</div>
+						<br>
+						<br>
+					</span>
+				{% endfor %}
+			  
+				  <span class="disponibilites" data-prototype='
+					<span>
+						<div class="col-lg-2">
+							<div class="input-group">
+							<select id="professeurtype_disponibilites___name___jour" name="professeurtype[disponibilites][__name__][jour]" required="required"    class="form-control"><option value="Lundi">Lundi</option><option value="Mardi">Mardi</option><option value="Mercredi">Mercredi</option><option value="Jeudi">Jeudi</option><option value="Vendredi">Vendredi</option><option value="Samedi">Samedi</option><option value="Dimanche">Dimanche</option></select>
+							<span class="input-group-addon"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<div class="col-lg-1">
+						  :
+						</div>
+						<div class="col-lg-2">
+							<span class="bootstrap-timepicker ">
+								<input type="text" id="professeurtype_disponibilites___name___heureDebut" name="professeurtype[disponibilites][__name__][heureDebut]" required="required"    class="form-control timepicker-debut" />
+							</span>
+						</div>
+						<div class="col-lg-1">
+						  à
+						</div>
+						<div class="col-lg-2">
+							<span class="bootstrap-timepicker">
+								<input type="text" id="professeurtype_disponibilites___name___heureFin" name="professeurtype[disponibilites][__name__][heureFin]" required="required"    class="form-control timepicker-fin" />
+							</span> 
+						</div>
+						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+						<input type="hidden" id="professeurtype_disponibilites___name___actif" name="professeurtype[disponibilites][__name__][actif]" value="1" />
+						<br><br>
+					</span>
+				  '></span>				
+				
+				<br><br>		
+				<h4>Majorclass</h4>
+				<br>
+
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+					  
+						<tr>
+						  <td>Id</td>
+						  <td>{{ professeur.id }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Prénom</td>
+						  <td>{{ form_widget(form.username) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nom</td>
+						  <td>{{ form_widget(form.nom ) }}</td>
+						</tr>
+						
+						<tr class="info">
+						  <td>Elève(s)</td>
+						  <td>	
+							{% for eleve in form.eleves %}
+								<span>	
+									<div class="col-lg-5">
+										<div class="input-group">
+											{{ form_widget(eleve) }}
+											<span class="input-group-addon"><i class="icon-user"></i></span>
+										</div>
+									</div>
+									<button type="button" class="btn btn-danger remove-eleve-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>
+							{% endfor %}	
+						  
+							  <span class="eleves" data-prototype='
+								<span>
+									<div class="col-lg-5">
+										<div class="input-group">
+											{{ form_widget(form.eleves.vars.prototype) }}
+											<span class="input-group-addon"><i class="icon-user"></i></span>
+										</div>
+									</div>
+									<button type="button" class="btn btn-danger remove-eleve-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>							
+							  '></span>
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Téléphone</td>
+						  <td>{{ form_widget(form.telephone ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Adresse</td>
+						  <td>{{ form_widget(form.adresse ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Code postal</td>
+						  <td>{{ form_widget(form.code_postal ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Ville</td>
+						  <td>{{ form_widget(form.ville ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Prépa</td>
+						  <td>{{ form_widget(form.prepa ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Lycée</td>
+						  <td>{{ form_widget(form.lycee ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>N° Sécurité sociale</td>
+						  <td>{{ form_widget(form.securite_sociale ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>RIB</td>
+						  <td>{{ form_widget(form.rib ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Moyen de transport</td>
+						  <td>{{ form_widget(form.transport ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre maximum d'heures par semaine</td>
+						  <td>{{ form_widget(form.nb_heures_max ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Matière(s) enseignée(s)</td>
+						  <td>
+							{% for matiere in form.matieres %}
+								<span>
+									<div class="col-lg-5">
+										{{ form_widget(matiere) }}
+									</div>
+									<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>
+							{% endfor %}
+							   <span class="abonnements" data-prototype='
+								<span>
+									<div class="col-lg-5">
+										{{ form_widget(form.matieres.vars.prototype)|e }}
+									</div>
+									<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>
+							  '></span>
+						  </td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre total d'heures donnees</td>
+						  <td>{{ form_widget(form.heures_donnees ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Date d'inscription</td>
+						  <td>{{ form_widget(form.date_inscription ) }}</td>
+						</tr>
+						
+						<tr class="
+						{% if professeur.flag %}
+							warning 
+						{% endif %}
+						flag">
+						  <td>Flag</td>
+						  <td>
+						  {% if professeur.flag %}
+							Oui
+							<i class="icon-flag icon-large pull-right text-yellow"></i>
+						  {% else %}
+							Non
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Majordesk</h4>
+				<br>
+				
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+					  
+						<tr>
+						  <td>Mail</td>
+						  <td>{{ form_widget(form.mail ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mot de passe</td>
+						  <td>{{ professeur.password[:25] }}...</td>
+						</tr>
+						
+						<tr>
+						  <td>Salt</td>
+						  <td>{{ professeur.salt }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Notifications</td>
+						  <td>{{ form_widget(form.notifications ) }}</td>
+						</tr>
+						
+						<tr class="
+						{% if professeur.actif == false %}
+							danger 
+						{% endif %}
+						actif">
+						  <td>Bloqué</td>
+						  <td>
+						  {% if professeur.actif %}
+							Non
+						  {% else %}
+							Oui
+							<i class="icon-ban-circle icon-large pull-right text-red"></i>
+						  {% endif %}
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Fin des disponibilités</h4>
+				<br>
+				<div class="col-lg-3">
+					<div class="input-group">
+						{{ form_widget(form.fin_dispo ) }}
+						<span class="input-group-addon" style="position:relative;top:1px;"><i class="icon-calendar"></i></span>
+					</div>
+				</div>
+		
+			
+			{{ form_widget(form._token) }}
+			</form>
+			
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/modifier-professeur.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -1,0 +1,1118 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Editeur d'exercices - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_contenu") }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+	<li><a href="{{ path("majordesk_app_gestionnaire_exercices") }}"><i class="icon-angle-right"></i> Gestionnaire d'exercices</a></li>
+	<li><a><i class="icon-angle-right"></i>{% if code_modification == 1 %} Modifier {% elseif code_modification == 2 %} Dupliquer {% else %} Ajouter {% endif %}un exercice</a></li>
+{% endblock %}
+ 
+{% block admin %}	
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				{% if code_modification == 1 %}
+				<form method="post" action="{{ path('majordesk_app_modifier_exercice', {'id' : form.mod_exercice.vars.value.id, 'code_modification' : 1 }) }}">
+				{% else %}
+				<form method="post" action="{{ path('majordesk_app_modifier_exercice', {'id' : 0, 'code_modification' : 0 }) }}">
+				{% endif %}
+				<div id="panel panel-default" class="well">	
+					<h3>
+						<i class="icon-edit icon-large text-grey"></i> Editeur d'exercices
+					
+					<div class="btn-group pull-right">
+						<button rel="fix-tooltip" data-title="Valider les modifications" type="submit" class="btn btn-default cannot-disable"><i class="icon-lock"></i></button>
+						<button type="button" class="btn btn-default cursor-forbidden cannot-disable active"><i class="icon-unlock"></i></button>
+					</div> 
+					</h3>
+				</div>
+				
+				<div id="modal-stack"></div>
+				
+				<!-- case modal --> 
+				<div id="add-case" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-case" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer une case réponse</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-simple">Clavier simple</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-point">Clavier points</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-avancee">Clavier avancé</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-case" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- case puissance modal --> 
+				<div id="add-case-puissance" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-case-puissance" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer une case réponse en puissance</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-puissance-simple">Clavier simple</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-puissance-point">Clavier points</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-puissance-avancee">Clavier avancé</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-case-puissance" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- case indice modal --> 
+				<div id="add-case-indice" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-case-indice" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer une case réponse en indice</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-indice-simple">Clavier simple</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-indice-point">Clavier points</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-case-indice-avancee">Clavier avancé</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-case-indice" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- liste der modal --> 
+				<div id="add-liste-deroulante" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-case-indice" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer une case réponse en indice</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-liste-der">Liste vide</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-liste-der-signe">Liste + ou -</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-liste-der-croissance">Liste ↗ ou ↘</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-liste-der-zero">Liste || ou 0</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-case-indice" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- figure/graphe/diagramme modal --> 
+				<div id="add-figure-graph" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-figure-graph" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer un(e) Figure/Graphe/Diagramme</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-jsgbox-figure">Figure</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted add-jsgbox-graphe">Graphe</button>
+							<button type="button" data-dismiss="modal" class="btn btn-default-inverted disabled">Diagramme</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-figure-graph" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- radio modal --> 
+				<div id="add-radio" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-radio" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer des radiobuttons</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-radio-2">2</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-radio-3">3</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-radio-4">4</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-radio-5">5</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-radio-6">6</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-radio" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- checkbox modal --> 
+				<div id="add-checkbox" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-checkbox" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer des checkboxes</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-checkbox-1">1</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-checkbox-2">2</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-checkbox-3">3</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-checkbox-4">4</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-checkbox-5">5</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-checkbox-6">6</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-checkbox" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- vignettes modal --> 
+				<div id="add-vignettes" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-vignettes" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer des vignettes</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-2">2</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-3">3</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-4">4</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-5">5</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-6">6</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-7">7</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-8">8</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-9">9</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-10">10</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-11">11</button>
+							<button type="button" data-dismiss="modal" class="btn btn-success-inverted add-vignette-12">12</button>
+						</p>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-vignettes" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- tableau modal --> 
+				<div id="add-tableau" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-tableau" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer un tableau</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<div class="col-lg-2">
+							Lignes : 
+							</div>
+							<div class="col-lg-2">
+								<select id="add-tableau-lignes" class="form-control">
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+								</select>
+							</div>
+							<div class="col-lg-3">
+							Colonnes : 
+							</div>
+							<div class="col-lg-2">
+								<select id="add-tableau-colonnes" class="form-control">
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+								</select>
+							</div>
+						</p>
+						<br>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-tableau" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+						<button type="button" class="btn btn-success add-selected-tableau" data-dismiss="modal"> Ok</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				<!-- tableau analyse modal --> 
+				<div id="add-tableau-analyse" data-backdrop="static" data-keyboard="false" class="modal fade">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close cancel-tableau-analyse" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Insérer un tableau d'analyse</h4>
+					  </div>
+					  <div class="modal-body">
+						<p>
+							<div class="col-lg-2">
+							Lignes : 
+							</div>
+							<div class="col-lg-2">
+								<select id="add-tableau-analyse-lignes" class="form-control">
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select>
+							</div>
+							<div class="col-lg-4">
+							Valeur(s) intermédiaire(s) : 
+							</div>
+							<div class="col-lg-2">
+								<select id="add-tableau-analyse-valeurs" class="form-control">
+									<option value="1">0</option>
+									<option value="2">1</option>
+									<option value="3">2</option>
+									<option value="4">3</option>
+								</select>
+							</div>
+						</p>
+						<br>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default cancel-tableau-analyse" data-dismiss="modal"><i class="icon-left-angle"></i> Annuler</button>
+						<button type="button" class="btn btn-success add-selected-tableau-analyse" data-dismiss="modal"> Ok</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				{% if app.session.flashbag.get('warning') %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Champs incorrects :</strong><br><br>
+					{#{{ errors }}#}
+					{{ form_errors(form.mod_exercice) }}
+					{% for question in form.mod_questions %}
+						{{ form_errors(question) }}
+						{% for macro in question.mod_macros %}
+								{{ form_errors(macro) }}
+						{% endfor %}
+						{% for mapping in question.mod_mappings %}
+								{{ form_errors(mapping) }}
+						{% endfor %}
+					{% endfor %}
+				</div>
+				{% endif %}
+				
+				<div class="well-white clearfix">	
+					<div class="col-lg-2">
+					{{ form_widget(form.mod_exercice.matiere) }}
+					</div>
+					<div class="col-lg-2">
+					{{ form_widget(form.mod_exercice.programme) }}		
+					</div>
+					<div class="col-lg-4">
+					{% if form.mod_exercice.chapitre is defined %}
+						{{ form_widget(form.mod_exercice.chapitre) }}
+					{% else %}
+						<select id="exerciceformulairetype_mod_exercice_chapitre" name="exerciceformulairetype[mod_exercice][chapitre]" required="required" class="form-control"><option  disabled="disabled" selected="selected">Choisir un chapitre </option></select>
+					{% endif %}
+					</div>
+					<div class="col-lg-3">
+					{% if form.mod_exercice.partie is defined %}
+						{{ form_widget(form.mod_exercice.partie) }}
+					{% else %}
+						<select id="exerciceformulairetype_mod_exercice_partie" name="exerciceformulairetype[mod_exercice][partie]" required="required" class="form-control"><option  disabled="disabled" selected="selected">Choisir une partie</option></select>
+					{% endif %}
+					</div>
+					<div class="col-lg-1">
+					{{ form_widget(form.mod_exercice.niveau) }}
+					</div>
+				</div>
+				
+
+				<div class="col-xs-1 col-lg-1">
+					<br><i class="icon-time icon-large container-fluid" id="clock" ></i>
+				</div>
+				<div class="col-xs-11 col-lg-11">		
+					<h4>Exercice</h4>
+				</div>
+				<div class="clearfix"></div>
+				<br>
+				
+				<!--INTRO-->
+				<div class="question" data-numero-question="0">	
+				{% set numero_question = 0 %}	
+					{% if form.mod_exercice.vars.value.niveau == 0 %}
+					<div class="col-md-offset-1 col-lg-11">
+						<div class="alert alert-info">
+						<!--Enoncé-->
+							{% for macro in form.mod_exercice.mod_macros %}
+							{% set loop_macro = loop.index0 %}
+							{% set numero_macro = loop.index %}
+							{% set type_macro = macro.vars.value.type %}
+								{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ ']', 'fond' : 1 }) }}	
+									{% if macro.vars.value.type == macro_type_normal or macro.vars.value.type == macro_type_info %}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte (message)' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_jsgbox %}
+												{{ include('ModElement/jsgbox-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsggraph %}
+												{{ include('ModElement/jsggraph-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau_analyse %}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% endif %} 
+							{% endfor %}
+						</div>	
+						<!---------->
+					</div>
+					{% else %}
+					<div class="col-md-offset-1 col-lg-6">
+						<!--Enoncé-->
+							{% for macro in form.mod_exercice.mod_macros %}
+							{% set loop_macro = loop.index0 %}
+							{% set numero_macro = loop.index %}
+							{% set type_macro = macro.vars.value.type %}
+								{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ ']', 'fond' : 2 }) }}
+									{% if macro.vars.value.type == macro_type_normal %}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_jsgbox %}
+													{{ include('ModElement/jsgbox-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsggraph %}
+													{{ include('ModElement/jsggraph-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau %}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau_analyse %}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_exercice][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% endif %} 
+							{% endfor %}
+							
+						<!---------->
+					</div>
+					<div class="col-lg-5"></div>
+					{% endif %}
+				</div>
+				<div class="clearfix"></div>
+				<br>
+				<!--------->
+				
+				{% for question in form.mod_questions %}
+				{% set loop_question = loop.index0 %}
+				{% set numero_question = loop.index %}
+				<!--QUESTION-->
+				<div class="question" data-numero-question="{{ numero_question }}">
+					<br>
+					<input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][numero]" value="{{ question.vars.value.numero }}" /> 
+					<div class="col-lg-1">
+						{{ include('Buttons/remove-question-button.html.twig') }} {{ include('Buttons/add-question-button.html.twig') }}
+						<br>
+						<i rel="tooltip" data-title="Question non commençée" class="icon-remove icon-large text-light-grey"></i> 
+						<span rel="tooltip" data-title="Nombre d'essai(s)" class="badge">0</span>
+					</div>
+					<div class="col-lg-6">
+						<!--Enoncé-->
+							{% for macro in question.mod_macros %}
+							{% set loop_macro = loop.index0 %}
+							{% set numero_macro = loop.index %}
+							{% set type_macro = macro.vars.value.type %}
+							{% set couche_macro = macro.vars.value.couche %}
+								{% if macro.vars.value.fond == 0 %}
+									{% if macro.vars.value.type == macro_type_normal %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_case %}
+												{{ include('ModElement/case.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_puissance %}
+												{{ include('ModElement/case-puissance.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_indice %}
+												{{ include('ModElement/case-indice.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_liste_der %}
+												{{ include('ModElement/liste-der.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsgbox %}
+												{{ include('ModElement/jsgbox.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsggraph %}
+												{{ include('ModElement/jsggraph.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_integrale %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+										<br>∫ <em>Intégrale entre [a] de [expression] et [b], (variable: [x])</em>
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_case %}
+												{{ include('ModElement/case.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_puissance %}
+												{{ include('ModElement/case-puissance.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_indice %}
+												{{ include('ModElement/case-indice.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_liste_der %}
+												{{ include('ModElement/liste-der.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_fraction %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_case %}
+												{{ include('ModElement/case.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_puissance %}
+												{{ include('ModElement/case-puissance.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_indice %}
+												{{ include('ModElement/case-indice.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_denominateur %}
+												{{ include('ModElement/denominateur.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_numerateur %}
+												{{ include('ModElement/numerateur.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_liste_der %}
+												{{ include('ModElement/liste-der.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_radio %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_radiotick %}
+												{{ include('ModElement/radiotick.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_jsgbox %}
+												{{ include('ModElement/jsgbox.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsggraph %}
+												{{ include('ModElement/jsggraph.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_checkbox %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_checkboxtick %}
+												{{ include('ModElement/checkboxtick.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_jsgbox %}
+												{{ include('ModElement/jsgbox.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsggraph %}
+												{{ include('ModElement/jsggraph.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_vignettes %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+									{% set numero_vignette = 0 %}	
+										<span class="input-eleve"></span>
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_vignette' : numero_vignette, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_vignette' : numero_vignette, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_vignette' : numero_vignette, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_vignette %}
+												{% set numero_vignette = numero_vignette + 1 %}
+												{{ include('ModElement/vignette.html.twig', { 'numero_vignette' : numero_vignette, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_jsgbox %}
+												{{ include('ModElement/jsgbox.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_jsggraph %}
+												{{ include('ModElement/jsggraph.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_case %}
+												{{ include('ModElement/case.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_puissance %}
+												{{ include('ModElement/case-puissance.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_indice %}
+												{{ include('ModElement/case-indice.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_liste_der %}
+												{{ include('ModElement/liste-der.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau_analyse %}
+									{{ include('ModMacro/macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 0 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_case %}
+												{{ include('ModElement/case.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_puissance %}
+												{{ include('ModElement/case-puissance.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_case_indice %}
+												{{ include('ModElement/case-indice.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'clavier' : element.vars.value.clavier }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_liste_der %}
+												{{ include('ModElement/liste-der.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% endif %} 
+								{% endif %} 
+							{% endfor %}					
+						<!---------->
+						<span><br><button rel="tooltip" data-title="Valider" class="btn btn-mini btn-success pull-right" type="button" disabled>Valider <i class="icon-ok text-white"></i></button></span>
+					</div>
+					<div class="col-lg-5">
+						<!--Correction-->	
+						{% set has_erreur_macro = 0 %}
+						{% set has_indice_macro = 0 %}
+						{% set has_correction_macro = 0 %}
+						{% for macro in question.mod_macros %}
+							{% if macro.vars.value.fond == 3 or macro.vars.value.type == macro_type_erreur %}
+								{% set has_erreur_macro = 1 %}
+							{% elseif macro.vars.value.fond == 4 or macro.vars.value.type == macro_type_indice %}
+								{% set has_indice_macro = 1 %}
+							{% elseif macro.vars.value.fond == 5 or macro.vars.value.type == macro_type_correction %}
+								{% set has_correction_macro = 1 %}
+							{% endif %}
+						{% endfor %}
+						
+						{% if has_erreur_macro == 1 %}
+							<div class="alert alert-danger">
+							{% for macro in question.mod_macros %}
+							{% set loop_macro = loop.index0 %}
+							{% set numero_macro = loop.index %}
+							{% set type_macro = macro.vars.value.type %}
+							{% set couche_macro = macro.vars.value.couche %}
+								{% if macro.vars.value.fond == 3 or macro.vars.value.type == macro_type_erreur %}
+									{% if macro.vars.value.type == macro_type_normal or macro.vars.value.type == macro_type_erreur %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 3 }) }}	
+											{% for element in macro.mod_elements %}
+											{% set loop_element = loop.index0 %}
+											{% set numero_element = loop.index %}
+												{% if element.vars.value.type == element_type_text %}
+													{{ include('ModElement/textarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte (message)' }) }}
+												{% elseif element.vars.value.type == element_type_maths %}
+													{{ include('ModElement/mathsarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu }) }}
+												{% elseif element.vars.value.type == element_type_br %}
+													{{ include('ModElement/br-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+												{% elseif element.vars.value.type == element_type_jsgbox %}
+													{{ include('ModElement/jsgbox-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+												{% elseif element.vars.value.type == element_type_jsggraph %}
+													{{ include('ModElement/jsggraph-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+												{% endif %}
+											{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 3 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau_analyse %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 3 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% endif %} 
+								{% endif %} 
+							{% endfor %}	
+							</div>
+						{% endif %}
+						{% if has_indice_macro == 1 %}
+							<div class="alert alert-warning">
+							{% for macro in question.mod_macros %}
+							{% set loop_macro = loop.index0 %}
+							{% set numero_macro = loop.index %}
+							{% set type_macro = macro.vars.value.type %}
+							{% set couche_macro = macro.vars.value.couche %}
+								{% if macro.vars.value.fond == 4 or macro.vars.value.type == macro_type_indice %}
+									{% if macro.vars.value.type == macro_type_normal or macro.vars.value.type == macro_type_indice %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 4 }) }}	
+											{% for element in macro.mod_elements %}
+											{% set loop_element = loop.index0 %}
+											{% set numero_element = loop.index %}
+												{% if element.vars.value.type == element_type_text %}
+													{{ include('ModElement/textarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte (message)' }) }}
+												{% elseif element.vars.value.type == element_type_maths %}
+													{{ include('ModElement/mathsarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu }) }}
+												{% elseif element.vars.value.type == element_type_br %}
+													{{ include('ModElement/br-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+												{% elseif element.vars.value.type == element_type_jsgbox %}
+													{{ include('ModElement/jsgbox-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+												{% elseif element.vars.value.type == element_type_jsggraph %}
+													{{ include('ModElement/jsggraph-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+												{% endif %}
+											{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 4 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau_analyse %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 4 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+							</div>
+						{% endif %}
+						{% if has_correction_macro == 1 %}
+							<div class="alert alert-success">
+							{% for macro in question.mod_macros %}
+							{% set loop_macro = loop.index0 %}
+							{% set numero_macro = loop.index %}
+							{% set type_macro = macro.vars.value.type %}
+							{% set couche_macro = macro.vars.value.couche %}
+								{% if macro.vars.value.fond == 5 or macro.vars.value.type == macro_type_correction %}
+									{% if macro.vars.value.type == macro_type_normal or macro.vars.value.type == macro_type_correction %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 5 }) }}	
+											{% for element in macro.mod_elements %}
+											{% set loop_element = loop.index0 %}
+											{% set numero_element = loop.index %}
+												{% if element.vars.value.type == element_type_text %}
+													{{ include('ModElement/textarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte (message)' }) }}
+												{% elseif element.vars.value.type == element_type_maths %}
+													{{ include('ModElement/mathsarea-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu }) }}
+												{% elseif element.vars.value.type == element_type_br %}
+													{{ include('ModElement/br-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+												{% elseif element.vars.value.type == element_type_jsgbox %}
+													{{ include('ModElement/jsgbox-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+												{% elseif element.vars.value.type == element_type_jsggraph %}
+													{{ include('ModElement/jsggraph-peripheric.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']', 'contenu' : element.vars.value.contenu, 'clavier' : element.vars.value.clavier }) }}
+												{% endif %}
+											{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 5 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% elseif macro.vars.value.type == macro_type_tableau_analyse %}
+									{{ include('ModMacro/peripheric-macro.html.twig', { 'type_macro' : type_macro, 'couche_macro' : couche_macro, 'numero_macro' : numero_macro, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ ']', 'fond' : 5 }) }}
+									{% set numero_vignette = 0 %}	
+										{% for element in macro.mod_elements %}
+										{% set loop_element = loop.index0 %}
+										{% set numero_element = loop.index %}
+											{% if element.vars.value.type == element_type_text %}
+												{{ include('ModElement/textarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu, 'placeholder' : 'Texte' }) }}
+											{% elseif element.vars.value.type == element_type_maths %}
+												{{ include('ModElement/mathsarea.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' , 'contenu' : element.vars.value.contenu }) }}
+											{% elseif element.vars.value.type == element_type_br %}
+												{{ include('ModElement/br.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_tr %}
+												{{ include('ModElement/tr.html.twig', { 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% elseif element.vars.value.type == element_type_td %}
+												{{ include('ModElement/td.html.twig', { 'type' : element_type_td, 'numero_element' : numero_element, 'name' : 'exerciceformulairetype[mod_questions][' ~ loop_question ~ '][mod_macros][' ~ loop_macro ~ '][mod_elements][' ~ loop_element ~ ']' }) }}
+											{% endif %}
+										{% endfor %}
+									</div>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+							</div>
+						{% endif %}
+
+							
+						<!-------------->
+					</div>	
+				</div>
+				<!-------------->
+				
+				<!--NE RIEN INSERER!-->
+				
+				<!--REPONSE-->				
+				<div class="reponse row">	
+				<br>
+					<div class="col-md-offset-1 col-lg-10 well">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Réponse</th>
+										<th>Type de réponse</th>
+										<th>Dépendances</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% set dependances_array = [] %}
+									{% for mapping in question.mod_mappings %}
+										{% if mapping.mod_reponses|length > 1 and mapping.vars.value.isMultiple %}
+											{% set dependances_array = dependances_array|merge([loop.index0]) %}
+										{% endif %}
+									{% endfor %}
+									{% for mapping in question.mod_mappings %}
+									{% set loop_mapping = loop.index0 %}
+										{% for reponse in mapping.mod_reponses %}
+										{% set loop_reponse = loop.index0 %}
+											<tr data-loop-mapping="{{ loop_mapping }}" data-loop-reponse="{{ loop.index0 }}" data-id-reponse="{{ reponse.vars.value.id }}" data-numero-reponse="{{ reponse.vars.value.numero }}" >
+												<td>
+													<strong>{{ reponse.vars.value.numero }}</strong>{{ form_widget(reponse.numero) }}
+												</td>
+												<td>
+												{% if reponse.vars.value.clavier[:5] == 'radio' %}
+													<select name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][contenu]" class="form-control">{% for i in 1..reponse.vars.value.clavier[6:] %}<option value="{{ i }}" {% if reponse.vars.value.contenu == i %}selected="selected"{% endif %}>{{ i }}</option>{% endfor %}</select> <input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][clavier]" value="{{ reponse.vars.value.clavier }}" />
+												{% elseif reponse.vars.value.clavier[:8] == 'checkbox' %}
+													<select name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][contenu]" class="form-control"><option value="1" {% if reponse.vars.value.contenu == 1 %}selected="selected"{% endif %}>Cochée</option><option value="0" {% if reponse.vars.value.contenu == 0 %}selected="selected"{% endif %}>Non cochée</option></select> <input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][clavier]" value="{{ reponse.vars.value.clavier }}" />
+												{% elseif reponse.vars.value.clavier[:8] == 'vignette' %}
+													<select name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][contenu]" class="form-control">{% for i in 0..reponse.vars.value.clavier[10:] %}<option value="{{ i }}" {% if reponse.vars.value.contenu == i %}selected="selected"{% endif %}>{% if i > 0 %} Vignette n°{{ i }}{% else %}Non classée{% endif %}</option>{% endfor %}</select> <input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][clavier]" value="{{ reponse.vars.value.clavier }}" />
+												{% elseif reponse.vars.value.clavier == 'liste_der' %}
+													<select name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][contenu]" class="form-control">{% for i in 1..10 %}<option value="{{ i }}" {% if reponse.vars.value.contenu == i %}selected="selected"{% endif %}>{{ i }}</option>{% endfor %}</select> <input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][clavier]" value="{{ reponse.vars.value.clavier }}" />
+												{% else %}
+													<div class="mathscase case cursor" data-clavier="{{ reponse.vars.value.clavier }}" data-layer="0"><math>{{ reponse.vars.value.contenu|raw }}</math></div> <input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][contenu]" value="{{ reponse.vars.value.contenu|raw }}" /> <input type="hidden" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ loop_mapping }}][mod_reponses][{{ loop_reponse }}][clavier]" value="{{ reponse.vars.value.clavier }}" /> <button rel="tooltip" data-title="Ajouter une réponse alternative" type="button" class="btn btn-info add-reponse"><i class="icon-plus"></i></button> <button rel="tooltip" data-title="Supprimer cette réponse" type="button" class="btn btn-danger remove-reponse"><i class="icon-remove"></i></button>
+												{% endif %}
+													<br><span> <!--class="position-relative-down-8"--> {% for tag in reponse.vars.value.tags %}<span class="existing-tag"> <span class="label">{{ tag.nom }}</span> <button type="button" rel="tooltip" data-title="Supprimer" data-placement="right" class="btn btn-mini btn-danger remove-tag"><i class="icon-remove"></i></button> </span>{% endfor %} <button type="button" rel="fix-tooltip" data-title="Ajouter un tag" data-placement="right" class="btn btn-default btn-sm add-tag"><i class="icon-plus"></i></button> </span>
+												</td>
+												<td>{{ form_widget(reponse.type) }}</td>
+												<td>
+													{% set disableOtherChecks = false %}
+													{% for dependance in dependances_array %}
+														{% if dependance == loop_mapping %}
+															{% set disableOtherChecks = true %}
+														{% endif %}
+													{% endfor %}
+													{% for dependance in dependances_array %}
+														{% if disableOtherChecks %}
+															{% if dependance == loop_mapping %}
+																<input data-check-numero="{{ loop.index }}" class="dependance-checkbox" type="checkbox" checked="checked">
+															{% else %}
+																<input data-check-numero="{{ loop.index }}" class="dependance-checkbox" type="checkbox" disabled="disabled">
+															{% endif %}
+														{% else %}
+															<input data-check-numero="{{ loop.index }}" class="dependance-checkbox" type="checkbox">
+														{% endif %}
+													{% endfor %}
+													{% if disableOtherChecks %}
+														<input data-check-numero="{{ dependances_array|length + 1 }}" class="dependance-checkbox" type="checkbox" disabled="disabled">
+													{% else %}
+														<input data-check-numero="{{ dependances_array|length + 1 }}" class="dependance-checkbox" type="checkbox">
+													{% endif %}
+												</td>
+											</tr>
+										{% endfor %}
+									{% endfor %}
+									<tr>
+										<td>
+										</td>
+										
+										<td>
+										</td>
+										
+										<td>	
+											<strong>Type de dépendance :</strong><br><br>
+											Association <br>
+											Association par groupes<br>
+											Fraction<br>
+											Permutation circulaire<br>
+											Permutation circulaire par couple<br>
+											Permutation totale<br>
+											Permutation totale par couple
+										</td>
+										
+										<td class="dependance_td">
+											{% for dependance in dependances_array %}
+											{% set loop_dependance = loop.index %}
+												<div class="pull-left mapping-type-adjuster">
+													<br><br>
+													{% for type in mapping_types %}
+														{% if question.mod_mappings[dependance].vars.value.type == type %}
+															<input data-radio-numero="{{ loop_dependance }}" type="radio" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ dependance }}][type]" value="{{ type }}" checked="checked" /><br>
+														{% else %}	
+															<input data-radio-numero="{{ loop_dependance }}" type="radio" name="exerciceformulairetype[mod_questions][{{ loop_question }}][mod_mappings][{{ dependance }}][type]" value="{{ type }}" /><br>
+														{% endif %}
+													{% endfor %}
+												</div>
+											{% endfor %}
+												<div class="pull-left">
+													<br><br>
+													 - <br>
+													 - <br>
+													 - <br>
+													 - <br>
+													 - <br>
+													 - 
+												</div>
+										</td>									
+									</tr>
+								</tbody>						
+							</table>
+						</div>
+					</div>
+				</div>
+				<!----------->
+				{% endfor %}
+					{{ form_widget(form._token) }}
+				</form>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/autosize.min.js' 
+		'js/common/claviers.js' 
+		'js/admin/claviers-touches-admin.js' 
+		'js/admin/modifier-exercice.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}	
+	<script type="text/javascript">	
+		/* JSG Scripts
+		 * =========== */
+		var boards = new Array();
+		{% for macro in form.mod_exercice.mod_macros %}
+			{% for element in macro.mod_elements %}
+				{% if element.vars.value.type == element_type_jsgbox or element.vars.value.type == element_type_jsggraph %}	
+					{{ element.vars.value.contenu|raw }}
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+		{% for question in form.mod_questions %}
+			{% for macro in question.mod_macros %}
+				{% for element in macro.mod_elements %}
+					{% if element.vars.value.type == element_type_jsgbox or element.vars.value.type == element_type_jsggraph %}	
+						{{ element.vars.value.contenu|raw }}
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</script>
+{% endblock %}

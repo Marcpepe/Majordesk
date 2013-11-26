@@ -1,0 +1,113 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Gestionnaire de tags - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_contenu") }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+	<li><a><i class="icon-angle-right"></i> Gestionnaire de tags</a></li>
+{% endblock %}
+ 
+{% block admin %}		
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-tags icon-large text-grey pull-left"></i> <p class="pull-left">Gestionnaire de tags</p>
+					<div class="btn-group pull-right">	 
+						<a rel="fix-tooltip" data-placement="right" data-title="Créer un nouveau tag" class="btn btn-info" href="{{ path('majordesk_app_modifier_tag', { 'id_tag' : 0, 'id_matiere' : matiere.id }) }}"><i class="icon-plus"></i> <i class="icon-tag"></i></a>								  
+					</div>
+				</h3>				
+				<br><br><br><br>
+				<div class="well well-small container-fluid clearfix">
+					<h4 class="pull-left">{{ matiere.nom }}</h4>
+				</div>
+				
+				{% for message in app.session.flashbag.get('info') %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ message }}
+				</div>
+				{% endfor %}
+
+					<div class="accordion" id="accordion">
+						{% for tag_1 in tags if tag_1.getPTags is empty %}
+						{% set loop_tag_1 = loop.index %}
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ loop_tag_1 }}">
+								{{ tag_1.nom }}
+									<a rel="fix-tooltip" data-placement="right" data-title="Modifier ce tag" class="btn btn-small btn-primary edit-tag pull-right" href="{{ path('majordesk_app_modifier_tag', {'id_tag' : tag_1.id, 'id_matiere' : matiere.id }) }}"><i class="icon-edit"></i></a>	
+								</a>
+							</div>
+							<div id="collapse-{{ loop_tag_1 }}" class="accordion-body collapse">
+								<div class="accordion-inner">
+									<div class="accordion">
+									{% for tag_2 in tag_1.getCTags %}
+									{% set loop_tag_2 = loop.index %}
+										<div class="accordion-group">
+											<div class="accordion-heading">
+												<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-{{ loop_tag_1 }}" href="#collapse-{{ loop_tag_1 }}-{{ loop_tag_2 }}">
+												{{ tag_2.nom }}
+													<a rel="fix-tooltip" data-placement="right" data-title="Modifier ce tag" class="btn btn-small btn-primary edit-tag pull-right" href="{{ path('majordesk_app_modifier_tag', {'id_tag' : tag_2.id, 'id_matiere' : matiere.id }) }}"><i class="icon-edit"></i></a>	
+												</a>
+											</div>
+											<div id="collapse-{{ loop_tag_1 }}-{{ loop_tag_2 }}" class="accordion-body collapse">
+												<div class="accordion-inner">
+													<div class="accordion">
+													{% for tag_3 in tag_2.getCTags %}
+													{% set loop_tag_3 = loop.index %}
+														<div class="accordion-group">
+															<div class="accordion-heading">
+																<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-{{ loop_tag_1 }}-{{ loop_tag_2 }}" href="#collapse-{{ loop_tag_1 }}-{{ loop_tag_2 }}-{{ loop_tag_3 }}">
+																{{ tag_3.nom }}
+																	<a rel="fix-tooltip" data-placement="right" data-title="Modifier ce tag" class="btn btn-small btn-primary edit-tag pull-right" href="{{ path('majordesk_app_modifier_tag', {'id_tag' : tag_3.id, 'id_matiere' : matiere.id }) }}"><i class="icon-edit"></i></a>	
+																</a>
+															</div>
+															<div id="collapse-{{ loop_tag_1 }}-{{ loop_tag_2 }}-{{ loop_tag_3 }}" class="accordion-body collapse">
+																<div class="accordion-inner">
+																	<div class="accordion">
+																	{% for tag_4 in tag_3.getCTags %}
+																	{% set loop_tag_4 = loop.index %}
+																		<div class="accordion-group">
+																			<div class="accordion-heading">
+																				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-{{ loop_tag_1 }}-{{ loop_tag_2 }}-{{ loop_tag_3 }}" href="#collapse-{{ loop_tag_1 }}-{{ loop_tag_2 }}-{{ loop_tag_3 }}-{{ loop_tag_4 }}">
+																				{{ tag_4.nom }}
+																					<a rel="fix-tooltip" data-placement="right" data-title="Modifier ce tag" class="btn btn-small btn-primary edit-tag pull-right" href="{{ path('majordesk_app_modifier_tag', {'id_tag' : tag_4.id, 'id_matiere' : matiere.id }) }}"><i class="icon-edit"></i></a>	
+																				</a>
+																			</div>
+																			<div id="collapse-{{ loop_tag_1 }}-{{ loop_tag_2 }}-{{ loop_tag_3 }}-{{ loop_tag_4 }}" class="accordion-body collapse">
+																				<div class="accordion-inner">
+																					<ul class="nav nav-pills nav-stacked">
+																					{% for tag_5 in tag_4.getCTags %}
+																						<li><a href="#">
+																							{{ tag_5.nom }}
+																								<a rel="fix-tooltip" data-placement="right" data-title="Modifier ce tag" class="btn btn-small btn-primary edit-tag pull-right" href="{{ path('majordesk_app_modifier_tag', {'id_tag' : tag_5.id, 'id_matiere' : matiere.id }) }}"><i class="icon-edit"></i></a>	
+																							</a></li>
+																					{% endfor %}
+																					</ul>
+																				</div>
+																			</div>
+																		</div>
+																	{% endfor %}
+																	</div>
+																</div>
+															</div>
+														</div>
+													{% endfor %}
+													</div>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									</div>
+								</div>
+							</div>
+						</div>
+						{% else %}
+							Aucun tags pour le moment..
+						{% endfor %}
+					</div>
+
+				
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Gestion des élèves - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des élèves</a></li>
+{% endblock %}
+ 
+{% block admin %}
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3><i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Gestion des élèves</p></h3>
+				
+				<div class="col-lg-4 pull-right">
+					{% if filter_famille is defined %}
+						<a class="btn btn-default" href="{{ path('majordesk_app_gestion_eleves') }}">Filtre famille <i class="icon-remove-sign"></i> </a>
+					{% elseif filter_professeur is defined %}
+						<a class="btn btn-default" href="{{ path('majordesk_app_gestion_eleves') }}">Filtre professeur <i class="icon-remove-sign"></i> </a>
+					{% endif %}
+					<div class="btn-group pull-right">
+					  <a class="btn btn-info" rel="tooltip" data-title="Ajouter un nouvel élève" data-placement="bottom" href="{{ path('majordesk_app_ajouter_eleve') }}"><i class="icon-group"></i> <i class="icon-plus"></i></a>
+					</div>
+				</div>
+				
+				<br><br><br>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th>#</th>
+						  <th>Prénom</th>
+						  <th>Nom</th>
+						  <th>Dispos</th>
+						  <th>Abonnements</th>
+						  <th>Hrs prises</th>
+						  <th>Flag</th>
+						  <th>Bloqué</th>
+						  <th></th>
+						</tr>
+					  </thead>
+					  <tbody>
+						{% for eleve in eleves %}
+						<tr
+						{% if eleve.isAssigned == false %}
+							class="info"
+						{% elseif eleve.flag %}
+							class="warning"
+						{% endif %}
+						 data-id="{{ eleve.id }}">
+						  <td>{{ eleve.id }}</td>
+						  <td>{{ eleve.username }}</td>
+						  <td>{{ eleve.nom }}</td>
+						  <td>
+							{% set dispo = { 'lu' : '0', 'ma' : '0', 'me' : '0', 'je' : '0', 've' : '0', 'sa' : '0', 'di' : '0' } %}
+							{% for disponibilite in disponibilites if disponibilite.eleve != null %}
+								{% if disponibilite.eleve.id == eleve.id %}
+									{% if disponibilite.actif == '0' %}
+										<del>{{ disponibilite.jour[:2] }}</del>
+									{% elseif disponibilite.actif == '1' %}
+										<span class="text-green"><strong>{{ disponibilite.jour[:2] }}</strong></span>
+									{% elseif disponibilite.actif == '2' %}
+										<span class="text-orange"><strong>{{ disponibilite.jour[:2] }}</strong></span>
+									{% elseif disponibilite.actif == '3' %}
+										<span class="text-red"><strong>{{ disponibilite.jour[:2] }}</strong></span>
+									{% endif %}
+									
+									{% if disponibilite.jour == 'Lundi' %}
+										{% set dispo = dispo|merge( { 'lu' : '1'} ) %}
+									{% elseif disponibilite.jour == 'Mardi' %}
+										{% set dispo = dispo|merge( { 'ma' : '1'} ) %}
+									{% elseif disponibilite.jour == 'Mercredi' %}
+										{% set dispo = dispo|merge( { 'me' : '1'} ) %}
+									{% elseif disponibilite.jour == 'Jeudi' %}
+										{% set dispo = dispo|merge( { 'je' : '1'} ) %}
+									{% elseif disponibilite.jour == 'Vendredi' %}
+										{% set dispo = dispo|merge( { 've' : '1'} ) %}
+									{% elseif disponibilite.jour == 'Samedi' %}
+										{% set dispo = dispo|merge( { 'sa' : '1'} ) %}
+									{% elseif disponibilite.jour == 'Dimanche' %}
+										{% set dispo = dispo|merge( { 'di' : '1'} ) %}
+									{% endif %}
+									
+								{% endif %}
+							{% endfor %}
+						  </td>
+						  <td>
+							{% for eleve_matiere in eleve_matieres if eleve_matiere.eleve.id == eleve.id %}
+								<div style="width:60px;float:left">
+								{% if eleve_matiere.matiere.nom == matiere_mathematiques %}
+									<span class="label label-info">Maths</span> 
+								{% elseif eleve_matiere.matiere.nom == matiere_physique %}
+									<span class="label label-success">Ph-Ch</span> 
+								{% endif %}
+								<br><br><br>
+								</div>
+								<div class="margin-left:60px;">
+									 Plateforme : <em>{% if eleve_matiere.plateforme == 1 %}Oui{% else %}Non{% endif %}</em>
+									 (Prélvmt : <em>{% if eleve_matiere.prelevementPlateforme == 1 %}{% if eleve_matiere.dateAbonnement is not null %}{{ eleve_matiere.dateAbonnement|date('d/m/Y')}}{% else %}Aucune date{% endif %}{% else %}Non{% endif %}</em>)<br>
+									 Cours : <em>{% if eleve_matiere.cours == 1 %}Oui{% else %}Non{% endif %}</em>
+									 (Prélvmt : <em>{% if eleve_matiere.prelevementCours == 1 %}Oui{% else %}Non{% endif %}</em>)
+								 </div>
+								 <br>
+							{% endfor %}
+						  </td>
+						  <td>{{ eleve.heuresPrises / 10 }}</td>
+						  <td>
+							{% if eleve.flag %}
+								<i class="icon-flag icon-large text-yellow"></i>
+							{% else %}	
+								 - 
+							{% endif %}
+						  </td>
+						  <td
+							{% if eleve.actif %}
+								class="actif"
+							{% endif %}
+						  >
+							{% if eleve.actif %}
+								 - 
+							{% else %}	
+								<i class="icon-ban-circle icon-large text-red"></i>
+							{% endif %}
+						  </td>
+						  <td>
+							<div class="btn-group">
+							  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+								<i class="icon-cogs"></i> 
+								<span class="caret"></span>
+							  </a>
+							  <ul class="dropdown-menu">
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_profil_eleve', {'id' : eleve.id} ) }}"><i class="icon-plus"></i> Profil complet</a></li>
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_familles_filter_eleve', {'id' : eleve.famille.id } ) }}"><i class="icon-user"></i> Famille associée</a></li>
+								  {% if eleve.isAssigned %}
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_professeurs_filter_eleve', {'id' : eleve.id } ) }}"><i class="icon-user-md"></i> Professeur(s) assigné(s)</a></li>
+								  {% else %}
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_professeurs_filter_disponibilites', dispo ) }}"><i class="icon-user-md"></i> Assigner un professeur</a></li>
+								  {% endif %}
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_deblocage_exercices', { 'id_eleve' : eleve.id }) }}"><i class="icon-book"></i> Déblocage d'exercices</a></li>
+								  <li>
+									<a tabindex="-1" class="cursor flag"><i class="icon-flag"></i> 
+										{% if eleve.flag %}
+											 Retirer le flag de cet élève
+										{% else %}	
+											 Mettre un flag sur cet élève
+										{% endif %}
+									</a>
+								  </li>
+								  <li>
+									<a tabindex="-1" class="cursor actif"><i class="icon-ban-circle"></i> 
+										{% if eleve.actif %}
+											Bloquer cet élève
+										{% else %}
+											Débloquer cet élève
+										{% endif %}
+									</a>
+								  </li>
+								  <li class="divider"></li>
+								  <li><a tabindex="-1" class="cursor"><i class="icon-trash"></i> Supprimer cet élève</a></li>
+							  </ul>
+							</div>
+						  </td>
+						</tr>
+						{% endfor %}
+					  </tbody>
+					</table>	
+				</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}	
+	{% javascripts filter='yui_js' 
+		'js/admin/gestion-eleves.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

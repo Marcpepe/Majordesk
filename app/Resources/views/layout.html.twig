@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Majorclass - Plateforme de prochaine génération{% endblock %}</title>
+	
+	<link rel="icon" type="image/png" href="{{ asset('img/home/favicon.png') }}" />
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<!--<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML"></script>-->
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=TeX-AMS-MML_HTMLorMML-full"></script>-->
+	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=default"></script>-->
+	
+	{% block stylesheets %}
+		{% stylesheets filter='yui_css' 
+			'css/common/bootstrap.min.css' 
+			'css/common/bootstrap-calendar.min.css' 
+			'css/common/bootstrap-timepicker.min.css'
+			'css/common/bootstrap-datepicker.min.css'
+			'css/common/mathquill.css' 
+			'css/common/majordesk.css' 
+			'css/common/jsxgraph.css' 
+			'css/common/font-awesome.min.css' 
+			'css/common/typeahead.css'
+		%}
+			<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+		{% endstylesheets %}
+	{% endblock %}
+</head>
+
+
+<header class="navbar navbar-inverse navbar-fixed-top" role="banner">
+	<div class="container home-container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+			  <span class="sr-only">Activer la navigation</span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" style="padding:0" href="{{ path('majordesk_app_index') }}"><img src="{{ asset('img/home/bar-logo.png') }}" /></a>
+		</div>
+
+		<nav class="collapse navbar-collapse navbar-responsive-collapse" role="navigation">
+			<div class="col-xs-12 col-lg-12">
+				<ul class="nav navbar-nav nav-fil">
+				  {% block navbar %}
+				  {% endblock %}
+				</ul>
+				
+				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+				<ul class="nav navbar-nav navbar-right">	
+					{% block controlbar %}
+						{% if app.session.get('etape_cours') is not empty %}<li><a class="cursor-help"><span id="control-en-cours" class="label label-light-green" data-content="{% if app.session.get('etape_cours') == 1 %}Après la correction des devoirs, on<br>passe à l'entrainement !<br><br><span class='pull-right'><a href='{{ path('majordesk_app_recherche_exercices', {'id_matiere' : app.session.get('matiere_cours') }) }}' class='btn btn-primary'>Passer à l'entrainement <i class='icon-angle-right'></i></a></span>{% elseif app.session.get('etape_cours') == 2 %}Avant de conclure ce cours, il faut :<ul><li>Fixer la date du prochain cours</li><li>Donner les devoirs pour le prochain cours</li><li>Déclarer ce cours</li></ul><span class='pull-right'><button class='btn btn-primary fixer-prochain-cours'>Fixer la date du prochain cours <i class='icon-angle-right'></i></button></span>{% elseif app.session.get('etape_cours') == 3 %}Il reste à :<ul><li>Donner les devoirs pour le prochain cours</li><li>Déclarer ce cours</li></ul><span class='pull-right'><a href='{{ path('majordesk_app_donner_devoirs') }}' class='btn btn-primary'>Passer aux devoirs <i class='icon-angle-right'></i></a></span>{% elseif app.session.get('etape_cours') == 4 %}Valider les exercices sélectionnés.{% elseif app.session.get('etape_cours') == 5 %}<a href='{{ path('majordesk_app_index_eleve') }}' class='btn btn-primary'>Terminer le cours <i class='icon-angle-right'></i></a>{% endif %}">En cours</span></a></li>{% endif %}
+					{% endblock %}
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							{% if (is_granted('ROLE_ELEVE') or is_granted('ROLE_PROF') or is_granted('ROLE_PARENTS')) and not is_granted('ROLE_ADMIN') %}{{ app.user.mail }}{% else %}Admin{% endif %}
+						<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a tabindex="-1" href="{{ path('majordesk_app_profil') }}"><i class="icon-user"></i> Profil</a></li>
+							<li class="disabled"><a tabindex="-1" href="#"><i class="icon-cog"></i> Préférences</a></li>
+							<li class="divider"></li>
+							<li><a tabindex="-1" href="{{ path('logout') }}"><i class="icon-signout"></i> Déconnexion</a></li>
+						</ul>
+					</li>
+				</ul>	
+				{% endif %}
+			</div>
+		</nav> 
+	</div>
+</header>
+
+
+<body class="app">
+	<div class="container container-main">
+		<div class="row row-main">
+			<div class="col-lg-12 no-padding-horizontal-xs">
+				<div class="panel panel-default panel-main">
+					<div class="panel-body panel-body-main">
+					{% block body %}
+					{% endblock %}
+					</div>
+					<div class="panel-footer">
+						{% block footer %}
+						{% endblock %}
+						<span class="pull-right"><small>propulsé par <strong class="font-majorclass font-size-14">Majordesk</strong></small></span><div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% block javascripts %}
+		{% javascripts filter='?yui_js' 
+			'js/common/jquery.min.js' 
+			'js/common/blockui.js' 
+			'js/common/bootstrap.min.js' 
+			'js/common/majordesk.js'
+			'js/common/bootbox.min.js' 
+			'js/common/tooltip.js' 
+			'bundles/fosjsrouting/js/router.js' 
+			'js/common/fos_js_routes.js' 
+		%}
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+	{% endblock %}
+</body>
+</html>

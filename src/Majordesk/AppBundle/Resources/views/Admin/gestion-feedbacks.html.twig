@@ -1,0 +1,106 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Gestion des feedbacks - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des feedbacks</a></li>
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+	<div class="col-lg-12">
+		<h3><i class="icon-flag icon-large text-orange"></i> Feedbacks</h3><br>
+		{% if feedbacks|length > 0 %}
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Type</th>
+						<th>Exercice</th>
+						<th>Commentaire</th>
+						<th>Initiateur</th>
+						<th>Statut</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for feedback in feedbacks %}
+					<tr data-id-feedback="{{ feedback.id }}" >
+						<td>{{ feedback.dateEnregistrement|date('d/m/Y') }}</td>
+						<td>
+							{% if feedback.type == 1 %}
+								Problème d'affichage
+							{% elseif feedback.type == 2 %}
+								Erreur dans l'énoncé
+							{% elseif feedback.type == 3 %}
+								Faute d'orthographe
+							{% elseif feedback.type == 4 %}
+								Correction pas assez claire
+							{% elseif feedback.type == 5 %}
+								Une question ne valide pas
+							{% elseif feedback.type == 6 %}
+								Indice inutile
+							{% elseif feedback.type == 7 %}
+								Bug
+							{% else %}
+								N.C.
+							{% endif %}
+						</td>
+						<td>
+							{{ feedback.modExercice.id }} <a rel="tooltip" data-title="Voir l'énoncé" href="{{ path('majordesk_app_afficher_exercice', {'id' : feedback.modExercice.id }) }}"><i class="icon-external-link"></i></a>
+						</td>
+						<td>
+							{{ feedback.commentaire }}
+						</td>
+						<td>
+							{% if feedback.mail is not null %}
+								{{ feedback.mail }}
+							{% else %}
+								Admin
+							{% endif %}
+						</td>
+						<td>
+							{% if feedback.statut == 0 %}
+								<i rel="tooltip" data-title="Réfusé" class="icon-remove icon-large text-red"></i>
+							{% elseif feedback.statut == 2 %}
+								<i rel="tooltip" data-title="Accepté et traité" class="icon-ok icon-large text-green"></i>
+							{% else %}
+								<i rel="tooltip" data-title="En cours de traitement" class="icon-spinner icon-spin icon-large text-orange"></i>
+							{% endif %}
+							<div class="btn-group">
+							  <a class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-gear"></i> 
+								<span class="caret"></span>
+							  </a>
+							  <ul class="dropdown-menu">
+								  <li><a tabindex="-1" data-statut="0" class="cursor update-feedback" data-loading-text="Mise à jour..."><i class="icon-remove text-red"></i> Refusé</a></li>
+								  <li><a tabindex="-1" data-statut="1" class="cursor update-feedback" data-loading-text="Mise à jour..."><i class="icon-spinner icon-spin text-orange"></i> En cours</a></li>
+								  <li><a tabindex="-1" data-statut="2" class="cursor update-feedback" data-loading-text="Mise à jour..."><i class="icon-ok text-green"></i> Traité</a></li>
+							  </ul>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% else %}
+			Aucun nouveau feedback à ce jour.
+		{% endif %}
+	</div>
+	<div class="clearfix"></div><br><br>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' 
+		'js/admin/gestion-feedbacks.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

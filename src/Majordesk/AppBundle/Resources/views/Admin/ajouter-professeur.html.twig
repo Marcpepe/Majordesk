@@ -1,0 +1,251 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Ajouter un professeur - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_professeurs") }}"><i class="icon-angle-right"></i> Gestion des professeurs</a></li>
+	<li><a><i class="icon-angle-right"></i> Ajouter un professeur</a></li>
+{% endblock %}
+ 
+{% block admin %}
+			<form method="post" action="{{ path('majordesk_app_ajouter_professeur') }}">
+				<span class="visible-md"><br></span>
+				<span class="visible-lg"><br></span>
+				<h3>
+					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Ajouter un professeur</p>
+				</h3>
+					
+				<br><br><br>	
+				
+				{% if app.session.flashbag.get('warning') %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Champs incorrects :</strong><br><br>
+					{% for field in form %}
+						{{ form_errors(field) }}
+					{% endfor %}
+					{{ form_errors(form.password.pass) }} 
+					{{ form_errors(form.password.confirm) }} 		
+				</div>
+				{% endif %}
+				
+				<br>
+				<h4>Majorclass</h4>
+				<br>
+
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						
+						<tr>
+						  <td>Prénom</td>
+						  <td>{{ form_widget(form.username ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nom</td>
+						  <td>{{ form_widget(form.nom ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Téléphone</td>
+						  <td>{{ form_widget(form.telephone ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Adresse</td>
+						  <td>{{ form_widget(form.adresse ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Code postal</td>
+						  <td>{{ form_widget(form.code_postal ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Ville</td>
+						  <td>{{ form_widget(form.ville ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Prépa</td>
+						  <td>{{ form_widget(form.prepa ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Lycée</td>
+						  <td>{{ form_widget(form.lycee ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>N° de Sécurité sociale</td>
+						  <td>{{ form_widget(form.securite_sociale ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>RIB</td>
+						  <td>{{ form_widget(form.rib ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Moyen de transport</td>
+						  <td>{{ form_widget(form.transport ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Nombre maximum d'heures par semaine</td>
+						  <td>{{ form_widget(form.nb_heures_max ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Matière(s) enseignée(s)</td>
+						  <td>
+							{% for matiere in form.matieres %}
+								<span>
+									<div class="col-lg-6">
+										{{ form_widget(matiere)|e }}
+									</div>
+									<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>
+							{% endfor %}
+							   <span class="abonnements" data-prototype='
+								<span>
+									<div class="col-lg-6">
+										{{ form_widget(form.matieres.vars.prototype)|e }}
+									</div>
+									<button type="button" class="btn btn-danger remove-abonnement-btn"><i class="icon-remove"></i></button>
+									<br><br>
+								</span>
+							  '></span>
+						  </td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Majordesk</h4>
+				<br>
+
+				<div class="col-lg-12">
+					<table class="table table-bordered table-hover">
+						<thead>
+						<tr>
+						  <th class="col-lg-4">Information</th>
+						  <th class="col-lg-8">Valeur</th>
+						</tr>
+					  </thead>
+					  <tbody>
+						
+						<tr>
+						  <td>Mail</td>
+						  <td>{{ form_widget(form.mail ) }}</td>
+						</tr>
+						
+						<tr>
+						  <td>Mot de passe</td>
+						  <td>{{ form_widget(form.password ) }}</td>
+						</tr>
+						
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<h4>Disponibilités</h4>
+				<br>
+				{% for disponibilite in form.disponibilites %}
+					<div class="col-lg-2">
+						<div class="input-group">
+							{{ form_widget(form.disponibilite.jour ) }}
+							<span class="input-group-addon"><i class="icon-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-lg-1">
+						de 
+					</div>
+					<div class="col-lg-2">
+						<span class="bootstrap-timepicker ">
+							{{ form_widget(form.disponibilite.heureDebut ) }}
+						</span>
+					</div>
+					<div class="col-lg-1">
+						à 
+					</div>
+					<div class="col-lg-2">
+						<span class="bootstrap-timepicker ">
+							{{ form_widget(form.disponibilite.heureFin ) }}
+						</span>
+					</div>
+					<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+					<br><br>
+				{% endfor %}
+			  
+				  <span class="disponibilites" data-prototype='
+					<span>
+						<div class="col-lg-2">
+							<div class="input-group">
+								{{ form_widget(form.disponibilites.vars.prototype.jour ) }}
+								<span class="input-group-addon"><i class="icon-calendar"></i></span>
+							</div>
+						</div>
+						<div class="col-lg-1">
+							de 
+						</div>
+						<div class="col-lg-2">
+							<span class="bootstrap-timepicker ">
+								{{ form_widget(form.disponibilites.vars.prototype.heureDebut ) }}
+							</span>
+						</div>
+						<div class="col-lg-1">
+							à 
+						</div>
+						<div class="col-lg-2">
+							<span class="bootstrap-timepicker ">
+								{{ form_widget(form.disponibilites.vars.prototype.heureFin ) }}
+							</span>
+						</div>
+						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+						<br><br>
+					</span>
+				  '></span>
+				
+				<br><br>
+				<h4>Fin des disponibilités</h4>
+				<br>
+				<div class="col-lg-3">
+					<div class="input-group">
+						{{ form_widget(form.fin_dispo ) }}
+						<span class="input-group-addon" style="position:relative;top:1px;"><i class="icon-calendar"></i></span>
+					</div>
+				</div>
+				
+
+				<div class="row">
+					<div class="col-lg-12">
+						<button type="submit" class="btn btn-success pull-right">Valider <i class="icon-ok"></i></button>
+					</div>
+				</div>
+				
+			{{ form_widget(form._token) }}
+			</form>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}	
+	{% javascripts filter='yui_js' 
+		'js/admin/ajouter-professeur.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

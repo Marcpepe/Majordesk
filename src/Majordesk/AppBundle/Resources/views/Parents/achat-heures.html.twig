@@ -1,0 +1,77 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Achat d'heures - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<span class="visible-md"><br><br></span>
+<span class="visible-lg"><br><br></span>
+
+	{% if famille.isAllowedNewHours is empty %}
+		
+			<div class="col-lg-12">
+				<h3>Packs d'heures</h3><br>
+			</div>
+			<div class="clearfix"></div>
+			<div class="col-lg-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Pack 10 <i class="icon-time"></i></div>
+					<div class="panel-body">
+						<div class="col-lg-3">
+							Contenu : <strong>10 heures</strong>
+						</div>
+						<div class="col-lg-3">
+							<i class="icon-tag icon-large text-orange"></i> Prix : <strong>599,00€</strong><br>
+							<i class="icon-tag icon-large text-green"></i> Prix après impôts: <strong>299,50€</strong>
+						</div>
+						<div class="col-lg-3">
+							Durée de validité : infinie
+						</div>
+						<div class="col-lg-3">
+							<span class="pull-right">
+								<a href="{{ path('majordesk_app_achat_en_cours', { 'pack' : 1 }) }}" class="btn btn-success">Acheter</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="col-lg-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Pack 30 <i class="icon-time"></i></div>
+					<div class="panel-body">
+						<div class="col-lg-3">
+							Contenu : <strong>30 heures</strong>
+						</div>
+						<div class="col-lg-3">
+							<i class="icon-tag icon-large text-orange"></i> Prix : <strong>1797,00€</strong><br>
+							<i class="icon-tag icon-large text-green"></i> Prix après impôts: <strong>898,50€</strong>
+						</div>
+						<div class="col-lg-3">
+							Durée de validité : infinie
+						</div>
+						<div class="col-lg-3">
+							<span class="pull-right">
+								<a href="{{ path('majordesk_app_achat_en_cours', { 'pack' : 2 }) }}" class="btn btn-success">Acheter</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+		
+	{% else %}
+		
+			<div class="col-lg-12">
+				<h3>Vous n'êtes pas autorisés dans cette section</h3>
+				<br><em>{{ famille.isAllowedNewHours }}</em>
+			</div>
+
+	{% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}
