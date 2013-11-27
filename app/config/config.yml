@@ -87,7 +87,7 @@ assetic:
     debug:          %kernel.debug%
     use_controller: false
     bundles:        [MajordeskAppBundle]
-    #java: /usr/bin/java
+    # java: /usr/bin/java
     java: C:\Program Files (x86)\Java\jre7\bin\java.exe
     filters:
         cssrewrite: ~
