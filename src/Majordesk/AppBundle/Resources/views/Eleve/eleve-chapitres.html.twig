@@ -65,8 +65,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/eleve/eleve-chapitres.js' 	
+	{% javascripts filter='yui_js' output='js/13112726.js' 
+		'@MajordeskAppBundle/app/Resources/js/eleve/eleve-chapitres.js' 	
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

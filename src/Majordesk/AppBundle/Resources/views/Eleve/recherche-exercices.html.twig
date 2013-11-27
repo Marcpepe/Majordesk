@@ -41,10 +41,10 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/typeahead.min.js'
-		'js/common/mathquill.js'
-		'js/eleve/recherche-exercices.js'
+	{% javascripts filter='yui_js' output='js/13112730.js' 
+		'@MajordeskAppBundle/app/Resources/js/common/typeahead.min.js'
+		'@MajordeskAppBundle/app/Resources/js/common/mathquill.js'
+		'@MajordeskAppBundle/app/Resources/js/eleve/recherche-exercices.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

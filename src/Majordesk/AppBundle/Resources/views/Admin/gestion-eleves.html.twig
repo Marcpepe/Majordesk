@@ -170,8 +170,8 @@
 
 {% block javascripts %}
 	{{ parent() }}	
-	{% javascripts filter='yui_js' 
-		'js/admin/gestion-eleves.js'
+	{% javascripts filter='yui_js' output='js/13112708.js'
+		'@MajordeskAppBundle/app/Resources/js/admin/gestion-eleves.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
