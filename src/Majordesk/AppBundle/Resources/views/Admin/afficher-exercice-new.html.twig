@@ -659,8 +659,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' output='js/13112701.js'
-		'@MajordeskAppBundle/app/Resources/js/admin/afficher-exercice.js'	
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/admin/afficher-exercice.js'	
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

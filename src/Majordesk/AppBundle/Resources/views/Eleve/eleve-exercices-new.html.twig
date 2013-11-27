@@ -553,10 +553,10 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/mathquill.js' 
-		'js/eleve/eleve-exercices-new.js'
-		'js/common/clavier-slide-out.js' 
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/common/mathquill.js' 
+		'../app/Resources/js/eleve/eleve-exercices-new.js'
+		'../app/Resources/js/common/clavier-slide-out.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

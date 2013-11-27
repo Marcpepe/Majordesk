@@ -960,9 +960,9 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' output='js/13112702.js'
-		'@MajordeskAppBundle/app/Resources/js/admin/modifier-exercice-new.js'
-		'@MajordeskAppBundle/app/Resources/js/common/clavier-slide-out.js' 
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/admin/modifier-exercice-new.js'
+		'../app/Resources/js/common/clavier-slide-out.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

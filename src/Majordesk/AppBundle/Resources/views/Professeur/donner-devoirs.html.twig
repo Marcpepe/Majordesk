@@ -131,8 +131,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' output='js/13112735.js' 
-		'@MajordeskAppBundle/app/Resources/js/professeur/donner-devoirs.js' 
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/professeur/donner-devoirs.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

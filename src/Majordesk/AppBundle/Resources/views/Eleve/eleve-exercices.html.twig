@@ -639,8 +639,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/eleve/eleve-exercices.js'
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/eleve/eleve-exercices.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

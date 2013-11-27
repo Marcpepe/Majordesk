@@ -14,16 +14,16 @@
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	
 	{% block stylesheets %}
-		{% stylesheets filter='yui_css' 
-			'css/common/bootstrap.min.css' 
-			'css/common/bootstrap-calendar.min.css' 
-			'css/common/bootstrap-timepicker.min.css'
-			'css/common/bootstrap-datepicker.min.css'
-			'css/common/mathquill.css' 
-			'css/common/majordesk.css' 
-			'css/common/jsxgraph.css' 
-			'css/common/font-awesome.min.css' 
-			'css/common/typeahead.css'
+		{% stylesheets filter='yui_css' output='css/*' 
+			'../app/Resources/css/common/bootstrap.min.css' 
+			'../app/Resources/css/common/bootstrap-calendar.min.css' 
+			'../app/Resources/css/common/bootstrap-timepicker.min.css'
+			'../app/Resources/css/common/bootstrap-datepicker.min.css'
+			'../app/Resources/css/common/mathquill.css' 
+			'../app/Resources/css/common/majordesk.css' 
+			'../app/Resources/css/common/jsxgraph.css' 
+			'../app/Resources/css/common/font-awesome.min.css' 
+			'../app/Resources/css/common/typeahead.css'
 		%}
 			<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
 		{% endstylesheets %}
