@@ -1,8 +1,0 @@
-.modal {
-	overflow: visible; /* allow content to popup out (i.e tooltips) */
-}
-
-.modal-body {
-	max-height: none;
-	overflow: visible;
-}
