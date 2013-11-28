@@ -17,16 +17,16 @@
 	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=default"></script>-->
 	
 	{% block stylesheets %}
-		{% stylesheets filter='yui_css' 
-			'css/common/bootstrap.min.css' 
-			'css/common/bootstrap-calendar.min.css' 
-			'css/common/bootstrap-timepicker.min.css'
-			'css/common/bootstrap-datepicker.min.css'
-			'css/common/mathquill.css' 
-			'css/common/majordesk.css' 
-			'css/common/jsxgraph.css' 
-			'css/common/font-awesome.min.css' 
-			'css/common/typeahead.css'
+		{% stylesheets filter='yui_css' output='css/*'  
+			'../app/Resources/css/common/bootstrap.min.css' 
+			'../app/Resources/css/common/bootstrap-calendar.min.css' 
+			'../app/Resources/css/common/bootstrap-timepicker.min.css'
+			'../app/Resources/css/common/bootstrap-datepicker.min.css'
+			'../app/Resources/css/common/mathquill.css' 
+			'../app/Resources/css/common/majordesk.css' 
+			'../app/Resources/css/common/jsxgraph.css' 
+			'../app/Resources/css/common/font-awesome.min.css' 
+			'../app/Resources/css/common/typeahead.css'
 		%}
 			<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
 		{% endstylesheets %}
@@ -98,15 +98,15 @@
 	</div>
 
 	{% block javascripts %}
-		{% javascripts filter='?yui_js' 
-			'js/common/jquery.min.js' 
-			'js/common/blockui.js' 
-			'js/common/bootstrap.min.js' 
-			'js/common/majordesk.js'
-			'js/common/bootbox.min.js' 
-			'js/common/tooltip.js' 
+		{% javascripts filter='?yui_js' output='js/13112737.js'  
+			'../app/Resources/js/common/jquery.min.js' 
+			'../app/Resources/js/common/blockui.js' 
+			'../app/Resources/js/common/bootstrap.min.js' 
+			'../app/Resources/js/common/majordesk.js'
+			'../app/Resources/js/common/bootbox.min.js' 
+			'../app/Resources/js/common/tooltip.js' 
 			'bundles/fosjsrouting/js/router.js' 
-			'js/common/fos_js_routes.js' 
+			'../app/Resources/js/common/fos_js_routes.js' 
 		%}
 			<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}

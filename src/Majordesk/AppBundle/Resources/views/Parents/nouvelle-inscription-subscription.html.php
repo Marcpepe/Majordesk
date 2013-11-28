@@ -7,8 +7,9 @@
 	
 	<link rel="icon" type="image/png" href="<?php echo $view['assets']->getUrl('img/home/favicon.png') ?>" />
 <?php foreach ($view['assetic']->stylesheets(
-		array('css/common/bootstrap.min.css', 'css/common/majordesk.css', 'css/common/font-awesome.min.css'),
-		array('yui_css')
+		array('../app/Resources/css/common/bootstrap.min.css', '../app/Resources/css/common/majordesk.css', '../app/Resources/css/common/font-awesome.min.css'),
+		array('yui_css'),
+		array('output' => 'css/*')
 	) as $url): ?>
 		<link rel="stylesheet" href="<?php echo $view->escape($url) ?>" />
 <?php endforeach; ?>

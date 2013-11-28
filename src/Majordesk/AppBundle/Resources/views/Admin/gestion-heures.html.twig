@@ -538,15 +538,15 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/underscore.min.js' 
-		'js/common/bootstrap-calendar.min.js'   
-		'js/locales/bootstrap-calendar.fr.js' 
-		'js/common/bootstrap-calendar-config.js'
-		'js/common/bootstrap-timepicker.min.js'
-		'js/common/bootstrap-datepicker.min.js'
-		'js/locales/bootstrap-datepicker.fr.js' 
-		'js/common/calendrier.js'
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/common/underscore.min.js' 
+		'../app/Resources/js/common/bootstrap-calendar.min.js'   
+		'../app/Resources/js/locales/bootstrap-calendar.fr.js' 
+		'../app/Resources/js/common/bootstrap-calendar-config.js'
+		'../app/Resources/js/common/bootstrap-timepicker.min.js'
+		'../app/Resources/js/common/bootstrap-datepicker.min.js'
+		'../app/Resources/js/locales/bootstrap-datepicker.fr.js' 
+		'../app/Resources/js/common/calendrier.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

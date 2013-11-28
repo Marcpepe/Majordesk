@@ -131,8 +131,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/parents/gestion-abonnements.js' 
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/parents/gestion-abonnements.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

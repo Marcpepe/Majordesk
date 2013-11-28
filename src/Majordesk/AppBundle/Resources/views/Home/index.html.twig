@@ -54,8 +54,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/home/index.js'
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/home/index.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

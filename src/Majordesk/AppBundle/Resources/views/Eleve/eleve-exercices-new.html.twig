@@ -305,7 +305,7 @@
 									<select class="input-eleve form-special" data-numero-reponse="{{ numero_reponse }}">
 										<option value=""> </option>
 									{% for liste in brique.contenu|json_decode %}
-										<option value="loop.index" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ liste.contenu }}</option>
+										<option value="{{ loop.index }}" {% if reponse is not null and reponse.contenu == loop.index %}selected="selected"{% endif %}>{{ liste.contenu }}</option>
 									{% endfor %}
 									</select>							
 							{% elseif brique.type == 'radio' %}	 
@@ -386,11 +386,9 @@
 									{% if reponse is not empty %}
 										{% set repTab = reponse.contenu|json_decode %}
 										{% set isInit = false %}
-										init faux
 									{% else %}
 										{% set repTab = brique.contenu|json_decode|initialize_tableau %}
 										{% set isInit = true %}
-										init vrai
 									{% endif %}
 								{% else %}
 									{% set repTab = brique.contenu|json_decode %}
@@ -553,10 +551,10 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/mathquill.js' 
-		'js/eleve/eleve-exercices-new.js'
-		'js/common/clavier-slide-out.js' 
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/common/mathquill.js' 
+		'../app/Resources/js/eleve/eleve-exercices-new.js'
+		'../app/Resources/js/common/clavier-slide-out.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
