@@ -13,13 +13,13 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/bootstrap-timepicker.min.js' 
-		'js/common/bootstrap-datepicker.min.js' 
-		'js/locales/bootstrap-datepicker.fr.js' 
-		'js/common/jsxgraphcore.js' 
-		'js/common/highcharts.js' 
-		'js/common/mathquill.js' 
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/common/bootstrap-timepicker.min.js' 
+		'../app/Resources/js/common/bootstrap-datepicker.min.js' 
+		'../app/Resources/js/locales/bootstrap-datepicker.fr.js' 
+		'../app/Resources/js/common/jsxgraphcore.js' 
+		'../app/Resources/js/common/highcharts.js' 
+		'../app/Resources/js/common/mathquill.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

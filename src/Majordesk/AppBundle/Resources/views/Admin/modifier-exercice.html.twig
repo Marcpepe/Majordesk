@@ -1086,11 +1086,11 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/admin/autosize.min.js' 
-		'js/common/claviers.js' 
-		'js/admin/claviers-touches-admin.js' 
-		'js/admin/modifier-exercice.js'
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/admin/autosize.min.js' 
+		'../app/Resources/js/common/claviers.js' 
+		'../app/Resources/js/admin/claviers-touches-admin.js' 
+		'../app/Resources/js/admin/modifier-exercice.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}	

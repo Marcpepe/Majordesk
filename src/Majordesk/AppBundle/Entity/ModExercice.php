@@ -540,7 +540,7 @@ class ModExercice
 		$is_new = $this->is_new;
 		
 		if ($is_new == 0) {
-			$preview .= '<div class="text-center">Visualisation non disponible</div>';
+			$preview .= '<div class="col-lg-11"><div class="text-center"><br><br>Visualisation non disponible</div></div><div class="col-lg-1">'.$options.'</div>';
 		} else {
 			$preview .= '<div class="col-lg-11">';
 			foreach($this->getOrderedModQuestions() as $mod_question) {

@@ -243,8 +243,8 @@
 
 {% block javascripts %}
 	{{ parent() }}	
-	{% javascripts filter='yui_js' 
-		'js/admin/ajouter-professeur.js'
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/admin/ajouter-professeur.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

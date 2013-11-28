@@ -7,12 +7,12 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/highcharts.js' 
-		'js/common/jsxgraphcore.js' 
-		'js/eleve/jquery-ui-1.10.3.custom.min.js' 
-		'js/common/claviers.js' 
-		'js/eleve/claviers-touches-eleve.js' 
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/common/highcharts.js' 
+		'../app/Resources/js/common/jsxgraphcore.js' 
+		'../app/Resources/js/eleve/jquery-ui-1.10.3.custom.min.js' 
+		'../app/Resources/js/common/claviers.js' 
+		'../app/Resources/js/eleve/claviers-touches-eleve.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

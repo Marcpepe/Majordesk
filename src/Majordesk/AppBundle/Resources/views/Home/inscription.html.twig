@@ -873,10 +873,10 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{% javascripts filter='yui_js' 
-		'js/common/bootstrap-timepicker.min.js' 
-		'js/common/typeahead.min.js'
-		'js/home/inscription.js'
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/common/bootstrap-timepicker.min.js' 
+		'../app/Resources/js/common/typeahead.min.js'
+		'../app/Resources/js/home/inscription.js'
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
