@@ -501,6 +501,28 @@ class EleveController extends Controller
 	/**
 	 * @Secure(roles="ROLE_ELEVE")
 	 */
+    public function ungenerateExerciceAction($id)
+    {
+		$exercice = $this->getDoctrine()
+						 ->getManager()
+						 ->getRepository('MajordeskAppBundle:Exercice')
+						 ->find($id);
+		$id_matiere = $exercice->getModExercice()->getMatiere()->getId();
+
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($exercice);
+		$em->flush();
+		
+		if ($this->get('security.context')->isGranted('ROLE_ELEVE') && !$this->get('security.context')->isGranted('ROLE_PROF')) {
+			return $this->redirect($this->generateUrl('majordesk_app_recherche_exercices', array('id_matiere' => $id_matiere)));
+		} else if ($this->get('security.context')->isGranted('ROLE_PROF')) {
+			return Response();
+		}
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ELEVE")
+	 */
     public function exerciceAction($id_exercice)  // FIXME à renommer viewExercice ou un truc du style
     {
 		$exercice = $this->getDoctrine()
