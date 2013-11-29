@@ -32,6 +32,14 @@ $('.control-btn').on('click', function (e) {
     $('.control-btn').not(this).popover('hide');
 });
 
+
+$('#control-delete').popover({
+			title: '<i class="icon-remove icon-large text-pomegranate"></i> Supprimer cet exercice',
+			placement: 'bottom',
+			container: 'header.navbar',
+			html: 'true',		  
+});
+
 $('#control-lock').popover({
 			title: '<i class="icon-lock icon-large text-mid-grey"></i> S\'entraîner',
 			placement: 'bottom',
