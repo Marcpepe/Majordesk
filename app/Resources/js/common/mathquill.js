@@ -2866,8 +2866,8 @@ LatexCmds.sdot = LatexCmds.cdot =
 //semantically should be &sdot;, but &middot; looks better
 
 LatexCmds['='] = bind(BinaryOperator, '=', '=');
-LatexCmds['<'] = bind(BinaryOperator, '<', '&lt;');
-LatexCmds['>'] = bind(BinaryOperator, '>', '&gt;');
+LatexCmds['<'] = bind(BinaryOperator, '< ', '&lt;');
+LatexCmds['>'] = bind(BinaryOperator, '> ', '&gt;');
 
 LatexCmds.notin =
 LatexCmds.sim =
@@ -2900,9 +2900,9 @@ LatexCmds.prop = LatexCmds.propto = bind(BinaryOperator,'\\propto ','&prop;');
 
 LatexCmds['≈'] = LatexCmds.asymp = LatexCmds.approx = bind(BinaryOperator,'\\approx ','&asymp;');
 
-LatexCmds.lt = bind(BinaryOperator,'<','&lt;');
+LatexCmds.lt = bind(BinaryOperator,'< ','&lt; ');
 
-LatexCmds.gt = bind(BinaryOperator,'>','&gt;');
+LatexCmds.gt = bind(BinaryOperator,'> ','&gt; ');
 
 LatexCmds['≤'] = LatexCmds.le = LatexCmds.leq = bind(BinaryOperator,'\\leq ','&le;');  // CHANGED
 
