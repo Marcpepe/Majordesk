@@ -32,8 +32,16 @@ $('.control-btn').on('click', function (e) {
     $('.control-btn').not(this).popover('hide');
 });
 
+
+$('#control-delete').popover({
+			title: '<i class="icon-remove icon-large text-pomegranate"></i> Supprimer cet exercice',
+			placement: 'bottom',
+			container: 'header.navbar',
+			html: 'true',		  
+});
+
 $('#control-lock').popover({
-			title: '<i class="icon-lock text-mid-grey"></i> S\'entraîner',
+			title: '<i class="icon-lock icon-large text-mid-grey"></i> S\'entraîner',
 			placement: 'bottom',
 			container: 'header.navbar',
 			html: 'true',		  
@@ -111,14 +119,14 @@ $(document).on('click', 'button.lock-unlock', function() {
 });
 
 $('#control-selection').popover({
-			title: '<i class="icon-bullseye text-blue"></i> Devoir à faire',
+			title: '<i class="icon-bullseye icon-large text-blue"></i> Devoir à faire',
 			placement: 'bottom',
 			container: 'header.navbar',
 			html: 'true',		  
 });
 
 $('#control-favoris').popover({
-			title: '<i class="icon-star text-yellow"></i> Mettre de côté cet exercice',
+			title: '<i class="icon-star icon-large text-yellow"></i> Mettre de côté cet exercice',
 			placement: 'bottom',
 			container: 'header.navbar',
 			html: 'true',

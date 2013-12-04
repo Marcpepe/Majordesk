@@ -1,11 +1,28 @@
+set :stages,        %w(production staging)
+set :default_stage, "staging"
+set :stage_dir,     "app/config"
+require 'capistrano/ext/multistage'
+
 set :application, "Majordesk App"
-set :domain,      "majorclass.com"
-set :deploy_to,   "/var/www/#{domain}"
+# set :domain,      "majorclass.fr"
+# set :deploy_to,   "/var/www/#{domain}"
 set :app_path,    "app"
 
-# set   :branch, "master"
+set :user, "majorcla"  # The server's user for deploys
+set :scm_passphrase, "perrin"  # The deploy user's password
+set :ssh_options, { :forward_agent => true }
+# ssh_options[:forward_agent] = true
+# ssh_options[:port] = "443"
+default_run_options[:pty] = true
+# set :ssh_options,   :keys => %w(c:/Users/USERNAME/.ssh/id_rsa)
+# set :git_enable_submodules, 1
+# set :repository,  "ssh://git@github.com:Marcpepe/Majordesk.git"
+set :repository,  "git@github.com:Marcpepe/Majordesk.git"
+# set :branch, "master"
+set :scm,         :git
 
 # useful add on that speeds each deployment
+# set :deploy_via, :remote_cache
 # set :deploy_via,    :rsync_with_remote_cache
 
 set :shared_files,      ["app/config/parameters.yml","composer.phar"]
@@ -18,33 +35,40 @@ set :dump_assetic_assets,   true
 set :writable_dirs,       ["app/cache", "app/logs"]
 set :permission_method,   :chmod
 
-set :shared_children,   [log_path, ..., app_path + "/sessions"]
-before 'symfony:composer:install', 'composer:copy_vendors'
-before 'symfony:composer:update', 'composer:copy_vendors'
+set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
 
-namespace :composer do
-  task :copy_vendors, :except => { :no_release => true } do
-    capifony_pretty_print "--> Copy vendor file from previous release"
 
-    run "vendorDir=#{current_path}/vendor; if [ -d $vendorDir ] || [ -h $vendorDir ]; then cp -a $vendorDir #{latest_release}/vendor; fi;"
-    capifony_puts_ok
-  end
-end
 
-set :repository,  "git@github.com:Marcpepe/Majordesk.git"
-set :scm,         :git
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `subversion`, `mercurial`, `perforce`, or `none`
+
+# before 'symfony:composer:install', 'composer:copy_vendors'
+# before 'symfony:composer:update', 'composer:copy_vendors'
+
+# namespace :composer do
+  # task :copy_vendors, :except => { :no_release => true } do
+    # capifony_pretty_print "--> Copy vendor file from previous release"
+
+    # run "vendorDir=#{current_path}/vendor; if [ -d $vendorDir ] || [ -h $vendorDir ]; then cp -a $vendorDir #{latest_release}/vendor; fi;"
+    # capifony_puts_ok
+  # end
+# end
+
+
+
+
+
+
 
 set :model_manager, "doctrine"
-# Or: `propel`
 
-role :web,        domain                         # Your HTTP server, Apache/etc
-role :app,        domain, :primary => true       # This may be the same as your `Web` server
+role :web,        "majorclass.fr"                         # Your HTTP server, Apache/etc
+role :app,        "majorclass.fr", :primary => true       # This may be the same as your `Web` server
 
-# set  :user, "majorcla"
 set  :use_sudo,      false
 set  :keep_releases,  3
-# set  :git_enable_submodules, 0
+
+
+
+
 
 # namespace :post_deployment do
   # desc "Set the right file permissions / ownership for deployed files"
@@ -55,22 +79,15 @@ set  :keep_releases,  3
   # end
 # end
 
+# after "post_deployment:app_permissions","deploy:cleanup"
+
 # Be more verbose by uncommenting the following line
-# logger.level = Logger::MAX_LEVEL
+logger.level = Logger::MAX_LEVEL
 
 
-cap deploy:web:disable
+# cap deploy:web:disable
 
+# cap database:dump:remote
 
-
-
-
-cap database:dump:remote
-
-
-
-
-
-
-cap deploy:web:enable
+# cap deploy:web:enable
 

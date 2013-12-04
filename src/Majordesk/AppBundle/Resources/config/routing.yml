@@ -243,6 +243,12 @@ majordesk_app_generate_exercice:
     requirements:
         id:   \d{1,8}
 
+majordesk_app_ungenerate_exercice:
+    pattern:  /eleve/ungenerate-exercice-{id}
+    defaults: { _controller: MajordeskAppBundle:Eleve:ungenerateExercice }
+    requirements:
+        id:   \d{1,8}
+
 majordesk_app_exercice:
     pattern:  /eleve/exercice-en-cours-{id_exercice}
     defaults: { _controller: MajordeskAppBundle:Eleve:exercice }
