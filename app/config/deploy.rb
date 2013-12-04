@@ -11,7 +11,7 @@ set :app_path,    "app"
 set :user, "majorcla"  # The server's user for deploys
 set :scm_passphrase, "perrin"  # The deploy user's password
 set :ssh_options, { :forward_agent => true }
-ssh_options[:forward_agent] = true
+# ssh_options[:forward_agent] = true
 # ssh_options[:port] = "443"
 default_run_options[:pty] = true
 # set :ssh_options,   :keys => %w(c:/Users/USERNAME/.ssh/id_rsa)
