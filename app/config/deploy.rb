@@ -3,23 +3,29 @@ set :default_stage, "staging"
 set :stage_dir,     "app/config"
 require 'capistrano/ext/multistage'
 
-set :application, "Majordesk App"
 # set :domain,      "majorclass.fr"
-# set :deploy_to,   "/var/www/#{domain}"
+# set :deploy_to,   "/home/majorcla/var/www/majordesk/#{domain}"
+# set :branch, "master"
+# server 'majorclass.fr', :app, :web, :primary => true
+
+set :application, "Majordesk App"
 set :app_path,    "app"
 
 set :user, "majorcla"  # The server's user for deploys
-set :scm_passphrase, "perrin"  # The deploy user's password
-set :ssh_options, { :forward_agent => true }
-# ssh_options[:forward_agent] = true
-# ssh_options[:port] = "443"
+set :use_sudo,      false
 default_run_options[:pty] = true
+ssh_options[:port] = "2908"
+ssh_options[:forward_agent] = true
+# set :ssh_options, { :forward_agent => true }
 # set :ssh_options,   :keys => %w(c:/Users/USERNAME/.ssh/id_rsa)
-# set :git_enable_submodules, 1
-# set :repository,  "ssh://git@github.com:Marcpepe/Majordesk.git"
-set :repository,  "git@github.com:Marcpepe/Majordesk.git"
-# set :branch, "master"
+# set :repository,  "ssh://git@github.com/Marcpepe/Majordesk.git"
+# set :repository,  "git@github.com:Marcpepe/Majordesk.git"
+set :repository,  "https://47376530582201bacd1ba77eba3ec31058cae308@github.com/Marcpepe/Majordesk.git"
+# set :git_https_username, 'Marcpepe'
+# set :git_https_password, 'GBlqcK19'
 set :scm,         :git
+set :scm_passphrase, "perrin"  # The deploy user's password
+# set :git_enable_submodules, 1
 
 # useful add on that speeds each deployment
 # set :deploy_via, :remote_cache
@@ -31,13 +37,11 @@ set :update_vendors, true
 set :copy_vendors, true
 set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
 set :dump_assetic_assets,   true
-
 set :writable_dirs,       ["app/cache", "app/logs"]
 set :permission_method,   :chmod
-
 set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
-
-
+set :model_manager, "doctrine"
+set  :keep_releases,  3
 
 
 # before 'symfony:composer:install', 'composer:copy_vendors'
@@ -58,13 +62,10 @@ set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
 
 
 
-set :model_manager, "doctrine"
 
-role :web,        "majorclass.fr"                         # Your HTTP server, Apache/etc
-role :app,        "majorclass.fr", :primary => true       # This may be the same as your `Web` server
 
-set  :use_sudo,      false
-set  :keep_releases,  3
+
+
 
 
 

@@ -5,7 +5,7 @@
 				{% endblock %}
 				
 				{% block navbar %}
-				    <li class="active"><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
@@ -17,7 +17,8 @@
 		<div class="home-container intro-container">
 			<div class="col-lg-12 text-center">
 				<span class="marque-tall">Majorclass</span><br>
-				<span class="hidden-xs font-size-28">réinvente les cours particuliers</span>
+				<!--<span class="hidden-xs font-size-28">Cours particuliers <span class="text-amethyst">de qualité</span>.</span>-->
+				<span class="hidden-xs font-size-28">Cours particuliers de qualité.</span>
 			</div>
 		</div>
 	</div>	
@@ -42,16 +43,18 @@
 				<img src="{{ asset('img/home/plateforme.png') }}" class="img-responsive pull-right" />
 			</div>
 			<div class="col-lg-8 text-white">
-				<h1 class="font-responsive">L'environnement de travail</h1>
-				<span class="hidden-xs font-size-20 font-responsive">Une plateforme utilisée pendant et entre les cours</span>
+				<h1 class="font-responsive">Gestion simplifiée</h1>
+				<span class="hidden-xs font-size-20 font-responsive">Inscription, paiement et suivi en ligne</span>
 			</div>
 		</div>
 		<br>
 		</a>
 	</div>	
 	<div class="clearfix"></div>
-	
-	
+	<br>
+	<div class="container">
+		Inscription..
+	</div>
 {% endblock %}	
 
 {% block javascripts %}

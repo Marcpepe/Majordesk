@@ -5,8 +5,7 @@
 				{% endblock %}
 				
 				{% block navbar %}
-				    <li><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_plateforme') }}">La plateforme</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
 				    <li class="active"><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
@@ -24,50 +23,93 @@
 	</div>
 	<div class="container home-container">
 		<br><br>
-		<div class="col-lg-12">
+		<!--<div class="col-lg-12">
 			<div class="text-center">
-				<i class="icon-money text-orange" style="font-size:200px"></i>
+				<i class="icon-money text-emerald" style="font-size:200px"></i>
 			</div>
-		</div>
+		</div>-->
 		<br>
 		<div class="col-lg-12">
-			<span class="marque">majorClass</span> est un organisme de soutien scolaire agréé. Dans le cadre des services à la personne, vous avez droit selon certaines conditions à une <strong>déduction d'impôts</strong> à hauteur de 50% des dépenses engagées. 
+			<span class="marque">Majorclass</span> est un organisme de soutien scolaire agréé. Dans le cadre des services à la personne, vous avez droit selon certaines conditions à une <strong>déduction d'impôts</strong> à hauteur de 50% des dépenses engagées. 
 			Nous vous rappelons qu'il n'y a <strong>aucun frais d'inscription</strong>.
-		</div>
-		<br><br><br>
-		<div class="text-center">
-			***
 		</div>
 		<br><br>
 		<div class="col-lg-12">
-			<h3>Tarifs des cours</h3>
+			<h3>Tarifs à l'heure</h3>
 		</div>
 		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-md-offset-1 col-lg-3">
-			<i class="icon-tag icon-large text-orange"></i> <strong>Prix</strong>
+		
+		<div class="table-reponsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Pack 10h</th>
+						<th>Pack 30h</th>
+						<th>Pack 50h</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><i class="icon-tag icon-large text-orange"></i> <strong>Prix</strong></td>
+						<td>59,90 €/h</td>
+						<td>58,90 €/h</td>
+						<td>57,90 €/h</td>
+					</tr>
+					<tr>
+						<td><i class="icon-tag icon-large text-emerald"></i> <strong>Prix après impôts</strong></td>
+						<td>29,95 €/h</td>
+						<td>29,45 €/h</td>
+						<td>28,95 €/h</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div class="col-lg-8">
-			59,90 € par heure de cours
-		</div>	
+		<br><br>
+		<div class="col-lg-12">
+			<h3>Tarifs des packs</h3>
+		</div>
 		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-md-offset-1 col-lg-3">
-			<i class="icon-tag icon-large text-green"></i> <strong>Prix après impôts</strong>
+		<div class="table-reponsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Pack 10h</th>
+						<th>Pack 30h</th>
+						<th>Pack 50h</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><i class="icon-tag icon-large text-orange"></i> <strong>Prix</strong></td>
+						<td>599 €</td>
+						<td>1767 €</td>
+						<td>2895 €</td>
+					</tr>
+					<tr>
+						<td><i class="icon-tag icon-large text-emerald"></i> <strong>Prix après impôts</strong></td>
+						<td>299,50 €</td>
+						<td>883,50 €</td>
+						<td>1447,50 €</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div class="col-lg-8">
-			29,95 € par heure de cours
-		</div>	
+		
+		
+		
 		
 		<div class="clearfix"></div>
 		<br><br>
 		<div class="col-lg-12">
 			<div class="alert alert-info">
-				<i class="icon-info-sign"></i> <strong>Info :</strong> Pour plus d'informations sur les conditions donnant lieu à une réduction ou un crédit d'impôts, rendez-vous sur <u><a href="http://vosdroits.service-public.fr/particuliers/F12.xhtml#N100DA" target="_blank">ce lien</a></u>
+				<i class="icon-info-sign"></i> <strong>Info :</strong> Pour plus d'informations sur les conditions donnant lieu à une réduction ou un crédit d'impôts, rendez-vous sur <u><a href="http://vosdroits.service-public.fr/particuliers/F12.xhtml#N100DA" target="_blank">ce lien</a></u>.
 			</div>
 		</div>
 		
 		<br><br><br>
+		<!--
 		<div class="text-center">
 			***
 		</div>
@@ -324,5 +366,6 @@
 		<br><br>
 		<br><br>
 		<br><br>
+		-->
 	</div>
 {% endblock %}	

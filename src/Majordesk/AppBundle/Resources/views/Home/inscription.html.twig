@@ -5,8 +5,7 @@
 				{% endblock %}
 				
 				{% block navbar %}
-				    <li><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_plateforme') }}">La plateforme</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
@@ -314,7 +313,7 @@
 			</form>
 		{% elseif etape_inscription == 3 %}
 		
-		{% set programme_avec_plateforme = [1, 5, 6] %}
+		{% set programme_avec_plateforme = [] %}
 		{% set programme_avec_maths = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] %}
 		{% set programme_avec_physique = [6, 5, 3, 1] %}
 		{% set programme_avec_svt = [6, 5, 3, 1] %}
@@ -327,7 +326,7 @@
 			{% endfor %}
 			
 			
-			{% if app.session.get('prog') in programme_avec_plateforme %}
+		{% if app.session.get('prog') in programme_avec_plateforme %}
 			
 			<form method="post" action="{{ path('majordesk_app_inscription', {'etape_inscription':3}) }}" role="form">
 			
@@ -371,17 +370,16 @@
 			</span>
 			<span class="choix-situation">
 			<br><br>
-			<h3>Votre situation est la suivante :</h3><br>
+			<!--<h3>Votre situation est la suivante :</h3><br>
 			
 			<div class="row">		
 				<div class="col-lg-4 separateur-droit">
-					<h4 rel="tooltip" data-title="Non disponible pour l'instant">Votre enfant est autonome<!--, mais voudrait pouvoir s'entraîner plus simplement--></h4><br><br>
+					<h4 rel="tooltip" data-title="Non disponible pour l'instant">Votre enfant est autonome</h4><br><br>
 							Ce que nous recommandons :<br><br>
 					<div class="situation panel panel-default">
 						<div class="panel-body">
 							<p class="text-center">Plateforme <span class="marque">majorClass</span></p>
 							<p class="text-center"><img src="{{ asset('img/inscription/plateforme-0.png') }}" class="img-responsive"></p>
-							<!--(non disponible <i class="icon-question-sign cursor-help" rel="tooltip" data-title="Ce mode sera disponible à partir de la rentrée scolaire 2014"></i>)-->
 							<br>
 							<span class="option-text option-1-details">En choisissant ce mode de fonctionnement :<br><br>
 								<ul>
@@ -399,7 +397,7 @@
 					</div>
 				</div>
 				<div class="col-lg-4 separateur-droit text-mid-grey">
-					<h4 rel="tooltip" data-title="Non disponible pour l'instant">Votre enfant a déjà un professeur particulier<!--, mais vous souhaitez renforcer ce soutien--></h4><br><br>
+					<h4 rel="tooltip" data-title="Non disponible pour l'instant">Votre enfant a déjà un professeur particulier</h4><br><br>
 							Ce que nous recommandons :<br><br>
 					<div class="situation panel panel-default">
 						<div class="panel-body">
@@ -457,7 +455,7 @@
 						</div>
 					</div>
 				</div>
-			</div>			
+			</div>-->		
 			</span>
 			
 			<br><br>	
@@ -472,7 +470,7 @@
 				Veuillez sélectionner une matière...
 				<br><br><br>
 			</span>
-			<span id="packs-1" class="{% if app.session.get('etape_inscription')==4 %}pack-selected{% endif %}">	
+			<!--<span id="packs-1" class="{% if app.session.get('etape_inscription')==4 %}pack-selected{% endif %}">	
 				<div class="row">				
 					<div class="col-lg-12">
 						<div class="pack-plateforme panel panel-default {% if app.session.get('pack')==11 %}panel-primary{% endif %}">
@@ -486,7 +484,7 @@
 											<br><small>abonnement sans engagement et résiliable sans préavis</small>
 											<br>
 											<small>
-												<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€ par mois<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 299,50€ après réduction d'impôts"></i>-->
+												<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€ par mois<br>
 											</small>
 										</label>
 									</div>
@@ -500,11 +498,11 @@
 						</div>
 					</div>
 				</div>
-			</span>
+			</span>-->
 			<span id="packs-2" class="{% if app.session.get('etape_inscription')==4 %}pack-selected{% endif %}">	
 				<br>
 				<div class="row">				
-					<div class="col-lg-6">
+					<div class="col-lg-12	">
 						<div class="pack-complet panel panel-default {% if app.session.get('pack')==21 or app.session.get('pack')==22 %}panel-primary{% endif %}">
 							<div class="panel-heading"><h4><i class="icon-ok icon-large"></i> Packs confirmés</h4></div>
 							<div class="panel-body">
@@ -542,7 +540,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-6">
+					<!--<div class="col-lg-6">
 						<div class="pack-decouverte panel panel-default {% if app.session.get('pack')==23 or app.session.get('pack')==24 %}panel-primary{% endif %}">
 							<div class="panel-heading"><h4><i class="icon-ok icon-large text-mid-grey"></i> Packs d'essai</h4></div>
 							<div class="panel-body">
@@ -553,7 +551,7 @@
 											<br>
 											<small>
 												recommandé pour les classes de 4<sup>ème</sup> et 3<sup>ème</sup><br>
-												<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 29,95€ après réduction d'impôts"></i>-->
+												<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br>
 												<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 29,95€
 											</small>
 										</label>
@@ -562,7 +560,7 @@
 											<br>
 											<small>
 												recommandé pour les classes de 2<sup>nde</sup> à T<sup>ale</sup><br>
-												<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 59,90€ après réduction d'impôts"></i>-->
+												<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br>
 												<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 59,90€
 											</small>
 										</label>
@@ -575,7 +573,7 @@
 								{% if app.session.get('pack') in [23,24] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
 				<br>
 				<div class="alert alert-info">
@@ -583,7 +581,7 @@
 				</div>
 				<br>
 			</span>
-			<span id="packs-3" class="{% if app.session.get('etape_inscription')==4 %}pack-selected{% endif %}">	
+			<!--<span id="packs-3" class="{% if app.session.get('etape_inscription')==4 %}pack-selected{% endif %}">	
 				<div class="row">				
 					<div class="col-lg-6">
 						<div class="pack-complet panel panel-default {% if app.session.get('pack')==31 or app.session.get('pack')==32 %}panel-primary{% endif %}">
@@ -614,7 +612,7 @@
 											<br>
 											<small>
 												Vous êtes débité à chaque heure de cours.<br>
-												<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 29,95€ après réduction d'impôts"></i>-->
+												<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br>
 												<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
 											</small>
 										</label>
@@ -651,7 +649,7 @@
 											<br>
 											<small>
 												recommandé pour les classes de 4<sup>ème</sup> et 3<sup>ème</sup><br>
-												<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 29,95€ après réduction d'impôts"></i>-->
+												<i class="icon-tag icon-large text-orange"></i> Prix : 59,90€<br>
 												<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 29,95€
 											</small>
 										</label>
@@ -660,7 +658,7 @@
 											<br>
 											<small>
 												recommandé pour les classes de 2<sup>nde</sup> à T<sup>ale</sup><br>
-												<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br> <!--<i class="icon-question-sign cursor-help" rel="tooltip" data-title="soit 59,90€ après réduction d'impôts"></i>-->
+												<i class="icon-tag icon-large text-orange"></i> Prix : 2 &times; 59,90€ = 119,80€<br>
 												<i class="icon-tag icon-large text-green"></i> Prix après impôts <span class="text-red">*</span> : 59,90€
 											</small>
 										</label>
@@ -679,7 +677,7 @@
 						</div>
 					</div>
 				</div>
-			</span>
+			</span>-->
 			</form>
 			<br>
 			<h3>Informations sur le paiement</h3>
@@ -699,7 +697,7 @@
 			</span>
 			<br><br>
 			
-			{% else %}
+		{% else %}
 			
 			<div class="alert alert-info">
 				<i class="icon-info-sign"></i> <strong>Info :</strong> La programmation et la déclaration d'heures de cours seront effectuées depuis le compte de l'élève (<em>{{ app.session.get('mail') }}</em>) ou du parent (<em>{{ app.session.get('mail_famille') }}</em>). L'achat d'heures est possible depuis le compte du parent uniquement.
@@ -761,9 +759,9 @@
 			<span id="packs-2">	
 				<br>
 				<div class="row">				
-					<div class="col-lg-6">
+					<div class="col-lg-12">
 						<div class="panel panel-default {% if app.session.get('pack')==21 or app.session.get('pack')==22 %}panel-primary{% endif %}" id="pack-complet">
-							<div class="panel-heading"><h4><i class="icon-ok icon-large"></i> Packs confirmés</h4></div>
+							<div class="panel-heading"><h4><i class="icon-ok icon-large"></i> Packs disponibles</h4></div>
 							<div class="panel-body">
 								
 								<br>
@@ -779,7 +777,7 @@
 											</small>
 										</label>
 										<br>
-										<label class="radio cursor">
+										<!--<label class="radio cursor">
 											<input type="radio" name="pack" value="22" class="pack-2-2" {% if app.session.get('pack')==22 %}checked="checked"{% endif %} /> Formule "A la carte" : 
 											<br>
 											<small>
@@ -787,11 +785,11 @@
 												<i class="icon-tag icon-large text-orange"></i> Prix unitaire de l'heure de cours : 59,90€<br>
 												<i class="icon-tag icon-large text-green"></i> Prix unitaire après impôts <span class="text-red">*</span> : 29,95€
 											</small>
-										</label>
+										</label>-->
 									</div>
-									<div class="hidden-xs col-sm-4 col-md-4 col-lg-4">
+									<!--<div class="hidden-xs col-sm-4 col-md-4 col-lg-4">
 										<img class="pull-right img-responsive position-relative-down-35" src="{{ asset('img/inscription/professeur.jpg') }}" >
-									</div>
+									</div>-->
 								</div>
 								<br>
 								
@@ -799,7 +797,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-6">
+					<!--<div class="col-lg-6">
 						<div class="panel panel-default {% if app.session.get('pack')==23 or app.session.get('pack')==24 %}panel-primary{% endif %}" id="pack-decouverte">
 							<div class="panel-heading"><h4><i class="icon-ok icon-large text-mid-grey"></i> Packs d'essai</h4></div>
 							<div class="panel-body">
@@ -832,7 +830,7 @@
 								{% if app.session.get('pack') in [23,24] %}<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>{% endif %}
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
 				<br>
 				<div class="alert alert-info">
@@ -845,10 +843,10 @@
 			<div class="clearfix"></div>
 			<br>
 			<h3>Informations sur le paiement</h3>
-			<span class="marque">majorClass</span> fonctionne le plus possible par internet, c'est pourquoi tous les paiements se font en ligne. En contrepartie, il n'y a <strong>aucun frais d'inscription</strong>.
+			<span class="marque">Majorclass</span> fonctionne le plus possible par internet, c'est pourquoi tous les paiements se font en ligne. En contrepartie, il n'y a <strong>aucun frais d'inscription</strong>.
 			<br><br>Le module de paiement est délégué à Merc@net, solution e-commerce de BNP-Paribas. <img src="{{ asset('img/inscription/mercanet.gif') }}" class="img-responsive">
-			<br><br>Si vous optez pour la Formule "à la carte", votre carte bancaire est sauvegardée comme moyen de paiement, afin de procéder au débit de chaque heure de cours prises .
-			<br><br>Vous pouvez à tout moment annuler l'utilisation de la carte enregistrée en tant que moyen de paiement. Ceci aura pour effet d'annuler toute nouvelle programmation de cours.
+			<!--<br><br>Si vous optez pour la Formule "à la carte", votre carte bancaire est sauvegardée comme moyen de paiement, afin de procéder au débit de chaque heure de cours prises .
+			<br><br>Vous pouvez à tout moment annuler l'utilisation de la carte enregistrée en tant que moyen de paiement. Ceci aura pour effet d'annuler toute nouvelle programmation de cours.-->
 			<br><br>Vous pouvez retrouver les détails concernant l'achat de cours dans les <a href="{{ path('majordesk_app_cgv_majorclass') }}" target="_blank">conditions générales de ventes</a>.
 			<br><br>Pour toute demande spéciale concernant les moyens de paiement, vous pouvez nous contacter à l'adresse <a href="mailto:contact@majorclass.fr">contact@majorclass.fr</a>
 			<br><br>
