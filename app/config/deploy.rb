@@ -10,7 +10,6 @@ require 'capistrano/ext/multistage'
 
 set :application, "Majordesk App"
 set :app_path,    "app"
-
 set :user, "majorcla"  # The server's user for deploys
 set :use_sudo,      false
 default_run_options[:pty] = true
@@ -26,15 +25,16 @@ set :repository,  "https://47376530582201bacd1ba77eba3ec31058cae308@github.com/M
 set :scm,         :git
 set :scm_passphrase, "perrin"  # The deploy user's password
 # set :git_enable_submodules, 1
-
 # useful add on that speeds each deployment
 # set :deploy_via, :remote_cache
 # set :deploy_via,    :rsync_with_remote_cache
 
 set :shared_files,      ["app/config/parameters.yml","composer.phar"]
-set :use_composer, true
-set :update_vendors, true
-set :copy_vendors, true
+set :use_composer,    true
+# set :composer_bin,    "composer.phar"
+set :update_vendors,  true
+# set :vendors_mode,    "install"
+# set :copy_vendors, true
 set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
 set :dump_assetic_assets,   true
 set :writable_dirs,       ["app/cache", "app/logs"]
@@ -42,8 +42,6 @@ set :permission_method,   :chmod
 set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
 set :model_manager, "doctrine"
 set  :keep_releases,  3
-
-
 # before 'symfony:composer:install', 'composer:copy_vendors'
 # before 'symfony:composer:update', 'composer:copy_vendors'
 
@@ -54,6 +52,13 @@ set  :keep_releases,  3
     # run "vendorDir=#{current_path}/vendor; if [ -d $vendorDir ] || [ -h $vendorDir ]; then cp -a $vendorDir #{latest_release}/vendor; fi;"
     # capifony_puts_ok
   # end
+# end
+
+# task :push_deploy_tag do
+  # user = `git config --get user.name`.chomp
+  # email = `git config --get user.email`.chomp
+  # puts `git tag #{stage}_#{release_name} #{current_revision} -m "Deployed by #{user} <#{email}>"`
+  # puts `git push --tags origin`
 # end
 
 
