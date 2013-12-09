@@ -25,13 +25,12 @@
 				  <span class="icon-bar"></span>
 				  <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?php echo $view['router']->generate('majordesk_app_principe_index') ?>"><span class="brand">majorClass</span></a>
+				<a class="navbar-brand" href="<?php echo $view['router']->generate('majordesk_app_principe_index') ?>"><span class="brand">Majorclass</span></a>
 			</div>
 
 			<nav class="collapse navbar-collapse navbar-responsive-collapse" role="navigation">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="<?php echo $view['router']->generate('majordesk_app_principe_index') ?>">Principe</a></li>
-				    <li><a href="<?php echo $view['router']->generate('majordesk_app_presentation_plateforme') ?>">La plateforme</a></li>
+					<li><a href="<?php echo $view['router']->generate('majordesk_app_presentation_cours') ?>">Cours</a></li>
 				    <li><a href="<?php echo $view['router']->generate('majordesk_app_presentation_tarifs') ?>">Tarifs</a></li>
 				    <li><a href="<?php echo $view['router']->generate('majordesk_app_presentation_equipe') ?>">Qui sommes-nous?</a></li>
 				    <li><a href="<?php echo $view['router']->generate('majordesk_app_index') ?>">Se connecter <i class="icon-off"></i></a></li>
@@ -44,7 +43,7 @@
 <body class="home">
 	<section id="wrapper">
 		<section id="home-content">
-			<div id="home-banner-purple">
+			<!--<div id="home-banner-purple">
 				<br><br>
 				<div class="container home-container">
 					<div class="text-center" style="font-size:35px">
@@ -52,7 +51,8 @@
 					</div>
 				</div>
 				<br>
-			</div>
+			</div>-->
+			<br><br>
 			<div class="container home-container">
 				<div class="panel panel-default">
 					<div class="panel-body">

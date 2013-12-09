@@ -5,7 +5,7 @@
 				{% endblock %}
 				
 				{% block navbar %}
-				    <li><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
+				    <li class="active"><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
@@ -18,26 +18,28 @@
 			<div class="col-lg-4">
 				<img src="{{ asset('img/home/prof.png') }}" class="img-responsive pull-right" />
 			</div>
-			<div class="col-lg-8 text-white">
+			<div class="hidden-xs col-lg-8 text-white">
 				<h1 class="font-responsive">Les cours particuliers</h1>
-				<span class="hidden-xs font-size-20 font-responsive">Des professeurs issus des Grandes Ecoles françaises</span>
+				<span class="font-size-20 font-responsive">Des professeurs issus des Grandes Ecoles françaises</span>
 			</div>
 		</div>
 		<br>
 	</div>	
 	<div class="container home-container">
 		<br><br><br>
-		<h1>Nos professeurs :</h1>
-		<div><i class="icon-ok text-orange"></i> ont suivi un cursus d'excellence dans les Grandes Ecoles françaises (Polytechnique, Centrale Paris, HEC, les Mines de Paris, les Ponts et Chaussées);</div>
-		<div><i class="icon-ok text-orange"></i> sont sélectionnés par <strong class="font-majorclass">Majorclass</strong> en entretien individuel selon les critères suivants :<br>
-		<ul>
-			<li>leur pédagogie</li>
-			<li>leur connaissance des programmes scolaires</li>
-		</ul>
+		<div class="col-lg-12">	
+			<h1>Nos professeurs :</h1>
+			<div><i class="icon-ok text-orange"></i> ont suivi un cursus d'excellence dans les Grandes Ecoles françaises (Polytechnique, Centrale Paris, HEC, les Mines de Paris, les Ponts et Chaussées);</div>
+			<div><i class="icon-ok text-orange"></i> sont sélectionnés par <strong class="font-majorclass">Majorclass</strong> en entretien individuel selon les critères suivants :<br>
+			<ul>
+				<li>leur pédagogie</li>
+				<li>leur connaissance des programmes scolaires</li>
+			</ul>
+			</div>
+			<h1>De plus :</h1>
+			<div><i class="icon-ok text-orange"></i> Ils apprécient l'enseignement et sont enthousiastes à l'idée de transmettre;</div>
+			<div><i class="icon-ok text-orange"></i> Leur proximité en âge mettra votre enfant à l'aise plus rapidement et il exprimera plus facilement ce qu'il n'a pas compris.</div>
 		</div>
-		<h1>De plus :</h1>
-		<div><i class="icon-ok text-orange"></i> Ils apprécient l'enseignement et sont enthousiastes à l'idée de transmettre;</div>
-		<div><i class="icon-ok text-orange"></i> Leur proximité en âge mettra votre enfant à l'aise plus rapidement et il exprimera plus facilement ce qu'il n'a pas compris.</div>
 		<br><br><br>
 	</div>
 {% endblock %}	

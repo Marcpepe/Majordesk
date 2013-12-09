@@ -5,8 +5,7 @@
 				{% endblock %}
 				
 				{% block navbar %}
-				    <li><a href="{{ path('majordesk_app_principe_index') }}">Principe</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_plateforme') }}">La plateforme</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li class="active"><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
@@ -17,7 +16,7 @@
 		<br><br>
 		<div class="container home-container">
 			<div class="text-center" style="font-size:35px">
-				Inscription ou connexion
+				<i class="icon-lock icon-2x"></i>
 			</div>
 		</div>
 		<br>
@@ -54,120 +53,28 @@
 					</div>
 				</div>
 				{% endfor %}
-		
-				<div id="se-connecter" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">   
-					<div class="modal-dialog">
-						<div class="modal-content">
-						  <div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h2><img type="image/png" src="{{ asset('img/home/favicon-40.png') }}" /> Se connecter</h2>
-						  </div>
-						  <div class="modal-body">
-								<form action="{{ path('login_check') }}" method="post" >
-									<div class="form-group">
-										Email :
-										<input class="form-control input-lg" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-									</div>
-									<br>
-									<div class="form-group">
-										Mot de passe :
-										<input class="form-control input-lg" type="password" id="password" name="_password" required="required" />
-									</div>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" id="remember_me" name="_remember_me" class="pull-left" checked /> <p>Se souvenir de moi</p>
-										</label>
-									</div>					
-						  </div>
-						  <div class="modal-footer">
-							<button type="submit" class="btn btn-success" id="_submit" name="_submit">Se connecter <i class="icon-off"></i></button>
-						  </div>
-						  </form>
-						</div>
+				
+				<div class="container">
+					<div class="col-lg-offset-3 col-lg-6">
+						<form action="{{ path('login_check') }}" method="post" >
+							<div class="form-group">
+								Email :
+								<input class="form-control input-lg" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+							</div>
+							<br>
+							<div class="form-group">
+								Mot de passe :
+								<input class="form-control input-lg" type="password" id="password" name="_password" required="required" />
+							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" id="remember_me" name="_remember_me" class="pull-left" checked /> <p>Se souvenir de moi</p>
+								</label>
+							</div>					
+							<button type="submit" class="btn btn-success pull-right" id="_submit" name="_submit">Se connecter <i class="icon-off"></i></button>
+						</form>
 					</div>
 				</div>
-		<br>
-		<div class="container home-container">
-			<div class="col-lg-12">
-				<div class="container home-container">		
-					<h3 class="text-center"><i class="icon-quote-left text-grey"></i> <span class="marque-tall">Majorclass</span>, une nouvelle façon d'apprendre les Mathématiques <i class="icon-quote-right text-grey"></i></h3>
-				</div>
-				<br>
-				<span class="pull-right">
-					<a href="{{ path('majordesk_app_inscription') }}" class="btn btn-warning">S'inscrire <i class="icon-unlock-alt"></i></a>
-					<a href="#se-connecter" data-toggle="modal" class="btn btn-success">Se connecter <i class="icon-off"></i></a> 
-				</span>
-			</div>
-		</div>
-		<br>
-		<div class="container home-container">
-			<div class="row">	
-				<div class="col-lg-12">
-					<h4><i class="icon-group"></i> Au service de l'élève </h4>
-				</div>
-				<div class="col-lg-4">
-					<h5>Connaissance de l'élève</h5>
-					<p>La plateforme <span class="marque">Majorclass</span> analyse et retient les erreurs commises par l'élève pour lui proposer un contenu finement adapté à son niveau et le faire progresser à son rythme.</p>
-				</div>
-				<div class="col-lg-4">
-					<h5>Maîtrise de la matière</h5>
-					<p>Le contenu des cours et exercices a été pensé et conçu spécialement en vue d'une utilisation autonome de l'élève et ce par des spécialistes de leur matière. Il est régulièrement mis à jour au gré des évolutions des programmes.</p>
-				</div>
-				<div class="col-lg-4">
-					<h5>Expérience du métier</h5>
-					<p>On attend d'un professeur qu'il sache par avance les pièges et erreurs classiques des élèves. La plateforme <span class="marque">Majorclass</span> sait deviner les lacunes de chaque élève et réagir en conséquence.</p>
-				</div>
-			</div>
-		</div>
-		<br>
-		<div class="container home-container">
-			
-			<div class="row">
-				<div class="col-lg-12">
-					<h4><i class="icon-home icon-large"></i> Au service des parents <!--... afin qu'ils puissent suivre les progrès de leur enfant et l'encourager dans ses efforts--></h4>
-				</div>
-				<div class="col-lg-4">
-					<h5>Résumé du travail hebdomadaire</h5>
-					<p>La plateforme <span class="marque">Majorclass</span> récapitule le travail hebdomadaire accompli par votre enfant, au niveau de détails que vous souhaitez.</p>
-				</div>
-				<div class="col-lg-4">
-					<h5>Analyse du temps de travail</h5>
-					<p>Il est très important que le temps passé à travailler soit de qualité. Pour cela, la plateforme étudie le temps passé sur chaque exercice et vous permet de comprendre la façon de travailler de votre enfant.</p>
-				</div>
-				<div class="col-lg-4">
-					<h5>Gestion des professeurs facilitée</h5>
-					<p>La plateforme <span class="marque">Majorclass</span> dispose d'une fonctionnalité particulièrement intéressante : elle permet à un professeur particulier de superviser les devoirs à la maison donnés d'une séance sur l'autre.</p>
-				</div>
-			</div>
-		</div>
-		<br>
-	<div id="home-banner">
-		<br>
-		<div class="container home-container">
-			<h3 class="text-center"><i class="icon-quote-left text-mid-grey"></i> <span class="marque-tall">Majorclass</span>, plateforme de prochaine génération <i class="icon-quote-right text-mid-grey"></i></h3>
-		</div>
-		<br>
-	</div>
-		<br>
-		<div class="container home-container">
-			<div class="row">
-				<div class="col-lg-12">
-					<h4><i class="icon-user"></i> Au service du professeur particulier</h4>
-				</div>
-				<div class="col-lg-4">
-					<h5>Plateforme personnelle</h5>
-					<p>Analyse du temps passé, du nombre d'essais, des exercices réussis ou mis de côté par l'élève sont autant de fonctionnalités débloquées par l'interface professeur de la plateforme <span class="marque">Majorclass</span></p>
-				</div>
-				<div class="col-lg-4">
-					<h5>Vérification des devoirs</h5>
-					<p>Pour que le suivi d'un professeur soit efficace, il faut que ce dernier revoit systématiquement les points qui ont posé problèmes dans les devoirs donnés à l'élève. <span class="marque">Majorclass</span> le permet de façon fluide et naturelle.</p>
-				</div>
-				<div class="col-lg-4">
-					<h5>Gestion des tickets facilitée</h5>
-					<p>La plateforme <span class="marque">Majorclass</span> dispose d'une fonctionnalité particulièrement intéressante : elle permet à un professeur particulier de superviser les devoirs à la maison donnés d'une séance sur l'autre.</p>
-				</div>
-			</div>
-		</div>
-		<br><br>
+		
 {% endblock %}	
 
