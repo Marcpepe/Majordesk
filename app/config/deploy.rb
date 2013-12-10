@@ -20,7 +20,6 @@ ssh_options[:forward_agent] = true
 # set :repository,  "ssh://git@github.com/Marcpepe/Majordesk.git"
 # set :repository,  "git@github.com:Marcpepe/Majordesk.git"
 set :repository,  "https://47376530582201bacd1ba77eba3ec31058cae308@github.com/Marcpepe/Majordesk.git"
-# set :repository,  "https://github.com/Marcpepe/Majordesk.git"
 # set :git_https_username, 'Marcpepe'
 # set :git_https_password, 'GBlqcK19'
 set :scm,         :git
@@ -30,20 +29,19 @@ set :scm_passphrase, "perrin"  # The deploy user's password
 # set :deploy_via, :remote_cache
 # set :deploy_via,    :rsync_with_remote_cache
 
+set :shared_files,      ["app/config/parameters.yml","composer.phar"]
 set :use_composer,    true
 # set :composer_bin,    "composer.phar"
 set :update_vendors,  true
 # set :vendors_mode,    "install"
-set :copy_vendors, true
+# set :copy_vendors, true
 set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
 set :dump_assetic_assets,   true
 set :writable_dirs,       ["app/cache", "app/logs"]
 set :permission_method,   :chmod
-set :shared_files,      ["app/config/parameters.yml","composer.phar"]
 set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
 set :model_manager, "doctrine"
 set  :keep_releases,  3
-
 # before 'symfony:composer:install', 'composer:copy_vendors'
 # before 'symfony:composer:update', 'composer:copy_vendors'
 
