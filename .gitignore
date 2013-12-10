@@ -1,7 +1,8 @@
 app/cache/
 app/logs/
 app/sessions/
-vendor/
+vendor/*
+!vendor/autoload.php
 app/config/parameters.yml
 cgv/
 fiches/
