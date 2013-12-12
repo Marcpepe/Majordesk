@@ -24,6 +24,11 @@ class ParentsController extends Controller
 			$famille = $user->getFamille();
 			$eleves = $famille->getEleves();
 			
+			$paiements = $this->getDoctrine()
+							  ->getManager()
+							  ->getRepository('MajordeskAppBundle:Paiement')
+							  ->getDescPaiementsLimit($famille->getId(), 3);
+			
 			$date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
 			$date_from->sub(new \DateInterval('PT8H'));
 			$date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
@@ -37,6 +42,7 @@ class ParentsController extends Controller
 			return $this->render('MajordeskAppBundle:Parents:index-parents.html.twig', array(
 					'famille' => $famille,
 					'eleves' => $eleves,
+					'paiements' => $paiements,
 					'cal_events_proches' => $cal_events_proches,
 				));
 		}
@@ -102,7 +108,7 @@ class ParentsController extends Controller
 			$paiements = $this->getDoctrine()
 							  ->getManager()
 							  ->getRepository('MajordeskAppBundle:Paiement')
-							  ->getDescPaiementsLimit($famille->getId());
+							  ->getDescPaiementsLimit($famille->getId(), 15);
 				   
 			return $this->render('MajordeskAppBundle:Parents:abonnements-factures.html.twig', array(
 				'famille' => $famille,

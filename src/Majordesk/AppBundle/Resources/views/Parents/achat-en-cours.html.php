@@ -6,13 +6,14 @@
 	<title>Achat d'heures en cours - Majorclass</title>
 	
 	<link rel="icon" type="image/png" href="<?php echo $view['assets']->getUrl('img/home/favicon.png') ?>" />
-<?php foreach ($view['assetic']->stylesheets(
+	<link rel="stylesheet" href="/css/46c62fb.css" /> <!--A CHANGER: CETTE PAGE DOIT ETRE GENERER EN TWIG -->
+{#<?php foreach ($view['assetic']->stylesheets(
 		array('../app/Resources/css/common/bootstrap.min.css', '../app/Resources/css/common/majordesk.css', '../app/Resources/css/common/font-awesome.min.css'),
 		array('yui_css'),
 		array('output' => 'css/*')
 	) as $url): ?>
 		<link rel="stylesheet" href="<?php echo $view->escape($url) ?>" />
-<?php endforeach; ?>
+<?php endforeach; ?>#}
 </head>
 
 <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
@@ -25,7 +26,7 @@
 				  <span class="icon-bar"></span>
 				  <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?php echo $view['router']->generate('majordesk_app_index') ?>"><span class="brand">majorClass</span></a>
+				<a class="navbar-brand" style="padding:0" href="<?php echo $view['router']->generate('majordesk_app_index') ?>"><img src="/img/home/bar-logo.png" /><!--A CHANGER: CETTE PAGE DOIT ETRE GENERER EN TWIG --></a>
 			</div>
 
 			<nav class="collapse navbar-collapse navbar-responsive-collapse" role="navigation">

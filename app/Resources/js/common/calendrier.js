@@ -1,23 +1,17 @@
-$(function() {
-	$(document).on('click', ".timepicker-debut", function() {
-		$(this).timepicker({
-			minuteStep: 15,
-			showInputs: false,
-			showMeridian: false,
-			defaultTime: '17:00',
-			disableFocus: true
-		});
-	});
-	$(document).on('click', ".timepicker-fin", function() {
-		$(this).timepicker({
-			minuteStep: 15,
-			showInputs: false,
-			showMeridian: false,
-			defaultTime: '19:00',
-			disableFocus: true
-		});
-	});
- });
+$(".timepicker-debut").timepicker({
+	minuteStep: 15,
+	showInputs: false,
+	showMeridian: false,
+	defaultTime: '17:00',
+	disableFocus: true
+});
+$(".timepicker-fin").timepicker({
+	minuteStep: 15,
+	showInputs: false,
+	showMeridian: false,
+	defaultTime: '19:00',
+	disableFocus: true
+});
  
 $('.datepicker').datepicker({'format' : 'dd/mm/yyyy', 'language' : 'fr', 'weekStart' : '1', 'autoclose' : 'true'});
 

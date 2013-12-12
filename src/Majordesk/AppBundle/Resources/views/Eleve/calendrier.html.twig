@@ -25,18 +25,18 @@
 		{% if professeurs is empty %}
 		<div class="col-lg-12">
 			<div class="alert alert-info">
-				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<i class="icon-info-sign"></i> <strong>Info :</strong> Aucun professeur ne t'est encore assigné. Nous sommes en train de nous en charger !
 			</div>
 		</div>
 		{% endif %}
 	{% else %}
 		{% if professeurs is empty %}
-		<div class="col-lg-12">
-			<div class="alert alert-info">
-				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<i class="icon-info-sign"></i> <strong>Info :</strong> Aucun professeur n'est encore assigné. Nous sommes en train de nous en charger !
-			</div>
+		<div class="alert alert-danger">
+			<i class="icon-thumbs-down"></i> Aucun professeur ne vous est encore attribué.
+		</div>
+		{% else %}
+		<div class="alert alert-success">
+			<i class="icon-thumbs-up"></i> Un professeur vous a été attribué.
 		</div>
 		{% endif %}
 	{% endif %}
@@ -157,7 +157,7 @@
 			<a type="button" class="btn btn-sm btn-warning" data-calendar-view="year">Année</a>
 			<a type="button" class="btn btn-sm btn-warning active" data-calendar-view="month">Mois</a>
 			<a type="button" class="btn btn-sm btn-warning" data-calendar-view="week">Semaine</a>
-			<a type="button" class="btn btn-sm btn-warning" data-calendar-view="day">Jour</a>
+			<!--<a type="button" class="btn btn-sm btn-warning" data-calendar-view="day">Jour</a>-->
 		</div>
 	</div>
 	<br>

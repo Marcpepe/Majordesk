@@ -9,57 +9,56 @@
 <span class="visible-lg"><br><br></span>
 
 	{% if famille.isAllowedNewHours is empty %}
+	
+		<div class="col-lg-12">
+			<h3>Informations</h3>
+			Quelques informations concernant le rechargement de votre compte :
+			<ul>
+				<li>Le prix de l'heure de cours est de 59,90 € (29,95€ après impôts) quel que soit le pack acheté;</li>
+				<li>Les heures achetées ont une durée de validité de 18 mois;</li>
+				<li>Les heures achetées ne sont pas remboursables, sauf cas de force majeure.</li>
+			</ul>
+		</div>
 		
-			<div class="col-lg-12">
-				<h3>Packs d'heures</h3><br>
-			</div>
-			<div class="clearfix"></div>
-			<div class="col-lg-12">
-				<div class="panel panel-primary">
-					<div class="panel-heading">Pack 10 <i class="icon-time"></i></div>
-					<div class="panel-body">
-						<div class="col-lg-3">
-							Contenu : <strong>10 heures</strong>
-						</div>
-						<div class="col-lg-3">
-							<i class="icon-tag icon-large text-orange"></i> Prix : <strong>599,00€</strong><br>
-							<i class="icon-tag icon-large text-green"></i> Prix après impôts: <strong>299,50€</strong>
-						</div>
-						<div class="col-lg-3">
-							Durée de validité : infinie
-						</div>
-						<div class="col-lg-3">
-							<span class="pull-right">
-								<a href="{{ path('majordesk_app_achat_en_cours', { 'pack' : 1 }) }}" class="btn btn-success">Acheter</a>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<br>
-			<div class="col-lg-12">
-				<div class="panel panel-primary">
-					<div class="panel-heading">Pack 30 <i class="icon-time"></i></div>
-					<div class="panel-body">
-						<div class="col-lg-3">
-							Contenu : <strong>30 heures</strong>
-						</div>
-						<div class="col-lg-3">
-							<i class="icon-tag icon-large text-orange"></i> Prix : <strong>1797,00€</strong><br>
-							<i class="icon-tag icon-large text-green"></i> Prix après impôts: <strong>898,50€</strong>
-						</div>
-						<div class="col-lg-3">
-							Durée de validité : infinie
-						</div>
-						<div class="col-lg-3">
-							<span class="pull-right">
-								<a href="{{ path('majordesk_app_achat_en_cours', { 'pack' : 2 }) }}" class="btn btn-success">Acheter</a>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<br>
+		<br>
+		<div class="col-lg-12">
+			<h3>Tarifs des packs</h3>
+		</div>
+		<div class="clearfix"></div>
+		<div class="table-reponsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Pack 10h</th>
+						<th>Pack 30h</th>
+						<th>Pack 50h</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><i class="icon-tag icon-large text-orange"></i> <strong>Prix</strong></td>
+						<td>599,00 €</td>
+						<td>1797,00 €</td>
+						<td>2995,00 €</td>
+					</tr>
+					<tr>
+						<td><i class="icon-tag icon-large text-emerald"></i> <strong>Prix après impôts</strong></td>
+						<td>299,50 €</td>
+						<td>898,50 €</td>
+						<td>1447,50 €</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><a href="{{ path('majordesk_app_achat_en_cours', { 'pack' : 1 }) }}" class="btn btn-success">Acheter</a></td>
+						<td><a href="{{ path('majordesk_app_achat_en_cours', { 'pack' : 2 }) }}" class="btn btn-success">Acheter</a></td>
+						<td class="text-pomegranate">Bientôt disponible</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+		<br>
 		
 	{% else %}
 		

@@ -6,7 +6,7 @@
 	<title>{% block title %}Majorclass - Cours particuiliers de qualité.<!--Plateforme de prochaine génération-->{% endblock %}</title>
 	
 	<link rel="icon" type="image/png" href="{{ asset('img/home/favicon.png') }}" />
-	<script type="text/x-mathjax-config">
+	{# DISABLED jusqu'à réactivation de la plateforme<script type="text/x-mathjax-config">
 	MathJax.Hub.Config({
 	  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 	});
@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=TeX-AMS-MML_HTMLorMML-full"></script>-->
 	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=default"></script>-->
-	
+	#}
 	{% block stylesheets %}
 		{% stylesheets filter='yui_css' output='css/*'  
 			'../app/Resources/css/common/bootstrap.min.css' 

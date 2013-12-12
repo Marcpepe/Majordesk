@@ -493,9 +493,9 @@ class Famille
 		$cours = 0;
         foreach($this->eleves as $eleve) {		
 			foreach($eleve->getEleveMatieres() as $eleve_matiere) {
-				if ($eleve_matiere->getPlateforme() == 1 && $eleve_matiere->getPrelevementPlateforme() == 0) {
-					$message = 'Vous devez abonner '.$eleve->getUsername().' pour débloquer l\'achat d\'heures de cours.';
-				}
+				// if ($eleve_matiere->getPlateforme() == 1 && $eleve_matiere->getPrelevementPlateforme() == 0) {
+					// $message = 'Vous devez abonner '.$eleve->getUsername().' pour débloquer l\'achat d\'heures de cours.';
+				// }
 				if ($eleve_matiere->getCours() == 1) {
 					$cours = 1;
 				}
