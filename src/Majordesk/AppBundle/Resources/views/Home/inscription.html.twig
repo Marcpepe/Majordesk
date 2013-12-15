@@ -20,7 +20,7 @@
 					<p class="text-center">{% if app.session.get('etape_inscription') == 1 or app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':1}) }}" class="{% if etape_inscription != 1 %}text-mid-grey{% endif %}">1. Inscription de l'élève</a>{% else %}<span class="text-mid-grey cursor-forbidden">1. Inscription de l'élève</span>{% endif %}</p>
 				</div>
 				<div class="col-lg-4">
-					<p class="text-center">{% if app.session.get('etape_inscription') == 1 or app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':2}) }}" class="{% if etape_inscription != 2 %}text-mid-grey{% endif %}">2. Inscription d'un parent</a>{% else %}<span class="text-mid-grey cursor-forbidden">2. Inscription d'un parent</span>{% endif %}</p>
+					<p class="text-center">{% if app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':2}) }}" class="{% if etape_inscription != 2 %}text-mid-grey{% endif %}">2. Inscription d'un parent</a>{% else %}<span class="text-mid-grey cursor-forbidden">2. Inscription d'un parent</span>{% endif %}</p>
 				</div>
 				<div class="col-lg-4">
 					<p class="text-center">{% if app.session.get('etape_inscription') == 3 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':3}) }}" class="{% if etape_inscription != 3 %}text-mid-grey{% endif %}">3. Première connexion</a>{% else %}<span class="text-mid-grey cursor-forbidden">3. Première connexion</span>{% endif %}</p>

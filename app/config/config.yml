@@ -21,6 +21,18 @@ framework:
         save_path: "%kernel.root_dir%/sessions"
     fragments:       ~
 
+# PDF Generator
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     %wkhtmltopdf_path%
+        options:    []
+
+    image:
+        enabled:    true
+        binary:     %wkhtmltoimage_path%
+        options:    []
+
 # Twig Configuration
 twig:
     debug:            %kernel.debug%

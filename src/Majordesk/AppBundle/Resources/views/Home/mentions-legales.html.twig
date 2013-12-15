@@ -1,0 +1,34 @@
+{% extends "::layout-main.html.twig" %}
+				
+				{% block title %}
+					{{ parent() }} - Mentions légales
+				{% endblock %}
+				
+				{% block navbar %}
+				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
+				{% endblock %}
+
+{% block body %}
+	<div id="home-banner-0">
+		<br><br>
+		<div class="container home-container">
+			<div class="text-center" style="font-size:35px">
+				Mentions légales
+			</div>
+		</div>
+		<br>
+	</div>	
+	<div class="container">
+		<br>
+		<strong>Majorclass</strong> - SARL au capital de 1 000€<br><br>
+		Inscrit au RCS de Nanterre sous le numéro 789 493 467<br>
+		Siège social : 2 Place des Reflets - Courbevoie 92400 - France<br>
+		Tel: +33 (0)6 76 10 15 98<br><br>
+		Hébergeur : Planethoster - 4416 Louis B. Mayer, Laval, Québec, H7P 0G1 - Canada<br>
+		Numéro de récépissé CNIL : en attente de réception
+	</div>
+	<br><br><br>
+{% endblock %}	

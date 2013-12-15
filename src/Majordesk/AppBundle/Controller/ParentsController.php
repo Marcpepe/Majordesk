@@ -840,13 +840,57 @@ class ParentsController extends Controller
 				$paiement->setMontant($amount);
 				$paiement->setTransaction($transaction_id);
 				$famille->addPaiement($paiement);
-				fwrite( $fp, "Création paiement: OK\n");
+				fwrite( $fp, "Création paiement: OK\n");			
+				
+				$facture = new Facture();
+				$facture->setFamille($famille);
+				$dateEmission = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				$year = $dateEmission->format('Y');
+				$date_facture = $dateEmission->format('d/m/Y');
+				if ($infos[0]==1) {
+					$facture->setTotal(59900)
+				}
+				else if ($infos[0]==2) {
+					$facture->setTotal(179700)
+				}
+				fwrite( $fp, "Création facture: OK\n");
 					
 				fwrite( $fp, "Validation par Flush...\n");
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($famille);
 				$em->flush();
 				fwrite( $fp, "Flush : OK\n");
+				
+				$id_facture = $facture->getId();
+				$id_famille = $famille->getId();
+				fwrite( $fp, "Récupération user...\n");
+				$user = $this->getUser();
+				fwrite( $fp, "User : OK\n");				
+				if ($user->getGender() == 1) { $gender = "Mme."; } else { $gender = "M."; }
+				$nom = $user->getNom();
+				
+				if ($infos[0]==1) {
+					$achats = array( array("designation" => "Pack 10h", "quantite" => 1, "puht" => 59900) );
+				}
+				else if ($infos[0]==2) {
+					$achats = array( array("designation" => "Pack 30h", "quantite" => 1, "puht" => 179700) );
+				}
+				fwrite( $fp, "Préparation facture...\n");
+				
+				$this->get('knp_snappy.pdf')->generateFromHtml(
+					$this->renderView(
+						'MajordeskAppBundle:Admin:template-facture.html.twig',
+						array(
+							'id'  => $id_facture,
+							'gender'  => $gender,
+							'nom'  => $nom,
+							'achats'  => $achats,
+							'date'  => $date_facture,
+						)
+					),
+					'/home/majorcla/documents/factures/'.$id_famille.'/'.$year.'/facture-'.$id_facture.'.pdf'
+				);
+				fwrite( $fp, "Facture : OK\n");
 			}
 		}
 

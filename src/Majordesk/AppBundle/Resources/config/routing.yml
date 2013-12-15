@@ -30,6 +30,10 @@ majordesk_app_inscription:
     requirements:
         etape_inscription:      \d{1}
 
+majordesk_app_mentions_legales:
+    pattern:  /mentions-legales
+    defaults: { _controller: MajordeskAppBundle:Home:mentionsLegales }
+
 majordesk_app_cgv_majorclass:
     pattern:  /cvg-majorclass
     defaults: { _controller: MajordeskAppBundle:Home:cgvMajorclass }
