@@ -3,6 +3,25 @@ set :default_stage, "staging"
 set :stage_dir,     "app/config"
 require 'capistrano/ext/multistage'
 
+# before "deploy:restart", "deploy:set_permissions"
+
+# namespace :deploy do
+  # namespace :web do
+    # task :disable, :roles => :web, :except => { :no_release => true } do
+      # require 'erb'
+      # on_rollback { run "rm #{shared_path}/system/maintenance.html" }
+
+      # reason = ENV['REASON']
+      # deadline = ENV['UNTIL']
+
+      # template = File.read("./app/Resources/layouts/maintenance.html.erb")
+      # result = ERB.new(template).result(binding)
+
+      # put result, "#{shared_path}/system/maintenance.html", :mode => 0644
+    # end
+  # end
+# end
+
 # set :domain,      "majorclass.fr"
 # set :deploy_to,   "/home/majorcla/var/www/majordesk/#{domain}"
 # set :branch, "master"
@@ -14,7 +33,7 @@ set :user, "majorcla"  # The server's user for deploys
 set :use_sudo,      false
 default_run_options[:pty] = true
 ssh_options[:port] = "2908"
-ssh_options[:forward_agent] = true
+# ssh_options[:forward_agent] = true
 # set :ssh_options, { :forward_agent => true }
 # set :ssh_options,   :keys => %w(c:/Users/USERNAME/.ssh/id_rsa)
 # set :repository,  "ssh://git@github.com/Marcpepe/Majordesk.git"
@@ -30,18 +49,28 @@ set :scm_passphrase, "perrin"  # The deploy user's password
 # set :deploy_via,    :rsync_with_remote_cache
 
 set :shared_files,      ["app/config/parameters.yml","composer.phar"]
-set :use_composer,    true
-# set :composer_bin,    "composer.phar"
-set :update_vendors,  true
+set :use_composer,    false
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
+# # set :composer_bin,    "composer.phar"
+set :update_vendors,  false
 # set :vendors_mode,    "install"
-# set :copy_vendors, true
-set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
+set :copy_vendors, true
+
 set :dump_assetic_assets,   true
-set :writable_dirs,       ["app/cache", "app/logs"]
+set :writable_dirs,       [app_path + "/cache", app_path + "/logs"]
 set :permission_method,   :chmod
+set :set_permissions, true
 set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
 set :model_manager, "doctrine"
 set  :keep_releases,  3
+
+# after "deploy:update_code" do
+  # capifony_pretty_print "--> Ensuring cache directory permissions"
+  # run "setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX #{latest_release}/#{cache_path}"
+  # run "setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX #{latest_release}/#{cache_path}"
+  # capifony_puts_ok
+# end
+
 # before 'symfony:composer:install', 'composer:copy_vendors'
 # before 'symfony:composer:update', 'composer:copy_vendors'
 

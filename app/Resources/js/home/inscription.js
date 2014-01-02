@@ -1,15 +1,23 @@
-$(document).on('click', ".timepicker-debut", function() {
-	$(this).timepicker({
+$(document)
+.on('click', ".add_disponibilite_link", function() {
+	$(".timepicker-debut").timepicker({
 		minuteStep: 15,
 		showInputs: false,
 		showMeridian: false,
 		defaultTime: '16:00',
 		disableFocus: true
 	});
+	$(".timepicker-fin").timepicker({
+		minuteStep: 15,
+		showInputs: false,
+		showMeridian: false,
+		defaultTime: '22:00',
+		disableFocus: true
+	});
 });
 
 var collectionHolderDisponibilite = $('span.disponibilites');
-var $addDisponibiliteLink = $('<button type="button" class="btn btn-info" class="add_disponibilite_link"><i class="icon-plus"></i> Ajouter une disponibilité</button>');		
+var $addDisponibiliteLink = $('<button type="button" class="btn btn-info add_disponibilite_link"><i class="icon-plus"></i> Ajouter une disponibilité</button>');		
 function addDisponibiliteForm(collectionHolderDisponibilite, $addDisponibiliteLink) {
 	var prototype = collectionHolderDisponibilite.attr('data-prototype');
 	var newForm = prototype.replace(/__name__/g, collectionHolderDisponibilite.children().length + 20);
@@ -30,136 +38,5 @@ $('.lycee-typeahead').typeahead({
 	name : 'schools',
 	local : lycees, 
 	limit : 8 
-});
-
-// Options
-
-// Avec Plateforme
-$('.choix-situation').slideUp(0);
-$('#no-pack').hide();
-
-$('.option-text').slideUp(0);
-$('.option-details').click(function(){
-	$('.option-text').slideToggle();
-	if ( $('i.icon-plus-sign').length > 0 ) {
-		$('i.icon-plus-sign').addClass('icon-minus-sign').removeClass('icon-plus-sign');
-	}
-	else {
-		$('i.icon-minus-sign').addClass('icon-plus-sign').removeClass('icon-minus-sign');
-	}
-});
-$('.option-select').click(function(){
-	$('.situation.panel-primary').removeClass('panel-primary');
-	$(this).closest('div.panel').addClass('panel-primary');
-});
-
-if ( $('input.matiere').is(':checked') == false ) {
-	$('#packs-1').slideUp(0);
-	$('#packs-2').slideUp(0);
-	$('#packs-3').slideUp(0);
-}
-else {
-	$('#no-matiere').hide();
-}
-
-$('.option-1').click(function(){
-	if ( $('.choix-matiere').find('input.matiere:checked').length > 0 ) {
-		$('#no-pack').hide();
-		$('#packs-3').slideUp();
-		$('#packs-1').slideDown();
-	}
-});
-$('.option-3').click(function(){
-	if ( $('.choix-matiere').find('input.matiere:checked').length > 0 ) {
-		$('#no-pack').hide();
-		$('#packs-1').slideUp();
-		$('#packs-3').slideDown();
-	}
-});
-
-$('input.matiere').on('click', function() {
-	if ($(this).is(':checked') ) {
-		$('#no-matiere').hide();
-		if ( $(this).hasClass('maths') ) {
-			$('#packs-2').slideUp();
-			$('.choix-situation').slideDown();
-			$('#no-pack').show();
-		} else {
-			if ($('input.matiere.maths').is(':checked') == false) {
-				$('#packs-2').slideDown();
-			}
-		}
-	}
-	else {
-		$('.situation.panel-primary').removeClass('panel-primary');
-		if ( $('input.matiere').is(':checked') == false ) {
-			if ( $(this).hasClass('maths') ) {
-				$('.choix-situation').slideUp( function() {$('#no-pack').hide(); $('#no-matiere').show();} );
-				$('#packs-1').slideUp();
-				$('#packs-3').slideUp();
-			} else {
-				$('#packs-2').slideUp(function() { $('#no-matiere').show(); });
-			}
-		}
-		else {
-			if ( $(this).hasClass('maths') ) {
-				$('.choix-situation').slideUp( function() {$('#no-pack').hide(); $('#no-matiere').hide();} );
-				$('#packs-1').slideUp();
-				$('#packs-3').slideUp();
-				$('#packs-2').slideDown();
-			}
-		}
-	}
-});
-
-
-// Sans Plateforme
-if ( $('input.matiere-no-plateforme').is(':checked') == false ) {
-	$('#packs-2').slideUp(0);
-}
-else {
-	$('#no-matiere-no-plateforme').hide();
-}
-$('input.matiere-no-plateforme').on('click', function() {
-	if ($(this).is(':checked') ) {
-		$('#no-matiere-no-plateforme').hide();
-		$('#packs-2').slideDown();	
-	}
-	else {
-		if ( $('input.matiere-no-plateforme').is(':checked') == false ) {
-			$('#packs-2').slideUp(function() {$('#no-matiere-no-plateforme').show();});
-		}
-	}
-});
-
-// Commun
-$('input[name="pack"][type="checkbox"]').change(function() {
-	$('.pack-complet').removeClass('panel-primary');
-	$('.pack-decouverte').removeClass('panel-primary');
-	if ($(this).is(':checked') ) {
-		$(this).closest('div.panel').addClass('panel-primary');
-		$('.validation-pack').remove();
-		var validation_pack = '<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>';
-		$(this).closest('div.panel-body').append(validation_pack);
-	}
-	else {
-		$(this).closest('div.panel').removeClass('panel-primary');
-		$('.validation-pack').remove();
-	}
-	$('input[name="pack"][type="radio"]').prop('checked', false);
-	
-	
-});
-
-$('input[name="pack"][type="radio"]').change(function() {
-	$('.pack-complet').removeClass('panel-primary');
-	$('.pack-decouverte').removeClass('panel-primary');
-	$('.pack-plateforme').removeClass('panel-primary');
-	$(this).closest('div.panel').addClass('panel-primary');
-	
-	$('.validation-pack').remove();
-	var validation_pack = '<span class="validation-pack"><button type="submit" class="btn btn-success pull-right validation-btn">Valider <i class="icon-angle-right icon-large"></i></button><br><br></span>';
-	$(this).closest('div.panel-body').append(validation_pack);
-	$('input[name="pack"][type="checkbox"]').prop('checked', false);
 });
 

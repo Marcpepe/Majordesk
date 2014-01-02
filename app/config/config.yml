@@ -19,7 +19,20 @@ framework:
     trusted_proxies: ~
     session:         
         save_path: "%kernel.root_dir%/sessions"
+        cookie_lifetime: 31536000
     fragments:       ~
+
+# PDF Generator
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     %wkhtmltopdf_path%
+        options:    []
+
+    image:
+        enabled:    true
+        binary:     %wkhtmltoimage_path%
+        options:    []
 
 # Twig Configuration
 twig:

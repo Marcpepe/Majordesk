@@ -6,24 +6,23 @@
 				
 				{% block navbar %}
 				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
 				{% endblock %}
 
 {% block body %}
 	<div id="home-banner-2" class="col-lg-12">
-		<br>
-		<div class="container home-container plateforme-container">
-			<div class="col-lg-4">
-				<img src="{{ asset('img/home/plateforme.png') }}" class="img-responsive pull-right" />
+		<div class="container col-lg-offset-1 col-lg-11 home-container plateforme-container">
+			<div class="col-sm-4 col-md-4 col-lg-4 div-image">
+				<img src="{{ asset('img/home/plateforme.png') }}" style="height:155px;" />
 			</div>
-			<div class="col-lg-8 text-white">
-				<h1 class="font-responsive">Gestion simplifiée</h1>
-				<span class="hidden-xs font-size-20 font-responsive">Inscription, paiement et suivi en ligne</span>
+			<div class="col-sm-8 col-md-8 col-lg-8 div-text text-white">
+				<h1 class="font-responsive-26">Gestion simplifiée</h1>
+				<span class="hidden-xs font-size-20">Inscription, paiement et suivi en ligne</span>
 			</div>
 		</div>
-		<br>
+		<div class="clearfix"></div>
 	</div>	
 	<div class="container home-container">
 		<br><br><br>
@@ -192,7 +191,7 @@
 			<i class="icon-ok text-emerald icon-large"></i> <strong>Inscription</strong>
 		</div>
 		<div class="col-lg-10">
-			L'inscription est rapide, simple, <u>sans frais</u> et vous n'avez pas à vous déplacer. Une fois inscrit, nous nous chargeons de vous trouver un professeur approprié et vous commandez alors votre premier cours depuis la plateforme !
+			L'inscription est rapide, simple, <u>sans frais</u> et vous n'avez pas à vous déplacer. Une fois inscrit, nous sélectionnons un professeur de qualité dans notre équipe et vous commandez alors votre premier cours depuis la plateforme !
 		</div>
 		<div class="clearfix"></div>
 		<br>
@@ -200,7 +199,7 @@
 			<i class="icon-ok text-emerald icon-large"></i> <strong>Calendrier</strong>
 		</div>
 		<div class="col-lg-10">
-			Les créneaux de cours sont facilement consultables dans un calendrier récapitulatif. Le prochain cours est demandé par l'élève ou le parent depuis ce calendrier.
+			Les créneaux de cours sont facilement consultables dans un calendrier récapitulatif. <!--Le prochain cours est demandé par l'élève ou le parent depuis ce calendrier.-->
 		</div>
 		<div class="clearfix"></div>
 		<br>
@@ -212,10 +211,11 @@
 		</div>
 		<br><br>
 		<div class="col-lg-2">
-			<i class="icon-ok text-emerald icon-large"></i> <strong>Paiement</strong>
+			<i class="icon-ok text-emerald icon-large"></i> <strong>Paiements</strong>
 		</div>
 		<div class="col-lg-10">
-			Vous consultez et créditez votre compte d'heures de cours en quelques clics en ligne. (Consulter <a href="{{ path('majordesk_app_presentation_tarifs') }}">les Tarifs</a>).
+			Grâce au <strong>module de paiements facilités</strong> de <strong>BNP Paribas</strong>, vous payez exactement le nombre d'heures dont vous avez besoin sans avoir à ressortir votre carte.
+			<!-- sans devoir viser juste.Vous consultez et créditez votre compte d'heures de cours en quelques clics en ligne.--> (Consultez <a href="{{ path('majordesk_app_presentation_tarifs') }}">les Tarifs</a>).
 		</div>
 		<div class="clearfix"></div>
 		<br><br><br>

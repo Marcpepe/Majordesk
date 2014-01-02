@@ -40,11 +40,11 @@ security:
             security: false
 
         main_login:
-            pattern: ^/(|la-plateforme-Majorclass|les-tarifs|l-equipe|login|inscription|phpinfo)$
+            pattern: ^/(accueil|les-cours-Majorclass|la-plateforme-Majorclass|les-tarifs|l-equipe|login|inscription|inscription-1|inscription-2|inscription-3|mentions-legales|faq)$
             anonymous: true
 
         main:
-            pattern:        ^/(connexion|login_check|logout|admin|eleve|professeur|parents)
+            pattern:        ^/(|connexion|login_check|logout|admin|eleve|professeur|parents)
             anonymous:      false
             provider:       chain_provider
             form_login:
@@ -57,6 +57,7 @@ security:
                 target:     /login
             remember_me:
                 key:      %secret%
+                lifetime: 31536000
 
     access_control:
         - { path: ^/eleve/, role: ROLE_ELEVE }

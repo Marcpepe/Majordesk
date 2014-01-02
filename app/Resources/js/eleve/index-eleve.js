@@ -1,3 +1,20 @@
+$(".timepicker-debut").timepicker({
+	minuteStep: 15,
+	showInputs: false,
+	showMeridian: false,
+	defaultTime: '17:00',
+	disableFocus: true
+});
+$(".timepicker-fin").timepicker({
+	minuteStep: 15,
+	showInputs: false,
+	showMeridian: false,
+	defaultTime: '19:00',
+	disableFocus: true
+});
+ 
+$('.datepicker').datepicker({'format' : 'dd/mm/yyyy', 'language' : 'fr', 'weekStart' : '1', 'autoclose' : 'true'});
+
 $('.prof-password-input').click(function() {
 	var prenom_prof = $(this).attr('data-prof-prenom');
 	var id_prof = $(this).attr('data-prof-id');

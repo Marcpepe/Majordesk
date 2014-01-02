@@ -6,29 +6,29 @@
 				
 				{% block navbar %}
 				    <li class="active"><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
 				{% endblock %}
 
 {% block body %}
 	<div id="home-banner-1" class="col-lg-12">
-		<br>
-		<div class="container home-container cours-container">
-			<div class="col-lg-4">
-				<img src="{{ asset('img/home/prof.png') }}" class="img-responsive pull-right" />
+		<div class="container col-lg-offset-1 col-lg-11 home-container cours-container">
+			<div class="col-sm-4 col-md-4 col-lg-4 div-image">
+				<img src="{{ asset('img/home/prof.png') }}" style="height:155px;" />
 			</div>
-			<div class="hidden-xs col-lg-8 text-white">
-				<h1 class="font-responsive">Les cours particuliers</h1>
-				<span class="font-size-20 font-responsive">Des professeurs issus des Grandes Ecoles françaises</span>
+			<div class="col-sm-8 col-md-8 col-lg-8 div-text text-white">
+				<h1 class="font-responsive">Cours particuliers</h1>
+				<span class="hidden-xs font-size-20 font-responsive-26">Des professeurs issus des Grandes Ecoles françaises</span>
 			</div>
 		</div>
-		<br>
+		<div class="clearfix"></div>
 	</div>	
 	<div class="container home-container">
-		<br><br><br>
+		<br>
+		<span class="hidden-xs"><br><br></span>
 		<div class="col-lg-12">	
-			<h1>Nos professeurs :</h1>
+			<h3>Nos professeurs :</h3>
 			<div><i class="icon-ok text-orange"></i> ont suivi un cursus d'excellence dans les Grandes Ecoles françaises (Polytechnique, Centrale Paris, HEC, les Mines de Paris, les Ponts et Chaussées);</div>
 			<div><i class="icon-ok text-orange"></i> sont sélectionnés par <strong class="font-majorclass">Majorclass</strong> en entretien individuel selon les critères suivants :<br>
 			<ul>
@@ -36,7 +36,7 @@
 				<li>leur connaissance des programmes scolaires</li>
 			</ul>
 			</div>
-			<h1>De plus :</h1>
+			<h3>De plus :</h3>
 			<div><i class="icon-ok text-orange"></i> Ils apprécient l'enseignement et sont enthousiastes à l'idée de transmettre;</div>
 			<div><i class="icon-ok text-orange"></i> Leur proximité en âge mettra votre enfant à l'aise plus rapidement et il exprimera plus facilement ce qu'il n'a pas compris.</div>
 		</div>
@@ -44,7 +44,7 @@
 	</div>
 {% endblock %}	
 
-{% block javascripts %}
+{#{% block javascripts %}
 	{{ parent() }}
 	<script type="text/javascript">
 	  $(document).ready(function() {
@@ -53,4 +53,4 @@
 		})
 	  });
 	</script>
-{% endblock %}
+{% endblock %}#}

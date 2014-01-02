@@ -495,11 +495,32 @@ fieldset[disabled] .btn-orange.active {
 .font-size-20 {
   font-size: 20px;
 }
+.font-size-24 {
+  font-size: 24px;
+}
+.font-size-26 {
+  font-size: 26px;
+}
 .font-size-28 {
   font-size: 28px;
 }
+.font-size-40 {
+  font-size: 40px;
+}
+.font-size-50 {
+  font-size: 50px;
+}
 @media (max-width: 580px) {
-  h1.font-responsive {
+  .font-responsive-26 {
+    font-size: 26px;
+  }
+  .font-responsive-24 {
+    font-size: 24px;
+  }
+  .font-responsive-22 {
+    font-size: 22px;
+  }
+  .font-responsive-20 {
     font-size: 20px;
   }
 }
@@ -578,6 +599,35 @@ fieldset[disabled] .btn-orange.active {
 }
 .max-height-375 {
   max-height: 375px;
+}
+/*
+	 * Alignment
+	 */
+.text-center-lg-left-xs {
+  text-align: center;
+}
+.text-left-lg-center-xs {
+  text-align: left;
+}
+.text-center-lg-right-xs {
+  text-align: center;
+}
+.text-right-lg-center-xs {
+  text-align: right;
+}
+@media (max-width: 580px) {
+  .text-center-lg-left-xs {
+    text-align: left;
+  }
+  .text-left-lg-center-xs {
+    text-align: center;
+  }
+  .text-center-lg-right-xs {
+    text-align: right;
+  }
+  .text-right-lg-center-xs {
+    text-align: center;
+  }
 }
 /*
 	 * Positionning
@@ -670,8 +720,8 @@ fieldset[disabled] .btn-orange.active {
 	 * Index
 	 */
 .intro-container {
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 57px;
+  padding-bottom: 57px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -682,12 +732,12 @@ fieldset[disabled] .btn-orange.active {
   }
 }
 .cours-container {
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 .plateforme-container {
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 .cours-expanded {
   height: 310px;
@@ -764,18 +814,18 @@ footer {
   }
 }
 @media (min-width: 768px) {
-  body {
+  body.app {
     background-image: url('../img/common/fabric_of_squares_gray.png');
   }
-  body.app {
-    padding-top: 30px;
-  }
+  /*body.app {
+  			padding-top: 30px;
+  		}*/
 }
-@media (max-width: 767px) {
-  body.app {
-    padding-top: 70px;
-  }
-}
+/*@media (max-width: 767px) {
+		body.app {
+			padding-top: 70px;
+		}
+	}*/
 html {
   background-image: none;
   margin: 0;
@@ -786,7 +836,7 @@ body.home {
   background-image: none;
   margin: 0;
   padding: 0;
-  padding-top: 20px;
+  padding-top: 47px;
   height: 100%;
 }
 body.preview {
@@ -797,14 +847,17 @@ body.preview {
   color: white;
 }
 #home-banner-0 {
-  /*background-image: url('../img/common/retina_wood.png');	*/
-
   background-color: #9b59b6;
   color: white;
 }
 #home-banner-1 {
   background-color: #1abc9c;
   color: white;
+}
+@media (min-width: 1200px) and (max-width: 1336px) {
+  #home-banner-1 {
+    height: 315px;
+  }
 }
 #home-banner-2 {
   background-color: #3498db;
@@ -817,10 +870,10 @@ body.preview {
   height: 8px;
   color: white;
 }
-#home-banner-purple {
-  background-color: #8e4c9b;
-  color: white;
-}
+/*#home-banner-purple {
+		background-color: #8e4c9b;
+		color: white;
+	}*/
 .font-family-logo {
   font-family: 'yaahowu_boldregular';
 }

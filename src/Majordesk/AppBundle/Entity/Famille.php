@@ -145,6 +145,11 @@ class Famille
 	private $paiements;
 	
 	/**
+	 * @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\Facture", mappedBy="famille", cascade={"persist", "remove"})
+	 */
+	private $factures;
+	
+	/**
 	* @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\Eleve", mappedBy="famille", cascade={"persist", "remove"})
 	* @Assert\Valid()
 	*/
@@ -493,9 +498,9 @@ class Famille
 		$cours = 0;
         foreach($this->eleves as $eleve) {		
 			foreach($eleve->getEleveMatieres() as $eleve_matiere) {
-				if ($eleve_matiere->getPlateforme() == 1 && $eleve_matiere->getPrelevementPlateforme() == 0) {
-					$message = 'Vous devez abonner '.$eleve->getUsername().' pour débloquer l\'achat d\'heures de cours.';
-				}
+				// if ($eleve_matiere->getPlateforme() == 1 && $eleve_matiere->getPrelevementPlateforme() == 0) {
+					// $message = 'Vous devez abonner '.$eleve->getUsername().' pour débloquer l\'achat d\'heures de cours.';
+				// }
 				if ($eleve_matiere->getCours() == 1) {
 					$cours = 1;
 				}
@@ -525,7 +530,7 @@ class Famille
      * Add paiements
      *
      * @param \Majordesk\AppBundle\Entity\Paiement $paiement
-     * @return Matiere
+     * @return Famille
      */
     public function addPaiement(\Majordesk\AppBundle\Entity\Paiement $paiement)
     {
@@ -553,6 +558,40 @@ class Famille
     public function getPaiements()
     {
         return $this->paiements;
+    }
+	
+	/**
+     * Add factures
+     *
+     * @param \Majordesk\AppBundle\Entity\Facture $facture
+     * @return Famille
+     */
+    public function addFacture(\Majordesk\AppBundle\Entity\Facture $facture)
+    {
+        $this->factures[] = $facture;
+		$facture->setFamille($this);
+    
+        return $this;
+    }
+
+    /**
+     * Remove factures
+     *
+     * @param \Majordesk\AppBundle\Entity\Facture $facture
+     */
+    public function removeFacture(\Majordesk\AppBundle\Entity\Facture $facture)
+    {
+        $this->factures->removeElement($facture);
+    }
+
+    /**
+     * Get factures
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFactures()
+    {
+        return $this->factures;
     }
 	
 	/**

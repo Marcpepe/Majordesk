@@ -30,14 +30,14 @@ class PaiementRepository extends EntityRepository
 	/**
 	 * @return query_builder des
 	 */
-	public function getDescPaiementsLimit($id_famille)
+	public function getDescPaiementsLimit($id_famille, $lim)
 	{
 		$qb = $this->createQueryBuilder('p')
 				   ->join('p.famille', 'f')
 				   ->where('f.id = :id_famille')
 				   ->setParameter('id_famille', $id_famille)
 				   ->orderBy('p.datePaiement','DESC')
-				   ->setMaxResults(15);
+				   ->setMaxResults($lim);
 			
 		return $qb->getQuery()
 			      ->getResult();

@@ -65,7 +65,7 @@ class InscriptionEleveType extends AbstractType
 					// 'by_reference' => false
 					// ))
 			->add('disponibilites', 'collection', array(
-					'type'         => new AddDisponibiliteSansFinType(),
+					'type'         => new AddDisponibiliteType(),
 					'required' => false,
 					'allow_add'    => true,
                     'allow_delete' => true,

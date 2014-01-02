@@ -1,10 +1,260 @@
-{% extends "::layout.html.twig" %}
+{% extends "::layout-main.html.twig" %}
 
 {% block title %}
 	Accueil - {{ parent() }}
 {% endblock %}
 
 {% block body %}
+
+	{% if eleves|length > 1 %}
+		<div id="home-banner-1" class="col-lg-12">
+			<div class="container">
+				<br><span class="hidden-xs"><br></span>
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<img src="{{ asset('img/common/calendar.png') }}" style="height:120px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<form role="form-inline" method="post" action="{{ path('majordesk_app_calendrier_des_cours') }}">
+						<h3 class="text-left-lg-center-xs">Déclarer un cours</h3><br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">Pour</span></label>
+							<div class="col-lg-3">
+							    {{ form_widget(form.eleve) }}
+							</div>
+						</div>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">En</span></label>
+							<div class="col-lg-3">
+							    {% if form.matiere is defined %}
+									{{ form_widget(form.matiere) }}
+								{% else %}
+									<select id="matieresselectortype_matiere" name="matieresselectortype[matiere]" required="required" class="form-control"><option disabled="disabled" selected="selected">Sélectionner un enfant</option></select>
+								{% endif %}
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">Le</span></label>
+							<div class="col-lg-2">
+							  {{ form_widget(form.dateCours) }}
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">De</span></label>
+							<div class="col-lg-2">
+							  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.heureDebut) }}</span>
+							</div>
+							<span class="hidden-lg"><br></span>
+							<label class="col-lg-1"><span class="pull-right">à</span></label>
+							<div class="col-lg-2">
+							  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.heureFin) }}</span>
+							</div>
+							<span class="hidden-lg"><br></span>
+							<div class="col-lg-2">
+								<button type="submit" class="btn btn-primary pull-right"><i class="icon-ok"></i> Valider</button>
+							</div>
+						</div>
+						{{ form_widget(form._token) }}
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div><br><span class="hidden-xs"><br></span>
+		</div>	
+	{% else %}
+		<div id="home-banner-1" class="col-lg-12">
+			<div class="container">
+				<br><span class="hidden-xs"><br></span>
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<img src="{{ asset('img/common/calendar.png') }}" style="height:120px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<form role="form-inline" method="post" action="{{ path('majordesk_app_calendrier_des_cours') }}">
+						<h3 class="text-left-lg-center-xs">Déclarer un cours</h3><br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">En</span></label>
+							<div class="col-lg-3">
+							  {{ form_widget(form.matiere) }} 
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">Le</span></label>
+							<div class="col-lg-2">
+							  {{ form_widget(form.dateCours) }}
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">De</span></label>
+							<div class="col-lg-2">
+							  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.heureDebut) }}</span>
+							</div>
+							<span class="hidden-lg"><br></span>
+							<label class="col-lg-1"><span class="pull-right">à</span></label>
+							<div class="col-lg-2">
+							  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.heureFin) }}</span>
+							</div>
+							<span class="hidden-lg"><br></span>
+							<div class="col-lg-2">
+								<button type="submit" class="btn btn-primary pull-right"><i class="icon-ok"></i> Valider</button>
+							</div>
+						</div>
+						{{ form_widget(form._token) }}
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div><br><span class="hidden-xs"><br></span>
+		</div>	
+	{% endif %}	
+
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/crest.png') }}" style="height:80px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Bienvenue !</h3>
+					Vous venez de vous inscrire et nous nous en félicitons. Nous avons bien pris en charge votre dossier et vous serez recontacté dès qu'un professeur correspondant à vos besoins aura été sélectionné.
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/cards.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Enregistrement de votre moyen de paiement </h3>
+					Afin de pouvoir commencer les cours, vous devez préalablement avoir enregistré une carte bancaire en tant que moyen de paiement.
+					<br><br>
+					Informations importantes :
+					<ul>
+						<li>La sécurité de vos coordonnées bancaires est entièrement assurée par BNP Paribas. Nous ne disposons pas de ces informations ;</li>
+						<li>Vous pouvez à tout moment modifier ou annuler l'enregistrement de ce moyen de paiement ;</li>
+						<li>Vous ne serez jamais débités autrement que pour les cours qui ont effectivement eu lieu</li>
+					</ul>
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+				<img src="{{ asset('img/common/compteur.png') }}" style="height:70px;" />
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+				<h3 class="text-left-lg-center-xs"> Activité récente </h3>
+				{% if paiements|length > 0 %}
+				<!--<div class="table-responsive">-->
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Date <span class="hidden-xs">du paiement</span></th>
+								<th class="hidden-xs">Description</th>
+								<th>Montant</th>
+								<th class="hidden-xs">Statut</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for paiement in paiements %}
+							<tr>
+								<td>{{ paiement.datePaiement|date('d/m/Y') }}</td>
+								<td class="hidden-xs">
+									{{ paiement.description|raw }}
+								</td>
+								<td>
+									{% if paiement.pack >= 100 and paiement.pack < 200 %}
+										<em>Décompte
+										{% if paiement.pack == 110 %}
+											1h
+										{% elseif paiement.pack == 115 %}
+											1h30
+										{% elseif paiement.pack == 120 %}
+											2h 
+										{% elseif paiement.pack == 125 %}
+											2h30 
+										{% elseif paiement.pack == 130 %}
+											3h
+										{% elseif paiement.pack == 140 %}
+											4h 
+										{% elseif paiement.pack == 150 %}
+											5h
+										{% elseif paiement.pack == 195 %} <!--spécial Carazo : à supprimer plus tard -->
+											19.5h
+										{% endif %}
+										</em>
+									{% else %}
+										{{ (paiement.montant / 100)|number_format(2, ',', ' ') }} €
+									{% endif %}
+								</td>
+								<td class="hidden-xs">
+									{% if paiement.transaction == 0 %}
+										<i rel="tooltip" data-title="Paiement annulé" class="icon-remove text-red cursor-help"></i>
+									{% elseif paiement.transaction == 1 %}
+										<i rel="tooltip" data-title="Paiement en cours" class="icon-spin icon-spinner text-orange cursor-help"></i>
+									{% elseif paiement.transaction == 2 %}
+										<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
+									{% elseif paiement.transaction == 3 %}
+										<i rel="tooltip" data-title="Paiement non validé" class="icon-exclamation-sign text-red cursor-help"></i>
+									{% else %}
+										<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+					<br>
+				<!--</div>-->
+				{% else %}
+					Aucune activité récente.
+				{% endif %}
+				<a href="{{ path('majordesk_app_abonnements_factures') }}" class="btn btn-warning pull-right">Plus de détails</a>
+			</div>
+			<div class="clearfix"></div><br>
+		</div>
+	</div>
+	
+	<div id="home-banner-0" class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+				<img src="{{ asset('img/common/paper_plane.png') }}" style="height:120px;" />
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+				<h3 class="text-left-lg-center-xs">Recommandez nous</h3><br>
+				<div class="col-lg-6">
+					<input class="form-control" placeholder="Email">
+				</div>
+				<span class="hidden-lg"><br></span>
+				<div class="col-lg-2">
+					<button type="submit" class="btn btn-purple pull-right"><i class="icon-ok"></i> Envoyer</button>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div><br><span class="hidden-xs"><br></span>
+	</div>
+
+
+
+
+
+
+
+{#
 <span class="visible-md"><br><br></span>
 <span class="visible-lg"><br><br></span>
 
@@ -39,50 +289,117 @@
 	<a class="btn btn-purple-inverted btn-block" href="{{ path('majordesk_app_calendrier_famille') }}"><i class="icon-calendar icon-4x"></i> <span class="position-relative-up-12">Calendrier des cours {% if cal_events_proches|length > 0 %}<span rel="tooltip" data-title="{{ cal_events_proches|length }} cours programmé(s)" class="badge">{{ cal_events_proches|length }}</span>{% endif %}</span></a>			
 </div>
 <div class="col-lg-4">
-	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Factures et abonnements</span></a>
+	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Paiements et factures</span></a>
 </div>
 <div class="clearfix"></div>
 <br><br>
 <div class="col-lg-12">
 	<div class="panel panel-default">
 		<div class="panel-body">
-				<div class="col-lg-6">
-				
-					{% if famille.heuresPrises == 0 %}
-					<h4><i class="icon-info-sign icon-large text-light-green"></i> Information</h4><br>
-					Nous vous informons que la Plateforme est en constante mutation. Nous travaillons chaque jour pour la rendre la plus efficace et facile d'utilisation pour vous.
-					<br><br><br>
-					{% endif %}
-					<h4><i class="icon-calendar text-purple"></i> Prochain(s) cours :</h4>
-					<ul>{% set mois = {1:'Janvier',2:'Février',3:'Mars',4:'Avril',5:'Mai',6:'Juin',7:'Juillet',8:'Août',9:'Septembre',10:'Octobre',11:'Novembre',12:'Décembre'} %}
-						{% set jour = {1:'Lundi',2:'Mardi',3:'Mercredi',4:'Jeudi',5:'Vendredi',6:'Samedi',7:'Dimanche'} %}
-						{% for cal_event in cal_events_proches %}
-							<li>{{ jour[cal_event.dateCours|date('N')] ~ ' ' ~ cal_event.dateCours|date('j') ~ ' ' ~ mois[cal_event.dateCours|date('n')] }} ({{ cal_event.heureDebut}}-{{ cal_event.heureFin}}) </li>
-						{% else %}
-							<li><a href="{{ path('majordesk_app_calendrier_famille') }}">Programmer un cours</a></li>
-						{% endfor %}
-					</ul>
-				</div>
-				<div class="col-lg-6">				
-					{% if famille.heuresPrises == 0 %}
-					<h4><i class="icon-question-sign icon-large text-blue"></i> Comment faire pour programmer le premier cours ?</h4><br>
-					<ul>
-						<li>Nous sélectionnons dans notre équipe le professeur le plus adéquate pour votre enfant : vous recevrez un mail (<em>{{ app.user.mail }}</em>) pour vous indiquez qu'un professeur a été assigné à votre enfant.</li>
-						<br>
-						<li>Lorsqu'un professeur a été assigné à votre enfant, vous pouvez vous rendre dans le <a href="{{ path('majordesk_app_calendrier_famille') }}">calendrier</a>, aussi accessible depuis l'accueil <i class="icon-calendar text-purple"></i>, pour programmer un cours.</li>
-						<br>
-						<li>Une demande de cours de votre part apparaîtra avec le statut <i rel="tooltip" data-title="En attente d'une confirmation du professeur" class="icon-spinner icon-spin text-orange"></i>. Dès que cette demande aura été confirmée, le cours apparaîtra avec le statut <i rel="tooltip" data-title="Cours programmé" class="icon-ok text-success"></i></li>
-					</ul>
+			<div class="col-lg-6">
+				<h4>Prochain(s) cours :</h4>
+				<ul>{% set mois = {1:'Janvier',2:'Février',3:'Mars',4:'Avril',5:'Mai',6:'Juin',7:'Juillet',8:'Août',9:'Septembre',10:'Octobre',11:'Novembre',12:'Décembre'} %}
+					{% set jour = {1:'Lundi',2:'Mardi',3:'Mercredi',4:'Jeudi',5:'Vendredi',6:'Samedi',7:'Dimanche'} %}
+					{% for cal_event in cal_events_proches %}
+						<li>{{ jour[cal_event.dateCours|date('N')] ~ ' ' ~ cal_event.dateCours|date('j') ~ ' ' ~ mois[cal_event.dateCours|date('n')] }} ({{ cal_event.heureDebut}}-{{ cal_event.heureFin}}) </li>
 					{% else %}
-					<h4><i class="icon-info-sign icon-large text-light-green"></i> Information</h4><br>
-					Nous vous informons que la Plateforme est en constante mutation. Nous travaillons chaque jour pour la rendre la plus efficace et facile d'utilisation pour vous.<br>
-					{% endif %}
+						<li><a href="{{ path('majordesk_app_calendrier_famille') }}">Programmer un cours</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-lg-6">
+				<h4> Parrainage <span class="text-pomegranate">(Bientôt disponible)</span></h4>
+				Satisfait de votre professeur et de nos services ? Pour chaque famille que vous parrainez, vous recevez <strong>1 heure de cours gratuite</strong> !
+				<br><br>
+				<ul><li><a class="cursor-forbidden">Parrainer une famille</a></li></ul>
+			</div>
+			<div class="clearfix"></div><br>
+			<div class="col-lg-6">
+				<h4> Votre crédit d'heures de cours est de : <span class="{% if famille.heuresRestantes >= 10 %}text-emerald{% elseif famille.heuresRestantes <= 9 and famille.heuresRestantes > 2 %}text-orange{% else %}text-pomegranate{% endif %}">{{ famille.heuresRestantes / 10 }}</span></h4>
+				<ul><li><a href="{{ path('majordesk_app_achat_heures') }}">Recharger votre compte</a></li></ul>
+			</div>
+			<div class="col-lg-6">
+				<h4> Contact : </h4>
+				Si vous avez la moindre question ou le moindre problème, n'hésitez pas à nous contacter :
+				<ul>
+					<li>par téléphone au 06.63.15.24.17</li>
+					<li>par mail à l'adresse contact@majorclass.fr</li>
+				</ul>
+			</div>
+			<div class="clearfix"></div><br>
+			<div class="col-lg-12">
+				<h4> Activité récente : </h4>
+				{% if paiements|length > 0 %}
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Date du paiement</th>
+								<th>Description</th>
+								<th>Montant</th>
+								<th>Statut</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for paiement in paiements %}
+							<tr>
+								<td>{{ paiement.datePaiement|date('d/m/Y') }}</td>
+								<td>
+									{{ paiement.description|raw }}
+								</td>
+								<td>
+									{% if paiement.pack >= 100 and paiement.pack < 200 %}
+										<em>Décompte
+										{% if paiement.pack == 110 %}
+											1h
+										{% elseif paiement.pack == 115 %}
+											1h30
+										{% elseif paiement.pack == 120 %}
+											2h 
+										{% elseif paiement.pack == 125 %}
+											2h30 
+										{% elseif paiement.pack == 130 %}
+											3h
+										{% elseif paiement.pack == 140 %}
+											4h 
+										{% elseif paiement.pack == 150 %}
+											5h
+										{% elseif paiement.pack == 195 %} <!--spécial Carazo : à supprimer plus tard -->
+											19.5h
+										{% endif %}
+										</em>
+									{% else %}
+										{{ (paiement.montant / 100)|number_format(2, ',', ' ') }} €
+									{% endif %}
+								</td>
+								<td>
+									{% if paiement.transaction == 0 %}
+										<i rel="tooltip" data-title="Paiement annulé" class="icon-remove text-red cursor-help"></i>
+									{% elseif paiement.transaction == 1 %}
+										<i rel="tooltip" data-title="Paiement en cours" class="icon-spin icon-spinner text-orange cursor-help"></i>
+									{% elseif paiement.transaction == 2 %}
+										<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
+									{% elseif paiement.transaction == 3 %}
+										<i rel="tooltip" data-title="Paiement non validé" class="icon-exclamation-sign text-red cursor-help"></i>
+									{% else %}
+										<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
+									{% endif %}
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
 				</div>
+				{% else %}
+					Aucune activité récente.
+				{% endif %}
+			</div>
+			<div class="clearfix"></div><br>
 		</div>
 	</div>
 </div>
 
-
+#}
 
 {% endblock %}
 

@@ -1,0 +1,48 @@
+{% extends "::layout-main.html.twig" %}
+				
+				{% block title %}
+					FAQ
+				{% endblock %}
+				
+				{% block navbar %}
+				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
+				    <li class="active"><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
+				{% endblock %}
+
+{% block body %}
+	<div id="home-banner-0">
+		<br>
+		<div class="container home-container">
+			<div class="text-center" style="font-size:35px">
+				Les questions fréquemment posées
+			</div>
+		</div>
+		<br>
+	</div>
+	<div class="container home-container">
+		<br><span class="hidden-xs"><br></span>
+		<div class="col-lg-12">
+			<h3>Comment l'inscription se déroule-t-elle ?</h3>
+			<br>
+			<h3>Comment réserver mon premier cours ?</h3>
+			<br>
+			<h3>Qui dois-je contacter en cas de..</h3>
+			<br>
+			<h3>Qu'est-ce que le "module de paiements facilités" ?</h3>
+			<br>
+			Le <strong>module de paiements facilités</strong> est un service proposé par Merc@net, la solution en ligne de BNP Paribas. Ce service vous permet de sauvegarder les coordonnées de votre carte bancaire, afin de pouvoir acheter sans devoir ré-entrer votre numéro de carte bancaire à chaque fois. Nous <u>ne disposons pas de vos coordonnées bancaires</u>; celles-ci sont sauvegardées et sécurisées par BNP Paribas exclusivement.
+			<br><br>
+			Vous avez accès à la gestion de vos cartes bancaires sauvegardées : vous pouvez donc à tout moment les retirer du module ou en changer les coordonnées en cas par exemple d'expiration de votre carte.
+			
+			<br><br>
+			<h3>Pourquoi imposer le paiement par prélèvement ?</h3>
+			<br>
+			Quoi de plus pratique ! Vous entrez une fois vos coordonnées, puis vous gérez simplement les heures de cours prises par votre enfant grâce aux outils mis à votre disposition : liste des heures prises, calendrier des cours, factures mensuelles, alertes par mail. 
+			<br><br>
+			Pourquoi ne pas accepter le paiement par chèque ou carte d'un "pack d'heures" ? Nous nous sommes rendu compte par expérience, qu'il vous est souvent compliqué de ...
+		</div>
+		<br><br>
+	</div>
+{% endblock %}	
