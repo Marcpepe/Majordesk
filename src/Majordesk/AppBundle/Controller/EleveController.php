@@ -31,81 +31,153 @@ class EleveController extends Controller
 	public function indexEleveAction()
     {
 		if ($this->get('security.context')->isGranted('ROLE_ELEVE') && !$this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			$session = $this->get('session');
-			$etape_cours = $session->get('etape_cours');
-			$matiere_cours = $session->get('matiere_cours');
-			if ($etape_cours == 1) {
-				return $this->redirect($this->generateUrl('majordesk_app_verification_devoirs'));
-			}
-			else if ($etape_cours == 3) {
-				return $this->redirect($this->generateUrl('majordesk_app_calendrier_des_cours', array('etape'=>3)));
-			}
-			else if ($etape_cours == 4) {
-				return $this->redirect($this->generateUrl('majordesk_app_donner_devoirs'));
-			}
-			else if ($etape_cours == 5) {
-				return $this->redirect($this->generateUrl('majordesk_app_declarer_cours'));
-			}
-			else {
-				$statut_resolu = $this->container->getParameter('statut_resolu');
-				$user = $this->getUser();
-				$matieres_avec_plateforme = $user->getMatieresActives();
-				$matieres = $user->getMatieres();
-				$professeurs = $user->getProfesseurs();
-				
-				$heure_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				$heure_from->sub(new \DateInterval('PT5H'));
-				$heure_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				$heure_to->add(new \DateInterval('PT1H'));
-				
-				$cal_events_now = $this->getDoctrine()
-									   ->getManager()
-									   ->getRepository('MajordeskAppBundle:CalEvent')
-									   ->getEleveCalEvents($user->getId(), $heure_from, $heure_to);
-				
-				$date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				$date_from->sub(new \DateInterval('PT1H'));
-				$date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				$date_to->add(new \DateInterval('P7D'));
-				
-				$cal_events_proches = $this->getDoctrine()
+			
+			$user = $this->getUser();
+			$professeurs = $user->getProfesseurs();
+			
+			$cours = new CalEvent();
+			$cours->setEleve($user);
+			
+			// $errors ='';
+			$form = $this->createForm(new CoursType($user->getId()), $cours);
+			
+			$request = $this->getRequest();
+			if ($request->getMethod() == 'POST') 
+			{
+				$form->bind($request);
+
+				if ($form->isValid()) 
+				{
+					date_default_timezone_set("Europe/Paris"); 
+					if (strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') > time() - 2 * 3600 ) {
+						
+						$matiere = $form->getData()->getMatiere();
+						$id_matiere = $matiere->getId();
+						
+						$professeur = $this->getDoctrine()
 										   ->getManager()
-									       ->getRepository('MajordeskAppBundle:CalEvent')
-									       ->getEleveCalEventsProches($user->getId(), $date_from, $date_to);
-										   
-				$devoirs = $this->getDoctrine()
-							    ->getManager()
-							    ->getRepository('MajordeskAppBundle:Exercice')
-							    ->getDevoirs($user->getId(), $statut_resolu);
-				
-				$favoris = $this->getDoctrine()
-							    ->getManager()
-							    ->getRepository('MajordeskAppBundle:Exercice')
-							    ->getFavorisByEleve($user->getId(), $statut_resolu);
+										   ->getRepository('MajordeskAppBundle:Professeur')
+										   ->getProfesseurByEleveAndMatiere($user->getId(), $id_matiere);
+						
+						if ($professeur !== null) {		
+							
+							$cal_events = $this->getDoctrine()
+											   ->getManager()
+											   ->getRepository('MajordeskAppBundle:CalEvent')
+											   ->getAllProfesseurCalEvents($professeur->getId());
+							$authorized = true;
+							foreach($cal_events as $cal_event) {
+								if ( strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') < strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureFin().':00') && strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureFin().':00') > strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureDebut().':00') ) {
+									$authorized = false;
+									break;
+								}
+							}
+							
+							if ($authorized) {
+								$cours->setProfesseur($professeur);
+								$cours->setTitre('Cours avec '.$professeur->getUsername().' ('.$form->getData()->getHeureDebut().'-'.$form->getData()->getHeureFin().')');
 								
-				$nb_devoirs = 0;
-				foreach($devoirs as $devoir) {
-					$nb_devoirs += abs($devoir->getSelection());
+								$em = $this->getDoctrine()->getManager();
+								$em->persist($cours);
+								$em->flush();
+								$this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée à ton professeur.');
+							}
+							else {
+								$this->get('session')->getFlashBag()->add('warning', ' Ton professeur est déjà pris par un cours sur ce créneau.');
+							}
+						}
+						else {
+							$this->get('session')->getFlashBag()->add('warning', ' Aucun professeur ne t\'as encore été attribué dans cette matière.');
+						}
+					}
+					else {
+						$this->get('session')->getFlashBag()->add('warning', ' Impossible de demander un cours à une date passée de plus de 2 heures!');
+					}
 				}
-				
-				$hasPlateforme = $user->hasPlateforme();
-				$hasCours = $user->hasCours();
-				// $hasAutorisationPrelevement = $user->hasAutorisationPrelevement();
-				
-				return $this->render('MajordeskAppBundle:Eleve:index-eleve.html.twig', array(
-					'matieres_avec_plateforme' => $matieres_avec_plateforme,
-					'matieres' => $matieres,
-					'professeurs' => $professeurs,
-					'cal_events_now' => $cal_events_now,
-					'cal_events_proches' => $cal_events_proches,
-					'nb_devoirs' => $nb_devoirs,
-					'devoirs' => $devoirs,
-					'favoris' => $favoris,
-					'hasPlateforme' => $hasPlateforme,
-					'hasCours' => $hasCours,
-					// 'hasAutorisationPrelevement' => $hasAutorisationPrelevement
-				));
+				else {
+					// $errors = $form->getErrorsAsString();
+					$this->get('session')->getFlashBag()->add('warning', ' Un ou plusieurs champs ont été mal remplis.');
+				}
 			}
+			
+			return $this->render('MajordeskAppBundle:Eleve:index-eleve.html.twig', array(
+				'form' => $form->createView(),
+				'professeurs' => $professeurs,
+			));
+			
+			// $session = $this->get('session');
+			// $etape_cours = $session->get('etape_cours');
+			// $matiere_cours = $session->get('matiere_cours');
+			// if ($etape_cours == 1) {
+				// return $this->redirect($this->generateUrl('majordesk_app_verification_devoirs'));
+			// }
+			// else if ($etape_cours == 3) {
+				// return $this->redirect($this->generateUrl('majordesk_app_calendrier_des_cours', array('etape'=>3)));
+			// }
+			// else if ($etape_cours == 4) {
+				// return $this->redirect($this->generateUrl('majordesk_app_donner_devoirs'));
+			// }
+			// else if ($etape_cours == 5) {
+				// return $this->redirect($this->generateUrl('majordesk_app_declarer_cours'));
+			// }
+			// else {
+				// $statut_resolu = $this->container->getParameter('statut_resolu');
+				// $user = $this->getUser();
+				// $matieres_avec_plateforme = $user->getMatieresActives();
+				// $matieres = $user->getMatieres();
+				// $professeurs = $user->getProfesseurs();
+				
+				// $heure_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				// $heure_from->sub(new \DateInterval('PT5H'));
+				// $heure_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				// $heure_to->add(new \DateInterval('PT1H'));
+				
+				// $cal_events_now = $this->getDoctrine()
+									   // ->getManager()
+									   // ->getRepository('MajordeskAppBundle:CalEvent')
+									   // ->getEleveCalEvents($user->getId(), $heure_from, $heure_to);
+				
+				// $date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				// $date_from->sub(new \DateInterval('PT1H'));
+				// $date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				// $date_to->add(new \DateInterval('P7D'));
+				
+				// $cal_events_proches = $this->getDoctrine()
+										   // ->getManager()
+									       // ->getRepository('MajordeskAppBundle:CalEvent')
+									       // ->getEleveCalEventsProches($user->getId(), $date_from, $date_to);
+										   
+				// $devoirs = $this->getDoctrine()
+							    // ->getManager()
+							    // ->getRepository('MajordeskAppBundle:Exercice')
+							    // ->getDevoirs($user->getId(), $statut_resolu);
+				
+				// $favoris = $this->getDoctrine()
+							    // ->getManager()
+							    // ->getRepository('MajordeskAppBundle:Exercice')
+							    // ->getFavorisByEleve($user->getId(), $statut_resolu);
+								
+				// $nb_devoirs = 0;
+				// foreach($devoirs as $devoir) {
+					// $nb_devoirs += abs($devoir->getSelection());
+				// }
+				
+				// $hasPlateforme = $user->hasPlateforme();
+				// $hasCours = $user->hasCours();
+				
+				// return $this->render('MajordeskAppBundle:Eleve:index-eleve.html.twig', array(
+					// 'matieres_avec_plateforme' => $matieres_avec_plateforme,
+					// 'matieres' => $matieres,
+					// 'professeurs' => $professeurs,
+					// 'cal_events_now' => $cal_events_now,
+					// 'cal_events_proches' => $cal_events_proches,
+					// 'nb_devoirs' => $nb_devoirs,
+					// 'devoirs' => $devoirs,
+					// 'favoris' => $favoris,
+					// 'hasPlateforme' => $hasPlateforme,
+					// 'hasCours' => $hasCours,
+				// ));
+			// }
 		}
     }
 	

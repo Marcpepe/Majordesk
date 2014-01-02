@@ -38,6 +38,25 @@ class HomeController extends Controller
 		}
     }
 	
+	public function gateIndexAction()
+    {
+		if ($this->get('security.context')->isGranted('ROLE_ELEVE') && !$this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
+		}
+		elseif ($this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			return $this->redirect($this->generateUrl('majordesk_app_index_professeur'));
+		}
+		elseif ($this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			return $this->redirect($this->generateUrl('majordesk_app_index_parents'));
+		}
+		elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			return $this->redirect($this->generateUrl('majordesk_app_index_admin'));
+		}  
+		else {
+			return $this->redirect($this->generateUrl('majordesk_app_principe_index'));
+		}
+    }
+	
 	public function principeIndexAction()
     {
 		return $this->render('MajordeskAppBundle:Home:index.html.twig');
@@ -60,26 +79,6 @@ class HomeController extends Controller
 	
 	public function tarifsPresentationAction()
     {
-		// $id = 128;
-		// $gender = "M.";
-		// $nom = "Pepe";
-		// $achats = array( array("designation" => "Pack 10h", "quantite" => 1, "puht" => 59900), array("designation" => "Pack 30h", "quantite" => 2, "puht" => 179750) );
-		// $date = "07/12/2013";
-		
-		// $this->get('knp_snappy.pdf')->generateFromHtml(
-			// $this->renderView(
-				// 'MajordeskAppBundle:Admin:template-facture.html.twig',
-				// array(
-					// 'id'  => $id,
-					// 'gender'  => $gender,
-					// 'nom'  => $nom,
-					// 'achats'  => $achats,
-					// 'date'  => $date,
-				// )
-			// ),
-			// 'C:\wamp\www\Symfony\documents\factures/facture1.pdf'
-		// );
-	
 		return $this->render('MajordeskAppBundle:Home:presentation-tarifs.html.twig');
     }
 	
@@ -353,6 +352,11 @@ class HomeController extends Controller
 	public function mentionsLegalesAction()
     {
 		return $this->render('MajordeskAppBundle:Home:mentions-legales.html.twig');
+    }
+	
+	public function faqAction()
+    {
+		return $this->render('MajordeskAppBundle:Home:faq.html.twig');
     }
 	
 	public function cgvMajorclassAction()

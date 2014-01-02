@@ -57,38 +57,11 @@
 		Nombre d'heures de cours restantes : <strong> {{ famille.heuresRestantes / 10 }}h</strong><br><br>
 		Nombre total d'heures de cours prises : <strong> {{ famille.heuresPrises / 10 }}h</strong><br><br>
 	</div>
-
 	<div class="col-lg-4">
-		{% if not famille.isAllowedNewHours is empty %}
-			<a class="btn btn-success-inverted btn-block inactif" rel="tooltip" data-title="{{ famille.isAllowedNewHours }}" ><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Acheter des heures</span></a>
-		{% else %}
-			<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_achat_heures') }}"><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Acheter des heures</span></a>
-		{% endif %}
+		<a href="{{ path('majordesk_app_details_heures') }}" class="btn btn-success-inverted btn-block" ><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Voir l'historique des heures prises</span></a>
 	</div>
 	<div class="col-lg-4">
-		<a href="{{ path('majordesk_app_details_heures') }}" class="btn btn-primary-inverted btn-block" ><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Voir l'historique des heures prises</span></a>
-	</div>
-	<div class="clearfix"></div><br>
-	
-	<div class="col-lg-12">
-		<h3>Abonnements <i class="icon-question-sign cursor" rel="tooltip" data-placement="right" data-title="Notre Plateforme d'entraînement reviendra pour la rentrée 2014 plus complète que jamais !"></i></h3><br>
-	</div>
-	<div class="clearfix"></div>
-	<div class="col-lg-8">
-		{% for eleve in eleves %}
-			{% for eleve_matiere in eleve.eleveMatieres if eleve_matiere.plateforme == 1 and eleve_matiere.prelevementPlateforme == 1 %}
-				<i class="icon-ok icon-large"></i> {{ eleve.username }} est abonné(e) à la Plateforme <span class="label label-info">Mathématiques</span> 
-				jusqu'au : {% if eleve_matiere.dateAbonnement != null %}<strong>{{ eleve_matiere.dateAbonnement|date('d/m/Y') }}</strong>{% else %}<em>Non communiqué</em>{% endif %}<br>
-				<small><em>date du prochain débit automatique : {% if eleve_matiere.dateAbonnement != null %}{{ eleve_matiere.dateAbonnement|date('d/m/Y') }}{% else %}Non communiquée{% endif %}</em></small><br><br>
-			{% else %}
-				{{ eleve.username }} : <em>Aucun abonnement pour l'instant</em><br><br>
-			{% endfor %}
-		{% endfor %}
-	</div>
-	<div class="col-lg-4">
-		<span class="visible-xs"><br></span>
-		<span class="visible-sm"><br></span>
-		<a class="btn btn-info-inverted btn-block inactif" rel="tooltip" data-title="Lancement à la rentrée 2014" href="{#{{ path('majordesk_app_gestion_abonnements') }}#}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Gérer vos abonnements</span></a>
+		<a class="btn btn-info-inverted btn-block" href="#"><i class="icon-credit-card icon-4x"></i> <span class="position-relative-up-12">Modifier vos informations bancaires</span></a>
 	</div>
 	<div class="clearfix"></div><br>
 	<div class="col-lg-12">
@@ -162,6 +135,26 @@
 	<div class="col-lg-12">
 		<h3>Factures</h3><br>
 		Vos factures seront bientôt en ligne.
+	</div>
+	<div class="clearfix"></div><br>
+		
+	<div class="col-lg-12">
+		<h3>Abonnements <i class="icon-question-sign cursor" rel="tooltip" data-placement="right" data-title="Notre Plateforme d'entraînement reviendra pour la rentrée 2014 plus complète que jamais !"></i></h3><br>
+	</div>
+	<div class="clearfix"></div>
+	<div class="col-lg-8">
+		{% for eleve in eleves %}
+			{% for eleve_matiere in eleve.eleveMatieres if eleve_matiere.plateforme == 1 and eleve_matiere.prelevementPlateforme == 1 %}
+				<i class="icon-ok icon-large"></i> {{ eleve.username }} est abonné(e) à la Plateforme <span class="label label-info">Mathématiques</span> 
+				jusqu'au : {% if eleve_matiere.dateAbonnement != null %}<strong>{{ eleve_matiere.dateAbonnement|date('d/m/Y') }}</strong>{% else %}<em>Non communiqué</em>{% endif %}<br>
+				<small><em>date du prochain débit automatique : {% if eleve_matiere.dateAbonnement != null %}{{ eleve_matiere.dateAbonnement|date('d/m/Y') }}{% else %}Non communiquée{% endif %}</em></small><br><br>
+			{% else %}
+				{{ eleve.username }} : <em>Aucun abonnement pour l'instant</em><br><br>
+			{% endfor %}
+		{% endfor %}
+	</div>
+	<div class="col-lg-4">
+		<a class="btn btn-info-inverted btn-block inactif" rel="tooltip" data-title="Lancement à la rentrée 2014" href="{#{{ path('majordesk_app_gestion_abonnements') }}#}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Gérer vos abonnements</span></a>
 	</div>
 	<div class="clearfix"></div><br><br>
 

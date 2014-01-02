@@ -11,6 +11,9 @@ use Majordesk\AppBundle\Entity\Paiement;
 use Majordesk\AppBundle\Entity\Eleve;
 use Majordesk\AppBundle\Entity\EleveMatiere;
 use Majordesk\AppBundle\Entity\Disponibilite;
+use Majordesk\AppBundle\Form\Type\CoursType;
+use Majordesk\AppBundle\Form\Type\CoursFilterType;
+use Majordesk\AppBundle\Entity\CalEvent;
 
 class ParentsController extends Controller
 {
@@ -22,29 +25,162 @@ class ParentsController extends Controller
 		if ($this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			$user = $this->getUser();
 			$famille = $user->getFamille();
-			$eleves = $famille->getEleves();
+			$eleves = $famille->getEleves();	
+			$professeurs = $famille->getProfesseurs();
+			
+			$cours = new CalEvent();
+			if (count($eleves) > 1) {
+				// $errors ='';
+				$form = $this->createForm(new CoursFilterType($famille->getId()), $cours);
+				
+				$request = $this->getRequest();
+				if ($request->getMethod() == 'POST') 
+				{
+					$form->bind($request);
+
+					if ($form->isValid()) 
+					{
+						date_default_timezone_set("Europe/Paris"); 
+						if (strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') > time() ) {
+							
+							$matiere = $form->getData()->getMatiere();
+							$eleve = $form->getData()->getEleve();
+							$id_matiere = $matiere->getId();
+							
+							$professeur = $this->getDoctrine()
+											   ->getManager()
+											   ->getRepository('MajordeskAppBundle:Professeur')
+											   ->getProfesseurByEleveAndMatiere($eleve->getId(), $id_matiere);
+							
+							if ($professeur !== null) {		
+								
+								$cal_events = $this->getDoctrine()
+												   ->getManager()
+												   ->getRepository('MajordeskAppBundle:CalEvent')
+												   ->getAllProfesseurCalEvents($professeur->getId());
+								$authorized = true;
+								foreach($cal_events as $cal_event) {
+									if ( strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') < strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureFin().':00') && strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureFin().':00') > strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureDebut().':00') ) {
+										$authorized = false;
+										break;
+									}
+								}
+								
+								if ($authorized) {
+									$cours->setProfesseur($professeur);
+									$cours->setTitre('Cours avec '.$professeur->getUsername().' ('.$form->getData()->getHeureDebut().'-'.$form->getData()->getHeureFin().')');
+									
+									$em = $this->getDoctrine()->getManager();
+									$em->persist($cours);
+									$em->flush();
+									$this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
+								}
+								else {
+									$this->get('session')->getFlashBag()->add('warning', ' Le professeur assigné est déjà pris par un cours sur ce créneau.');
+								}
+							}
+							else {
+								$this->get('session')->getFlashBag()->add('warning', ' Aucun professeur n\'a encore été attribué dans cette matière.');
+							}
+						}
+						else {
+							$this->get('session')->getFlashBag()->add('warning', ' Impossible de demander un cours à une date passée!');
+						}
+					}
+					else {
+						// $errors = $form->getErrorsAsString();
+						$this->get('session')->getFlashBag()->add('warning', ' Un ou plusieurs champs ont été mal remplis.');
+					}
+				}
+			}
+			else {
+				$cours->setEleve($eleves[0]);
+				
+				// $errors ='';
+				$form = $this->createForm(new CoursType($eleves[0]->getId()), $cours);
+				
+				$request = $this->getRequest();
+				if ($request->getMethod() == 'POST') 
+				{
+					$form->bind($request);
+
+					if ($form->isValid()) 
+					{
+						date_default_timezone_set("Europe/Paris"); 
+						if (strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') > time() ) {
+							
+							$matiere = $form->getData()->getMatiere();
+							$id_matiere = $matiere->getId();
+							
+							$professeur = $this->getDoctrine()
+											   ->getManager()
+											   ->getRepository('MajordeskAppBundle:Professeur')
+											   ->getProfesseurByEleveAndMatiere($eleves[0]->getId(), $id_matiere);
+							
+							if ($professeur !== null) {		
+								
+								$cal_events = $this->getDoctrine()
+												   ->getManager()
+												   ->getRepository('MajordeskAppBundle:CalEvent')
+												   ->getAllProfesseurCalEvents($professeur->getId());
+								$authorized = true;
+								foreach($cal_events as $cal_event) {
+									if ( strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') < strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureFin().':00') && strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureFin().':00') > strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureDebut().':00') ) {
+										$authorized = false;
+										break;
+									}
+								}
+								
+								if ($authorized) {
+									$cours->setProfesseur($professeur);
+									$cours->setTitre('Cours avec '.$professeur->getUsername().' ('.$form->getData()->getHeureDebut().'-'.$form->getData()->getHeureFin().')');
+									
+									$em = $this->getDoctrine()->getManager();
+									$em->persist($cours);
+									$em->flush();
+									$this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
+								}
+								else {
+									$this->get('session')->getFlashBag()->add('warning', ' Le professeur assigné est déjà pris par un cours sur ce créneau.');
+								}
+							}
+							else {
+								$this->get('session')->getFlashBag()->add('warning', ' Aucun professeur n\'a encore été attribué dans cette matière.');
+							}
+						}
+						else {
+							$this->get('session')->getFlashBag()->add('warning', ' Impossible de demander un cours à une date passée!');
+						}
+					}
+					else {
+						// $errors = $form->getErrorsAsString();
+						$this->get('session')->getFlashBag()->add('warning', ' Un ou plusieurs champs ont été mal remplis.');
+					}
+				}	
+			}
 			
 			$paiements = $this->getDoctrine()
 							  ->getManager()
 							  ->getRepository('MajordeskAppBundle:Paiement')
 							  ->getDescPaiementsLimit($famille->getId(), 3);
 			
-			$date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-			$date_from->sub(new \DateInterval('PT8H'));
-			$date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-			$date_to->add(new \DateInterval('P30D'));
+			// $date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+			// $date_from->sub(new \DateInterval('PT8H'));
+			// $date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+			// $date_to->add(new \DateInterval('P30D'));
 			
-			$cal_events_proches = $this->getDoctrine()
-									   ->getManager()
-									   ->getRepository('MajordeskAppBundle:CalEvent')
-									   ->getFamilleCalEventsProches($user->getFamille()->getId(), $date_from, $date_to);
+			// $cal_events_proches = $this->getDoctrine()
+									   // ->getManager()
+									   // ->getRepository('MajordeskAppBundle:CalEvent')
+									   // ->getFamilleCalEventsProches($user->getFamille()->getId(), $date_from, $date_to);
 									   
 			return $this->render('MajordeskAppBundle:Parents:index-parents.html.twig', array(
-					'famille' => $famille,
-					'eleves' => $eleves,
-					'paiements' => $paiements,
-					'cal_events_proches' => $cal_events_proches,
-				));
+				'form' => $form->createView(),
+				'famille' => $famille,
+				'eleves' => $eleves,
+				'paiements' => $paiements,
+				// 'cal_events_proches' => $cal_events_proches,
+			));
 		}
     }
 	
@@ -848,10 +984,10 @@ class ParentsController extends Controller
 				$year = $dateEmission->format('Y');
 				$date_facture = $dateEmission->format('d/m/Y');
 				if ($infos[0]==1) {
-					$facture->setTotal(59900)
+					$facture->setTotal(59900);
 				}
 				else if ($infos[0]==2) {
-					$facture->setTotal(179700)
+					$facture->setTotal(179700);
 				}
 				fwrite( $fp, "Création facture: OK\n");
 					

@@ -1,36 +1,71 @@
 {% extends "::layout-main.html.twig" %}
 				
 				{% block title %}
-					Tarifs
+					Tarif
 				{% endblock %}
 				
 				{% block navbar %}
 				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li class="active"><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li class="active"><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
 				{% endblock %}
 
 {% block body %}
-	<div id="home-banner-purple">
-		<br><br>
+	<div id="home-banner-0">
+		<br>
 		<div class="container home-container">
 			<div class="text-center" style="font-size:35px">
-				Des tarifs clairs
+				Un tarif clair
 			</div>
 		</div>
 		<br>
 	</div>
 	<div class="container home-container">
 		<br><br>
-		<!--<div class="col-lg-12">
-			<div class="text-center">
-				<i class="icon-money text-emerald" style="font-size:200px"></i>
-			</div>
-		</div>-->
+		<div class="col-lg-12">
+			<strong class="font-majorclass">Majorclass</strong> est un organisme de soutien scolaire agréé. Dans le cadre des services à la personne, vous avez droit selon certaines conditions à une <strong>déduction d'impôts</strong> à hauteur de 50% des dépenses engagées. 
+			Nous vous rappelons qu'il n'y a <strong>aucun frais d'inscription</strong>.
+		</div>
+		<br><br>
+		<div class="col-lg-4">
+			<span class="font-size-26 font-responsive-20">Frais d'inscription</span>
+		</div>
+		<div class="col-lg-8 text-center">
+			<span class="font-size-50">0€</span>
+		</div>
+		<div class="clearfix"></div>
+		<br>
+		<div class="col-lg-4">
+			<span class="font-size-26 font-responsive-20">Prix de l'heure</span>
+		</div>
+		<div class="col-lg-8 text-center">
+			<span class="font-size-28">59,90€</span> <i class="icon-tag icon-2x text-orange"></i> </span>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-4">
+			<span class="font-size-26 font-responsive-20">Prix de l'heure après impôts</span>
+		</div>
+		<div class="col-lg-8 text-center">
+			<span class="font-size-50">29,95€</span> <i class="icon-tag icon-3x  text-emerald"></i> 
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+		<div class="col-lg-4">
+			<span class="font-size-26 font-responsive-20">Moyen de paiement</span>
+		</div>
+		<div class="col-lg-8">
+			<br>Notre site met à votre disposition un <strong>module de "paiements facilités"</strong> entièrement sécurisé par <strong>BNP Paribas</strong>. Les paiements s'effectuent par prélèvement sur la carte dont vous aurez enregistré les coordonnées via ce module. Pour plus d'informations, consultez <a>Pourquoi imposer ce moyen de paiement ?</a>
+		</div>
+		<div class="clearfix"></div>
+		<br><br>
+	</div>
+	<!--<div class="container home-container">
+		<br>
 		<br>
 		<div class="col-lg-12">
-			<span class="marque">Majorclass</span> est un organisme de soutien scolaire agréé. Dans le cadre des services à la personne, vous avez droit selon certaines conditions à une <strong>déduction d'impôts</strong> à hauteur de 50% des dépenses engagées. 
+			<strong class="font-majorclass">Majorclass</strong> est un organisme de soutien scolaire agréé. Dans le cadre des services à la personne, vous avez droit selon certaines conditions à une <strong>déduction d'impôts</strong> à hauteur de 50% des dépenses engagées. 
 			Nous vous rappelons qu'il n'y a <strong>aucun frais d'inscription</strong>.
 		</div>
 		<br><br>

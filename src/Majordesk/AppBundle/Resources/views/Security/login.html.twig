@@ -6,20 +6,18 @@
 				
 				{% block navbar %}
 				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarifs</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li class="active"><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
 				{% endblock %}
 
 {% block body %}
-	<div id="home-banner-purple">
-		<br><br>
+	<div id="home-banner-0">
 		<div class="container home-container">
-			<div class="text-center" style="font-size:35px">
+			<div class="text-center" style="font-size:35px;margin-top:9px;margin-bottom:9px;">
 				<i class="icon-lock icon-2x"></i>
 			</div>
 		</div>
-		<br>
 	</div>			
 				<br><br>
 				{% if error %}

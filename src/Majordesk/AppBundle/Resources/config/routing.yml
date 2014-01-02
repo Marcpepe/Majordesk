@@ -4,8 +4,12 @@ majordesk_app_index:
     pattern:  /connexion
     defaults: { _controller: MajordeskAppBundle:Home:connexion }
 
-majordesk_app_principe_index:
+majordesk_app_gate_index:
     pattern:  /
+    defaults: { _controller: MajordeskAppBundle:Home:gateIndex }
+
+majordesk_app_principe_index:
+    pattern:  /accueil
     defaults: { _controller: MajordeskAppBundle:Home:principeIndex }
 
 majordesk_app_presentation_cours:
@@ -33,6 +37,10 @@ majordesk_app_inscription:
 majordesk_app_mentions_legales:
     pattern:  /mentions-legales
     defaults: { _controller: MajordeskAppBundle:Home:mentionsLegales }
+
+majordesk_app_faq:
+    pattern:  /faq
+    defaults: { _controller: MajordeskAppBundle:Home:faq }
 
 majordesk_app_cgv_majorclass:
     pattern:  /cvg-majorclass
@@ -71,10 +79,6 @@ majordesk_app_achat_response:
 majordesk_app_achat_autoresponse:
     pattern:  /achat-autoresponse
     defaults: { _controller: MajordeskAppBundle:Parents:achatAutoresponse }
-
-majordesk_app_phpinfo:
-    pattern: /phpinfo
-    defaults: { _controller: MajordeskAppBundle:Home:phpInfo }
 
 
 ## ROLE_PARENTS ##

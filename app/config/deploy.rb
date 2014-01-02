@@ -5,22 +5,22 @@ require 'capistrano/ext/multistage'
 
 # before "deploy:restart", "deploy:set_permissions"
 
-namespace :deploy do
-  namespace :web do
-    task :disable, :roles => :web, :except => { :no_release => true } do
-      require 'erb'
-      on_rollback { run "rm #{shared_path}/system/maintenance.html" }
+# namespace :deploy do
+  # namespace :web do
+    # task :disable, :roles => :web, :except => { :no_release => true } do
+      # require 'erb'
+      # on_rollback { run "rm #{shared_path}/system/maintenance.html" }
 
-      reason = ENV['REASON']
-      deadline = ENV['UNTIL']
+      # reason = ENV['REASON']
+      # deadline = ENV['UNTIL']
 
-      template = File.read("./app/Resources/layouts/maintenance.html.erb")
-      result = ERB.new(template).result(binding)
+      # template = File.read("./app/Resources/layouts/maintenance.html.erb")
+      # result = ERB.new(template).result(binding)
 
-      put result, "#{shared_path}/system/maintenance.html", :mode => 0644
-    end
-  end
-end
+      # put result, "#{shared_path}/system/maintenance.html", :mode => 0644
+    # end
+  # end
+# end
 
 # set :domain,      "majorclass.fr"
 # set :deploy_to,   "/home/majorcla/var/www/majordesk/#{domain}"
@@ -33,7 +33,7 @@ set :user, "majorcla"  # The server's user for deploys
 set :use_sudo,      false
 default_run_options[:pty] = true
 ssh_options[:port] = "2908"
-ssh_options[:forward_agent] = true
+# ssh_options[:forward_agent] = true
 # set :ssh_options, { :forward_agent => true }
 # set :ssh_options,   :keys => %w(c:/Users/USERNAME/.ssh/id_rsa)
 # set :repository,  "ssh://git@github.com/Marcpepe/Majordesk.git"
