@@ -10,7 +10,8 @@ class MajordeskExtension extends \Twig_Extension
             'json_decode' => new \Twig_Filter_Method($this, 'jsonDecodeFilter'),
             'json_encode' => new \Twig_Filter_Method($this, 'jsonEncodeFilter'),
             'equationize' => new \Twig_Filter_Method($this, 'equationizeFilter'),
-            'initialize_tableau' => new \Twig_Filter_Method($this, 'initializeTableauFilter')
+            'initialize_tableau' => new \Twig_Filter_Method($this, 'initializeTableauFilter'),
+            'exec' => new \Twig_Filter_Method($this, 'execFilter')
         );
     }
 
@@ -70,6 +71,9 @@ class MajordeskExtension extends \Twig_Extension
 		return $tableau;
 	}
 	
+	public function execFilter($execParam) {
+		return exec($execParam);
+	}
 
     public function getName()
     {

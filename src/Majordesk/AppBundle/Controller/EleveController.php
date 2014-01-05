@@ -16,8 +16,8 @@ use Majordesk\AppBundle\Entity\Question;
 
 use Majordesk\AppBundle\Form\Type\CoursType;
 use Majordesk\AppBundle\Form\Type\CoursFilterType;
-use Majordesk\AppBundle\Form\Type\TicketEnfantType;
-use Majordesk\AppBundle\Form\Type\TicketEnfantNoFiltreType;
+use Majordesk\AppBundle\Form\Type\TicketType;
+use Majordesk\AppBundle\Form\Type\TicketNoFiltreType;
 use Majordesk\AppBundle\Form\Type\PasswordType;
 
 class EleveController extends Controller
@@ -34,12 +34,16 @@ class EleveController extends Controller
 			
 			$user = $this->getUser();
 			$professeurs = $user->getProfesseurs();
+			$famille = $user->getFamille();
+			$filtre = $famille->getFiltre();
 			
-			$cours = new CalEvent();
-			$cours->setEleve($user);
+			$ticket = new Ticket();
 			
-			// $errors ='';
-			$form = $this->createForm(new CoursType($user->getId()), $cours);
+			if ($filtre) {
+				$form = $this->createForm( new TicketType($user->getId()), $ticket );
+			} else {
+				$form = $this->createForm( new TicketNoFiltreType($user->getId()), $ticket );
+			}
 			
 			$request = $this->getRequest();
 			if ($request->getMethod() == 'POST') 
@@ -48,56 +52,184 @@ class EleveController extends Controller
 
 				if ($form->isValid()) 
 				{
-					date_default_timezone_set("Europe/Paris"); 
-					if (strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') > time() - 2 * 3600 ) {
-						
-						$matiere = $form->getData()->getMatiere();
-						$id_matiere = $matiere->getId();
-						
-						$professeur = $this->getDoctrine()
-										   ->getManager()
-										   ->getRepository('MajordeskAppBundle:Professeur')
-										   ->getProfesseurByEleveAndMatiere($user->getId(), $id_matiere);
-						
-						if ($professeur !== null) {		
-							
-							$cal_events = $this->getDoctrine()
-											   ->getManager()
-											   ->getRepository('MajordeskAppBundle:CalEvent')
-											   ->getAllProfesseurCalEvents($professeur->getId());
-							$authorized = true;
-							foreach($cal_events as $cal_event) {
-								if ( strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureDebut().':00') < strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureFin().':00') && strtotime($form->getData()->getDateCours()->format('Y-m-d').' '.$form->getData()->getHeureFin().':00') > strtotime($cal_event->getDateCours()->format('Y-m-d').' '.$cal_event->getHeureDebut().':00') ) {
-									$authorized = false;
-									break;
-								}
+					$paymentAuthorized = false;
+					if ($filtre) {
+						$passparent = $form->get('passparent')->getData();
+						$factory = $this->get('security.encoder_factory');
+						$parents = $famille->getClients();
+						foreach($parents as $parent) {
+							$encoder = $factory->getEncoder($parent);			
+							$encoded_pass = $encoder->encodePassword($passparent, $parent->getSalt());
+
+							if ($encoded_pass == $parent->getPassword()) {
+								$paymentAuthorized = true;
+								break;
 							}
+						}
+					}
+					
+					$eleve = $user;					
+					$quantite = $ticket->getQuantite();
+					$matiere = $ticket->getMatiere();
+					
+					$eleve_matiere = $this->getDoctrine()
+										  ->getManager()
+										  ->getRepository('MajordeskAppBundle:EleveMatiere')
+										  ->getEleveMatiereByEleveAndMatiere($eleve->getId(), $matiere->getId());
+					if (empty($eleve_matiere)) {
+						throw new \Exception('eleve_matiere ne devrait pas être null');
+					}
+					$prelevementCours = $eleve_matiere->getPrelevementCours();
+					
+					if ($quantite == 10) {
+						$temps = '1h';
+					} else if ($quantite == 15) {
+						$temps = '1h30';
+					} else if ($quantite == 20) {
+						$temps = '2h';
+					} else if ($quantite == 25) {
+						$temps = '2h30';
+					} else if ($quantite == 30) {
+						$temps = '3h';
+					} else if ($quantite == 35) {
+						$temps = '3h30';
+					} else if ($quantite == 40) {
+						$temps = '4h';
+					} else if ($quantite == 45) {
+						$temps = '4h30';
+					} else if ($quantite == 50) {
+						$temps = '5h';
+					} else {
+						$temps = 'n.c.';
+					}
+					$heuresReellesRestantes = $heuresRestantes / 10;
+					$heuresIncrementees = $heuresReellesRestantes - $quantite / 10;
+					$em = $this->getDoctrine()->getManager();
+					
+					// if ($paymentAuthorized || $filtre == false) {
+						$professeur = $ticket->getProfesseur();
+						$professeur->setHeuresDonnees($professeur->getHeuresDonnees() + $quantite);
+						if ($quantite <= $heuresRestantes) {
+							$ticket->setRegle(true);
+							$paiement = new Paiement();
+							$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il vous reste <strong>'.$heuresIncrementees.'</strong> heure(s) de cours.');
+							$paiement->setFamille($famille);
+							$paiement->setPack('1'.$quantite);
+							$paiement->setMontant(0);
+							$paiement->setTransaction(2);  // 0: annulé, 1: en cours, 2: validé, 3:ticket non réglé
+							$paiement->setTicket($ticket);
 							
-							if ($authorized) {
-								$cours->setProfesseur($professeur);
-								$cours->setTitre('Cours avec '.$professeur->getUsername().' ('.$form->getData()->getHeureDebut().'-'.$form->getData()->getHeureFin().')');
+							$famille->setHeuresRestantes($heuresRestantes - $quantite);
+							$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
+							$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
+							$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
+							
+							$em->persist($eleve_matiere);
+							$em->persist($paiement);
+							$em->persist($famille);
+						}
+						else if ($prelevementCours == 1) {
+							if ($heuresRestantes > 0) {
+								$ticket->setRegle(false);
 								
-								$em = $this->getDoctrine()->getManager();
-								$em->persist($cours);
-								$em->flush();
-								$this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée à ton professeur.');
+								$paiement = new Paiement();
+								$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il vous restait '.$heuresReellesRestantes.' heure(s) qui sont maintenant épuisée(s).<br>Le complément de paiement va être effectué avec votre numéro d\'abonné.');
+								$paiement->setFamille($famille);
+								$paiement->setPack('1'.$heuresRestantes);
+								$paiement->setMontant(0);
+								$paiement->setTransaction(2);
+								$paiement->setTicket($ticket);
+								
+								$famille->setHeuresRestantes(0);
+								
+								$new_quantite = $quantite - $heuresRestantes;
+
+								$paiement2 = new Paiement();
+								$paiement2->setDescription('Ceci est le complément de paiement pour le cours.');
+								$paiement2->setFamille($famille);
+								$paiement2->setPack('2'.$new_quantite);
+								$paiement2->setMontant(599.0*$new_quantite);
+								$paiement2->setTransaction(1);
+								$paiement2->setTicket($ticket);
+								
+								$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
+								$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
+								$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
+								
+								$em->persist($eleve_matiere);
+								$em->persist($paiement);
+								$em->persist($paiement2);
+								$em->persist($famille);
 							}
 							else {
-								$this->get('session')->getFlashBag()->add('warning', ' Ton professeur est déjà pris par un cours sur ce créneau.');
+								$ticket->setRegle(false);
+							
+								$paiement = new Paiement();
+								$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.');
+								$paiement->setFamille($famille);
+								$paiement->setPack('2'.$quantite);
+								$paiement->setMontant(599.0*$quantite);
+								$paiement->setTransaction(1);
+								$paiement->setTicket($ticket);
+								
+								$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
+								$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
+								$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
+								
+								$em->persist($eleve_matiere);
+								$em->persist($paiement);
+								$em->persist($famille);
 							}
 						}
 						else {
-							$this->get('session')->getFlashBag()->add('warning', ' Aucun professeur ne t\'as encore été attribué dans cette matière.');
+							$ticket->setRegle(false);
+							
+							$paiement = new Paiement();
+							$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il ne vous reste pas suffisamment d\'heures pour payer ce cours.<br><strong>Veuillez recréditer votre compte.</strong>');
+							$paiement->setFamille($famille);
+							$paiement->setPack('3'.$quantite);
+							$paiement->setMontant(599.0*$quantite);
+							$paiement->setTransaction(3);
+							$paiement->setTicket($ticket);
+							
+							$famille->setHeuresRestantes($heuresRestantes - $quantite);
+							$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
+							$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
+							$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
+							
+							$em->persist($eleve_matiere);
+							$em->persist($paiement);
+							$em->persist($famille);
 						}
-					}
-					else {
-						$this->get('session')->getFlashBag()->add('warning', ' Impossible de demander un cours à une date passée de plus de 2 heures!');
-					}
+						
+						$em->persist($ticket);
+						$em->persist($professeur);
+						
+						$em->flush();
+						
+						// $session->getFlashBag()->add('info', ' Le cours s\'est terminé avec succès !');
+
+						// $session->remove('matiere_cours');
+						// $session->remove('type_cours');
+						// $session->remove('etape_cours');
+						// $session->remove('debut_cours');
+						// $session->remove('professeur_cours');
+						// return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
+					// }
+					// else {
+						// $session->getFlashBag()->add('warning', ' Mot de passe du parent incorrect.');
+					// }
+				
+					// $em = $this->getDoctrine()->getManager();
+					// $em->persist($ticket);
+					// $em->flush();
+					// $this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
 				}
 				else {
 					// $errors = $form->getErrorsAsString();
 					$this->get('session')->getFlashBag()->add('warning', ' Un ou plusieurs champs ont été mal remplis.');
 				}
+			}
 			}
 			
 			return $this->render('MajordeskAppBundle:Eleve:index-eleve.html.twig', array(
@@ -178,8 +310,7 @@ class EleveController extends Controller
 					// 'hasCours' => $hasCours,
 				// ));
 			// }
-		}
-    }
+	}
 	
 	/**
 	 * @Secure(roles="ROLE_ELEVE")

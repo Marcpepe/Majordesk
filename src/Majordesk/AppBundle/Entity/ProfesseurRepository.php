@@ -25,6 +25,19 @@ class ProfesseurRepository extends EntityRepository
 		return $qb->getQuery()
 			      ->getResult();
 	}
+
+	/**
+	 * @return array des professeurs d'un élève d'id $id_eleve
+	 */
+	public function getProfesseursFilteredByEleveQb($id_eleve)
+	{
+		$qb = $this->createQueryBuilder('p')
+				   ->join('p.eleves', 'e')
+				   ->where('e.id = :id_eleve')
+				   ->setParameter('id_eleve', $id_eleve);
+			
+		return $qb;
+	}
 	
 	/**
 	 * @return array des professeurs d'un élève d'id $id et enseignant la matière $id_matiere

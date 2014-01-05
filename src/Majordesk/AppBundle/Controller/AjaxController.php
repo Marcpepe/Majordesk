@@ -1235,6 +1235,30 @@ class AjaxController extends Controller
 	}
 	
 	/**
+	 * @Secure(roles="ROLE_PARENTS")
+	 */
+    public function populateProfesseursAction($id_eleve)
+    {
+		$request = $this->getRequest();
+		if ( $request->isXmlHttpRequest() ) {		
+		
+			$eleve = $this->getDoctrine()
+						  ->getManager()
+						  ->getRepository('MajordeskAppBundle:Eleve')
+						  ->find($id_eleve);
+			$professeurs = $eleve->getProfesseurs();
+			
+			$html = '<option  disabled="disabled" selected="selected">Choisir un professeur</option>';
+			foreach($professeurs as $professeur) {
+				$html = $html.sprintf("<option value=\"%d\">%s</option>",$professeur->getId(), $professeur->getUsername());
+			}
+		
+			return new JsonResponse(array('html' => $html));
+		}
+		return new JsonResponse();
+	}
+	
+	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
     public function filterExercicesAction($id_partie)

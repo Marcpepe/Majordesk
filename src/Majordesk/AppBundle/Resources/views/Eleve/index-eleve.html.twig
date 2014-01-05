@@ -13,34 +13,36 @@
 			<img src="{{ asset('img/common/calendar.png') }}" style="height:120px;" />
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
-			<form role="form-inline" method="post" action="{{ path('majordesk_app_calendrier_des_cours') }}">
-				<h3 class="text-left-lg-center-xs">Déclare un cours</h3><br>
+			<form role="form-inline" method="post" action="{{ path('majordesk_app_index_eleve') }}">
+				<h3 class="text-left-lg-center-xs">Déclarer un cours</h3><br>
 				<div class="row">
-				    <label class="col-lg-1"><span class="pull-right">En</span></label>
-				    <div class="col-lg-3">
+					<label class="col-lg-1"><span class="pull-right">De</span></label>
+					<div class="col-lg-3">
+					  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.quantite) }}</span>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<label class="col-lg-1"><span class="pull-right">En</span></label>
+					<div class="col-lg-3">
 					  {{ form_widget(form.matiere) }} 
-				    </div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<label class="col-lg-1"><span class="pull-right">Avec</span></label>
+					<div class="col-lg-3">
+					  {{ form_widget(form.professeur) }} 
+					</div>
 				</div>
 				<br>
 				<div class="row">
 					<label class="col-lg-1"><span class="pull-right">Le</span></label>
-				    <div class="col-lg-2">
+					<div class="col-lg-3">
 					  {{ form_widget(form.dateCours) }}
-				    </div>
-				</div>
-				<br>
-				<div class="row">
-					<label class="col-lg-1"><span class="pull-right">De</span></label>
-				    <div class="col-lg-2">
-					  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.heureDebut) }}</span>
-				    </div>
+					</div>
 					<span class="hidden-lg"><br></span>
-					<label class="col-lg-1"><span class="pull-right">à</span></label>
-				    <div class="col-lg-2">
-					  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.heureFin) }}</span>
-				    </div>
-					<span class="hidden-lg"><br></span>
-					<div class="col-lg-2">
+					<div class="col-lg-3">
 						<button type="submit" class="btn btn-primary pull-right"><i class="icon-ok"></i> Valider</button>
 					</div>
 				</div>

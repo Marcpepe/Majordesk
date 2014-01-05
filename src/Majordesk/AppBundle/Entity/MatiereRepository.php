@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class MatiereRepository extends EntityRepository
 {
+	/**
+	 * @return array des professeurs d'un élève d'id $id_eleve
+	 */
+	public function getMatieresByEleveQb($id_eleve)
+	{
+		$qb = $this->createQueryBuilder('m')
+				   ->join('m.eleve_matieres', 'e_m')
+				   ->join('e_m.eleve', 'e')
+				   ->where('e.id = :id_eleve')
+				   ->setParameter('id_eleve', $id_eleve);
+			
+		return $qb;
+	}
 }

@@ -27,7 +27,7 @@ require 'capistrano/ext/multistage'
 # set :branch, "master"
 # server 'majorclass.fr', :app, :web, :primary => true
 
-set :application, "Majordesk App"
+set :application, "MajordeskApp"
 set :app_path,    "app"
 set :user, "majorcla"  # The server's user for deploys
 set :use_sudo,      false
@@ -46,15 +46,16 @@ set :scm_passphrase, "perrin"  # The deploy user's password
 # set :git_enable_submodules, 1
 # useful add on that speeds each deployment
 # set :deploy_via, :remote_cache
-# set :deploy_via,    :rsync_with_remote_cache
+# set :deploy_via, :rsync_with_remote_cache
+# set :deploy_via, :copy
 
-set :shared_files,      ["app/config/parameters.yml","composer.phar"]
-set :use_composer,    false
-# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
-# # set :composer_bin,    "composer.phar"
+set :shared_files,      ["app/config/parameters.yml"]
+set :use_composer,    true
+set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
+# set :composer_bin,    "/home/majorcla/var/www/majordesk/#{domain}/shared/composer.phar"
 set :update_vendors,  false
 # set :vendors_mode,    "install"
-set :copy_vendors, true
+# set :copy_vendors, true
 
 set :dump_assetic_assets,   true
 set :writable_dirs,       [app_path + "/cache", app_path + "/logs"]

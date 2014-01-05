@@ -101,6 +101,10 @@ majordesk_app_abonnements_factures:
     pattern:  /parents/abonnements-et-factures
     defaults: { _controller: MajordeskAppBundle:Parents:abonnementsFactures }
 
+majordesk_app_enregistrement_carte:
+    pattern:  /parents/enregistrement-carte
+    defaults: { _controller: MajordeskAppBundle:Parents:enregistrementCarte }
+
 majordesk_app_gestion_abonnements:
     pattern:  /parents/gestion-des-abonnements
     defaults: { _controller: MajordeskAppBundle:Parents:gestionAbonnements }
@@ -148,6 +152,14 @@ majordesk_app_annuler_abonnement:
 majordesk_app_populate_matieres:
     pattern:  /parents/populate-matieres-{id_eleve}
     defaults: { _controller: MajordeskAppBundle:Ajax:populateMatieres }
+    requirements:
+        id_eleve:     \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_populate_professeurs:
+    pattern:  /parents/populate-professeurs-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Ajax:populateProfesseurs }
     requirements:
         id_eleve:     \d{1,5}
     options:
