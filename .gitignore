@@ -11,12 +11,4 @@ web/img/LOCAL/
 web/css/
 web/js/
 web/originals/
-vendor/*
-!vendor/composer
-!vendor/doctrine
-!vendor/friendsofsymfony
-!vendor/incenteev
-!vendor/jdorn
-
-!vendor/knplabs
 
