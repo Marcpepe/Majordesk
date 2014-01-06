@@ -17,3 +17,6 @@ vendor/*
 !vendor/friendsofsymfony
 !vendor/incenteev
 !vendor/jdorn
+
+!vendor/knplabs
+
