@@ -87,7 +87,7 @@ class Famille
      * @ORM\Column(name="heures_prises", type="smallint")
 	 * @Assert\Range(
 	 *     min = "0",
-	 *     max = "99 999",
+	 *     max = "99999",
 	 *     minMessage = "Le nombre d'heures restantes ne peut pas être négatif.",
 	 *     maxMessage = "Le nombre d'heures restantes ne peut pas excéder 99 999.",
 	 *     invalidMessage = "La valeur entrée (Nombres d'heures prises) doit être un nombre."

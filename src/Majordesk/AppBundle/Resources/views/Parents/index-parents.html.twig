@@ -6,6 +6,45 @@
 
 {% block body %}
 
+	{% for message in app.session.flashbag.get('info') %}
+	<div class="col-lg-12 alert-majorclass">
+		<div class="container">
+			<br>
+			<div class="alert alert-info">			
+				<button type="button" class="close close-majorclass">&times;</button>
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/crest.png') }}" style="height:80px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Cours déclaré</h3>
+					<span class="hiddex-xs">Le cours a été déclaré avec succès !</span>
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('warning') %}
+	<div class="col-lg-12 alert-majorclass">
+		<div class="container">
+			<br>
+			<div class="alert alert-info">
+				<button type="button" class="close close-majorclass">&times;</button>
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/flag.png') }}" style="height:80px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Problème lors de la déclaration du cours</h3>
+					Le formulaire de déclaration n'a pas bien été rempli. Veuillez le compléter et réessayer. Si le problème persiste, veuillez contacter Majorclass au +33 6 76 10 15 98.
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
 	{% if eleves|length > 1 %}
 		<div id="home-banner-1" class="col-lg-12">
 			<div class="container">
@@ -59,7 +98,7 @@
 							</div>
 							<span class="hidden-lg"><br></span>
 							<div class="col-lg-3">
-								<button type="submit" class="btn btn-primary pull-right"><i class="icon-ok"></i> Valider</button>
+								<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
 							</div>
 						</div>
 						{{ form_widget(form._token) }}
@@ -106,7 +145,7 @@
 							</div>
 							<span class="hidden-lg"><br></span>
 							<div class="col-lg-3">
-								<button type="submit" class="btn btn-primary pull-right"><i class="icon-ok"></i> Valider</button>
+								<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
 							</div>
 						</div>
 						{{ form_widget(form._token) }}

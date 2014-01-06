@@ -38,12 +38,6 @@ class ParentsController extends Controller
 			if (count($eleves) > 1) {
 				// $errors ='';
 				
-				
-				
-				
-				
-				
-				
 				$ticket = new Ticket();
 				
 				// $ticket->setEleve($user);
@@ -83,7 +77,7 @@ class ParentsController extends Controller
 						
 						$eleve = $ticket->getEleve();						
 						$quantite = $ticket->getQuantite();
-						$matiere = $ticket->getMatiere();
+						$matiere = $form->get('matiere')->getData();
 						
 						$eleve_matiere = $this->getDoctrine()
 											  ->getManager()
@@ -145,25 +139,17 @@ class ParentsController extends Controller
 								if ($heuresRestantes > 0) {
 									$ticket->setRegle(false);
 									
+									$famille->setHeuresRestantes(0);
+									
+									$quantiteRestanteADebiter = $quantite - $heuresRestantes;
+
 									$paiement = new Paiement();
 									$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il vous restait '.$heuresReellesRestantes.' heure(s) qui sont maintenant épuisée(s).<br>Le complément de paiement va être effectué avec votre numéro d\'abonné.');
 									$paiement->setFamille($famille);
-									$paiement->setPack('1'.$heuresRestantes);
-									$paiement->setMontant(0);
-									$paiement->setTransaction(2);
+									$paiement->setPack('2'.$quantiteRestanteADebiter);
+									$paiement->setMontant(599.0*$quantiteRestanteADebiter);
+									$paiement->setTransaction(1);
 									$paiement->setTicket($ticket);
-									
-									$famille->setHeuresRestantes(0);
-									
-									$new_quantite = $quantite - $heuresRestantes;
-
-									$paiement2 = new Paiement();
-									$paiement2->setDescription('Ceci est le complément de paiement pour le cours.');
-									$paiement2->setFamille($famille);
-									$paiement2->setPack('2'.$new_quantite);
-									$paiement2->setMontant(599.0*$new_quantite);
-									$paiement2->setTransaction(1);
-									$paiement2->setTicket($ticket);
 									
 									$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 									$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
@@ -171,7 +157,6 @@ class ParentsController extends Controller
 									
 									$em->persist($eleve_matiere);
 									$em->persist($paiement);
-									$em->persist($paiement2);
 									$em->persist($famille);
 								}
 								else {
@@ -219,8 +204,7 @@ class ParentsController extends Controller
 							$em->persist($professeur);
 							
 							$em->flush();
-							
-							// $session->getFlashBag()->add('info', ' Le cours s\'est terminé avec succès !');
+							$this->get('session')->getFlashBag()->add('info', ' Le cours a été déclaré avec succès !');
 
 							// $session->remove('matiere_cours');
 							// $session->remove('type_cours');
@@ -249,7 +233,7 @@ class ParentsController extends Controller
 				
 				$ticket = new Ticket();
 				
-				// $ticket->setEleve($user);
+				$ticket->setEleve($eleve);
 				$form = $this->createForm( new TicketNoFiltreType($eleve->getId()), $ticket );
 				
 				// Pour enfant
@@ -286,7 +270,7 @@ class ParentsController extends Controller
 						
 						// $eleve = $ticket->getEleve();						
 						$quantite = $ticket->getQuantite();
-						$matiere = $ticket->getMatiere();
+						$matiere = $form->get('matiere')->getData();
 						
 						$eleve_matiere = $this->getDoctrine()
 											  ->getManager()
@@ -348,25 +332,17 @@ class ParentsController extends Controller
 								if ($heuresRestantes > 0) {
 									$ticket->setRegle(false);
 									
+									$famille->setHeuresRestantes(0);
+									
+									$quantiteRestanteADebiter = $quantite - $heuresRestantes;
+
 									$paiement = new Paiement();
 									$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il vous restait '.$heuresReellesRestantes.' heure(s) qui sont maintenant épuisée(s).<br>Le complément de paiement va être effectué avec votre numéro d\'abonné.');
 									$paiement->setFamille($famille);
-									$paiement->setPack('1'.$heuresRestantes);
-									$paiement->setMontant(0);
-									$paiement->setTransaction(2);
+									$paiement->setPack('2'.$quantiteRestanteADebiter);
+									$paiement->setMontant(599.0*$quantiteRestanteADebiter);
+									$paiement->setTransaction(1);
 									$paiement->setTicket($ticket);
-									
-									$famille->setHeuresRestantes(0);
-									
-									$new_quantite = $quantite - $heuresRestantes;
-
-									$paiement2 = new Paiement();
-									$paiement2->setDescription('Ceci est le complément de paiement pour le cours.');
-									$paiement2->setFamille($famille);
-									$paiement2->setPack('2'.$new_quantite);
-									$paiement2->setMontant(599.0*$new_quantite);
-									$paiement2->setTransaction(1);
-									$paiement2->setTicket($ticket);
 									
 									$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 									$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
@@ -374,7 +350,6 @@ class ParentsController extends Controller
 									
 									$em->persist($eleve_matiere);
 									$em->persist($paiement);
-									$em->persist($paiement2);
 									$em->persist($famille);
 								}
 								else {
@@ -422,8 +397,7 @@ class ParentsController extends Controller
 							$em->persist($professeur);
 							
 							$em->flush();
-							
-							// $session->getFlashBag()->add('info', ' Le cours s\'est terminé avec succès !');
+							$this->get('session')->getFlashBag()->add('info', ' Le cours a été déclaré avec succès !');
 
 							// $session->remove('matiere_cours');
 							// $session->remove('type_cours');

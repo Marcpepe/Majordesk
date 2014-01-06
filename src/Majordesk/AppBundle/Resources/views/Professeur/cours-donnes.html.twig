@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% block body %}
-		<span class="visible-md"><br></span>
-		<span class="visible-lg"><br></span>
+		<br><br><span class="hidden-lg"><br><br></span>
 		
 		<div class="col-lg-12">
 		
@@ -24,11 +23,8 @@
 				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
-							<th>Date</th>
-							<th>Début prévu</th>
-							<th>Fin prévue</th>
-							<th>Durée effective</th>
-							<th>Matière</th>
+							<th>Date du cours</th>
+							<th>Durée</th>
 							<th>Elève</th>
 							<th>Montant</th>
 							<th>Statut</th>
@@ -38,11 +34,8 @@
 					<tbody>
 						{% for ticket in tickets_this_month %}
 							{% for paiement in paiements if paiement.ticket.id == ticket.id %}
-								{% for cal_event in cal_events if cal_event.id == ticket.calEvent.id %}
 									<tr>
-										<td>{{ cal_event.getDateCours|date("d/m/y") }}</td>
-										<td>{{ cal_event.getHeureDebut }}</td>
-										<td>{{ cal_event.getHeureFin }}</td>
+										<td>{{ ticket.dateCours|date("d/m/y") }}</td>
 										<td>
 											{% if ticket.quantite == 10 %}
 												1h
@@ -54,29 +47,16 @@
 												2h30
 											{% elseif ticket.quantite == 30 %}
 												3h
+											{% elseif ticket.quantite == 35 %}
+												3h30
 											{% elseif ticket.quantite == 40 %}
 												4h
+											{% elseif ticket.quantite == 45 %}
+												4h30
 											{% elseif ticket.quantite == 50 %}
 												5h
 											{% elseif ticket.quantite == 195 %}
 												19h30
-											{% endif %}
-										</td>
-										<td>
-											{% if cal_event.matiere.nom == matiere_mathematiques %}
-												<span class="label label-info">{{ matiere_mathematiques }}</span>
-											{% elseif cal_event.matiere.nom == matiere_physique %}
-												<span class="label label-success">{{ matiere_physique }}</span>
-											{% elseif cal_event.matiere.nom == matiere_biologie %}
-												<span class="label label-warning">{{ matiere_biologie }}</span>
-											{% elseif cal_event.matiere.nom == matiere_anglais %}
-												<span class="label label-important">{{ matiere_anglais }}</span>
-											{% elseif cal_event.matiere.nom == matiere_francais %}
-												<span class="label label-default">{{ matiere_francais }}</span>
-											{% elseif cal_event.matiere.nom == matiere_histoire %}
-												<span class="label">{{ matiere_histoire }}</span>
-											{% else %}
-												n.c.
 											{% endif %}
 										</td>
 										<td>{{ ticket.eleve.username }}</td>
@@ -91,8 +71,12 @@
 												62,50 €
 											{% elseif ticket.quantite == 30 %}
 												75,00 €
+											{% elseif ticket.quantite == 35 %}
+												87,50 €
 											{% elseif ticket.quantite == 40 %}
 												100,00 €
+											{% elseif ticket.quantite == 45 %}
+												112,50 €
 											{% elseif ticket.quantite == 50 %}
 												125,00 €
 											{% elseif ticket.quantite == 195 %}
@@ -114,71 +98,6 @@
 											<em>Non <i rel="tooltip" data-title="Règlement en fin de mois" class="icon-info-sign cursor-help text-grey"></i></em>
 										</td>
 									</tr>
-								{% else %}
-									<tr>
-										<td>n.c.</td>
-										<td>n.c.</td>
-										<td>n.c.</td>
-										<td>
-											{% if ticket.quantite == 10 %}
-												1h
-											{% elseif ticket.quantite == 15 %}
-												1h30
-											{% elseif ticket.quantite == 20 %}
-												2h
-											{% elseif ticket.quantite == 25 %}
-												2h30
-											{% elseif ticket.quantite == 30 %}
-												3h
-											{% elseif ticket.quantite == 40 %}
-												4h
-											{% elseif ticket.quantite == 50 %}
-												5h
-											{% endif %}
-										</td>
-										<td>
-											n.c.
-										</td>
-										<td>{{ ticket.eleve.username }}</td>
-										<td>
-											{% if ticket.quantite == 10 %}
-												25,00 €
-											{% elseif ticket.quantite == 15 %}
-												37,50 €
-											{% elseif ticket.quantite == 20 %}
-												50,00 €
-											{% elseif ticket.quantite == 25 %}
-												62,50 €
-											{% elseif ticket.quantite == 30 %}
-												75,00 €
-											{% elseif ticket.quantite == 40 %}
-												100,00 €
-											{% elseif ticket.quantite == 50 %}
-												125,00 €
-											{% endif %}
-										</td>
-										<td>
-											{% if paiement.transaction == 0 %}
-												<i rel="tooltip" data-title="Paiement annulé" class="icon-remove text-red cursor-help"></i>
-											{% elseif paiement.transaction == 1 %}
-												<i rel="tooltip" data-title="Paiement en cours" class="icon-spin icon-spinner text-orange cursor-help"></i>
-											{% elseif paiement.transaction == 2 %}
-												<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
-											{% elseif paiement.transaction == 3 %}
-												<i rel="tooltip" data-title="Paiement non validé" class="icon-exclamation-sign text-red cursor-help"></i>
-											{% else %}
-												<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
-											{% endif %}
-										</td>
-										<td>
-											{% if ticket.regle %}
-												<em>Oui</em>
-											{% elseif ticket.regle == false and ticket.statut == 0 %}
-												<em>Non</em>
-											{% endif %}
-										</td>
-									</tr>
-								{% endfor %}
 							{% endfor %}
 						{% endfor %}
 					</tbody>
@@ -200,11 +119,8 @@
 				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
-							<th>Date</th>
-							<th>Début prévu</th>
-							<th>Fin prévue</th>
-							<th>Durée effective</th>
-							<th>Matière</th>
+							<th>Date du cours</th>
+							<th>Durée</th>
 							<th>Elève</th>
 							<th>Montant</th>
 							<th>Statut</th>
@@ -212,13 +128,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for ticket in tickets_last_month %}
+						{% for ticket in tickets_this_month %}
 							{% for paiement in paiements if paiement.ticket.id == ticket.id %}
-								{% for cal_event in cal_events if cal_event.id == ticket.calEvent.id %}
 									<tr>
-										<td>{{ cal_event.getDateCours|date("d/m/y") }}</td>
-										<td>{{ cal_event.getHeureDebut }}</td>
-										<td>{{ cal_event.getHeureFin }}</td>
+										<td>{{ ticket.dateCours|date("d/m/y") }}</td>
 										<td>
 											{% if ticket.quantite == 10 %}
 												1h
@@ -230,29 +143,16 @@
 												2h30
 											{% elseif ticket.quantite == 30 %}
 												3h
+											{% elseif ticket.quantite == 35 %}
+												3h30
 											{% elseif ticket.quantite == 40 %}
 												4h
+											{% elseif ticket.quantite == 45 %}
+												4h30
 											{% elseif ticket.quantite == 50 %}
 												5h
 											{% elseif ticket.quantite == 195 %}
 												19h30
-											{% endif %}
-										</td>
-										<td>
-											{% if cal_event.matiere.nom == matiere_mathematiques %}
-												<span class="label label-info">{{ matiere_mathematiques }}</span>
-											{% elseif cal_event.matiere.nom == matiere_physique %}
-												<span class="label label-success">{{ matiere_physique }}</span>
-											{% elseif cal_event.matiere.nom == matiere_biologie %}
-												<span class="label label-warning">{{ matiere_biologie }}</span>
-											{% elseif cal_event.matiere.nom == matiere_anglais %}
-												<span class="label label-important">{{ matiere_anglais }}</span>
-											{% elseif cal_event.matiere.nom == matiere_francais %}
-												<span class="label label-default">{{ matiere_francais }}</span>
-											{% elseif cal_event.matiere.nom == matiere_histoire %}
-												<span class="label">{{ matiere_histoire }}</span>
-											{% else %}
-												n.c.
 											{% endif %}
 										</td>
 										<td>{{ ticket.eleve.username }}</td>
@@ -267,8 +167,12 @@
 												62,50 €
 											{% elseif ticket.quantite == 30 %}
 												75,00 €
+											{% elseif ticket.quantite == 35 %}
+												87,50 €
 											{% elseif ticket.quantite == 40 %}
 												100,00 €
+											{% elseif ticket.quantite == 45 %}
+												112,50 €
 											{% elseif ticket.quantite == 50 %}
 												125,00 €
 											{% elseif ticket.quantite == 195 %}
@@ -285,77 +189,11 @@
 											{% else %}
 												<i rel="tooltip" data-title="Statut inconnu" class="icon-question-sign icon-large text-grey cursor-help"></i>
 											{% endif %}
+										</td>
 										<td>
-											{% if ticket.regle %}
-												<em>Oui</em>
-											{% elseif ticket.regle == false and ticket.statut == 0 %}
-												<em>En cours</em>
-											{% endif %}
+											<em>Non <i rel="tooltip" data-title="Règlement en fin de mois" class="icon-info-sign cursor-help text-grey"></i></em>
 										</td>
 									</tr>
-								{% else %}
-									<tr>
-										<td>n.c.</td>
-										<td>n.c.</td>
-										<td>n.c.</td>
-										<td>
-											{% if ticket.quantite == 10 %}
-												1h
-											{% elseif ticket.quantite == 15 %}
-												1h30
-											{% elseif ticket.quantite == 20 %}
-												2h
-											{% elseif ticket.quantite == 25 %}
-												2h30
-											{% elseif ticket.quantite == 30 %}
-												3h
-											{% elseif ticket.quantite == 40 %}
-												4h
-											{% elseif ticket.quantite == 50 %}
-												5h
-											{% endif %}
-										</td>
-										<td>
-											n.c.
-										</td>
-										<td>{{ ticket.eleve.username }}</td>
-										<td>
-											{% if ticket.quantite == 10 %}
-												25,00 €
-											{% elseif ticket.quantite == 15 %}
-												37,50 €
-											{% elseif ticket.quantite == 20 %}
-												50,00 €
-											{% elseif ticket.quantite == 25 %}
-												62,50 €
-											{% elseif ticket.quantite == 30 %}
-												75,00 €
-											{% elseif ticket.quantite == 40 %}
-												100,00 €
-											{% elseif ticket.quantite == 50 %}
-												125,00 €
-											{% endif %}
-										</td>
-										<td>
-											{% if paiement.transaction == 0 %}
-												<i rel="tooltip" data-title="Annulé" class="icon-remove text-red icon-large cursor-help"></i>
-											{% elseif paiement.transaction == 1 %}
-												<i rel="tooltip" data-title="Paiement par la famille en cours" class="icon-spin icon-spinner icon-large text-orange cursor-help"></i>
-											{% elseif paiement.transaction == 2 %}
-												<i rel="tooltip" data-title="Payé par la famille" class="icon-ok icon-large text-green cursor-help"></i>
-											{% else %}
-												<i rel="tooltip" data-title="Statut inconnu" class="icon-question-sign icon-large text-grey cursor-help"></i>
-											{% endif %}
-										</td>
-										<td>
-											{% if ticket.regle %}
-												<em>Oui</em>
-											{% elseif ticket.regle == false and ticket.statut == 0 %}
-												<em>En cours</em>
-											{% endif %}
-										</td>
-									</tr>
-								{% endfor %}
 							{% endfor %}
 						{% endfor %}
 					</tbody>

@@ -22,3 +22,21 @@ $(document).on('click', 'button.fixer-prochain-cours', function() {
 		}
 	});
 });
+
+/**
+  * COMMON
+  */
+
+/* Alerts
+ * ====== */
+
+$(document)
+.on('click','.close-majorclass', function() {
+	$('.alert-majorclass').fadeOut(300, function() { $(this).remove(); });
+})
+.on('click','.confirm-majorclass', function() {
+	var message = $(this).attr('data-message');
+	// $(this).closest('form').submit(function() {
+		return confirm(message);
+	// });
+});

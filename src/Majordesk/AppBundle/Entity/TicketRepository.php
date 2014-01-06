@@ -56,10 +56,30 @@ class TicketRepository extends EntityRepository
 	/**
 	 * @return la liste des cours aujourd'hui entre heureFin et heureDebut
 	 */
+	public function getLastTicketsByProfesseur($id_professeur, $limit)
+	{
+		$qb = $this->createQueryBuilder('t')
+				   ->join('t.professeur', 'p')
+				   ->where('p.id = :id_professeur')
+				   ->setParameter('id_professeur', $id_professeur)
+				   ->orderBy('t.date_cours', 'DESC')
+				   ->setMaxResults($limit);
+		
+		// $qb->andWhere($qb->expr()->between('t.date_cours', ':date_debut', ':date_fin'))
+		   // ->setParameter('date_debut', $date_debut, \Doctrine\DBAL\Types\Type::DATE)
+		   // ->setParameter('date_fin', $date_fin, \Doctrine\DBAL\Types\Type::DATE);
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
+	
+	/**
+	 * @return la liste des cours aujourd'hui entre heureFin et heureDebut
+	 */
 	public function getAllTickets()
 	{
 		$qb = $this->createQueryBuilder('t')
-				   ->orderBy('t.date_cours', 'DESC');
+				   ->orderBy('t.date_ticket', 'DESC');
 			
 		return $qb->getQuery()
 			      ->getResult();
