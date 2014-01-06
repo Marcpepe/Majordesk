@@ -16,3 +16,4 @@ vendor/*
 !vendor/doctrine
 !vendor/friendsofsymfony
 !vendor/incenteev
+!vendor/jdorn
