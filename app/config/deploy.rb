@@ -50,8 +50,9 @@ set :scm_passphrase, "perrin"  # The deploy user's password
 # set :deploy_via, :copy
 
 set :shared_files,      ["app/config/parameters.yml"]
-set :use_composer,    true
-set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
+set :use_composer,    false
+# set :use_composer,    true
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
 # set :composer_bin,    "/home/majorcla/var/www/majordesk/#{domain}/shared/composer.phar"
 set :update_vendors,  false
 # set :vendors_mode,    "install"

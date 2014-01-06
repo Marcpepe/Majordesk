@@ -1,8 +1,6 @@
 app/cache/
 app/logs/
 app/sessions/
-vendor/*
-!vendor/autoload.php
 app/config/parameters.yml
 cgv/
 fiches/
@@ -13,3 +11,5 @@ web/img/LOCAL/
 web/css/
 web/js/
 web/originals/
+vendor/*
+!vendor/composer
