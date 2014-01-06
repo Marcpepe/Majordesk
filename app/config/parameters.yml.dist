@@ -1,4 +1,6 @@
 parameters:
+    wkhtmltopdf_path: "\"C:/Program Files (x86)/wkhtmltopdf/wkhtmltopdf.exe\""
+    wkhtmltoimage_path: "\"C:/Program Files (x86)/wkhtmltopdf/wkhtmltoimage.exe\""
     database_driver:           pdo_mysql
     database_host:             127.0.0.1
     database_port:             ~

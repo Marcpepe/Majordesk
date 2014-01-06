@@ -522,52 +522,6 @@
         ]
     },
     {
-        "name": "jms/aop-bundle",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "target-dir": "JMS/AopBundle",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/schmittjoh/JMSAopBundle",
-            "reference": "1.0.0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/schmittjoh/JMSAopBundle/zipball/1.0.0",
-            "reference": "1.0.0",
-            "shasum": ""
-        },
-        "require": {
-            "jms/cg": "1.0.0",
-            "symfony/framework-bundle": "2.*"
-        },
-        "time": "2012-01-02 12:50:26",
-        "type": "symfony-bundle",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "JMS\\AopBundle": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "Apache"
-        ],
-        "authors": [
-            {
-                "name": "Johannes M. Schmitt",
-                "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
-                "role": "Developer of wrapped JMSSerializerBundle"
-            }
-        ],
-        "description": "Adds AOP capabilities to Symfony2",
-        "keywords": [
-            "annotations",
-            "aop"
-        ]
-    },
-    {
         "name": "jms/di-extra-bundle",
         "version": "1.4.0",
         "version_normalized": "1.4.0.0",
@@ -1161,116 +1115,6 @@
             "eventmanager",
             "persistence",
             "spl"
-        ]
-    },
-    {
-        "name": "symfony/symfony",
-        "version": "v2.3.7",
-        "version_normalized": "2.3.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/symfony.git",
-            "reference": "2829b471871c2564228fe9f0832a0f928a8ffaa1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/symfony/zipball/2829b471871c2564228fe9f0832a0f928a8ffaa1",
-            "reference": "2829b471871c2564228fe9f0832a0f928a8ffaa1",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/common": "~2.2",
-            "php": ">=5.3.3",
-            "psr/log": "~1.0",
-            "symfony/icu": "~1.0",
-            "twig/twig": "~1.11"
-        },
-        "replace": {
-            "symfony/browser-kit": "self.version",
-            "symfony/class-loader": "self.version",
-            "symfony/config": "self.version",
-            "symfony/console": "self.version",
-            "symfony/css-selector": "self.version",
-            "symfony/debug": "self.version",
-            "symfony/dependency-injection": "self.version",
-            "symfony/doctrine-bridge": "self.version",
-            "symfony/dom-crawler": "self.version",
-            "symfony/event-dispatcher": "self.version",
-            "symfony/filesystem": "self.version",
-            "symfony/finder": "self.version",
-            "symfony/form": "self.version",
-            "symfony/framework-bundle": "self.version",
-            "symfony/http-foundation": "self.version",
-            "symfony/http-kernel": "self.version",
-            "symfony/intl": "self.version",
-            "symfony/locale": "self.version",
-            "symfony/monolog-bridge": "self.version",
-            "symfony/options-resolver": "self.version",
-            "symfony/process": "self.version",
-            "symfony/propel1-bridge": "self.version",
-            "symfony/property-access": "self.version",
-            "symfony/proxy-manager-bridge": "self.version",
-            "symfony/routing": "self.version",
-            "symfony/security": "self.version",
-            "symfony/security-bundle": "self.version",
-            "symfony/serializer": "self.version",
-            "symfony/stopwatch": "self.version",
-            "symfony/swiftmailer-bridge": "self.version",
-            "symfony/templating": "self.version",
-            "symfony/translation": "self.version",
-            "symfony/twig-bridge": "self.version",
-            "symfony/twig-bundle": "self.version",
-            "symfony/validator": "self.version",
-            "symfony/web-profiler-bundle": "self.version",
-            "symfony/yaml": "self.version"
-        },
-        "require-dev": {
-            "doctrine/data-fixtures": "1.0.*",
-            "doctrine/dbal": "~2.2",
-            "doctrine/orm": "~2.2,>=2.2.3",
-            "ircmaxell/password-compat": "1.0.*",
-            "monolog/monolog": "~1.3",
-            "ocramius/proxy-manager": ">=0.3.1,<0.4-dev",
-            "propel/propel1": "1.6.*"
-        },
-        "time": "2013-11-14 07:58:51",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\": "src/"
-            },
-            "classmap": [
-                "src/Symfony/Component/HttpFoundation/Resources/stubs",
-                "src/Symfony/Component/Intl/Resources/stubs"
-            ],
-            "files": [
-                "src/Symfony/Component/Intl/Resources/stubs/functions.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "The Symfony PHP framework",
-        "homepage": "http://symfony.com",
-        "keywords": [
-            "framework"
         ]
     },
     {
@@ -1989,59 +1833,6 @@
         ]
     },
     {
-        "name": "knplabs/knp-snappy-bundle",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "target-dir": "Knp/Bundle/SnappyBundle",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/KnpLabs/KnpSnappyBundle.git",
-            "reference": "d0ea8e4adbc6389a0eb99e2c03db97cfad73742e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/KnpLabs/KnpSnappyBundle/zipball/d0ea8e4adbc6389a0eb99e2c03db97cfad73742e",
-            "reference": "d0ea8e4adbc6389a0eb99e2c03db97cfad73742e",
-            "shasum": ""
-        },
-        "require": {
-            "knplabs/knp-snappy": "*",
-            "php": ">=5.3.2",
-            "symfony/framework-bundle": ">=2.0.0"
-        },
-        "time": "2013-07-18 15:02:44",
-        "type": "symfony-bundle",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Knp\\Bundle\\SnappyBundle": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "KnpLabs Team",
-                "homepage": "http://knplabs.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://github.com/KnpLabs/KnpSnappyBundle/contributors"
-            }
-        ],
-        "description": "Easily create PDF and images in Symfony2 by converting Twig/HTML templates.",
-        "homepage": "http://github.com/KnpLabs/KnpSnappyBundle",
-        "keywords": [
-            "bundle",
-            "knp",
-            "knplabs",
-            "pdf",
-            "snappy"
-        ]
-    },
-    {
         "name": "twig/extensions",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -2088,6 +1879,220 @@
             "debug",
             "i18n",
             "text"
+        ]
+    },
+    {
+        "name": "symfony/symfony",
+        "version": "v2.3.9",
+        "version_normalized": "2.3.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/symfony.git",
+            "reference": "ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/symfony/zipball/ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74",
+            "reference": "ee1e0f2ef882ccd6a53ff91e5ffc39a22b6a6b74",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/common": "~2.2",
+            "php": ">=5.3.3",
+            "psr/log": "~1.0",
+            "symfony/icu": "~1.0",
+            "twig/twig": "~1.11"
+        },
+        "replace": {
+            "symfony/browser-kit": "self.version",
+            "symfony/class-loader": "self.version",
+            "symfony/config": "self.version",
+            "symfony/console": "self.version",
+            "symfony/css-selector": "self.version",
+            "symfony/debug": "self.version",
+            "symfony/dependency-injection": "self.version",
+            "symfony/doctrine-bridge": "self.version",
+            "symfony/dom-crawler": "self.version",
+            "symfony/event-dispatcher": "self.version",
+            "symfony/filesystem": "self.version",
+            "symfony/finder": "self.version",
+            "symfony/form": "self.version",
+            "symfony/framework-bundle": "self.version",
+            "symfony/http-foundation": "self.version",
+            "symfony/http-kernel": "self.version",
+            "symfony/intl": "self.version",
+            "symfony/locale": "self.version",
+            "symfony/monolog-bridge": "self.version",
+            "symfony/options-resolver": "self.version",
+            "symfony/process": "self.version",
+            "symfony/propel1-bridge": "self.version",
+            "symfony/property-access": "self.version",
+            "symfony/proxy-manager-bridge": "self.version",
+            "symfony/routing": "self.version",
+            "symfony/security": "self.version",
+            "symfony/security-bundle": "self.version",
+            "symfony/serializer": "self.version",
+            "symfony/stopwatch": "self.version",
+            "symfony/swiftmailer-bridge": "self.version",
+            "symfony/templating": "self.version",
+            "symfony/translation": "self.version",
+            "symfony/twig-bridge": "self.version",
+            "symfony/twig-bundle": "self.version",
+            "symfony/validator": "self.version",
+            "symfony/web-profiler-bundle": "self.version",
+            "symfony/yaml": "self.version"
+        },
+        "require-dev": {
+            "doctrine/data-fixtures": "1.0.*",
+            "doctrine/dbal": "~2.2",
+            "doctrine/orm": "~2.2,>=2.2.3",
+            "ircmaxell/password-compat": "1.0.*",
+            "monolog/monolog": "~1.3",
+            "ocramius/proxy-manager": ">=0.3.1,<0.4-dev",
+            "propel/propel1": "1.6.*"
+        },
+        "time": "2014-01-05 01:24:54",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\": "src/"
+            },
+            "classmap": [
+                "src/Symfony/Component/HttpFoundation/Resources/stubs",
+                "src/Symfony/Component/Intl/Resources/stubs"
+            ],
+            "files": [
+                "src/Symfony/Component/Intl/Resources/stubs/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "The Symfony PHP framework",
+        "homepage": "http://symfony.com",
+        "keywords": [
+            "framework"
+        ]
+    },
+    {
+        "name": "jms/aop-bundle",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "target-dir": "JMS/AopBundle",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/schmittjoh/JMSAopBundle.git",
+            "reference": "93f41ab85ed409430bc3bab2e0b7c7677f152aa8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/schmittjoh/JMSAopBundle/zipball/93f41ab85ed409430bc3bab2e0b7c7677f152aa8",
+            "reference": "93f41ab85ed409430bc3bab2e0b7c7677f152aa8",
+            "shasum": ""
+        },
+        "require": {
+            "jms/cg": "1.*",
+            "symfony/framework-bundle": "2.*"
+        },
+        "time": "2013-07-29 09:34:26",
+        "type": "symfony-bundle",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JMS\\AopBundle": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache"
+        ],
+        "authors": [
+            {
+                "name": "Johannes M. Schmitt",
+                "email": "schmittjoh@gmail.com",
+                "homepage": "http://jmsyst.com",
+                "role": "Developer of wrapped JMSSerializerBundle"
+            }
+        ],
+        "description": "Adds AOP capabilities to Symfony2",
+        "keywords": [
+            "annotations",
+            "aop"
+        ]
+    },
+    {
+        "name": "knplabs/knp-snappy-bundle",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "Knp/Bundle/SnappyBundle",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/KnpLabs/KnpSnappyBundle.git",
+            "reference": "68f48977816fd829911c789663e22a9a62535079"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/KnpLabs/KnpSnappyBundle/zipball/68f48977816fd829911c789663e22a9a62535079",
+            "reference": "68f48977816fd829911c789663e22a9a62535079",
+            "shasum": ""
+        },
+        "require": {
+            "knplabs/knp-snappy": "*",
+            "php": ">=5.3.2",
+            "symfony/framework-bundle": ">=2.0.0"
+        },
+        "time": "2014-01-02 11:20:45",
+        "type": "symfony-bundle",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Knp\\Bundle\\SnappyBundle": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "KnpLabs Team",
+                "homepage": "http://knplabs.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://github.com/KnpLabs/KnpSnappyBundle/contributors"
+            }
+        ],
+        "description": "Easily create PDF and images in Symfony2 by converting Twig/HTML templates.",
+        "homepage": "http://github.com/KnpLabs/KnpSnappyBundle",
+        "keywords": [
+            "bundle",
+            "knp",
+            "knplabs",
+            "pdf",
+            "snappy"
         ]
     }
 ]
