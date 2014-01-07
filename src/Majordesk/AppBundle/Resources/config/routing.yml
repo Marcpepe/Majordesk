@@ -29,7 +29,7 @@ majordesk_app_presentation_equipe:
     defaults: { _controller: MajordeskAppBundle:Home:equipePresentation }
 
 majordesk_app_inscription:
-    pattern:  /inscription-{etape_inscription}
+    pattern:  /inscription-{etape_inscription} 
     defaults: { _controller: MajordeskAppBundle:Home:inscription, etape_inscription:1 }
     requirements:
         etape_inscription:      \d{1}
@@ -112,6 +112,10 @@ majordesk_app_gestion_abonnements:
 majordesk_app_parametres_compte:
     pattern:  /parents/parametres-du-compte
     defaults: { _controller: MajordeskAppBundle:Parents:parametresCompte }
+
+majordesk_app_nouvel_eleve:
+    pattern:  /parents/nouvel-eleve
+    defaults: { _controller: MajordeskAppBundle:Parents:nouvelEleve }
 
 majordesk_app_nouvel_abonnement:
     pattern:  /parents/nouvel-abonnement-{etape_inscription}

@@ -142,29 +142,29 @@
 				<br>
 				{% for disponibilite in form.disponibilites %}
 				<div class="row">
-					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+					<div class="col-sm-4 col-md-4 col-lg-4">
 						<div class="input-group">
 							{{ form_widget(disponibilite.jour ) }}
 							<span class="input-group-addon"><i class="icon-calendar"></i></span>
 						</div>
 					</div>
-					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+					<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
 						<p class="text-center">de</p>
 					</div>
-					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+					<div class="col-sm-2 col-md-2 col-lg-2">
 						<span class="bootstrap-timepicker ">
 							{{ form_widget(disponibilite.heureDebut ) }}
 						</span>
 					</div>
-					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+					<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
 						<p class="text-center">à</p>
 					</div>
-					<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+					<div class="col-sm-2 col-md-2 col-lg-2">
 						<span class="bootstrap-timepicker ">
 							{{ form_widget(disponibilite.heureFin ) }}
 						</span>
 					</div>
-					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+					<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
 						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
 					</div>
 				</div>
@@ -174,29 +174,29 @@
 				  <span class="disponibilites" data-prototype='
 					<span>
 						<div class="row">
-							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+							<div class="col-sm-4 col-md-4 col-lg-4">
 								<div class="input-group">
 									{{ form_widget(form.disponibilites.vars.prototype.jour ) }}
 									<span class="input-group-addon"><i class="icon-calendar"></i></span>
 								</div>
 							</div>
-							<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+							<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
 								<p class="text-center"> de</p>
 							</div>
-							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+							<div class="col-sm-2 col-md-2 col-lg-2">
 								<span class="bootstrap-timepicker ">
 									{{ form_widget(form.disponibilites.vars.prototype.heureDebut ) }}
 								</span>
 							</div>
-							<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+							<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
 								<p class="text-center"> à</p>
 							</div>
-							<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+							<div class="col-sm-2 col-md-2 col-lg-2">
 								<span class="bootstrap-timepicker ">
 									{{ form_widget(form.disponibilites.vars.prototype.heureFin ) }}
 								</span>
 							</div>
-							<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+							<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
 								<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
 							</div>
 						</div>

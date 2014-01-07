@@ -450,6 +450,75 @@ class ParentsController extends Controller
 	/**
 	 * @Secure(roles="ROLE_PARENTS")
 	 */
+	public function nouvelEleveAction()
+    {
+		$user = $this->getUser();
+		$famille = $user->getFamille();
+		
+		$eleve = new Eleve();
+		$form = $this->createForm(new InscriptionEleveType(), $eleve);
+		
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') 
+		{
+			$form->bind($request);
+
+			if ($form->isValid()) 
+			{															
+				if ($form->getData()->getProgramme() != null) {
+					$matiere_maths = $request->request->get('matiere_maths');
+					$matiere_physique = $request->request->get('matiere_physique');	
+					
+					if (!empty($matiere_maths) || !empty($matiere_physique)) 
+					{		
+						$factory = $this->get('security.encoder_factory');
+						// $container = $this->getContainer(); 
+						
+						$eleve->setSalt(time());
+							$encoder = $factory->getEncoder($eleve);
+							$pass = $encoder->encodePassword($eleve->getPassword(), $eleve->getSalt()); 
+						
+						$famille->addEleve($eleve);
+						$em = $this->getDoctrine()->getManager();
+						$em->persist($famille);
+						$em->flush();
+						
+						$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+						$notification = 'Inscription d\un nouvel enfant pour la famille '.$user->getNom().' : '.$eleve->getUsername().' en classe de '.$eleve->getProgramme()->getNom();
+						
+						$message = \Swift_Message::newInstance()
+												->setSubject('Urgent : Erreur Cron')
+												->setFrom('plateforme@majorclass.fr')
+												->setTo('marc@majorclass.fr')
+												// ->setBody($this->get('templating')->render('MajordeskAppBundle:Admin:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+												->setBody($this->renderView('MajordeskAppBundle:Admin:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+											;
+											$this->get('mailer')->send($message);
+											$transport = $this->get('swiftmailer.transport.real');						
+											// $this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+											$this->get('mailer')->send($message);
+						
+						return $this->redirect($this->generateUrl('majordesk_app_profil'));
+					}	
+					else {
+						$this->get('session')->getFlashBag()->add('warning-matiere', 'Veuillez sélectionner au moins une matière.');
+					}
+				}
+				else {
+					$this->get('session')->getFlashBag()->add('info', 'Programme non renseigné.');
+				}
+			}
+			$this->get('session')->getFlashBag()->add('warning', 'Un ou plusieurs champs ont été mal remplis.');
+		}
+		
+		return $this->render('MajordeskAppBundle:Parents:nouvel-eleve.html.twig', array(
+			'form' => $form->createView()
+		));
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_PARENTS")
+	 */
 	public function suiviEnfantAction($id_eleve)
     {
 		if ($this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {

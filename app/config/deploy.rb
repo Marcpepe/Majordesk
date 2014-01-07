@@ -1,3 +1,5 @@
+require 'capifony_symfony2'
+
 set :stages,        %w(production staging)
 set :default_stage, "staging"
 set :stage_dir,     "app/config"
@@ -49,22 +51,25 @@ set :scm_passphrase, "perrin"  # The deploy user's password
 # set :deploy_via, :rsync_with_remote_cache
 # set :deploy_via, :copy
 
-set :shared_files,      ["app/config/parameters.yml", "composer.phar"]
-# set :use_composer,    false
-set :use_composer,    true
-set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
-# set :composer_bin,    "/home/majorcla/var/www/majordesk/#{domain}/shared/composer.phar"
-set :update_vendors,  false
-# set :vendors_mode,    "install"
-# set :copy_vendors, true
-
 set :dump_assetic_assets,   true
 set :writable_dirs,       [app_path + "/cache", app_path + "/logs"]
 set :permission_method,   :chmod
 set :set_permissions, true
 set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
+
+set :shared_files,      ["app/config/parameters.yml", "composer.phar"]
+# set :use_composer,    false
+set :use_composer,    true
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
+# set :composer_bin,    "/home/majorcla/var/www/majordesk/#{domain}/shared/composer.phar"
+set :update_vendors,  false
+# set :vendors_mode,    "install"
+set :copy_vendors, false
+
+
 set :model_manager, "doctrine"
-set  :keep_releases,  3
+set :keep_releases,  3
+
 
 # after "deploy:update_code" do
   # capifony_pretty_print "--> Ensuring cache directory permissions"

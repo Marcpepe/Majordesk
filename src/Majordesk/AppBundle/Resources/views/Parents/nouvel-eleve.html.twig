@@ -1,0 +1,234 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Mon Profil - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_profil') }}"><i class="icon-angle-right"></i> Profil</a></li>
+	<li><a><i class="icon-angle-right"></i> Inscription d'un nouvel élève</a></li>
+{% endblock %}
+
+{% block body %}
+	
+	<br><br><span class="hidden-lg"><br></span>
+
+	<form method="post" action="{{ path('majordesk_app_nouvel_eleve') }}">
+			
+		<div class="row">
+			<div class="col-md-offset-3 col-lg-6">
+			
+				<h3><i class="icon-user icon-large text-yellow pull-left"></i> <p class="pull-left">Inscription de l'élève</p></h3>
+				
+				<br><br><br>
+					{% if app.session.flashbag.get('info') %}
+					<div class="alert alert-warning">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<strong>Champs incorrects :</strong><br><br>
+						<ul><li>Programme : vous devez renseigné le niveau scolaire (Programme)</li></ul>
+					</div>
+					{% elseif app.session.flashbag.get('warning') %}
+					<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<strong>Champs incorrects :</strong><br><br>
+						{% for field in form %}
+							{{ form_errors(field) }}
+						{% endfor %}
+						{{ form_errors(form.password.pass) }} 
+						{{ form_errors(form.password.confirm) }}
+					</div>
+					{% elseif app.session.flashbag.get('warning-matiere') %}
+					<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<strong>Champs incorrects :</strong><br><br>
+						Veuillez sélectionner au moins une matière.
+					</div>
+					{% endif %}
+			
+				<br>
+				<h4>Information sur l'élève</h4>
+				<br>	
+				
+				<table class="table table-borderless table-hover">
+				  <tbody>
+					
+					<tr>
+					  <td class="col-lg-3">Prénom</td>
+					  <td>
+						{{ form_widget(form.username) }}
+					  </td>
+					</tr>
+					
+					<tr>
+					  <td class="col-lg-3">Nom</td>
+					  <td>
+						{{ form_widget(form.nom) }}
+					  </td>
+					</tr>
+					
+					<tr>
+					  <td class="col-lg-3">Programme</td>
+					  <td>
+						{{ form_widget(form.programme) }}
+					  </td>
+					</tr>
+					
+					<tr>
+					  <td class="col-lg-3">Collège/Lycée</td>
+					  <td>
+						{{ form_widget(form.lycee) }}
+					  </td>
+					</tr>
+					
+					<tr>
+					  <td class="col-lg-3">Téléphone (optionnel)</td>
+					  <td>
+						{{ form_widget(form.telephone) }}
+					  </td>
+					</tr>
+
+				  </tbody>
+				</table>
+		
+		<br>
+		<h4>Pour se connecter à la plateforme</h4>
+		<br>		
+				<table class="table table-borderless table-hover">
+				  <tbody>
+					
+					<tr>
+					  <td class="col-lg-3">Email</td>
+					  <td>
+						{{ form_widget(form.mail) }}
+					  </td>
+					</tr>
+					
+					<tr>
+					  <td class="col-lg-3">Mot de passe</td>
+					  <td>
+							{{ form_widget(form.password.pass, {'attr' : {'value' : app.session.get('password')} } ) }}
+							{{ form_label(form.password.confirm) }}
+							{{ form_widget(form.password.confirm, {'attr' : {'value' : app.session.get('password')} } ) }}
+					  </td>
+					</tr>
+
+				  </tbody>
+				</table>
+
+		
+		<br>
+		<h4>Disponibilités de l'élève pour les cours</h4>
+		<br>
+		{% for disponibilite in form.disponibilites %}
+		<div class="row">
+			<div class="col-sm-4 col-md-4 col-lg-4">
+				<div class="input-group">
+					{{ form_widget(disponibilite.jour ) }}
+					<span class="input-group-addon"><i class="icon-calendar"></i></span>
+				</div>
+			</div>
+			<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+				<p class="text-center">de</p>
+			</div>
+			<div class="col-sm-2 col-md-2 col-lg-2">
+				<span class="bootstrap-timepicker ">
+					{{ form_widget(disponibilite.heureDebut ) }}
+				</span>
+			</div>
+			<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+				<p class="text-center">à</p>
+			</div>
+			<div class="col-sm-2 col-md-2 col-lg-2">
+				<span class="bootstrap-timepicker ">
+					{{ form_widget(disponibilite.heureFin ) }}
+				</span>
+			</div>
+			<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+				<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+			</div>
+		</div>
+			<br>
+		{% endfor %}
+	  
+		  <span class="disponibilites" data-prototype='
+			<span>
+				<div class="row">
+					<div class="col-sm-4 col-md-4 col-lg-4">
+						<div class="input-group">
+							{{ form_widget(form.disponibilites.vars.prototype.jour ) }}
+							<span class="input-group-addon"><i class="icon-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+						<p class="text-center"> de</p>
+					</div>
+					<div class="col-sm-2 col-md-2 col-lg-2">
+						<span class="bootstrap-timepicker ">
+							{{ form_widget(form.disponibilites.vars.prototype.heureDebut ) }}
+						</span>
+					</div>
+					<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+						<p class="text-center"> à</p>
+					</div>
+					<div class="col-sm-2 col-md-2 col-lg-2">
+						<span class="bootstrap-timepicker ">
+							{{ form_widget(form.disponibilites.vars.prototype.heureFin ) }}
+						</span>
+					</div>
+					<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+						<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+					</div>
+				</div>
+				<br>
+			</span>
+		  '></span>
+		
+		<br><br><br>
+		
+	<h4>Choix des matières :</h4>
+		<div class="col-lg-12">
+			<div class="checkbox">
+				<label>
+				   <h3><input type="checkbox" class="matiere maths" name="matiere_maths" {% if app.session.get('matiere_maths') == 1 %}checked="checked"{% endif %} > <span class="label label-primary">Mathématiques</span></h3>
+				</label>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="checkbox">
+				<label>
+				  <h3><input type="checkbox" class="matiere physique" name="matiere_physique" {% if app.session.get('matiere_physique') == 1 %}checked="checked"{% endif %} > <span class="label label-success" >Physique-Chimie</span></h3> 
+				</label>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="checkbox">
+				<label>
+				  <h3><input type="checkbox" disabled="disabled" class="matiere" name="matiere_svt" > <span class="label label-default" rel="tooltip" data-title="Indisponible pour l'instant" >S.V.T.</span></h3> 
+				</label>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+	
+
+				<button type="submit" class="btn btn-success pull-right">Valider <i class="icon-angle-right icon-large"></i></button>
+				<div class="clearfix"></div>
+				<br><br><br>
+			</div>
+		</div>
+	{{ form_widget(form._token) }}
+	</form>
+	
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/common/bootstrap-timepicker.min.js' 
+		'../app/Resources/js/common/typeahead.min.js'
+		'../app/Resources/js/home/inscription.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

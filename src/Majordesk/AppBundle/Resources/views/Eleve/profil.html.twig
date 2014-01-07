@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block body %}
-<span class="visible-md"><br><br></span>
-<span class="visible-lg"><br><br></span>
+	
+	<br><br><span class="hidden-lg"><br></span>
 
 	{% for message in app.session.flashbag.get('info') %}
 	<div class="col-lg-12">
@@ -22,23 +22,53 @@
 	{% endfor %}
 	<div class="col-lg-12">
 		<h3><i class="icon-user icon-large text-yellow"></i> Mon profil</h3><br>
-	</div>
-	<div class="col-lg-4">
-		Prénom : <strong>{{ user.username }}</strong><br>
-		Nom : <strong>{{ user.nom }}</strong>
-	</div>
-	<div class="col-lg-4">
-		Date d'inscription : <strong>{{ user.dateInscription|date('d/m/Y') }}</strong><br>
-		Statut : 
-		{% if user.actif %}
-			<strong class="text-green">Actif</strong>
-		{% else %}
-			<strong class="text-red">Inactif</strong>
-		{% endif %}
-	</div>
-	<div class="col-lg-4">
-		<a href="{{ path('majordesk_app_modifier_password') }}" class="btn btn-default"><i class="icon-gear"></i> Modifier mon mot de passe</a>
+		<div class="col-lg-4">
+			Prénom : <strong>{{ user.username }}</strong><br>
+			Nom : <strong>{{ user.nom }}</strong>
+		</div>
+		<div class="col-lg-4">
+			Date d'inscription : <strong>{{ user.dateInscription|date('d/m/Y') }}</strong><br>
+			Statut : 
+			{% if user.actif %}
+				<strong class="text-green">Actif</strong>
+			{% else %}
+				<strong class="text-red">Inactif</strong>
+			{% endif %}
+		</div>
+		<div class="col-lg-4">
+			<a href="{{ path('majordesk_app_modifier_password') }}" class="btn btn-default"><i class="icon-gear"></i> Modifier mon mot de passe</a>
+		</div>
 	</div>
 	<div class="clearfix"></div><br><br>
+	{% if is_granted('ROLE_PARENTS') %}
+		<div class="col-lg-12">
+			<h3><i class="icon-group icon-large text-peterriver"></i> Mes enfants</h3><br>
+			{% for eleve in eleves %}
+				<div class="col-lg-4">
+					Prénom : <strong>{{ eleve.username }}</strong><br>
+					Nom : <strong>{{ eleve.nom }}</strong>
+				</div>
+				<div class="col-lg-4">
+					Date d'inscription : <strong>{{ eleve.dateInscription|date('d/m/Y') }}</strong><br>
+					Statut : 
+					{% if eleve.actif %}
+						<strong class="text-green">Actif</strong>
+					{% else %}
+						<strong class="text-red">Inactif</strong>
+					{% endif %}
+				</div>
+				{% if loop.last %}
+					<div class="col-lg-4">
+						<a href="{{ path('majordesk_app_nouvel_eleve') }}" class="btn btn-default"><i class="icon-plus"></i> Inscrire un autre enfant</a>
+					</div>
+				{% else %}
+					<div class="clearfix"></div><br>
+				{% endif%}
+			{% endfor %}			
+		</div>
+		
+		<div class="clearfix"></div><br><br>
+	{% endif %}
+	
 
 {% endblock %}

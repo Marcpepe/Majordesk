@@ -311,9 +311,22 @@ class EleveController extends Controller
     public function profilAction()
     {
 		$user = $this->getUser();	
-		return $this->render('MajordeskAppBundle:Eleve:profil.html.twig', array(
-			'user' => $user
-		));
+		
+		if (!$this->get('security.context')->isGranted('ROLE_PROF') && $this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$eleves = $user->getFamille()->getEleves();
+			
+			return $this->render('MajordeskAppBundle:Eleve:profil.html.twig', array(
+				'user' => $user,
+				'eleves' => $eleves,
+			));
+		}
+		else {
+			return $this->render('MajordeskAppBundle:Eleve:profil.html.twig', array(
+				'user' => $user
+			));
+		}
+		
+		
     }
 	
 	/**
