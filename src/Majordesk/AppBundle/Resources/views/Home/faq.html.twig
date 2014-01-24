@@ -7,7 +7,7 @@
 				{% block navbar %}
 				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
 				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
-				    <li class="active"><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
 				    <li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>
 				{% endblock %}
 
@@ -26,19 +26,34 @@
 		<div class="col-lg-12">
 			<h3>Comment l'inscription se déroule-t-elle ?</h3>
 			<br>
-			Elle se fait simplement, en ligne et rapidement, à partir du bouton “s’inscrire” disponible sur la page d’accueil. 
+			Elle se fait en ligne, rapidement et gratuitement, depuis <a href="{{ path('majordesk_app_inscription') }}">ce lien</a>. 
 			<br><br>
-			Etape n°1 : Vous remplissez les informations qui nous sont nécessaires pour intervenir à votre domicile, et pour éditer les factures et les documents qui vous permettront de faire valoir vos droits de défiscalisation. 
-			<br>
-			Etape n°2 : Nous vous confirmons qu’un  professeur de notre équipe peut bien prendre en charge votre enfant compte tenu de votre situation géographique et de vos disponibilités. 
-			<br>
-			Etape n°3 : Vous confirmez votre inscription en remplissant vos coordonnées bancaires (cf le "module de paiements facilité") pour être mis en relation avec votre nouveau professeur.
+			<em>Etape n°1</em> : Une fois inscrit(e), nous vous confirmons par mail dans les meilleurs délais qu’un professeur de notre équipe peut bien prendre en charge votre enfant compte tenu de votre situation géographique et de vos disponibilités.
 			<br><br>
-			<h3>Qui dois-je contacter en cas de..</h3>
-			<br>
-			Une fois votre inscription finalisée par notre confirmation de prise en charge et le renseignement de vos coordonnées bancaires nous vous mettons en contact avec un professeur de notre équipe pédagogique, qui pourra organiser avec vous votre premier cours. 
+			<em>Etape n°2</em> : Vous confirmez votre inscription en enregistrant un moyen de paiement (cf le "<a href="#module">module de paiements facilité</a>") depuis votre espace personnel.
 			<br><br>
-			<h3>Qu'est-ce que le "module de paiements facilités" ?</h3>
+			<em>Etape n°3</em> : Vous êtes mis en relation avec le professeur de votre enfant, afin de convenir du premier cours.
+			<br><br>
+			Vous pouvez bien sûr effectuer directement l'<em>Etape n°2</em>, auquel cas vous serez mis en relation avec votre professeur dès que nous vous l'aurons assigné.
+			<br><br>
+			<h3>Comment réserver mon premier cours ?</h3>
+			<br>Une fois votre inscription finalisée, c'est-à-dire lorsque :
+			<ul>
+				<li>nous vous avons confirmé votre prise en charge par un de nos professeurs</li>
+				<li>vous avez renseigné vos coordonnées bancaires</li>
+			</ul>
+			Alors nous vous mettons en contact avec votre professeur, qui pourra organiser avec vous votre premier cours. 
+			<br><br>
+			<h3>Comment se déroule la déclaration d'un cours ?</h3>
+			<br>A la fin d'un cours, le cours doit être déclaré en ligne depuis l'un des trois espaces suivants :
+			<ul>
+				<li>compte de l'élève</li>
+				<li>compte des parents</li>
+				<li>compte du professeur : la déclaration nécessite alors le mot de passe des parents ou de l'élève</li>
+			</ul>
+			Cette action est très rapide et ne vous prendra qu'un clic !
+			<br><br>
+			<h3 id="module">Qu'est-ce que le "module de paiements facilités" ?</h3>
 			<br>
 			Le <strong>module de paiements facilités</strong> est un service proposé par Merc@net, la solution en ligne de BNP Paribas. Ce service vous permet de sauvegarder les coordonnées de votre carte bancaire, afin de pouvoir acheter sans devoir ré-entrer votre numéro de carte bancaire à chaque fois. Nous <u>ne disposons pas de vos coordonnées bancaires</u>; celles-ci sont sauvegardées et sécurisées par BNP Paribas exclusivement.
 			<br><br>
@@ -48,11 +63,12 @@
 			<br>
 			Quoi de plus pratique ! Vous entrez une fois vos coordonnées, puis vous gérez simplement les heures de cours prises par votre enfant grâce aux outils mis à votre disposition : liste des heures prises, calendrier des cours, factures mensuelles, alertes par mail. 
 			<br><br>
-			Pourquoi ne pas accepter le paiement par chèque ou carte d'un "pack d'heures" ? Nous nous sommes rendu compte par expérience, qu'il vous est souvent compliqué de ...
+			<strong>Notre priorité est la qualité de notre service</strong>, et donc le suivi pédagogique de votre enfant par son professeur. Notre première préoccupation est donc <strong>la continuité du travail</strong> qui ne saurait être interrompu une semaine pour cause d’oubli de recharger son nombre d’heures. 
+			C’est pourquoi nous faisons le choix d’automatiser tout ce qui ne concerne pas notre coeur de métier : l’apprentissage. 
 			<br><br>
 			<h3>Qui dois-je contacter en cas de problème ? </h3>
 			<br>
-			En cas de problème, n’hésitez pas à nous adresser un mail à l’adresse suivante : contact@majorclass.fr
+			En cas de problème, n’hésitez pas à nous adresser un mail à l’adresse suivante : <a href="mailto:contact@majorclass.fr">contact@majorclass.fr</a><br>
 			Selon l’urgence de votre problème, vous pouvez nous laisser vos coordonnées téléphoniques pour pouvoir être appelé. 
 		</div>
 		<br><br>

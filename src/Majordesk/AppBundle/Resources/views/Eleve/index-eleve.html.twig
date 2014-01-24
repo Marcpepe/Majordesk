@@ -82,7 +82,11 @@
 					</div>
 					<span class="hidden-lg"><br></span>
 					<div class="col-lg-3">
-						<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmes-tu la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+						{% if famille.abonnement is empty and famille.heuresRestantes <= 0.5 %}
+							<button type="button" class="btn btn-primary pull-right cursor-forbidden" rel="tooltip" data-title="Vous ne pouvez pas déclarer de cours avant d'avoir enregistré un moyen de paiement."><i class="icon-ok"></i> Valider</button>
+						{% else %}
+							<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmes-tu la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+						{% endif %}
 					</div>
 				</div>
 				{{ form_widget(form._token) }}
@@ -98,13 +102,9 @@
 			<img src="{{ asset('img/common/paper_plane.png') }}" style="height:120px;" />
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
-			<h3>Recommande nous à tes amis !</h3><br>
-			<div class="col-lg-6">
-				<input class="form-control" placeholder="Email">
-			</div>
-			<span class="hidden-lg"><br></span>
-			<div class="col-lg-2">
-				<button type="submit" class="btn btn-purple pull-right"><i class="icon-ok"></i> Envoyer</button>
+			<h3 class="text-left-lg-center-xs">Recommande nous à tes amis !</h3><br>
+			<div class="col-lg-12">
+				<a href="{{ path('majordesk_app_recommandez_nous') }}" class="btn btn-purple"><i class="icon-ok"></i> Nous Recommander</a>
 			</div>
 		</div>
 	</div>
@@ -128,7 +128,6 @@
 {% block javascripts %}
 	{{ parent() }}
 	{% javascripts filter='yui_js' output='js/*' 
-		'../app/Resources/js/common/bootstrap-timepicker.min.js'
 		'../app/Resources/js/common/bootstrap-datepicker.min.js'
 		'../app/Resources/js/locales/bootstrap-datepicker.fr.js' 
 		'../app/Resources/js/eleve/index-eleve.js'		

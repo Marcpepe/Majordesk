@@ -37,7 +37,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 					<h3 class="text-left-lg-center-xs"> Problème lors de la déclaration du cours</h3>
-					Le formulaire de déclaration n'a pas bien été rempli. Veuillez le compléter et réessayer. Si le problème persiste, veuillez contacter Majorclass au +33 6 76 10 15 98.
+					Le formulaire de déclaration n'a pas bien été rempli. Veuillez le compléter et réessayer. Si le problème persiste, veuillez nous contacter à l'adresse contact@majorclass.fr
 				</div>
 				<div class="clearfix"></div><br>
 			</div>
@@ -70,23 +70,23 @@
 						</div>
 						<br>
 						<div class="row">
-							<label class="col-lg-1"><span class="pull-right">En</span></label>
-							<div class="col-lg-3">
-							    {% if form.matiere is defined %}
-									{{ form_widget(form.matiere) }}
-								{% else %}
-									<select id="matieresselectortype_matiere" name="matieresselectortype[matiere]" required="required" class="form-control"></select>
-								{% endif %}
-							</div>
-						</div>
-						<br>
-						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">Avec</span></label>
 							<div class="col-lg-3">
 							    {% if form.professeur is defined %}
 									{{ form_widget(form.professeur) }} 
 								{% else %}
-									<select id="professeurselectortype_professeur" name="professeurselectortype[professeur]" required="required" class="form-control"></select>
+									<select id="ticketselectnofiltretype_professeur" name="ticketselectnofiltretype[professeur]" required="required" class="form-control"></select>
+								{% endif %}
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<label class="col-lg-1"><span class="pull-right">En</span></label>
+							<div class="col-lg-3">
+							    {% if form.matiere is defined %}
+									{{ form_widget(form.matiere) }}
+								{% else %}
+									<select id="ticketselectnofiltretype_matiere" name="ticketselectnofiltretype[matiere]" required="required" class="form-control"></select>
 								{% endif %}
 							</div>
 						</div>
@@ -98,7 +98,11 @@
 							</div>
 							<span class="hidden-lg"><br></span>
 							<div class="col-lg-3">
-								<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+								{% if famille.abonnement is empty and famille.heuresRestantes <= 0.5 %}
+									<button type="button" class="btn btn-primary pull-right cursor-forbidden" rel="tooltip" data-title="Vous ne pouvez pas déclarer de cours avant d'avoir enregistré un moyen de paiement."><i class="icon-ok"></i> Valider</button>
+								{% else %}
+									<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+								{% endif %}
 							</div>
 						</div>
 						{{ form_widget(form._token) }}
@@ -145,7 +149,11 @@
 							</div>
 							<span class="hidden-lg"><br></span>
 							<div class="col-lg-3">
-								<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+								{% if famille.abonnement is empty or famille.heuresRestantes <= 0.5 %}
+									<button type="button" class="btn btn-primary pull-right cursor-forbidden" rel="tooltip" data-title="Vous ne pouvez pas déclarer de cours avant d'avoir enregistré un moyen de paiement."><i class="icon-ok"></i> Valider</button>
+								{% else %}
+									<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+								{% endif %}
 							</div>
 						</div>
 						{{ form_widget(form._token) }}
@@ -156,6 +164,7 @@
 		</div>	
 	{% endif %}	
 
+	{% for message in app.session.flashbag.get('welcome') %}
 	<div class="col-lg-12">
 		<div class="container">
 			<br><span class="hidden-xs"><br></span>
@@ -172,7 +181,119 @@
 			</div>
 		</div>
 	</div>
+	{% endfor %}
 	
+	{% for message in app.session.flashbag.get('enregistrement_carte_success') %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/cards.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Votre moyen de paiement a bien été enregistré</h3>
+					Votre carte bancaire a bien été enregistrée en tant que moyen de paiement. 
+					<br><br>Vous pouvez à tout moment gérer ce moyen de paiement en vous rendant sur la page des paramètres du compte.
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('enregistrement_carte_fail') %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/flag.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Un problème est survenu</h3>
+					Veuillez contacter les administrateurs du site à l'adresse contact@majorclass.fr
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('modification_carte_success') %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/cards.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Votre moyen de paiement a bien été modifié</h3>
+					Votre nouvelle carte bancaire a bien été enregistrée en tant que moyen de paiement. 
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('modification_carte_fail') %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/flag.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Un problème est survenu</h3>
+					Veuillez contacter les administrateurs du site à l'adresse contact@majorclass.fr
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('annulation_carte_success') %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/cards.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Votre moyen de paiement a bien été annulé</h3>
+					Attention, vous ne pourrez pas redemander de cours tant qu'un moyen de paiement n'aura pas été enregistré ! 
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for message in app.session.flashbag.get('annulation_carte_fail') %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/flag.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Un problème est survenu</h3>
+					Veuillez contacter les administrateurs du site à l'adresse contact@majorclass.fr
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	
+	{% if famille.abonnement is empty %}
 	<div class="col-lg-12">
 		<div class="container">
 			<br><span class="hidden-xs"><br></span>
@@ -198,24 +319,9 @@
 			</div>
 		</div>
 	</div>
+	{% endif %}
 	
-	<div class="col-lg-12">
-		<div class="container">
-			<br><span class="hidden-xs"><br></span>
-			<div class="alert alert-info">
-				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
-					<span class="hidden-xs"><br></span>
-					<img src="{{ asset('img/common/cards.png') }}" style="height:40px;" />
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
-					<h3 class="text-left-lg-center-xs"> Votre moyen de paiement a bien été enregistré</h3>
-					Votre carte bancaire a bien été enregistrée en tant que moyen de paiement. 
-					<br><br>Vous pouvez à tout moment gérer ce moyen de paiement en vous rendant...
-				</div>
-				<div class="clearfix"></div><br>
-			</div>
-		</div>
-	</div>
+	
 	
 	<div class="col-lg-12">
 		<div class="container">
@@ -292,9 +398,11 @@
 				{% endif %}
 				<a href="{{ path('majordesk_app_abonnements_factures') }}" class="btn btn-warning pull-right">Plus de détails</a>
 			</div>
-			<div class="clearfix"></div><br>
-		</div>
+			<div class="clearfix"></div><br><br>
+		</div>		
 	</div>
+	
+	
 	
 	<div id="home-banner-0" class="col-lg-12">
 		<div class="container">
@@ -304,12 +412,8 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 				<h3 class="text-left-lg-center-xs">Recommandez nous</h3><br>
-				<div class="col-lg-6">
-					<input class="form-control" placeholder="Email">
-				</div>
-				<span class="hidden-lg"><br></span>
-				<div class="col-lg-2">
-					<button type="submit" class="btn btn-purple pull-right"><i class="icon-ok"></i> Envoyer</button>
+				<div class="col-lg-12">
+					<a href="{{ path('majordesk_app_recommandez_nous') }}" class="btn btn-purple"><i class="icon-thumbs-up"></i> Nous Recommander</a>
 				</div>
 			</div>
 		</div>

@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class FactureRepository extends EntityRepository
 {
+	/**
+	 * @return query_builder des
+	 */
+	public function getFacturesLimit($id_famille, $lim)
+	{
+		$qb = $this->createQueryBuilder('fac')
+				   ->join('fac.famille', 'fam')
+				   ->where('fam.id = :id_famille')
+				   ->setParameter('id_famille', $id_famille)
+				   ->orderBy('fac.dateEmission','DESC')
+				   ->setMaxResults($lim);
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
 }

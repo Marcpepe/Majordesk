@@ -1,0 +1,58 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Modifier un professeur - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path("majordesk_app_gestion_eleves") }}"><i class="icon-angle-right"></i> Gestion des élèves</a></li>
+	<li><a href="{{ path("majordesk_app_profil_eleve", {'id' : id_eleve }) }}"><i class="icon-angle-right"></i> Profil élève</a></li>
+	<li><a><i class="icon-angle-right"></i> Gérer les professeurs</a></li>
+{% endblock %}
+ 
+{% block admin %}
+			<form class="form-inline" method="post" action="{{ path('majordesk_app_gerer_professeurs', {'id_eleve' : id_eleve}) }}">
+				<br><br><br><br><br>
+				<h4>Assigner ou désassigner un professeur</h4><br>
+				<!--<i class="icon-warning"></i> Dans le cas d'un "échange" de professeur, commercer par retirer le professeur qui n'exercera plus !<br><br>-->
+				{% for prof in form.professeurs %}
+					<span>	
+						<div class="col-lg-5">
+							<div class="input-group">
+								{{ form_widget(prof) }}
+								<span class="input-group-addon"><i class="icon-user"></i></span>
+							</div>
+						</div>
+						<button type="button" class="btn btn-danger remove-eleve-btn"><i class="icon-remove"></i></button>
+						<br><br>
+					</span>
+				{% endfor %}	
+			  
+				  <span class="eleves" data-prototype='
+					<span>
+						<div class="col-lg-5">
+							<div class="input-group">
+								{{ form_widget(form.professeurs.vars.prototype) }}
+								<span class="input-group-addon"><i class="icon-user"></i></span>
+							</div>
+						</div>
+						<button type="button" class="btn btn-danger remove-eleve-btn"><i class="icon-remove"></i></button>
+						<br><br>
+					</span>							
+				  '></span>
+
+			{{ form_widget(form._token) }}
+			<button type="submit" class="btn btn-success">Valider</button>
+			</form>
+			<br><br>
+			
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/admin/modifier-professeur.js' 
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

@@ -6,7 +6,7 @@ $('#ticketselectnofiltretype_eleve').change( function() {
 		type: "POST",
 		url: Routing.generate("majordesk_app_populate_matieres", {'id_eleve' : id_eleve}),
 		success: function(data){
-			$('#matieresselectortype_matiere').html(data.html);
+			$('#ticketselectnofiltretype_matiere').html(data.html);
 		},
 		error: function() {
 			alert('La requête n\'a pas abouti');
@@ -16,7 +16,7 @@ $('#ticketselectnofiltretype_eleve').change( function() {
 		type: "POST",
 		url: Routing.generate("majordesk_app_populate_professeurs", {'id_eleve' : id_eleve}),
 		success: function(data){
-			$('#professeurselectortype_professeur').html(data.html);
+			$('#ticketselectnofiltretype_professeur').html(data.html);
 		},
 		error: function() {
 			alert('La requête n\'a pas abouti');

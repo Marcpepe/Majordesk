@@ -613,6 +613,101 @@ class Famille
 				
         return $professeurs;
     }
+	
+	/**
+     * Get 
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMails()
+    {
+		$mails = array();
+		foreach($this->clients as $client) {
+			$mails[] = $client->getMail();
+		}
+				
+        return $mails;
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getMail()
+    {	
+        return $this->clients[0]->getMail();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getGender()
+    {	
+        return $this->clients[0]->getGender();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getNom()
+    {	
+        return $this->clients[0]->getNom();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getAdresse()
+    {	
+        return $this->clients[0]->getAdresse();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getCodePostal()
+    {	
+        return $this->clients[0]->getCodePostal();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getVille()
+    {	
+        return $this->clients[0]->getVille();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getTelephone()
+    {	
+        return $this->clients[0]->getTelephone();
+    }
+	
+	/**
+     * Get 
+     *
+     * @return
+     */
+    public function getDateInscription()
+    {	
+        return $this->clients[0]->getDateInscription();
+    }
 
 	public function __construct()
 	{

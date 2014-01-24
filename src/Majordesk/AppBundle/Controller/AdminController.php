@@ -7,6 +7,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Majordesk\AppBundle\Form\Type\EleveType;
 use Majordesk\AppBundle\Form\Type\AddEleveType;
+use Majordesk\AppBundle\Form\Type\GererProfesseursType;
 
 use Majordesk\AppBundle\Form\Type\FamilleType;
 use Majordesk\AppBundle\Form\Type\AddFamilleType;
@@ -262,6 +263,103 @@ class AdminController extends Controller
 			'form' => $form->createView()
 		));
     }
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function gererProfesseursAction($id_eleve)
+    {
+		$eleve = $this->getDoctrine()
+					  ->getManager()
+					  ->getRepository('MajordeskAppBundle:Eleve')
+					  ->find($id_eleve);
+					  
+		$professeurs = $eleve->getProfesseurs();
+		$prof_array = array();
+		foreach($professeurs as $professeur) {
+			$prof_array[] = $professeur->getId();
+		}
+		
+		$form = $this->createForm(new GererProfesseursType(), $eleve);
+		
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') 
+		{
+			$form->bind($request);
+			
+			if ($form->isValid()) 
+			{
+				$new_professeurs = $form->getData()->getProfesseurs();
+				$new_prof_array = array();
+				foreach($new_professeurs as $professeur) {
+					$new_prof_array[] = $professeur->getId();
+				}
+				
+				$array_diff = array_diff($new_prof_array,$prof_array);
+				if (!empty($array_diff)) {
+					$famille = $eleve->getFamille();
+					$mail = $famille->getMail();
+					$nom = $famille->getNom();
+					$date_inscription = $famille->getDateInscription();
+					$adresse = $famille->getAdresse().' '.$famille->getCodePostal().' '.$famille->getVille();
+					$abonnement = $famille->getAbonnement();
+					$parente = $famille->getGender();
+					if ($parente % 2 == 0) {
+						$gender = 'Cher M.';
+					} else {
+						$gender = 'Chère Mme.';
+					}
+					
+					foreach($array_diff as $id_professeur) {
+						$professeur = $this->getDoctrine()
+										   ->getManager()
+										   ->getRepository('MajordeskAppBundle:Professeur')
+										   ->find($id_professeur);
+						if (!empty($abonnement)) {
+							$telephone = $professeur->getTelephone();
+							$message = \Swift_Message::newInstance()
+									->setSubject('Notification Majorclass')
+									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setTo($mail)
+									->setBody($this->renderView('MajordeskAppBundle:Template:assignation-et-mise-en-relation.html.twig', array('gender' => $gender, 'nom' => $nom, 'telephone' => $telephone)), 'text/html')
+								;
+								$this->get('mailer')->send($message);
+								
+							$message = \Swift_Message::newInstance()
+									->setSubject('Notification Majorclass')
+									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setTo($professeur->getMail())
+									->setBody($this->renderView('MajordeskAppBundle:Template:avertissement-professeur.html.twig', array('nom' => $nom, 'prenom_enfant' => $eleve->getUsername(), 'classe' => $eleve->getProgramme()->getNom(), 'representant' => $representant,  'telephone' => $famille->getTelephone(), 'adresse' => $adresse)), 'text/html')
+								;
+								$this->get('mailer')->send($message);
+						} else {
+							$message = \Swift_Message::newInstance()
+									->setSubject('Notification Majorclass')
+									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setTo($mail)
+									->setBody($this->renderView('MajordeskAppBundle:Template:assignation.html.twig', array('gender' => $gender, 'nom' => $nom, 'date_inscription' => $date_inscription)), 'text/html')
+								;
+								$this->get('mailer')->send($message);
+						}
+					}
+				}
+			
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($eleve);
+				$em->flush();
+				
+				$this->get('session')->getFlashBag()->add('info', 'Champ(s) modifié(s).');
+
+				return $this->redirect($this->generateUrl('majordesk_app_profil_eleve', array('id' => $id_eleve)));
+			}
+			$this->get('session')->getFlashBag()->add('warning', 'Un ou plusieurs champs ont été mal remplis.');
+		}	
+		
+        return $this->render('MajordeskAppBundle:Admin:gerer-professeurs.html.twig', array(
+			'form' => $form->createView(),
+			'id_eleve' => $id_eleve
+		));
+	}
 	
 	/**
 	 * @Secure(roles="ROLE_ADMIN")

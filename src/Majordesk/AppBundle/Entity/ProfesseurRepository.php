@@ -58,6 +58,16 @@ class ProfesseurRepository extends EntityRepository
 	}
 	
 	/**
+	 * @return $qb query_builder donnant la liste de tous les professeurs triés par order alphabétique
+	 */
+	public function getProfesseursByAlphabeticalOrder()
+	{
+		return $this->createQueryBuilder('p')
+					->orderBy('p.username', 'ASC')
+		;
+	}
+	
+	/**
 	 * @return array des professeurs ayant pour disponibilités $lu, $ma,...
 	 */
 	public function getProfesseursFilteredByDisponibilites($lu, $ma, $me, $je, $ve, $sa, $di)

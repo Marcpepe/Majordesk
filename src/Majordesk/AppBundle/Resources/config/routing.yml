@@ -4,6 +4,14 @@ majordesk_app_index:
     pattern:  /connexion
     defaults: { _controller: MajordeskAppBundle:Home:connexion }
 
+majordesk_app_forgot_password:
+    pattern:  /mdp-oublie
+    defaults: { _controller: MajordeskAppBundle:Security:forgotPassword }
+
+majordesk_app_reset_password:
+    pattern:  /mdp-reset/{encrypted_mail}
+    defaults: { _controller: MajordeskAppBundle:Security:resetPassword }
+
 majordesk_app_gate_index:
     pattern:  /
     defaults: { _controller: MajordeskAppBundle:Home:gateIndex }
@@ -33,6 +41,14 @@ majordesk_app_inscription:
     defaults: { _controller: MajordeskAppBundle:Home:inscription, etape_inscription:1 }
     requirements:
         etape_inscription:      \d{1}
+
+majordesk_app_inscription_professeur:
+    pattern:  /inscription-professeur
+    defaults: { _controller: MajordeskAppBundle:Home:inscriptionProfesseur }
+
+majordesk_app_confirmation_inscription_professeur:
+    pattern:  /confirmation-inscription-professeur/{encrypted_mail}
+    defaults: { _controller: MajordeskAppBundle:Home:confirmationInscriptionProfesseur }
 
 majordesk_app_mentions_legales:
     pattern:  /mentions-legales
@@ -101,9 +117,29 @@ majordesk_app_abonnements_factures:
     pattern:  /parents/abonnements-et-factures
     defaults: { _controller: MajordeskAppBundle:Parents:abonnementsFactures }
 
+majordesk_app_facture:
+    pattern:  /parents/facture/{annee_facture}/{file_name}
+    defaults: { _controller: MajordeskAppBundle:Parents:facture }
+
 majordesk_app_enregistrement_carte:
     pattern:  /parents/enregistrement-carte
     defaults: { _controller: MajordeskAppBundle:Parents:enregistrementCarte }
+
+majordesk_app_enregistrement_carte_reponse:
+    pattern:  /enregistrement-carte-reponse
+    defaults: { _controller: MajordeskAppBundle:Parents:enregistrementCarteReponse }
+
+majordesk_app_enregistrement_carte_autoreponse:
+    pattern:  /enregistrement-carte-autoreponse
+    defaults: { _controller: MajordeskAppBundle:Parents:enregistrementCarteAutoreponse }
+
+majordesk_app_modification_carte_reponse:
+    pattern:  /modification-carte-reponse
+    defaults: { _controller: MajordeskAppBundle:Parents:modificationCarteReponse }
+
+majordesk_app_modification_carte_autoreponse:
+    pattern:  /modification-carte-autoreponse
+    defaults: { _controller: MajordeskAppBundle:Parents:modificationCarteAutoreponse }
 
 majordesk_app_gestion_abonnements:
     pattern:  /parents/gestion-des-abonnements
@@ -212,6 +248,10 @@ majordesk_app_index_eleve:
 majordesk_app_profil:
     pattern:  /eleve/profil
     defaults: { _controller: MajordeskAppBundle:Eleve:profil }
+
+majordesk_app_recommandez_nous:
+    pattern:  /eleve/recommandez-nous
+    defaults: { _controller: MajordeskAppBundle:Eleve:recommandezNous }
 
 majordesk_app_modifier_password:
     pattern:  /eleve/modifier-mot-de-passe
@@ -674,6 +714,12 @@ majordesk_app_modifier_eleve:
     defaults: { _controller: MajordeskAppBundle:Admin:modifierEleve }
     requirements:
         id:   \d{1,5}
+
+majordesk_app_gerer_professeurs:
+    pattern:  /admin/gerer-professeurs-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Admin:gererProfesseurs }
+    requirements:
+        id_eleve:   \d{1,5}
 
 majordesk_app_ajouter_eleve:
     pattern:  /admin/ajouter-eleve

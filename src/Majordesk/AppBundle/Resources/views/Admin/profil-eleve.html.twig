@@ -76,6 +76,19 @@
 				</ul>
 				
 				<br>
+				<h4>Professeur</h4>
+				<br>
+				<div class="col-lg-4">
+					{% for prof in eleve.professeurs %}
+						{{ prof.username }} {{ prof.nom }}<br>
+					{% endfor %}
+					
+				</div>
+				<div class="col-lg-6">
+					<a href="{{ path('majordesk_app_gerer_professeurs', {'id_eleve' : eleve.id }) }}" class="btn btn-default"><i class="icon-gear"></i> Gérer les professeurs</a>
+				</div>
+				
+				<div class="clearfix"></div><br>
 				<h4>Majorclass</h4>
 				<br>
 				<div class="col-lg-12">

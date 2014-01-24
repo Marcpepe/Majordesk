@@ -156,6 +156,27 @@ class Professeur implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="ville", type="string", length=255, nullable=true)
      */
     private $ville;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="adresse_we", type="string", length=255, nullable=true)
+     */
+    private $adresse_we;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code_postal_we", type="string", length=15, nullable=true)
+     */
+    private $code_postal_we;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville_we", type="string", length=255, nullable=true)
+     */
+    private $ville_we;
 
     /**
      * @var string
@@ -272,6 +293,26 @@ class Professeur implements AdvancedUserInterface, \Serializable
     {
         return $this->id;
     }
+	
+	/**
+     * Get nomEntier
+     *
+     * @return un string contenant le nom et le prénom
+     */
+	public function getNomEntier()
+	{
+		return sprintf('%s %s', $this->username, $this->nom);
+	}
+	
+	/**
+     * Get initiale
+     *
+     * @return un string contenant la première initiale
+     */
+	public function getInitiale()
+	{
+		return sprintf('%s ______________________', substr($this->username, 0, 1));
+	}
 	
     /**
      * Set mail
@@ -593,6 +634,75 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function getVille()
     {
         return $this->ville;
+    }
+	
+	/**
+     * Set adresse
+     *
+     * @param string $adresse
+     * @return Client
+     */
+    public function setAdresseWe($adresse_we)
+    {
+        $this->adresse_we = $adresse_we;
+    
+        return $this;
+    }
+
+    /**
+     * Get adresse
+     *
+     * @return string 
+     */
+    public function getAdresseWe()
+    {
+        return $this->adresse_we;
+    }
+
+    /**
+     * Set code_postal
+     *
+     * @param string $codePostal
+     * @return Client
+     */
+    public function setCodePostalWe($codePostalWe)
+    {
+        $this->code_postal_we = $codePostalWe;
+    
+        return $this;
+    }
+
+    /**
+     * Get code_postal
+     *
+     * @return string 
+     */
+    public function getCodePostalWe()
+    {
+        return $this->code_postal_we;
+    }
+
+    /**
+     * Set ville
+     *
+     * @param string $ville
+     * @return Client
+     */
+    public function setVilleWe($ville_we)
+    {
+        $this->ville_we = $ville_we;
+    
+        return $this;
+    }
+
+    /**
+     * Get ville
+     *
+     * @return string 
+     */
+    public function getVilleWe()
+    {
+        return $this->ville_we;
     }
 
     /**

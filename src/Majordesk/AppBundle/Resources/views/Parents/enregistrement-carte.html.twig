@@ -10,12 +10,13 @@
 	{% set parm = "merchant_id=078949346700011" %}
 	{% set parm = parm ~ " merchant_country=fr" %}
 	{% set parm = parm ~ " pathfile=/home/majorcla/mercanet/subscription/param/pathfile" %}
-	{% set parm = parm ~ " sub_normal_return_url=http://www.majorclass.fr/enregistrement-carte-ok" %}
-	{% set parm = parm ~ " sub_cancel_return_url=http://www.majorclass.fr/enregistrement-carte" %}
-	{% set parm = parm ~ " sub_automatic_response_url=http://www.majorclass.fr/enregistrement-carte-autoresponse" %}
+	{% set parm = parm ~ " sub_normal_return_url=http://www.majorclass.fr/enregistrement-carte-reponse" %}
+	{% set parm = parm ~ " sub_cancel_return_url=http://www.majorclass.fr" %}
+	{% set parm = parm ~ " sub_automatic_response_url=http://www.majorclass.fr/enregistrement-carte-autoreponse" %}
 	{% set parm = parm ~ " header_flag=no" %}
 	{% set parm = parm ~ " sub_amount=0" %}
 	{% set parm = parm ~ " sub_type=0" %}
+	{% set parm = parm ~ " caddie=" ~ famille.id %}
 	{% set parm = parm ~ " normal_return_logo=retour.jpg" %}
 	{% set parm = parm ~ " cancel_return_logo=annulation.jpg" %}
 	{% set parm = parm ~ " submit_logo=valider.jpg" %}
@@ -38,10 +39,30 @@
  	{% elseif code != 0 %}
 		<div class="alert alert-danger"><i class="icon-exclamation-sign"></i> <strong>Erreur : </strong> Une erreur est survenue. Veuillez réessayer ultérieurement ou contacter le webmaster.</div>
 	{% else %}
-		Pour l'enregistrement de votre moyen de paiement, vous allez être redirigé vers le module BNP Paribas. Veuillez sélectionner votre type de carte bancaire ci-dessous :<br><br>
-		<div class="text-center">{{ message }}</div>
+		<br><br>
+		<div class="col-lg-offset-2 col-lg-8">
+			Pour l'enregistrement de votre moyen de paiement, vous allez être redirigé vers le module BNP Paribas :<br><br>
+			<div class="col-lg-12">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" id="cgv-box"> J'ai lu et j'accepte les <a href="{{ path('majordesk_app_cgv_majorclass') }}" target="_blank">conditions générales de vente</a>.
+					</label>
+				</div>
+			</div>
+			<div id="accepted" class="pull-right">{{ message|raw }}</div>
+			<div id="refused" class="pull-right"><button class="btn btn-success" disabled="disabled">Valider <i class="icon-angle-right icon-large"></i></button></div>
+		</div>
 	{% endif %}
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' output='js/*'
+		'../app/Resources/js/parents/enregistrement-carte.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
 {% endblock %}
 

@@ -7,6 +7,8 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Majordesk\AppBundle\Form\Type\InscriptionEleveType;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Majordesk\AppBundle\Entity\Paiement;
 use Majordesk\AppBundle\Entity\Eleve;
 use Majordesk\AppBundle\Entity\EleveMatiere;
@@ -30,54 +32,37 @@ class ParentsController extends Controller
 			$famille = $user->getFamille();
 			$eleves = $famille->getEleves();
 			$heuresRestantes = $famille->getHeuresRestantes();			
-			// $professeurs = $famille->getProfesseurs();
-			
 			$filtre = $famille->getFiltre();
 			
-			// $cours = new CalEvent();
+			if ($user->getDateInscription()->format('d/m/Y') == date('d/m/Y')) {
+				$abonnement = $user->getFamille()->getAbonnement();
+				if (empty($abonnement)) {
+					$this->get('session')->getFlashBag()->add('welcome', ' Bienvenue !');
+				}
+			}	
+
 			if (count($eleves) > 1) {
-				// $errors ='';
-				
+
 				$ticket = new Ticket();
-				
-				// $ticket->setEleve($user);
+
 				$form = $this->createForm( new TicketSelectNoFiltreType($famille->getId()), $ticket );
-				
-				// Pour enfant
-				// if ($filtre) {
-					// $form = $this->createForm( new TicketEnfantType($heures, $user->getId()), $ticket );
-				// } else {
-					// $form = $this->createForm( new TicketEnfantNoFiltreType($heures, $user->getId()), $ticket );
-				// }
-				
+
 				$request = $this->getRequest();
 				if ($request->getMethod() == 'POST') 
-				{
+				{	
 					$form->bind($request);
 
 					if ($form->isValid()) 
-					{
-						
-						// Pour enfant
-						// $paymentAuthorized = false;
-						// if ($filtre) {
-							// $passparent = $form->get('passparent')->getData();
-							// $factory = $this->get('security.encoder_factory');
-							// $parents = $famille->getClients();
-							// foreach($parents as $parent) {
-								// $encoder = $factory->getEncoder($parent);			
-								// $encoded_pass = $encoder->encodePassword($passparent, $parent->getSalt());
-
-								// if ($encoded_pass == $parent->getPassword()) {
-									// $paymentAuthorized = true;
-									// break;
-								// }
-							// }
-						// }
-						
+					{			
 						$eleve = $ticket->getEleve();						
 						$quantite = $ticket->getQuantite();
 						$matiere = $form->get('matiere')->getData();
+						// $id_matiere = $form->get('matiere')->getData();
+
+						// $matiere = $this->getDoctrine()
+									    // ->getManager()
+									    // ->getRepository('MajordeskAppBundle:Matiere')
+									    // ->find($id_matiere);
 						
 						$eleve_matiere = $this->getDoctrine()
 											  ->getManager()
@@ -112,8 +97,7 @@ class ParentsController extends Controller
 						$heuresReellesRestantes = $heuresRestantes / 10;
 						$heuresIncrementees = $heuresReellesRestantes - $quantite / 10;
 						$em = $this->getDoctrine()->getManager();
-						
-						// if ($paymentAuthorized || $filtre == false) {
+
 							$professeur = $ticket->getProfesseur();
 							$professeur->setHeuresDonnees($professeur->getHeuresDonnees() + $quantite);
 							if ($quantite <= $heuresRestantes) {
@@ -151,6 +135,7 @@ class ParentsController extends Controller
 									$paiement->setTransaction(1);
 									$paiement->setTicket($ticket);
 									
+									$famille->setHeuresAchetees($famille->getHeuresAchetees() + $quantiteRestanteADebiter);
 									$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 									$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
 									$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
@@ -170,6 +155,7 @@ class ParentsController extends Controller
 									$paiement->setTransaction(1);
 									$paiement->setTicket($ticket);
 									
+									$famille->setHeuresAchetees($famille->getHeuresAchetees() + $quantite);
 									$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 									$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
 									$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
@@ -205,22 +191,6 @@ class ParentsController extends Controller
 							
 							$em->flush();
 							$this->get('session')->getFlashBag()->add('info', ' Le cours a été déclaré avec succès !');
-
-							// $session->remove('matiere_cours');
-							// $session->remove('type_cours');
-							// $session->remove('etape_cours');
-							// $session->remove('debut_cours');
-							// $session->remove('professeur_cours');
-							// return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
-						// }
-						// else {
-							// $session->getFlashBag()->add('warning', ' Mot de passe du parent incorrect.');
-						// }
-					
-						// $em = $this->getDoctrine()->getManager();
-						// $em->persist($ticket);
-						// $em->flush();
-						// $this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
 					}
 					else {
 						// $errors = $form->getErrorsAsString();
@@ -236,13 +206,6 @@ class ParentsController extends Controller
 				$ticket->setEleve($eleve);
 				$form = $this->createForm( new TicketNoFiltreType($eleve->getId()), $ticket );
 				
-				// Pour enfant
-				// if ($filtre) {
-					// $form = $this->createForm( new TicketEnfantType($heures, $user->getId()), $ticket );
-				// } else {
-					// $form = $this->createForm( new TicketEnfantNoFiltreType($heures, $user->getId()), $ticket );
-				// }
-				
 				$request = $this->getRequest();
 				if ($request->getMethod() == 'POST') 
 				{
@@ -250,24 +213,6 @@ class ParentsController extends Controller
 
 					if ($form->isValid()) 
 					{
-						
-						// Pour enfant
-						// $paymentAuthorized = false;
-						// if ($filtre) {
-							// $passparent = $form->get('passparent')->getData();
-							// $factory = $this->get('security.encoder_factory');
-							// $parents = $famille->getClients();
-							// foreach($parents as $parent) {
-								// $encoder = $factory->getEncoder($parent);			
-								// $encoded_pass = $encoder->encodePassword($passparent, $parent->getSalt());
-
-								// if ($encoded_pass == $parent->getPassword()) {
-									// $paymentAuthorized = true;
-									// break;
-								// }
-							// }
-						// }
-						
 						// $eleve = $ticket->getEleve();						
 						$quantite = $ticket->getQuantite();
 						$matiere = $form->get('matiere')->getData();
@@ -305,8 +250,7 @@ class ParentsController extends Controller
 						$heuresReellesRestantes = $heuresRestantes / 10;
 						$heuresIncrementees = $heuresReellesRestantes - $quantite / 10;
 						$em = $this->getDoctrine()->getManager();
-						
-						// if ($paymentAuthorized || $filtre == false) {
+
 							$professeur = $ticket->getProfesseur();
 							$professeur->setHeuresDonnees($professeur->getHeuresDonnees() + $quantite);
 							if ($quantite <= $heuresRestantes) {
@@ -398,22 +342,7 @@ class ParentsController extends Controller
 							
 							$em->flush();
 							$this->get('session')->getFlashBag()->add('info', ' Le cours a été déclaré avec succès !');
-
-							// $session->remove('matiere_cours');
-							// $session->remove('type_cours');
-							// $session->remove('etape_cours');
-							// $session->remove('debut_cours');
-							// $session->remove('professeur_cours');
-							// return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
-						// }
-						// else {
-							// $session->getFlashBag()->add('warning', ' Mot de passe du parent incorrect.');
-						// }
-					
-						// $em = $this->getDoctrine()->getManager();
-						// $em->persist($ticket);
-						// $em->flush();
-						// $this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
+							return $this->redirect($this->generateUrl('majordesk_app_index_parents'));
 					}
 					else {
 						// $errors = $form->getErrorsAsString();
@@ -426,16 +355,6 @@ class ParentsController extends Controller
 							  ->getManager()
 							  ->getRepository('MajordeskAppBundle:Paiement')
 							  ->getDescPaiementsLimit($famille->getId(), 3);
-			
-			// $date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-			// $date_from->sub(new \DateInterval('PT8H'));
-			// $date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-			// $date_to->add(new \DateInterval('P30D'));
-			
-			// $cal_events_proches = $this->getDoctrine()
-									   // ->getManager()
-									   // ->getRepository('MajordeskAppBundle:CalEvent')
-									   // ->getFamilleCalEventsProches($user->getFamille()->getId(), $date_from, $date_to);
 									   
 			return $this->render('MajordeskAppBundle:Parents:index-parents.html.twig', array(
 				'form' => $form->createView(),
@@ -484,18 +403,14 @@ class ParentsController extends Controller
 						$em->flush();
 						
 						$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-						$notification = 'Inscription d\un nouvel enfant pour la famille '.$user->getNom().' : '.$eleve->getUsername().' en classe de '.$eleve->getProgramme()->getNom();
+						$notification = 'Inscription d\'un nouvel enfant pour la famille '.$user->getNom().' : '.$eleve->getUsername().' en classe de '.$eleve->getProgramme()->getNom();
 						
 						$message = \Swift_Message::newInstance()
-												->setSubject('Urgent : Erreur Cron')
+												->setSubject('Notification Plateforme')
 												->setFrom('plateforme@majorclass.fr')
-												->setTo('marc@majorclass.fr')
-												// ->setBody($this->get('templating')->render('MajordeskAppBundle:Admin:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
-												->setBody($this->renderView('MajordeskAppBundle:Admin:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+												->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+												->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
 											;
-											$this->get('mailer')->send($message);
-											$transport = $this->get('swiftmailer.transport.real');						
-											// $this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
 											$this->get('mailer')->send($message);
 						
 						return $this->redirect($this->generateUrl('majordesk_app_profil'));
@@ -577,13 +492,36 @@ class ParentsController extends Controller
 							  ->getManager()
 							  ->getRepository('MajordeskAppBundle:Paiement')
 							  ->getDescPaiementsLimit($famille->getId(), 15);
+			
+			$factures = $this->getDoctrine()
+							 ->getManager()
+							 ->getRepository('MajordeskAppBundle:Facture')
+							 ->getFacturesLimit($famille->getId(), 12);
 				   
 			return $this->render('MajordeskAppBundle:Parents:abonnements-factures.html.twig', array(
 				'famille' => $famille,
 				'eleves' => $eleves,
 				'paiements' => $paiements,
+				'factures' => $factures,
 			));
 		}
+    }
+	
+	/**
+	 * @Secure(roles="ROLE_PARENTS")
+	 */
+	public function factureAction($annee_facture, $file_name)
+    {
+		$user = $this->getUser();
+		$famille = $user->getFamille();
+			
+		$extension = '/home/majorcla';
+		// $extension = 'C:/wamp/www/Symfony';
+		$file_path = $extension.'/documents/factures/'.$famille->getId().'/'.$annee_facture.'/'.$file_name.'.pdf';
+		
+		return new Response(file_get_contents($file_path), 200, array(
+			'Content-Type' => 'application/pdf'
+		));
     }
 	
 	/**
@@ -1097,24 +1035,6 @@ class ParentsController extends Controller
 		}
     }
 	
-	/**
-	 * @Secure(roles="ROLE_PARENTS")
-	 */
-	public function passerCarteAction()
-    {
-		$user = $this->getUser();
-		$famille = $user->getFamille();
-
-		$famille->setAutorisationPrelevement(2);
-		
-		$em = $this->getDoctrine()->getManager();
-		$em->persist($famille);
-		$em->flush();
-		
-		$this->get('session')->getFlashBag()->add('info', ' Vous êtes bien passé en mode "à la carte".');
-			   
-		return $this->redirect($this->generateUrl('majordesk_app_abonnements_factures'));
-    }
 	
 	/**
 	 * @Secure(roles="ROLE_PARENTS")
@@ -1364,7 +1284,7 @@ class ParentsController extends Controller
 				
 				$this->get('knp_snappy.pdf')->generateFromHtml(
 					$this->renderView(
-						'MajordeskAppBundle:Admin:template-facture.html.twig',
+						'MajordeskAppBundle:Template:facture.html.twig',
 						array(
 							'id'  => $id_facture,
 							'gender'  => $gender,
@@ -1560,5 +1480,763 @@ class ParentsController extends Controller
 			fclose ($fp);
 		}
 		return $this->redirect($this->generateUrl('majordesk_app_abonnements_factures'));
+    }
+	
+	/**
+	  * MERCANET ABONNEMENTS
+	  */
+	
+	// ENREGISTREMENT CARTE
+	
+	public function enregistrementCarteAutoreponseAction()
+    {
+		$request = $this->get('request');
+		$session = $this->get('session');
+		
+		$DATA = $request->request->get('DATA');
+		$message="message=".$DATA;
+			
+		$pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+
+		$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+
+		// Appel du binaire response
+		$message = escapeshellcmd($message);
+		$result=exec("$path_bin $pathfile $message");
+
+		$tableau = explode ("!", $result);
+
+		$code = $tableau[1];
+		$error = $tableau[2];
+		$merchant_id = $tableau[3];
+		$transaction_id = $tableau[4];		
+		$transmission_date = $tableau[5];		
+		$sub_time = $tableau[6];			
+		$sub_date = $tableau[7];				
+		$response_code = $tableau[8];
+		$bank_response_code = $tableau[9];				
+		$cvv_response_code = $tableau[10];
+		$cvv_flag = $tableau[11];
+		$complementary_code = $tableau[12];				
+		$complementary_info = $tableau[13];			
+		$sub_payment_mean = $tableau[14];			
+		$card_number = $tableau[15];
+		$card_validity = $tableau[16];	
+		$payment_certificate = $tableau[17];			
+		$authorisation_id = $tableau[18];
+		$currency_code = $tableau[19];
+		$sub_type = $tableau[20];
+		$sub_amount = $tableau[21];
+		$capture_day = $tableau[22];
+		$capture_mode = $tableau[23];
+		$merchant_language = $tableau[24];
+		$merchant_country = $tableau[25];
+		$language = $tableau[26];					
+		$receipt_complement = $tableau[27];				
+		$caddie = $tableau[28];				  	
+		$data = $tableau[29];
+		$return_context = $tableau[30];
+		$customer_ip_address = $tableau[31];
+		$order_id = $tableau[32];
+		$sub_operation_code = $tableau[33];
+		$sub_subscriber_id = $tableau[34];
+		$sub_civil_status = $tableau[35];
+		$sub_lastname = $tableau[36];
+		$sub_firstname = $tableau[37];
+		$sub_address1 = $tableau[38];
+		$sub_address2 = $tableau[39];
+		$sub_zipcode = $tableau[40];
+		$sub_city = $tableau[41];
+		$sub_country = $tableau[42];
+		$sub_telephone = $tableau[43];
+		$sub_email = $tableau[44];
+		$sub_description = $tableau[45];
+
+		$log_name = date('Y-m-d_H-i-s');
+		
+		if ($response_code == '00') {
+			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_success.txt";
+		}
+		else {
+			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_fail.txt";
+		}
+
+		// Ouverture du fichier de log en append
+
+		$fp=fopen($logfile, "a");
+
+		//  analyse du code retour
+
+	    if (( $code == "" ) && ( $error == "" ) )
+		{
+			fwrite( $fp, "erreur appel response\n");
+			fwrite( $fp, "executable response non trouve $path_bin\n");
+		}
+
+		//	Erreur, sauvegarde le message d'erreur
+
+		else if ( $code != 0 ){
+			fwrite( $fp, " API call error.\n");
+			fwrite( $fp, "Error message :  $error\n");
+		}
+		else {
+			fwrite( $fp, "----------------TRANSACTION----------------\n");
+			fwrite( $fp, "merchant_id : $merchant_id\n");
+			fwrite( $fp, "transaction_id : $transaction_id\n");		
+			fwrite( $fp, "transmission_date : $transmission_date\n");		
+			fwrite( $fp, "sub_time : $sub_time\n");			
+			fwrite( $fp, "sub_date : $sub_date\n");				
+			fwrite( $fp, "response_code : $response_code\n");
+			fwrite( $fp, "bank_response_code : $bank_response_code\n");				
+			fwrite( $fp, "cvv_response_code : $cvv_response_code\n");
+			fwrite( $fp, "cvv_flag : $cvv_flag\n");
+			fwrite( $fp, "complementary_code : $complementary_code\n");				
+			fwrite( $fp, "complementary_info : $complementary_info\n");			
+			fwrite( $fp, "sub_payment_mean : $sub_payment_mean\n");			
+			fwrite( $fp, "card_number : $card_number\n");
+			fwrite( $fp, "card_validity : $card_validity\n");	
+			fwrite( $fp, "payment_certificate : $payment_certificate\n");			
+			fwrite( $fp, "authorisation_id : $authorisation_id\n");
+			fwrite( $fp, "currency_code : $currency_code\n");
+			fwrite( $fp, "sub_type : $sub_type\n");
+			fwrite( $fp, "sub_amount : $sub_amount\n");
+			fwrite( $fp, "capture_day : $capture_day\n");
+			fwrite( $fp, "capture_mode : $capture_mode\n");
+			fwrite( $fp, "merchant_language : $merchant_language\n");
+			fwrite( $fp, "merchant_country : $merchant_country\n");
+			fwrite( $fp, "language : $language\n");					
+			fwrite( $fp, "receipt_complement : $receipt_complement\n");				
+			fwrite( $fp, "caddie : $caddie\n");				  	
+			fwrite( $fp, "data : $data\n");
+			fwrite( $fp, "return_context : $return_context\n");
+			fwrite( $fp, "customer_ip_address : $customer_ip_address\n");
+			fwrite( $fp, "order_id : $order_id\n");
+			fwrite( $fp, "sub_operation_code : $sub_operation_code\n");
+			fwrite( $fp, "sub_subscriber_id : $sub_subscriber_id\n");
+			fwrite( $fp, "sub_civil_status : $sub_civil_status\n");
+			fwrite( $fp, "sub_lastname : $sub_lastname\n");
+			fwrite( $fp, "sub_firstname : $sub_firstname\n");
+			fwrite( $fp, "sub_address1 : $sub_address1\n");
+			fwrite( $fp, "sub_address2 : $sub_address2\n");
+			fwrite( $fp, "sub_zipcode : $sub_zipcode\n");
+			fwrite( $fp, "sub_city : $sub_city\n");
+			fwrite( $fp, "sub_country : $sub_country\n");
+			fwrite( $fp, "sub_telephone : $sub_telephone\n");
+			fwrite( $fp, "sub_email : $sub_email\n");
+			fwrite( $fp, "sub_description : $sub_description\n\n");
+
+			// fwrite( $fp, "----------------INSCRIPTION----------------\n");
+			// $infos = unserialize(base64_decode($caddie));
+			// fwrite( $fp, "id_famille: ".$infos[0]."\n");
+			
+			if ($response_code == '00') {
+				fwrite( $fp, "Récupération famille via Id...\n");
+				$famille = $this->getDoctrine()
+								->getManager()
+								->getRepository('MajordeskAppBundle:Famille')
+								// ->find($infos[0]);
+								->find($caddie);  // caddie vaut id_famille
+				fwrite( $fp, "Récupération famille via Id...\n");
+				$famille->setAbonnement($sub_subscriber_id);				
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($famille);
+				fwrite( $fp, "Preparing to flush...\n");
+				$em->flush();
+				fwrite( $fp, "Flush : OK\n");
+				
+				// Notif Admin
+				$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				$notification = "La famille ".$famille->getNom()." a enregistré un moyen de paiement.";
+				$message = \Swift_Message::newInstance()
+						->setSubject('Notification Plateforme')
+						->setFrom('ne-pas-repondre@majorclass.fr')
+						->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+						->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+					;
+					$this->get('mailer')->send($message);
+					$transport = $this->get('swiftmailer.transport.real');						
+					$this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+				fwrite( $fp, "Notif Admin : OK\n\n");
+				
+				// Mail famille
+				$mail = $famille->getMail();
+				$parente = $famille->getGender();
+				if ($parente % 2 == 0) {
+					$gender = 'Cher M.';
+				} else {
+					$gender = 'Chère Mme.';
+				}
+				if ($parente == 1) {
+					$representant = "de la mère";
+				} else if ($parente == 2) {
+					$representant = "du père";
+				} else if ($parente == 3) {
+					$representant = "de la grand-mère";
+				} else if ($parente == 4) {
+					$representant = "du grand-père";
+				} else if ($parente == 5) {
+					$representant = "de la tante";
+				} else if ($parente == 6) {
+					$representant = "de l'oncle";
+				} else {
+					$representant = "";
+				}
+				$nom = $famille->getNom();
+				$eleves = $famille->getEleves();
+				$adresse = $famille->getAdresse().' '.$famille->getCodePostal().' '.$famille->getVille();
+				
+				foreach($eleves as $eleve) {
+					if ( $eleve->isAssigned() ) {
+						$professeurs = $eleve->getProfesseurs();
+						
+						foreach($professeurs as $professeur) {
+							$telephone = $professeur->getTelephone();
+							$message = \Swift_Message::newInstance()
+									->setSubject('Notification Majorclass')
+									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setTo($mail)
+									->setBody($this->renderView('MajordeskAppBundle:Template:mise-en-relation.html.twig', array('gender' => $gender, 'nom' => $nom, 'telephone' => $telephone)), 'text/html')
+								;
+								$this->get('mailer')->send($message);
+								$transport = $this->get('swiftmailer.transport.real');						
+								$this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+							$nom_prof = $professeur->getNom();
+							fwrite( $fp, "Envoi coords prof (".$nom_prof.")\n");
+							
+							$message = \Swift_Message::newInstance()
+									->setSubject('Notification Majorclass')
+									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setTo($professeur->getMail())
+									->setBody($this->renderView('MajordeskAppBundle:Template:avertissement-professeur.html.twig', array('nom' => $nom, 'prenom_enfant' => $eleve->getUsername(), 'classe' => $eleve->getProgramme()->getNom(), 'representant' => $representant,  'telephone' => $famille->getTelephone(), 'adresse' => $adresse)), 'text/html')
+								;
+								$this->get('mailer')->send($message);
+								$transport = $this->get('swiftmailer.transport.real');						
+								$this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+							fwrite( $fp, "Envoi coords famille\n\n");
+						}
+					}
+				}
+			}
+		}
+
+		fclose ($fp);
+		
+		return new Response();
+	}
+	
+	
+	public function enregistrementCarteReponseAction()
+    {
+		$request = $this->getRequest();
+		$session = $request->getSession();
+		
+		$DATA = $request->request->get('DATA');
+		if (!empty($DATA)) {
+			// Récupération de la variable cryptée DATA
+			$message="message=".$DATA;
+		   
+		    $pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+
+			$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+
+			// Appel du binaire response
+			$message = escapeshellcmd($message);
+			$result=exec("$path_bin $pathfile $message");
+
+			$tableau = explode ("!", $result);
+
+			//	Récupération des données de la réponse
+
+			$code = $tableau[1];
+			$error = $tableau[2];
+			$merchant_id = $tableau[3];
+			$transaction_id = $tableau[4];		
+			$transmission_date = $tableau[5];		
+			$sub_time = $tableau[6];			
+			$sub_date = $tableau[7];				
+			$response_code = $tableau[8];
+			$bank_response_code = $tableau[9];				
+			$cvv_response_code = $tableau[10];
+			$cvv_flag = $tableau[11];
+			$complementary_code = $tableau[12];				
+			$complementary_info = $tableau[13];			
+			$sub_payment_mean = $tableau[14];			
+			$card_number = $tableau[15];
+			$card_validity = $tableau[16];	
+			$payment_certificate = $tableau[17];			
+			$authorisation_id = $tableau[18];
+			$currency_code = $tableau[19];
+			$sub_type = $tableau[20];
+			$sub_amount = $tableau[21];
+			$capture_day = $tableau[22];
+			$capture_mode = $tableau[23];
+			$merchant_language = $tableau[24];
+			$merchant_country = $tableau[25];
+			$language = $tableau[26];					
+			$receipt_complement = $tableau[27];				
+			$caddie = $tableau[28];				  	
+			$data = $tableau[29];
+			$return_context = $tableau[30];
+			$customer_ip_address = $tableau[31];
+			$order_id = $tableau[32];
+			$sub_operation_code = $tableau[33];
+			$sub_subscriber_id = $tableau[34];
+			$sub_civil_status = $tableau[35];
+			$sub_lastname = $tableau[36];
+			$sub_firstname = $tableau[37];
+			$sub_address1 = $tableau[38];
+			$sub_address2 = $tableau[39];
+			$sub_zipcode = $tableau[40];
+			$sub_city = $tableau[41];
+			$sub_country = $tableau[42];
+			$sub_telephone = $tableau[43];
+			$sub_email = $tableau[44];
+			$sub_description = $tableau[45];
+		
+			$log_name = date('Y-m-d_H-i-s');
+			
+			if ($response_code == '00') {
+				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_success.txt";
+			}
+			else {
+				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_fail.txt";
+			}
+
+			// Ouverture du fichier de log en append
+
+			$fp=fopen($logfile, "a");		
+
+			//  analyse du code retour
+
+			if (( $code == "" ) && ( $error == "" ) )
+			{
+				fwrite( $fp, "erreur appel response\n");
+				fwrite( $fp, "executable response non trouve $path_bin\n");
+			}
+
+			//	Erreur, affiche le message d'erreur
+
+			else if ( $code != 0 ){
+				fwrite( $fp, "Erreur appel API de paiement.\n\n");
+				fwrite( $fp, "message erreur : $error\n\n");
+			}
+
+			// OK, affichage des champs de la réponse
+			else {		
+				fwrite( $fp, "----------------TRANSACTION----------------\n");
+				fwrite( $fp, "merchant_id : $merchant_id\n");
+				fwrite( $fp, "transaction_id : $transaction_id\n");		
+				fwrite( $fp, "transmission_date : $transmission_date\n");		
+				fwrite( $fp, "sub_time : $sub_time\n");			
+				fwrite( $fp, "sub_date : $sub_date\n");				
+				fwrite( $fp, "response_code : $response_code\n");
+				fwrite( $fp, "bank_response_code : $bank_response_code\n");				
+				fwrite( $fp, "cvv_response_code : $cvv_response_code\n");
+				fwrite( $fp, "cvv_flag : $cvv_flag\n");
+				fwrite( $fp, "complementary_code : $complementary_code\n");				
+				fwrite( $fp, "complementary_info : $complementary_info\n");			
+				fwrite( $fp, "sub_payment_mean : $sub_payment_mean\n");			
+				fwrite( $fp, "card_number : $card_number\n");
+				fwrite( $fp, "card_validity : $card_validity\n");	
+				fwrite( $fp, "payment_certificate : $payment_certificate\n");			
+				fwrite( $fp, "authorisation_id : $authorisation_id\n");
+				fwrite( $fp, "currency_code : $currency_code\n");
+				fwrite( $fp, "sub_type : $sub_type\n");
+				fwrite( $fp, "sub_amount : $sub_amount\n");
+				fwrite( $fp, "capture_day : $capture_day\n");
+				fwrite( $fp, "capture_mode : $capture_mode\n");
+				fwrite( $fp, "merchant_language : $merchant_language\n");
+				fwrite( $fp, "merchant_country : $merchant_country\n");
+				fwrite( $fp, "language : $language\n");					
+				fwrite( $fp, "receipt_complement : $receipt_complement\n");				
+				fwrite( $fp, "caddie : $caddie\n");				  	
+				fwrite( $fp, "data : $data\n");
+				fwrite( $fp, "return_context : $return_context\n");
+				fwrite( $fp, "customer_ip_address : $customer_ip_address\n");
+				fwrite( $fp, "order_id : $order_id\n");
+				fwrite( $fp, "sub_operation_code : $sub_operation_code\n");
+				fwrite( $fp, "sub_subscriber_id : $sub_subscriber_id\n");
+				fwrite( $fp, "sub_civil_status : $sub_civil_status\n");
+				fwrite( $fp, "sub_lastname : $sub_lastname\n");
+				fwrite( $fp, "sub_firstname : $sub_firstname\n");
+				fwrite( $fp, "sub_address1 : $sub_address1\n");
+				fwrite( $fp, "sub_address2 : $sub_address2\n");
+				fwrite( $fp, "sub_zipcode : $sub_zipcode\n");
+				fwrite( $fp, "sub_city : $sub_city\n");
+				fwrite( $fp, "sub_country : $sub_country\n");
+				fwrite( $fp, "sub_telephone : $sub_telephone\n");
+				fwrite( $fp, "sub_email : $sub_email\n");
+				fwrite( $fp, "sub_description : $sub_description\n\n");
+				
+				if ($response_code == '00') {
+					$session->getFlashBag()->add('enregistrement_carte_success', ' Succès de l\'enregistrement');
+				} else {
+					$session->getFlashBag()->add('enregistrement_carte_fail', ' Echec de l\'enregistrement');
+				}
+			}
+			fclose ($fp);
+		}
+		return $this->redirect($this->generateUrl('majordesk_app_index_parents'));
+    }
+	
+	// MODIFICATION/ANNULATION CARTE
+	
+	public function modificationCarteAutoreponseAction()
+    {
+		$request = $this->get('request');
+		$session = $this->get('session');
+		
+		$DATA = $request->request->get('DATA');
+		$message="message=".$DATA;
+			
+		$pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+
+		$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+
+		// Appel du binaire response
+		$message = escapeshellcmd($message);
+		$result=exec("$path_bin $pathfile $message");
+
+		$tableau = explode ("!", $result);
+
+		$code = $tableau[1];
+		$error = $tableau[2];
+		$merchant_id = $tableau[3];
+		$transaction_id = $tableau[4];		
+		$transmission_date = $tableau[5];		
+		$sub_time = $tableau[6];			
+		$sub_date = $tableau[7];				
+		$response_code = $tableau[8];
+		$bank_response_code = $tableau[9];				
+		$cvv_response_code = $tableau[10];
+		$cvv_flag = $tableau[11];
+		$complementary_code = $tableau[12];				
+		$complementary_info = $tableau[13];			
+		$sub_payment_mean = $tableau[14];			
+		$card_number = $tableau[15];
+		$card_validity = $tableau[16];	
+		$payment_certificate = $tableau[17];			
+		$authorisation_id = $tableau[18];
+		$currency_code = $tableau[19];
+		$sub_type = $tableau[20];
+		$sub_amount = $tableau[21];
+		$capture_day = $tableau[22];
+		$capture_mode = $tableau[23];
+		$merchant_language = $tableau[24];
+		$merchant_country = $tableau[25];
+		$language = $tableau[26];					
+		$receipt_complement = $tableau[27];				
+		$caddie = $tableau[28];				  	
+		$data = $tableau[29];
+		$return_context = $tableau[30];
+		$customer_ip_address = $tableau[31];
+		$order_id = $tableau[32];
+		$sub_operation_code = $tableau[33];
+		$sub_subscriber_id = $tableau[34];
+		$sub_civil_status = $tableau[35];
+		$sub_lastname = $tableau[36];
+		$sub_firstname = $tableau[37];
+		$sub_address1 = $tableau[38];
+		$sub_address2 = $tableau[39];
+		$sub_zipcode = $tableau[40];
+		$sub_city = $tableau[41];
+		$sub_country = $tableau[42];
+		$sub_telephone = $tableau[43];
+		$sub_email = $tableau[44];
+		$sub_description = $tableau[45];
+
+		$log_name = date('Y-m-d_H-i-s');
+		
+		if ($response_code == '00') {
+			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_modification_success.txt";
+		}
+		else {
+			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_modification_fail.txt";
+		}
+
+		// Ouverture du fichier de log en append
+
+		$fp=fopen($logfile, "a");
+
+		//  analyse du code retour
+
+	    if (( $code == "" ) && ( $error == "" ) )
+		{
+			fwrite( $fp, "erreur appel response\n");
+			fwrite( $fp, "executable response non trouve $path_bin\n");
+		}
+
+		//	Erreur, sauvegarde le message d'erreur
+
+		else if ( $code != 0 ){
+			fwrite( $fp, " API call error.\n");
+			fwrite( $fp, "Error message :  $error\n");
+		}
+		else {
+			fwrite( $fp, "----------------TRANSACTION----------------\n");
+			fwrite( $fp, "merchant_id : $merchant_id\n");
+			fwrite( $fp, "transaction_id : $transaction_id\n");		
+			fwrite( $fp, "transmission_date : $transmission_date\n");		
+			fwrite( $fp, "sub_time : $sub_time\n");			
+			fwrite( $fp, "sub_date : $sub_date\n");				
+			fwrite( $fp, "response_code : $response_code\n");
+			fwrite( $fp, "bank_response_code : $bank_response_code\n");				
+			fwrite( $fp, "cvv_response_code : $cvv_response_code\n");
+			fwrite( $fp, "cvv_flag : $cvv_flag\n");
+			fwrite( $fp, "complementary_code : $complementary_code\n");				
+			fwrite( $fp, "complementary_info : $complementary_info\n");			
+			fwrite( $fp, "sub_payment_mean : $sub_payment_mean\n");			
+			fwrite( $fp, "card_number : $card_number\n");
+			fwrite( $fp, "card_validity : $card_validity\n");	
+			fwrite( $fp, "payment_certificate : $payment_certificate\n");			
+			fwrite( $fp, "authorisation_id : $authorisation_id\n");
+			fwrite( $fp, "currency_code : $currency_code\n");
+			fwrite( $fp, "sub_type : $sub_type\n");
+			fwrite( $fp, "sub_amount : $sub_amount\n");
+			fwrite( $fp, "capture_day : $capture_day\n");
+			fwrite( $fp, "capture_mode : $capture_mode\n");
+			fwrite( $fp, "merchant_language : $merchant_language\n");
+			fwrite( $fp, "merchant_country : $merchant_country\n");
+			fwrite( $fp, "language : $language\n");					
+			fwrite( $fp, "receipt_complement : $receipt_complement\n");				
+			fwrite( $fp, "caddie : $caddie\n");				  	
+			fwrite( $fp, "data : $data\n");
+			fwrite( $fp, "return_context : $return_context\n");
+			fwrite( $fp, "customer_ip_address : $customer_ip_address\n");
+			fwrite( $fp, "order_id : $order_id\n");
+			fwrite( $fp, "sub_operation_code : $sub_operation_code\n");
+			fwrite( $fp, "sub_subscriber_id : $sub_subscriber_id\n");
+			fwrite( $fp, "sub_civil_status : $sub_civil_status\n");
+			fwrite( $fp, "sub_lastname : $sub_lastname\n");
+			fwrite( $fp, "sub_firstname : $sub_firstname\n");
+			fwrite( $fp, "sub_address1 : $sub_address1\n");
+			fwrite( $fp, "sub_address2 : $sub_address2\n");
+			fwrite( $fp, "sub_zipcode : $sub_zipcode\n");
+			fwrite( $fp, "sub_city : $sub_city\n");
+			fwrite( $fp, "sub_country : $sub_country\n");
+			fwrite( $fp, "sub_telephone : $sub_telephone\n");
+			fwrite( $fp, "sub_email : $sub_email\n");
+			fwrite( $fp, "sub_description : $sub_description\n\n");
+
+			// fwrite( $fp, "----------------INSCRIPTION----------------\n");
+			// $infos = unserialize(base64_decode($caddie));
+			// fwrite( $fp, "id_famille: ".$infos[0]."\n");
+			
+			if ($response_code == '00') {			
+				if ( $sub_operation_code == 4 ) { // Annulation Carte
+			
+					fwrite( $fp, "Récupération famille via Id...\n");
+					$famille = $this->getDoctrine()
+									->getManager()
+									->getRepository('MajordeskAppBundle:Famille')
+									// ->find($infos[0]);
+									->find($caddie);  // caddie vaut id_famille
+					fwrite( $fp, "Récupération famille via Id...\n");
+					$famille->setAbonnement('');				
+					$em = $this->getDoctrine()->getManager();
+					$em->persist($famille);
+					fwrite( $fp, "Preparing to flush...\n");
+					$em->flush();
+					fwrite( $fp, "Flush : OK\n");
+					
+					// Notif Admin
+					$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+					$notification = "La famille ".$famille->getNom()." a annulé un moyen de paiement.";
+					$message = \Swift_Message::newInstance()
+							->setSubject('Notification Plateforme')
+							->setFrom('ne-pas-repondre@majorclass.fr')
+							->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+							->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+						;
+						$this->get('mailer')->send($message);
+						$transport = $this->get('swiftmailer.transport.real');						
+						$this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+					fwrite( $fp, "Notif Admin : OK\n\n");
+				} else { // $sub_operation_code == 6 --> Modification Carte
+					// Notif Admin
+					$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+					$notification = "La famille ".$famille->getNom()." a mis à jour son moyen de paiement.";
+					$message = \Swift_Message::newInstance()
+							->setSubject('Notification Plateforme')
+							->setFrom('ne-pas-repondre@majorclass.fr')
+							->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+							->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+						;
+						$this->get('mailer')->send($message);
+						$transport = $this->get('swiftmailer.transport.real');						
+						$this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+				}
+			}
+		}
+
+		fclose ($fp);
+		
+		return new Response();
+	}
+	
+	public function modificationCarteReponseAction()
+    {
+		$request = $this->getRequest();
+		$session = $request->getSession();
+		
+		$DATA = $request->request->get('DATA');
+		if (!empty($DATA)) {
+			// Récupération de la variable cryptée DATA
+			$message="message=".$DATA;
+		   
+		    $pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+
+			$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+
+			// Appel du binaire response
+			$message = escapeshellcmd($message);
+			$result=exec("$path_bin $pathfile $message");
+
+			$tableau = explode ("!", $result);
+
+			//	Récupération des données de la réponse
+
+			$code = $tableau[1];
+			$error = $tableau[2];
+			$merchant_id = $tableau[3];
+			$transaction_id = $tableau[4];		
+			$transmission_date = $tableau[5];		
+			$sub_time = $tableau[6];			
+			$sub_date = $tableau[7];				
+			$response_code = $tableau[8];
+			$bank_response_code = $tableau[9];				
+			$cvv_response_code = $tableau[10];
+			$cvv_flag = $tableau[11];
+			$complementary_code = $tableau[12];				
+			$complementary_info = $tableau[13];			
+			$sub_payment_mean = $tableau[14];			
+			$card_number = $tableau[15];
+			$card_validity = $tableau[16];	
+			$payment_certificate = $tableau[17];			
+			$authorisation_id = $tableau[18];
+			$currency_code = $tableau[19];
+			$sub_type = $tableau[20];
+			$sub_amount = $tableau[21];
+			$capture_day = $tableau[22];
+			$capture_mode = $tableau[23];
+			$merchant_language = $tableau[24];
+			$merchant_country = $tableau[25];
+			$language = $tableau[26];					
+			$receipt_complement = $tableau[27];				
+			$caddie = $tableau[28];				  	
+			$data = $tableau[29];
+			$return_context = $tableau[30];
+			$customer_ip_address = $tableau[31];
+			$order_id = $tableau[32];
+			$sub_operation_code = $tableau[33];
+			$sub_subscriber_id = $tableau[34];
+			$sub_civil_status = $tableau[35];
+			$sub_lastname = $tableau[36];
+			$sub_firstname = $tableau[37];
+			$sub_address1 = $tableau[38];
+			$sub_address2 = $tableau[39];
+			$sub_zipcode = $tableau[40];
+			$sub_city = $tableau[41];
+			$sub_country = $tableau[42];
+			$sub_telephone = $tableau[43];
+			$sub_email = $tableau[44];
+			$sub_description = $tableau[45];
+		
+			$log_name = date('Y-m-d_H-i-s');
+			
+			if ($response_code == '00') {
+				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_modification_success.txt";
+			}
+			else {
+				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_modification_fail.txt";
+			}
+
+			// Ouverture du fichier de log en append
+
+			$fp=fopen($logfile, "a");		
+
+			//  analyse du code retour
+
+			if (( $code == "" ) && ( $error == "" ) )
+			{
+				fwrite( $fp, "erreur appel response\n");
+				fwrite( $fp, "executable response non trouve $path_bin\n");
+			}
+
+			//	Erreur, affiche le message d'erreur
+
+			else if ( $code != 0 ){
+				fwrite( $fp, "Erreur appel API de paiement.\n\n");
+				fwrite( $fp, "message erreur : $error\n\n");
+			}
+
+			// OK, affichage des champs de la réponse
+			else {		
+				fwrite( $fp, "----------------TRANSACTION----------------\n");
+				fwrite( $fp, "merchant_id : $merchant_id\n");
+				fwrite( $fp, "transaction_id : $transaction_id\n");		
+				fwrite( $fp, "transmission_date : $transmission_date\n");		
+				fwrite( $fp, "sub_time : $sub_time\n");			
+				fwrite( $fp, "sub_date : $sub_date\n");				
+				fwrite( $fp, "response_code : $response_code\n");
+				fwrite( $fp, "bank_response_code : $bank_response_code\n");				
+				fwrite( $fp, "cvv_response_code : $cvv_response_code\n");
+				fwrite( $fp, "cvv_flag : $cvv_flag\n");
+				fwrite( $fp, "complementary_code : $complementary_code\n");				
+				fwrite( $fp, "complementary_info : $complementary_info\n");			
+				fwrite( $fp, "sub_payment_mean : $sub_payment_mean\n");			
+				fwrite( $fp, "card_number : $card_number\n");
+				fwrite( $fp, "card_validity : $card_validity\n");	
+				fwrite( $fp, "payment_certificate : $payment_certificate\n");			
+				fwrite( $fp, "authorisation_id : $authorisation_id\n");
+				fwrite( $fp, "currency_code : $currency_code\n");
+				fwrite( $fp, "sub_type : $sub_type\n");
+				fwrite( $fp, "sub_amount : $sub_amount\n");
+				fwrite( $fp, "capture_day : $capture_day\n");
+				fwrite( $fp, "capture_mode : $capture_mode\n");
+				fwrite( $fp, "merchant_language : $merchant_language\n");
+				fwrite( $fp, "merchant_country : $merchant_country\n");
+				fwrite( $fp, "language : $language\n");					
+				fwrite( $fp, "receipt_complement : $receipt_complement\n");				
+				fwrite( $fp, "caddie : $caddie\n");				  	
+				fwrite( $fp, "data : $data\n");
+				fwrite( $fp, "return_context : $return_context\n");
+				fwrite( $fp, "customer_ip_address : $customer_ip_address\n");
+				fwrite( $fp, "order_id : $order_id\n");
+				fwrite( $fp, "sub_operation_code : $sub_operation_code\n");
+				fwrite( $fp, "sub_subscriber_id : $sub_subscriber_id\n");
+				fwrite( $fp, "sub_civil_status : $sub_civil_status\n");
+				fwrite( $fp, "sub_lastname : $sub_lastname\n");
+				fwrite( $fp, "sub_firstname : $sub_firstname\n");
+				fwrite( $fp, "sub_address1 : $sub_address1\n");
+				fwrite( $fp, "sub_address2 : $sub_address2\n");
+				fwrite( $fp, "sub_zipcode : $sub_zipcode\n");
+				fwrite( $fp, "sub_city : $sub_city\n");
+				fwrite( $fp, "sub_country : $sub_country\n");
+				fwrite( $fp, "sub_telephone : $sub_telephone\n");
+				fwrite( $fp, "sub_email : $sub_email\n");
+				fwrite( $fp, "sub_description : $sub_description\n\n");
+				
+				if ($response_code == '00') {
+					if ( $sub_operation_code == 4 ) { // Annulation Carte
+						$session->getFlashBag()->add('annulation_carte_success', ' Succès de l\'annulation');
+					} else if ( $sub_operation_code == 6 ) { //  --> Modification Carte
+						$session->getFlashBag()->add('modification_carte_success', ' Succès de la modification');
+					} else {
+						// Do nothing
+					}
+				} else {
+					if ( $sub_operation_code == 4 ) { // Annulation Carte
+						$session->getFlashBag()->add('annulation_carte_fail', ' Echec de l\'enregistrement');
+					} else if ( $sub_operation_code == 6 ) { //  --> Modification Carte
+						$session->getFlashBag()->add('modification_carte_fail', ' Echec de l\'enregistrement');
+					} else {
+						// Do nothing
+					}
+				}
+			}
+			fclose ($fp);
+		}
+		return $this->redirect($this->generateUrl('majordesk_app_index_parents'));
     }
 }

@@ -1,0 +1,301 @@
+{% extends "::layout-main.html.twig" %}
+				
+				{% block title %}
+					Inscription Professeur
+				{% endblock %}
+
+{% block body %}
+	<br><br>
+	
+	<div class="container home-container">
+
+			<form method="post" action="{{ path('majordesk_app_inscription_professeur') }}">
+			
+				<div class="row">
+					<div class="col-md-offset-3 col-lg-6">
+					
+						<h3><i class="icon-user icon-large text-yellow pull-left"></i> <p class="pull-left">Inscription Professeur</p></h3>
+						
+						<br><br><br>
+							{% if app.session.flashbag.get('info') %}
+							<div class="alert alert-warning">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<strong>Champs incorrects :</strong><br><br>
+								<ul><li>Programme : vous devez renseigné le niveau scolaire (Programme)</li></ul>
+							</div>
+							{% elseif app.session.flashbag.get('warning') %}
+							<div class="alert alert-danger">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<strong>Champs incorrects :</strong><br><br>
+								{% for field in form %}
+									{{ form_errors(field) }}
+								{% endfor %}
+								{{ form_errors(form.password.pass) }} 
+								{{ form_errors(form.password.confirm) }}
+							</div>
+							{% elseif app.session.flashbag.get('warning-matiere') %}
+							<div class="alert alert-danger">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<strong>Champs incorrects :</strong><br><br>
+								Veuillez sélectionner au moins une matière.
+							</div>
+							{% endif %}
+						
+						<table class="table table-borderless table-hover">
+						  <tbody>
+							
+							<tr>
+							  <td>Prénom</td>
+							  <td>{{ form_widget(form.username ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Nom</td>
+							  <td>{{ form_widget(form.nom ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Téléphone</td>
+							  <td>{{ form_widget(form.telephone ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Mail</td>
+							  <td>{{ form_widget(form.mail ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Mot de passe</td>
+							  <td>{{ form_widget(form.password ) }}</td>
+							</tr>
+							
+						   </tbody>
+						</table>
+						
+						<br>
+						<h5><strong>Lieu de résidence en semaine</strong></h5>
+						<br>	
+						
+						<table class="table table-borderless table-hover">
+						  <tbody>
+							<tr>
+							  <td>Adresse</td>
+							  <td>{{ form_widget(form.adresse ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Code postal</td>
+							  <td>{{ form_widget(form.code_postal ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Ville</td>
+							  <td>{{ form_widget(form.ville ) }}</td>
+							</tr>
+							</tbody>
+						</table>
+						
+						<br>
+						<h5><strong>Lieu de résidence le week-end (si différent)</strong></h5>
+						<br>	
+						
+						<table class="table table-borderless table-hover">
+						  <tbody>
+							<tr>
+							  <td>Adresse</td>
+							  <td>{{ form_widget(form.adresse_we ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Code postal</td>
+							  <td>{{ form_widget(form.code_postal_we ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Ville</td>
+							  <td>{{ form_widget(form.ville_we ) }}</td>
+							</tr>
+							</tbody>
+						</table>
+							
+						<br>
+						<h5><strong>Parcours</strong></h5>
+						<br>	
+						
+						<table class="table table-borderless table-hover">
+						  <tbody>
+							<tr>
+							  <td>Prépa</td>
+							  <td>{{ form_widget(form.prepa ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Lycée (Prépa)</td>
+							  <td>{{ form_widget(form.lycee ) }}</td>
+							</tr>
+						
+							</tbody>
+						</table>
+							
+						<br>
+						<h5><strong>Préférences</strong></h5>
+						<br>	
+						
+						<table class="table table-borderless table-hover">
+						  <tbody>
+							
+							<tr>
+							  <td>Moyen de transport</td>
+							  <td>{{ form_widget(form.transport ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Nombre maximum d'heures par semaine</td>
+							  <td>{{ form_widget(form.nb_heures_max ) }}</td>
+							</tr>
+							
+							<tr>
+							  <td>Matière(s) enseignée(s)</td>
+							  <td></td>
+							</tr>						
+						  </tbody>
+						</table>
+						
+						
+						{% for matiere in form.matieres %}
+							<div class="row">
+								<div class="col-lg-10">
+									{{ form_widget(matiere) }}
+								</div>
+								<div class="col-lg-2">
+									<button type="button" class="btn btn-danger remove-abonnement-btn position-relative-down-1"><i class="icon-remove"></i></button>
+								</div>
+								<br><br>
+							</div>
+						{% endfor %}
+						   <span class="abonnements" data-prototype='
+							<div class="row">
+								<div class="col-lg-10">
+									{{ form_widget(form.matieres.vars.prototype)|e }}
+								</div>
+								<div class="col-lg-2">
+									<button type="button" class="btn btn-danger remove-abonnement-btn position-relative-down-1"><i class="icon-remove"></i></button>
+								</div>
+								<br><br>
+							</div>
+						  '></span>
+							  
+						<div class="clearfix"></div><br><br>
+						
+						<br>
+						<h5><strong>Disponibilités</strong></h5>
+						<br>
+						{% for disponibilite in form.disponibilites %}
+							<div class="row">
+								<div class="col-sm-4 col-md-4 col-lg-4">
+									<div class="input-group">
+										{{ form_widget(disponibilite.jour ) }}
+										<span class="input-group-addon"><i class="icon-calendar"></i></span>
+									</div>
+								</div>
+								<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+									<p class="text-center">de</p>
+								</div>
+								<div class="col-sm-2 col-md-2 col-lg-2">
+									<span class="bootstrap-timepicker ">
+										{{ form_widget(disponibilite.heureDebut ) }}
+									</span>
+								</div>
+								<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+									<p class="text-center">à</p>
+								</div>
+								<div class="col-sm-2 col-md-2 col-lg-2">
+									<span class="bootstrap-timepicker ">
+										{{ form_widget(disponibilite.heureFin ) }}
+									</span>
+								</div>
+								<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+									<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+								</div>
+							</div><br>
+						{% endfor %}
+					  
+						  <span class="disponibilites" data-prototype='
+							<span>
+								<div class="row">
+									<div class="col-sm-4 col-md-4 col-lg-4">
+										<div class="input-group">
+											{{ form_widget(form.disponibilites.vars.prototype.jour ) }}
+											<span class="input-group-addon"><i class="icon-calendar"></i></span>
+										</div>
+									</div>
+									<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+										<p class="text-center"> de</p>
+									</div>
+									<div class="col-sm-2 col-md-2 col-lg-2">
+										<span class="bootstrap-timepicker ">
+											{{ form_widget(form.disponibilites.vars.prototype.heureDebut ) }}
+										</span>
+									</div>
+									<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-8">
+										<p class="text-center"> à</p>
+									</div>
+									<div class="col-sm-2 col-md-2 col-lg-2">
+										<span class="bootstrap-timepicker ">
+											{{ form_widget(form.disponibilites.vars.prototype.heureFin ) }}
+										</span>
+									</div>
+									<div class="col-sm-1 col-md-1 col-lg-1 position-relative-down-5">
+										<button type="button" class="btn btn-danger remove-disponibilite-btn"><i class="icon-remove"></i></button>
+									</div>
+								</div>
+								<br>
+							</span>
+						  '></span>
+						
+						<br><br>
+						<table class="table table-borderless table-hover">
+						  <tbody>
+							
+							<tr>
+							  <td>Date de fin de disponibilité</td>
+							  <td class="col-lg-6">
+								<div class="input-group">
+									{{ form_widget(form.fin_dispo ) }}
+									<span class="input-group-addon" style="position:relative;top:1px;"><i class="icon-calendar"></i></span>
+								</div>
+							  </td>
+							</tr>
+							</tbody>
+						</table>
+						
+						
+						<div class="clearfix"></div><br>
+
+						<div class="row">
+							<div class="col-lg-12">
+								<button type="submit" class="btn btn-success pull-right">Valider <i class="icon-ok"></i></button>
+							</div>
+						</div>
+					</div>
+					
+			{{ form_widget(form._token) }}
+			</form>
+			
+			<div class="clearfix"></div>
+			<br><br><br>
+		
+	</div>
+{% endblock %}	
+
+{% block javascripts %}
+	{{ parent() }}
+	{% javascripts filter='yui_js' output='js/*' 
+		'../app/Resources/js/common/bootstrap-datepicker.min.js' 
+		'../app/Resources/js/common/bootstrap-timepicker.min.js' 
+		'../app/Resources/js/common/typeahead.min.js'
+		'../app/Resources/js/home/inscription-professeur.js'
+	%}
+		<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}

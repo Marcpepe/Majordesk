@@ -99,7 +99,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 													->setSubject('Traitement Cron OK')
 													->setFrom('cron@majorclass.fr')
 													->setTo('marc@majorclass.fr')
-													->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+													->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 												;
 												$container->get('mailer')->send($message);
 												$transport = $container->get('swiftmailer.transport.real');						
@@ -111,7 +111,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 													->setSubject('Urgent : Erreur Cron')
 													->setFrom('cron@majorclass.fr')
 													->setTo('marc@majorclass.fr')
-													->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+													->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 												;
 												$container->get('mailer')->send($message);
 												$transport = $container->get('swiftmailer.transport.real');						
@@ -125,7 +125,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 												->setSubject('Urgent : Erreur Cron')
 												->setFrom('cron@majorclass.fr')
 												->setTo('marc@majorclass.fr')
-												->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+												->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 											;
 											$container->get('mailer')->send($message);
 											$transport = $container->get('swiftmailer.transport.real');						
@@ -147,7 +147,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 												->setSubject('Traitement Cron OK')
 												->setFrom('cron@majorclass.fr')
 												->setTo('marc@majorclass.fr')
-												->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+												->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 											;
 											$container->get('mailer')->send($message);
 											$transport = $container->get('swiftmailer.transport.real');						
@@ -159,7 +159,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 												->setSubject('Urgent : Erreur Cron')
 												->setFrom('cron@majorclass.fr')
 												->setTo('marc@majorclass.fr')
-												->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+												->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 											;
 											$container->get('mailer')->send($message);
 											$transport = $container->get('swiftmailer.transport.real');						
@@ -182,7 +182,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 											->setSubject('Urgent : Erreur Cron')
 											->setFrom('cron@majorclass.fr')
 											->setTo('marc@majorclass.fr')
-											->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+											->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 										;
 										$container->get('mailer')->send($message);
 										$transport = $container->get('swiftmailer.transport.real');						
@@ -193,7 +193,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 										->setSubject('Urgent : Erreur Cron')
 										->setFrom('cron@majorclass.fr')
 										->setTo('marc@majorclass.fr')
-										->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+										->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 									;
 									$container->get('mailer')->send($message);
 									$transport = $container->get('swiftmailer.transport.real');						
@@ -213,7 +213,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 								->setTo('marc@majorclass.fr')
 								// ->setCharset('UTF-8')
 								// ->setContentType('text/html') 
-								->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+								->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 							;
 							$container->get('mailer')->send($message);
 							$transport = $container->get('swiftmailer.transport.real');						
@@ -226,7 +226,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 							->setSubject('Urgent : Erreur Cron')
 							->setFrom('cron@majorclass.fr')
 							->setTo('marc@majorclass.fr')
-							->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+							->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 						;
 						$container->get('mailer')->send($message);
 						$transport = $container->get('swiftmailer.transport.real');						
@@ -242,7 +242,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 						->setSubject('Urgent : Erreur Cron')
 						->setFrom('cron@majorclass.fr')
 						->setTo('marc@majorclass.fr')
-						->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+						->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 					;
 					$container->get('mailer')->send($message);				
 					$transport = $container->get('swiftmailer.transport.real');						
@@ -259,7 +259,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 					->setSubject('Urgent : Erreur Cron')
 					->setFrom('cron@majorclass.fr')
 					->setTo('marc@majorclass.fr')
-					->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+					->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 				;
 				$container->get('mailer')->send($message);				
 				$transport = $container->get('swiftmailer.transport.real');						
@@ -275,7 +275,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 				->setSubject('Urgent : Erreur Cron')
 				->setFrom('cron@majorclass.fr')
 				->setTo('marc@majorclass.fr')
-				->setBody($container->get('templating')->render('MajordeskAppBundle:Admin:erreur-cron.txt.twig', array('erreur' => $erreur)))
+				->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.txt.twig', array('erreur' => $erreur)))
 			;
 			$container->get('mailer')->send($message);				
 			$transport = $container->get('swiftmailer.transport.real');						

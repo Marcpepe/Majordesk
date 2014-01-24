@@ -54,14 +54,14 @@
 		<h3>Heures de cours</h3><br>
 	</div>
 	<div class="col-lg-4">
-		Nombre d'heures de cours restantes : <strong> {{ famille.heuresRestantes / 10 }}h</strong><br><br>
+		Nombre d'heures de cours restantes : <strong>{% if famille.abonnement is empty or famille.heuresRestantes > 0 %}{{ famille.heuresRestantes / 10 }}h{% else %}<span style="font-size:25px;position:relative;top:5px;">&infin;</span>{% endif %}</strong><br><br>
 		Nombre total d'heures de cours prises : <strong> {{ famille.heuresPrises / 10 }}h</strong><br><br>
 	</div>
 	<div class="col-lg-4">
 		<a href="{{ path('majordesk_app_details_heures') }}" class="btn btn-success-inverted btn-block" ><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Voir l'historique des heures prises</span></a>
 	</div>
 	<div class="col-lg-4">
-		<a class="btn btn-info-inverted btn-block" href="#"><i class="icon-credit-card icon-4x"></i> <span class="position-relative-up-12">Modifier vos informations bancaires</span></a>
+		<a class="btn btn-info-inverted btn-block" href="{{ path('majordesk_app_parametres_compte') }}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Paramètres du compte</span></a>
 	</div>
 	<div class="clearfix"></div><br>
 	<div class="col-lg-12">
@@ -134,12 +134,23 @@
 	<div class="clearfix"></div><br>
 	<div class="col-lg-12">
 		<h3>Factures</h3><br>
-		Vos factures seront bientôt en ligne.
+		
+		{% if factures is not empty %}
+			<ul>
+			{% for facture in factures %}
+				<li>
+					<a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}">Facture</a> du {{ facture.dateEmission|date('d/m/Y') }}
+				</li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			Aucune facture disponible pour l'instant. Leur émission est mensuelle.
+		{% endif %}
 	</div>
 	<div class="clearfix"></div><br>
 		
 	<div class="col-lg-12">
-		<h3>Abonnements <i class="icon-question-sign cursor" rel="tooltip" data-placement="right" data-title="Notre Plateforme d'entraînement reviendra pour la rentrée 2014 plus complète que jamais !"></i></h3><br>
+		<h3>Abonnements <i class="icon-question-sign cursor" rel="tooltip" data-placement="right" data-title="Notre Plateforme d'entraînement sera lancée pour la rentrée 2014"></i></h3><br>
 	</div>
 	<div class="clearfix"></div>
 	<div class="col-lg-8">

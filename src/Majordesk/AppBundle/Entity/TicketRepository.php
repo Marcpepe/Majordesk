@@ -37,6 +37,28 @@ class TicketRepository extends EntityRepository
 	/**
 	 * @return la liste des cours aujourd'hui entre heureFin et heureDebut
 	 */
+	public function getTicketsThisWeek($id_famille)
+	{
+		$today = new \Datetime("monday last week", new \DateTimeZone('Europe/Paris'));
+		// $today->sub(new \DateInterval('PT3H')); // cron à 21h il faut donc remonter au dimanche précédent, soit lundi -3h
+		$date = $today->format('Y-m-d');
+	
+		$qb = $this->createQueryBuilder('t')
+				   ->join('t.eleve', 'e')
+				   ->join('e.famille', 'f')
+				   ->where('f.id = :id_famille')
+				   ->andWhere('t.date_cours > :date')
+				   ->setParameter('id_famille', $id_famille)
+				   ->setParameter('date', $date)
+				   ->orderBy('t.date_cours', 'ASC');
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
+	
+	/**
+	 * @return la liste des cours aujourd'hui entre heureFin et heureDebut
+	 */
 	public function getTicketsByProfesseur($id_professeur, $date_debut, $date_fin)
 	{
 		$qb = $this->createQueryBuilder('t')

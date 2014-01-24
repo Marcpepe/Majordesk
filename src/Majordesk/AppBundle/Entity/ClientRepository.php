@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClientRepository extends EntityRepository
 {
+	/**
+	 * @return 
+	 */
+	public function getDestinatairesRecap()
+	{
+		$qb = $this->createQueryBuilder('c')
+				   ->where('c.alertes = :value')
+				   ->setParameter('value', 1);
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
 }

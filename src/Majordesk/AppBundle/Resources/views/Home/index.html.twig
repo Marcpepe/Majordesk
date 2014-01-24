@@ -53,8 +53,16 @@
 	<div class="clearfix"></div>
 	<br>
 	<div class="container">
-		<h3><i class="icon-laptop"></i> Inscription</h3>
-		Lorsque vous vous inscrivez, nous sommes immédiatement avertis et nous vous contactons dans les plus brefs délais. <br><br><div class="text-center"><a href="{{ path('majordesk_app_inscription') }}" class="btn btn-warning btn-lg">S'inscrire <i class="icon-unlock-alt"></i></a></div>
+		<div class="col-lg-9">
+			<h3><i class="icon-laptop"></i> Inscription</h3>
+			Lorsque vous vous inscrivez, nous sommes immédiatement avertis et nous vous contactons dans les plus brefs délais. 
+			<br><br>
+			<div class="text-center"><a href="{{ path('majordesk_app_inscription') }}" class="btn btn-warning btn-lg">S'inscrire <i class="icon-unlock-alt"></i></a></div>
+		</div>
+		<div class="col-lg-3 text-center">
+			<br><br>
+			<a href="http://www.servicesalapersonne.gouv.fr"><img src="{{ asset('img/home/traceur.png') }}" style="width:80px;" /></a>
+		</div>
 	</div>
 	<br><br><br>
 {% endblock %}	

@@ -145,6 +145,7 @@ class EleveController extends Controller
 								$paiement->setTransaction(1);
 								$paiement->setTicket($ticket);
 								
+								$famille->setHeuresAchetees($famille->getHeuresAchetees() + $quantiteRestanteADebiter);
 								$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 								$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
 								$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
@@ -164,6 +165,7 @@ class EleveController extends Controller
 								$paiement->setTransaction(1);
 								$paiement->setTicket($ticket);
 								
+								$famille->setHeuresAchetees($famille->getHeuresAchetees() + $quantite);
 								$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 								$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
 								$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
@@ -199,24 +201,11 @@ class EleveController extends Controller
 						
 						$em->flush();
 						$this->get('session')->getFlashBag()->add('info', ' Le cours a bien été déclaré.');
-					
-						// $session->getFlashBag()->add('info', ' Le cours s\'est terminé avec succès !');
-
-						// $session->remove('matiere_cours');
-						// $session->remove('type_cours');
-						// $session->remove('etape_cours');
-						// $session->remove('debut_cours');
-						// $session->remove('professeur_cours');
-						// return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
+						return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
 					}
 					else {
 						$session->getFlashBag()->add('warning', ' Mot de passe du parent incorrect.');
 					}
-				
-					// $em = $this->getDoctrine()->getManager();
-					// $em->persist($ticket);
-					// $em->flush();
-					// $this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
 				}
 				else {
 					// $errors = $form->getErrorsAsString();
@@ -228,82 +217,66 @@ class EleveController extends Controller
 			return $this->render('MajordeskAppBundle:Eleve:index-eleve.html.twig', array(
 				'form' => $form->createView(),
 				'professeurs' => $professeurs,
+				'famille' => $famille,
 			));
-			
-			// $session = $this->get('session');
-			// $etape_cours = $session->get('etape_cours');
-			// $matiere_cours = $session->get('matiere_cours');
-			// if ($etape_cours == 1) {
-				// return $this->redirect($this->generateUrl('majordesk_app_verification_devoirs'));
-			// }
-			// else if ($etape_cours == 3) {
-				// return $this->redirect($this->generateUrl('majordesk_app_calendrier_des_cours', array('etape'=>3)));
-			// }
-			// else if ($etape_cours == 4) {
-				// return $this->redirect($this->generateUrl('majordesk_app_donner_devoirs'));
-			// }
-			// else if ($etape_cours == 5) {
-				// return $this->redirect($this->generateUrl('majordesk_app_declarer_cours'));
-			// }
-			// else {
-				// $statut_resolu = $this->container->getParameter('statut_resolu');
-				// $user = $this->getUser();
-				// $matieres_avec_plateforme = $user->getMatieresActives();
-				// $matieres = $user->getMatieres();
-				// $professeurs = $user->getProfesseurs();
-				
-				// $heure_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				// $heure_from->sub(new \DateInterval('PT5H'));
-				// $heure_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				// $heure_to->add(new \DateInterval('PT1H'));
-				
-				// $cal_events_now = $this->getDoctrine()
-									   // ->getManager()
-									   // ->getRepository('MajordeskAppBundle:CalEvent')
-									   // ->getEleveCalEvents($user->getId(), $heure_from, $heure_to);
-				
-				// $date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				// $date_from->sub(new \DateInterval('PT1H'));
-				// $date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-				// $date_to->add(new \DateInterval('P7D'));
-				
-				// $cal_events_proches = $this->getDoctrine()
-										   // ->getManager()
-									       // ->getRepository('MajordeskAppBundle:CalEvent')
-									       // ->getEleveCalEventsProches($user->getId(), $date_from, $date_to);
-										   
-				// $devoirs = $this->getDoctrine()
-							    // ->getManager()
-							    // ->getRepository('MajordeskAppBundle:Exercice')
-							    // ->getDevoirs($user->getId(), $statut_resolu);
-				
-				// $favoris = $this->getDoctrine()
-							    // ->getManager()
-							    // ->getRepository('MajordeskAppBundle:Exercice')
-							    // ->getFavorisByEleve($user->getId(), $statut_resolu);
-								
-				// $nb_devoirs = 0;
-				// foreach($devoirs as $devoir) {
-					// $nb_devoirs += abs($devoir->getSelection());
-				// }
-				
-				// $hasPlateforme = $user->hasPlateforme();
-				// $hasCours = $user->hasCours();
-				
-				// return $this->render('MajordeskAppBundle:Eleve:index-eleve.html.twig', array(
-					// 'matieres_avec_plateforme' => $matieres_avec_plateforme,
-					// 'matieres' => $matieres,
-					// 'professeurs' => $professeurs,
-					// 'cal_events_now' => $cal_events_now,
-					// 'cal_events_proches' => $cal_events_proches,
-					// 'nb_devoirs' => $nb_devoirs,
-					// 'devoirs' => $devoirs,
-					// 'favoris' => $favoris,
-					// 'hasPlateforme' => $hasPlateforme,
-					// 'hasCours' => $hasCours,
-				// ));
-			// }
 	}
+	
+	/**
+	 * @Secure(roles="ROLE_ELEVE")
+	 */
+    public function recommandezNousAction()
+    {
+		$user = $this->getUser();	
+		if ($this->get('security.context')->isGranted('ROLE_ELEVE') && !$this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$defaultData = array('destinataire'=>'', 'corps' => "Salut,\n\nSi tu cherches un bon prof particulier, je te recommande Majorclass !\n\nPersonnellement il m'ont vraiment aidé. Leur site est : www.majorclass.fr\n\nA plus!");
+		} else {
+			$defaultData = array('destinataire'=>'', 'corps' => "Bonjour,\n\nSi vous cherchez un professeur particulier de qualité pour votre enfant, en Mathématiques ou Physique/Chimie, Majorclass est ce qu'il vous faut !\n\nLeurs professeurs sont sélectionnés parmi des étudiants de Grandes Ecoles expérimentés et je suis pour ma part très satisfait(e) de la qualité de leurs services.\n\nJe vous les recommande vivement. Leur site est www.majorclass.fr.\n\nA bientôt!");
+		}
+		
+		$form = $this->createFormBuilder($defaultData)
+							->add('destinataire', 'email', array(
+								'attr' => array('class'=>'form-control', 'placeholder' =>'Email d\'un ami')
+							))
+							->add('corps', 'textarea', array(
+								'attr' => array('class'=>'form-control', 'rows'=>10)
+							))
+							// ->add('send', 'submit')
+							->getForm();
+				
+		
+		$request = $this->getRequest();
+		$form->handleRequest($request);
+		
+		if ($form->isValid()) 
+		{
+			$data = $form->getData();
+			$destinataire = $data['destinataire'];
+			$corps = $data['corps'];	
+			$corps = nl2br($corps);
+			
+			$message = \Swift_Message::newInstance()
+							->setSubject($user->getUsername().' vous recommande Majorclass : les cours particuliers de qualité')
+							->setFrom($user->getMail())
+							->setTo($destinataire)
+							->setBody($this->renderView('MajordeskAppBundle:Template:recommandation.html.twig', array('corps'=>$corps)), 'text/html')
+						;
+						$this->get('mailer')->send($message);
+			
+			$message = \Swift_Message::newInstance()
+							->setSubject('Nouvelle recommandation')
+							->setFrom('recommandation@majorclass.fr')
+							->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+							->setBody($this->renderView('MajordeskAppBundle:Template:recommandation.html.twig', array('corps'=>$corps)), 'text/html')
+						;
+						$this->get('mailer')->send($message);
+			
+			$this->get('session')->getFlashBag()->add('info', ' Mail envoyé');
+		}
+		
+		return $this->render('MajordeskAppBundle:Eleve:recommandez-nous.html.twig', array(
+			'form' => $form->createView()
+		));
+    }
 	
 	/**
 	 * @Secure(roles="ROLE_ELEVE")

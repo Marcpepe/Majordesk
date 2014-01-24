@@ -114,23 +114,22 @@ class ProfesseurType extends AbstractType
 				'attr' => array('class' =>'form-control datepicker'),
 				'invalid_message' => 'La date entrée est incorrecte'
 				))
-			->add('eleves'               , 'collection', array(
-					'type' => 'entity',
-					'options' => array(
-						'class' => 'MajordeskAppBundle:Eleve',
-						'property' => 'nomEntier',
-						// 'group_by' => 'numberOfProfesseursAssigned',
-						'group_by' => 'initiale',
-						'query_builder' => function(EleveRepository $r) {
-								return $r->getElevesByAlphabeticalOrder();
-							},
-						'attr' => array('class'=>'form-control')
-						),
-					'allow_add' => true,
-					'allow_delete' => true,
-					'required' => false,
-					'by_reference' => false
-					))
+			// ->add('eleves'               , 'collection', array(
+					// 'type' => 'entity',
+					// 'options' => array(
+						// 'class' => 'MajordeskAppBundle:Eleve',
+						// 'property' => 'nomEntier',
+						// 'group_by' => 'initiale',
+						// 'query_builder' => function(EleveRepository $r) {
+								// return $r->getElevesByAlphabeticalOrder();
+							// },
+						// 'attr' => array('class'=>'form-control')
+						// ),
+					// 'allow_add' => true,
+					// 'allow_delete' => true,
+					// 'required' => false,
+					// 'by_reference' => false
+					// ))
         ;
     }
 

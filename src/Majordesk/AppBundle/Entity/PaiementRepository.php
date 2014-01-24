@@ -83,9 +83,63 @@ class PaiementRepository extends EntityRepository
 		$date_from->format('Y-m-d');
 	
 		$qb = $this->createQueryBuilder('p')
-				   ->where('p.transaction = 1 OR p.transaction = 3')
+				   ->where('p.transaction = 1')
 				   ->andWhere('p.datePaiement >= :date_from')
 				   ->setParameter('date_from', $date_from)
+				   ;
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
+	
+	/**
+	 * @return query_builder des 
+	 */
+	public function getMonthlyPaiements($id_famille)
+	{
+		$date_from = new \Datetime("first day of last month", new \DateTimeZone('Europe/Paris'));
+		$date_from->format('Y-m-d');
+		
+		$date_to = new \Datetime("last day of last month", new \DateTimeZone('Europe/Paris'));
+		$date_to->format('Y-m-d');
+	
+		$qb = $this->createQueryBuilder('p')
+				   ->join('p.famille', 'f')
+				   ->where('f.id = :id_famille')
+				   ->andWhere('p.montant <> 0')
+				   ->andWhere('p.datePaiement >= :date_from')
+				   ->andWhere('p.datePaiement <= :date_to')
+				   ->andWhere('p.datePaiement <= :date_to')
+				   ->setParameter('id_famille', $id_famille)
+				   ->setParameter('date_from', $date_from)
+				   ->setParameter('date_to', $date_to)
+				   ;
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
+	
+	/**
+	 * @return query_builder des 
+	 */
+	public function getCurrentMonthlyPaiements($id_famille)
+	{
+		$date_from = new \Datetime("first day of this month", new \DateTimeZone('Europe/Paris'));
+		$date_from->format('Y-m-d');
+		
+		$date_to = new \Datetime("last day of this month", new \DateTimeZone('Europe/Paris'));
+		$date_to->format('Y-m-d');
+	
+		$qb = $this->createQueryBuilder('p')
+				   ->join('p.famille', 'f')
+				   ->where('f.id = :id_famille')
+				   ->andWhere('p.montant <> 0')
+				   ->andWhere('p.datePaiement >= :date_from')
+				   ->andWhere('p.datePaiement <= :date_to')
+				   ->andWhere('p.datePaiement <= :date_to')
+				   ->setParameter('id_famille', $id_famille)
+				   ->setParameter('date_from', $date_from)
+				   ->setParameter('date_to', $date_to)
 				   ;
 			
 		return $qb->getQuery()

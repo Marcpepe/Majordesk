@@ -45,7 +45,7 @@ security:
 
         main:
             pattern:        ^/(|connexion|login_check|logout|admin|eleve|professeur|parents)
-            anonymous:      false
+            anonymous:      ~
             provider:       chain_provider
             form_login:
                 login_path: login

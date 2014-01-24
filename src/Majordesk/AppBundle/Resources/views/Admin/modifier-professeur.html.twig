@@ -145,6 +145,10 @@
 						<tr class="info">
 						  <td>Elève(s)</td>
 						  <td>	
+							{% for eleve in professeur.eleves %}
+								{{ eleve.username }} {{ eleve.nom }}<br>
+							{% endfor %}
+							{#
 							{% for eleve in form.eleves %}
 								<span>	
 									<div class="col-lg-5">
@@ -170,6 +174,7 @@
 									<br><br>
 								</span>							
 							  '></span>
+							#}
 						  </td>
 						</tr>
 						

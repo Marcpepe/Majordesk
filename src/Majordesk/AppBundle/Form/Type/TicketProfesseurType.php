@@ -60,7 +60,7 @@ class TicketProfesseurType extends AbstractType
 				'invalid_message' => 'La date entrée est incorrecte'
 			))
 			->add('passparent', 'password', array(
-				'attr' => array('class'=>'form-control', 'placeholder' =>'Mot de passe Parent'),
+				'attr' => array('class'=>'form-control', 'placeholder' =>'Mot de passe Parent ou Enfant'),
 				'mapped' => false
 			))
 			;

@@ -61,6 +61,14 @@ class ProfesseurController extends Controller
 							break;
 						}
 					}
+					if (!$paymentAuthorized) {
+						$encoder = $factory->getEncoder($eleve);			
+						$encoded_pass = $encoder->encodePassword($passparent, $eleve->getSalt());
+
+						if ($encoded_pass == $eleve->getPassword()) {
+							$paymentAuthorized = true;
+						}
+					}
 									
 					$quantite = $ticket->getQuantite();
 					$matiere = $form->get('matiere')->getData();
@@ -137,6 +145,7 @@ class ProfesseurController extends Controller
 								$paiement->setTransaction(1);
 								$paiement->setTicket($ticket);
 								
+								$famille->setHeuresAchetees($famille->getHeuresAchetees() + $quantiteRestanteADebiter);
 								$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 								$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
 								$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
@@ -156,6 +165,7 @@ class ProfesseurController extends Controller
 								$paiement->setTransaction(1);
 								$paiement->setTicket($ticket);
 								
+								$famille->setHeuresAchetees($famille->getHeuresAchetees() + $quantite);
 								$famille->setHeuresPrises($famille->getHeuresPrises() + $quantite);
 								$eleve->setHeuresPrises($eleve->getHeuresPrises() + $quantite);
 								$eleve_matiere->setHeuresPrises($eleve_matiere->getHeuresPrises() + $quantite);
@@ -190,56 +200,24 @@ class ProfesseurController extends Controller
 						$em->persist($professeur);
 						
 						$em->flush();
-						$this->get('session')->getFlashBag()->add('info', ' Le cours a bien été déclaré.');
-					
-						// $session->getFlashBag()->add('info', ' Le cours s\'est terminé avec succès !');
-
-						// $session->remove('matiere_cours');
-						// $session->remove('type_cours');
-						// $session->remove('etape_cours');
-						// $session->remove('debut_cours');
-						// $session->remove('professeur_cours');
-						// return $this->redirect($this->generateUrl('majordesk_app_index_eleve'));
+						$this->get('session')->getFlashBag()->add('info', ' Le cours a bien été déclaré.');					
+						return $this->redirect($this->generateUrl('majordesk_app_index_professeur'));
 					}
 					else {
 						$this->get('session')->getFlashBag()->add('incorrect_pass', ' Mot de passe du parent incorrect.');
 					}
-				
-					// $em = $this->getDoctrine()->getManager();
-					// $em->persist($ticket);
-					// $em->flush();
-					// $this->get('session')->getFlashBag()->add('info', ' Cours programmé. Une demande de confirmation a été envoyée au professeur.');
 				}
 				else {
 					// $errors = $form->getErrorsAsString();
 					$this->get('session')->getFlashBag()->add('warning', ' Un ou plusieurs champs ont été mal remplis.');
 				}
 			}
-			
-			// $date_from = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-			// $date_from->sub(new \DateInterval('PT1H'));
-			// $date_to = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
-			// $date_to->add(new \DateInterval('P14D'));
-			
-			// $cal_events_proches = $this->getDoctrine()
-									   // ->getManager()
-									   // ->getRepository('MajordeskAppBundle:CalEvent')
-									   // ->getProfesseurCalEventsProches($user->getId(), $date_from, $date_to);
-									   
-			// $cal_events_proches_to_confirm = 0;
-			// foreach($cal_events_proches as $cal_event) {
-				// if ($cal_event->getReservation() == 1) {
-					// $cal_events_proches_to_confirm++;
-				// }
-			// }
-			
+
 			return $this->render('MajordeskAppBundle:Professeur:index-professeur.html.twig', array(
 				'tickets' => $tickets,
 				'paiements' => $paiements,
 				'eleves' => $eleves,
 				'form' => $form->createView(),
-				// 'cal_events_proches' => $cal_events_proches,
-				// 'cal_events_proches_to_confirm' => $cal_events_proches_to_confirm
 			));
 		}
     }

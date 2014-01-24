@@ -5,9 +5,16 @@ namespace Majordesk\AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use Majordesk\AppBundle\Entity\EleveRepository;
+use Majordesk\AppBundle\Entity\Eleve;
 use Majordesk\AppBundle\Form\EventListener\ProfesseurSelectionListener;
+use Majordesk\AppBundle\Form\EventListener\UnmappedMatieresSelectionListener;
 use Majordesk\AppBundle\Form\EventListener\MatieresSelectionListener;
+
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 
 class TicketSelectNoFiltreType extends AbstractType
 {
@@ -40,8 +47,8 @@ class TicketSelectNoFiltreType extends AbstractType
 		$professeurSubscriber = new ProfesseurSelectionListener($builder->getFormFactory());
         $builder->addEventSubscriber($professeurSubscriber);
 		
-		$matiereSubscriber = new MatieresSelectionListener($builder->getFormFactory());
-        $builder->addEventSubscriber($matiereSubscriber); // add mapped = false ?
+		$matiereSubscriber = new UnmappedMatieresSelectionListener($builder->getFormFactory());
+        $builder->addEventSubscriber($matiereSubscriber);
 		
         $builder
             ->add('quantite', 'choice', array(

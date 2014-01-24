@@ -642,7 +642,7 @@ class Client implements AdvancedUserInterface, \Serializable
 		$this->actif = true;
 		$this->flag = false;
 		$this->newsletter = '1';
-		$this->alertes = '0';
+		$this->alertes = '1';
 		$this->roles = array("ROLE_PARENTS");
 	}
 }

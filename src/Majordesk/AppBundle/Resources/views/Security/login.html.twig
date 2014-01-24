@@ -35,11 +35,35 @@
 					</div>
 				{% endif %}
 				
+				{% for message in app.session.flashbag.get('reset-password-alert') %}
+				<div class="container">
+					<div class="alert alert-info">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						Votre nouveau mot de passe a bien été enregistré. Vous pouvez dès à présent vous connecter.
+					</div>
+				</div>
+				{% endfor %}
 				{% for flashMessage in app.session.flashbag.get('info-inscription') %}
 				<div class="container">
 					<div class="alert alert-info">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						{{ flashMessage|raw }}
+					</div>
+				</div>
+				{% endfor %}
+				{% for flashMessage in app.session.flashbag.get('info-inscription-professeur') %}
+				<div class="container">
+					<div class="alert alert-info">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						Merci de ta canditature ! Tu vas recevoir un mail qui te permettra de finaliser ton inscription.
+					</div>
+				</div>
+				{% endfor %}
+				{% for flashMessage in app.session.flashbag.get('info-confirmation-inscription-professeur') %}
+				<div class="container">
+					<div class="alert alert-info">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						Adresse mail confirmée ! Tu peux dès à présent te connecter sur ton espace perso. N'oublie pas de mettre en ligne les documents demandés.
 					</div>
 				</div>
 				{% endfor %}
@@ -64,11 +88,12 @@
 								Mot de passe :
 								<input class="form-control input-lg" type="password" id="password" name="_password" required="required" />
 							</div>
-							<div class="checkbox">
+							<div class="checkbox inline">
 								<label>
-									<input type="checkbox" id="remember_me" name="_remember_me" class="pull-left" checked /> <p>Se souvenir de moi</p>
+									<input type="checkbox" id="remember_me" name="_remember_me" class="pull-left" checked /> <p>Se souvenir de moi <a href="{{ path('majordesk_app_forgot_password') }}" class="pull-right">Mot de passe oublié</a></p> 
 								</label>
-							</div>					
+							</div>	
+							<br>
 							<button type="submit" class="btn btn-success pull-right" id="_submit" name="_submit">Se connecter <i class="icon-off"></i></button>
 						</form>
 						<br><br><br>

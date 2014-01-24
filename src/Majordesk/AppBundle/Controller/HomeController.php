@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Majordesk\AppBundle\Form\Type\InscriptionEleveType;
 use Majordesk\AppBundle\Form\Type\InscriptionFamilleType;
+use Majordesk\AppBundle\Form\Type\InscriptionProfesseurType;
 
 use Majordesk\AppBundle\Entity\Eleve;
 use Majordesk\AppBundle\Entity\EleveMatiere;
@@ -16,6 +17,7 @@ use Majordesk\AppBundle\Entity\Client;
 use Majordesk\AppBundle\Entity\Famille;
 use Majordesk\AppBundle\Entity\Disponibilite;
 use Majordesk\AppBundle\Entity\Paiement;
+use Majordesk\AppBundle\Entity\Professeur;
 
 class HomeController extends Controller
 {
@@ -51,7 +53,7 @@ class HomeController extends Controller
 		}
 		elseif ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			return $this->redirect($this->generateUrl('majordesk_app_index_admin'));
-		}  
+		} 
 		else {
 			return $this->redirect($this->generateUrl('majordesk_app_principe_index'));
 		}
@@ -86,6 +88,96 @@ class HomeController extends Controller
     {
 		return $this->render('MajordeskAppBundle:Home:presentation-equipe.html.twig');
     }
+	
+	public function inscriptionProfesseurAction()
+    {
+		$prof = new Professeur();
+		
+		$form = $this->createForm(new InscriptionProfesseurType(), $prof);
+		
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') 
+		{
+			$form->bind($request);
+
+			if ($form->isValid()) 
+			{
+				$factory = $this->get('security.encoder_factory');
+				
+				$prof->setUsername(ucfirst($prof->getUsername()));
+				$prof->setNom(ucfirst($prof->getNom()));
+				$prof->setFlag(true);
+				$prof->setActif(false);
+				$prof->setSalt(time());
+					$encoder = $factory->getEncoder($prof);
+					$pass = $encoder->encodePassword($prof->getPassword(), $prof->getSalt()); 
+				$prof->setPassword($pass);					
+				
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($prof);
+				$em->flush();
+				
+				$this->get('session')->getFlashBag()->add('info-inscription-professeur', ' Merci de ta candidature !');
+				
+				$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+				$notification = 'Inscription d\'un nouveau professeur';
+				
+				$message = \Swift_Message::newInstance()
+						->setSubject('Notification Plateforme')
+						->setFrom('plateforme@majorclass.fr')
+						->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+						->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
+					;
+					$this->get('mailer')->send($message);
+				
+				$encrypted_mail = urlencode(base64_encode($prof->getMail()));
+				
+				$message = \Swift_Message::newInstance()
+						->setSubject('Notification Majorclass')
+						->setFrom('ne-pas-repondre@majorclass.fr')
+						->setTo($prof->getMail())
+						->setBody($this->renderView('MajordeskAppBundle:Template:inscription-professeur.html.twig', array('prenom' => $prof->getUsername(), 'encrypted_mail' => $encrypted_mail)), 'text/html')
+					;
+					$this->get('mailer')->send($message);
+					
+					$transport = $this->get('swiftmailer.transport.real');						
+					$this->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+
+				return $this->redirect($this->generateUrl('login'));
+			}
+			else {
+				$this->get('session')->getFlashBag()->add('warning', ' Un ou plusieurs champs ont mal été remplis !');
+			}
+		}
+	
+		return $this->render('MajordeskAppBundle:Home:inscription-professeur.html.twig', array(
+			'form' => $form->createView()
+		));
+    }
+	
+	public function confirmationInscriptionProfesseurAction($encrypted_mail)
+    {
+		$mail = base64_decode(urldecode($encrypted_mail));
+		
+		$prof = $this->getDoctrine()
+					 ->getManager()
+					 ->getRepository('MajordeskAppBundle:Professeur')
+					 ->findOneByMail($mail);
+		
+		if (empty($prof)) {
+			throw new \Exception();
+		}
+		
+		$prof->setActif(true);
+		
+		$em = $this->getDoctrine()->getManager();
+		$em->persist($prof);
+		$em->flush();
+		
+		$this->get('session')->getFlashBag()->add('info-confirmation-inscription-professeur', ' Adresse mail confirmée.');
+		
+		return $this->redirect($this->generateUrl('login'));
+	}
 	
 	public function inscriptionAction($etape_inscription)
     {
@@ -263,6 +355,7 @@ class HomeController extends Controller
 											->find(1);
 							$eleve_matiere = new EleveMatiere();
 							$eleve_matiere->setCours(1);
+							$eleve_matiere->setPrelevementCours(1);
 							$matiere->addEleveMatiere($eleve_matiere);
 							$eleve->addEleveMatiere($eleve_matiere);
 							$em->persist($matiere);
@@ -275,6 +368,7 @@ class HomeController extends Controller
 											->find(2);
 							$eleve_matiere = new EleveMatiere();
 							$eleve_matiere->setCours(1);
+							$eleve_matiere->setPrelevementCours(1);
 							$matiere->addEleveMatiere($eleve_matiere);
 							$eleve->addEleveMatiere($eleve_matiere);
 							$em->persist($matiere);
@@ -282,6 +376,8 @@ class HomeController extends Controller
 						} 
 						
 						// Parent
+						$client->setUsername(ucfirst($client->getUsername()));
+						$client->setNom(ucfirst($client->getNom()));
 						$client->setSalt(time());
 							$encoder = $factory->getEncoder($client);
 							$pass_famille = $encoder->encodePassword($client->getPassword(), $client->getSalt());
@@ -294,6 +390,23 @@ class HomeController extends Controller
 						
 						$session->clear();						
 						$session->set('etape_inscription', 3);
+						
+						$message = \Swift_Message::newInstance()
+									->setSubject('Inscription Majorclass')
+									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setTo($client->getMail())
+									->setBody($this->renderView('MajordeskAppBundle:Template:bienvenue.html.twig'), 'text/html')
+								;
+								$this->get('mailer')->send($message);
+						
+						$message = \Swift_Message::newInstance()
+									->setSubject('Nouvelle inscription')
+									->setFrom('inscription@majorclass.fr')
+									->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+									->setBody('Nouvelle inscription : '.$client->getNom())
+								;
+								$this->get('mailer')->send($message);
+						
 						return $this->redirect($this->generateUrl('majordesk_app_inscription', array('etape_inscription' => 3)));
 					}
 					$this->get('session')->getFlashBag()->add('warning-parents', 'Un ou plusieurs champs ont été mal remplis.');

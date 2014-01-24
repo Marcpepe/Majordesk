@@ -128,7 +128,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for ticket in tickets_this_month %}
+						{% for ticket in tickets_last_month %}
 							{% for paiement in paiements if paiement.ticket.id == ticket.id %}
 									<tr>
 										<td>{{ ticket.dateCours|date("d/m/y") }}</td>

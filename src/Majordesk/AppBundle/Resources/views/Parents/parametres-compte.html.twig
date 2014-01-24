@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block navbar %}
-	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Abonnements et factures</a></li>
-	<li><a href="{{ path('majordesk_app_gestion_abonnements') }}"><i class="icon-angle-right"></i> Gestion des abonnements</a></li>
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Paiements et factures</a></li>
+	<!--<li><a href="{{ path('majordesk_app_gestion_abonnements') }}"><i class="icon-angle-right"></i> Gestion des abonnements</a></li>-->
 	<li><a><i class="icon-angle-right"></i> Paramètres du compte</a></li>
 {% endblock %}
 
@@ -24,10 +24,10 @@
 <br>
 {% endfor %}
 
-<br><br>
+<br><span class="visible-xs"><br><br></span>
 	
 <div class="col-lg-12">
-	<h3>Paramètres du compte</h3><br><br>
+	<h3>Paramètres du compte</h3><br>
 	<div class="table-responsive">
 		<table class="table table-hover">
 			<thead>
@@ -39,8 +39,16 @@
 			<tbody>
 				<tr>
 					<td>
-						La déclaration d'une heure sur la plateforme en fin de cours requiert votre mot de passe<br>
-						<i class="icon-warning-sign"></i> <em>Attention, l'activation de ce filtre nécessite votre présence en fin de cours pour entrer votre mot de passe !</em>
+						Revevoir par mail chaque dimanche un récapitulatif des cours pris pendant la semaine<br>
+					</td>
+					<td>
+						activé
+					</td>
+				</tr>
+				<tr>
+					<td>
+						La déclaration d'une heure sur la plateforme de votre enfant requiert votre mot de passe<br>
+						<!--<i class="icon-warning-sign"></i> <em>Attention, l'activation de ce filtre nécessite votre présence en fin de cours pour entrer votre mot de passe !</em>-->
 					</td>
 					<td>
 						{% if famille.filtre %}
@@ -49,13 +57,90 @@
 							désactivé
 						{% endif %}
 					</td>
-				</tr>
+				</tr>				
 			</tbody>
 		</table>
 	</div>
-	<br><br>
-	<em>La modification des paramètres du compte se fait pour l'instant sur demande.<br>
-	Vous pouvez contacter le service client au 06.76.10.15.98 pour toute requète.</em>
+	<br>
+	<em>La modification des paramètres du compte est momentanément désactivée.</em><br>
+	<div class="clearfix"></div><br><br>
+	<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Gestion de votre moyen de paiement</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+	</table>
+	<!--Modifier mes coordonnées bancaires-->
+	<div class="col-lg-6">
+		{% set parm = "merchant_id=078949346700011" %}
+		{% set parm = parm ~ " merchant_country=fr" %}
+		{% set parm = parm ~ " pathfile=/home/majorcla/mercanet/subscription/param/pathfile" %}
+		{% set parm = parm ~ " sub_normal_return_url=http://www.majorclass.fr/modification-carte-reponse" %}
+		{% set parm = parm ~ " sub_cancel_return_url=http://www.majorclass.fr/parents/parametres-du-compte" %}
+		{% set parm = parm ~ " sub_automatic_response_url=http://www.majorclass.fr/modification-carte-autoreponse" %}
+		{% set parm = parm ~ " header_flag=no" %}
+		{% set parm = parm ~ " caddie=" ~ famille.id %}
+		{% set parm = parm ~ " sub_subscriber_id=" ~ famille.abonnement %}
+		{% set parm = parm ~ " sub_operation_code=6" %}
+		{% set parm = parm ~ " templatefile=subscription" %}
+		
+		{% set path_bin = "/home/majorcla/mercanet/subscription/bin/manageabo" %}
+		
+		{% set execParam = path_bin ~ " " ~ parm %}
+		
+		{% set result = execParam|exec %}
+		
+		{% set tableau = result|split('!') %}
+
+		{% set code = tableau[1] %}
+		{% set error = tableau[2] %}
+		{% set message = tableau[3] %}
+		
+		{% if code == "" and error == "" %}
+			<div class="alert alert-danger"><i class="icon-exclamation-sign"></i> <strong>Erreur : </strong> Une erreur est survenue lors du chargement du script inscription. Veuillez réessayer ultérieurement ou contacter le webmaster.</div>
+		{% elseif code != 0 %}
+			<div class="alert alert-danger"><i class="icon-exclamation-sign"></i> <strong>Erreur : </strong> Une erreur est survenue. Veuillez réessayer ultérieurement ou contacter le webmaster.</div>
+		{% else %}
+			{{ message|raw }}
+		{% endif %}
+	</div>
+	<!--Annuler mon moyen de paiement-->
+	<div class="col-lg-6">
+		{% set parm = "merchant_id=078949346700011" %}
+		{% set parm = parm ~ " merchant_country=fr" %}
+		{% set parm = parm ~ " pathfile=/home/majorcla/mercanet/subscription/param/pathfile_annulation" %}
+		{% set parm = parm ~ " sub_normal_return_url=http://www.majorclass.fr/modification-carte-reponse" %}
+		{% set parm = parm ~ " sub_cancel_return_url=http://www.majorclass.fr/parents/parametres-du-compte" %}
+		{% set parm = parm ~ " sub_automatic_response_url=http://www.majorclass.fr/modification-carte-autoreponse" %}
+		{% set parm = parm ~ " header_flag=no" %}
+		{% set parm = parm ~ " caddie=" ~ famille.id %}
+		{% set parm = parm ~ " sub_subscriber_id=" ~ famille.abonnement %}
+		{% set parm = parm ~ " sub_operation_code=4" %}
+		{% set parm = parm ~ " templatefile=subscription" %}
+		
+		{% set path_bin = "/home/majorcla/mercanet/subscription/bin/manageabo" %}
+		
+		{% set execParam = path_bin ~ " " ~ parm %}
+		
+		{% set result = execParam|exec %}
+		
+		{% set tableau = result|split('!') %}
+
+		{% set code = tableau[1] %}
+		{% set error = tableau[2] %}
+		{% set message = tableau[3] %}
+		
+		{% if code == "" and error == "" %}
+			<div class="alert alert-danger"><i class="icon-exclamation-sign"></i> <strong>Erreur : </strong> Une erreur est survenue lors du chargement du script inscription. Veuillez réessayer ultérieurement ou contacter le webmaster.</div>
+		{% elseif code != 0 %}
+			<div class="alert alert-danger"><i class="icon-exclamation-sign"></i> <strong>Erreur : </strong> Une erreur est survenue. Veuillez réessayer ultérieurement ou contacter le webmaster.</div>
+		{% else %}
+			{{ message|raw }}
+		{% endif %}
+	</div>
 </div>
 <div class="clearfix"></div><br><br>
 

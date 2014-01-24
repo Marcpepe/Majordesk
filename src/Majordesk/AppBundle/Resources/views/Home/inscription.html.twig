@@ -13,18 +13,18 @@
 
 {% block body %}
 	<br><br>
-	<div class="container home-container">
+	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<div class="col-lg-4">
-					<p class="text-center">{% if app.session.get('etape_inscription') == 1 or app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':1}) }}" class="{% if etape_inscription != 1 %}text-mid-grey{% endif %}">1. Inscription de l'élève</a>{% else %}<span class="text-mid-grey cursor-forbidden">1. Inscription de l'élève</span>{% endif %}</p>
-				</div>
-				<div class="col-lg-4">
-					<p class="text-center">{% if app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':2}) }}" class="{% if etape_inscription != 2 %}text-mid-grey{% endif %}">2. Inscription d'un parent</a>{% else %}<span class="text-mid-grey cursor-forbidden">2. Inscription d'un parent</span>{% endif %}</p>
-				</div>
-				<div class="col-lg-4">
-					<p class="text-center">{% if app.session.get('etape_inscription') == 3 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':3}) }}" class="{% if etape_inscription != 3 %}text-mid-grey{% endif %}">3. Première connexion</a>{% else %}<span class="text-mid-grey cursor-forbidden">3. Première connexion</span>{% endif %}</p>
-				</div>
+					<div class="col-lg-4">
+						<p class="text-center">{% if app.session.get('etape_inscription') == 1 or app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':1}) }}" class="{% if etape_inscription != 1 %}text-mid-grey{% endif %}">1. Inscription de l'élève</a>{% else %}<span class="text-mid-grey cursor-forbidden">1. Inscription de l'élève</span>{% endif %}</p>
+					</div>
+					<div class="col-lg-4">
+						<p class="text-center">{% if app.session.get('etape_inscription') == 2 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':2}) }}" class="{% if etape_inscription != 2 %}text-mid-grey{% endif %}">2. Inscription d'un parent</a>{% else %}<span class="text-mid-grey cursor-forbidden">2. Inscription d'un parent</span>{% endif %}</p>
+					</div>
+					<div class="col-lg-4">
+						<p class="text-center">{% if app.session.get('etape_inscription') == 3 %}<a href="{{ path('majordesk_app_inscription', {'etape_inscription':3}) }}" class="{% if etape_inscription != 3 %}text-mid-grey{% endif %}">3. Première connexion</a>{% else %}<span class="text-mid-grey cursor-forbidden">3. Première connexion</span>{% endif %}</p>
+					</div>
 				<br>
 			</div>
 		</div>
@@ -272,7 +272,6 @@
 
 						<table class="table table-borderless table-hover">
 						  <tbody>
-							
 							<tr>
 							  <td class="col-lg-3">Parenté</td>
 							  <td>{{ form_widget(client.gender ) }}</td>
@@ -292,7 +291,13 @@
 							  <td class="col-lg-3">Téléphone</td>
 							  <td>{{ form_widget(client.telephone ) }}</td>
 							</tr>
-							
+							</tbody>
+						</table>
+				<br>
+				<h4>Domicile où se déroulera le cours</h4>
+				<br>	
+						<table class="table table-borderless table-hover">
+						  <tbody>
 							<tr>
 							  <td class="col-lg-3">Adresse</td>
 							  <td>{{ form_widget(client.adresse ) }}</td>
@@ -347,42 +352,31 @@
 			</form>
 		{% elseif etape_inscription == 3 %}
 		
-		<h3>Bienvenue !</h3><br>
-		Votre inscription s'est déroulée avec succès.
-		<br><br><br>
-		<h3>Comment acheter ses premières heures de cours ?</h3><br>
-		Vous pouvez dès à présent vous connecter à votre espace personnel.
-		<br><br>
-		Pour l'instant, votre compte porte la mention 
-		<br><br>
-		<div class="alert alert-danger">
-			<i class="icon-thumbs-down"></i> Aucun professeur ne vous est encore attribué
+		<div class="row ">
+			<div class="col-lg-12">
+		
+				<h3>Bienvenue !</h3><br>
+				Votre inscription s'est déroulée avec succès.
+				<br><br><br>
+				<h3>Et maintenant ?</h3><br>
+				Vous pouvez dès à présent vous connecter à votre espace personnel.
+				<br><br>
+				Grâce aux informations que vous nous avez transmises, nous allons pouvoir sélectionner le professeur qui convient le mieux à votre enfant. 
+				<br><br>Voici les étapes qui vous attendent :<br>
+				<ul>
+					<li><em>Etape 1</em> : vous recevez un mail de notre part vous signalant qu'un professeur vous a été assigné ;</li>
+					<li><em>Etape 2</em> : vous enregistrez un moyen de paiement sur votre espace personnel ;</li>
+					<li><em>Etape 3</em> : vous êtes mis en contact avec le professeur de votre enfant, afin de convenir du premier cours.</li>		
+				</ul>
+				Vous pouvez bien sûr effectuer directement l'<em>Etape 2</em>, auquel cas vous serez mis en relation avec votre professeur dès que nous vous l'aurons assigné.
+				<br><br>
+				N'hésitez pas à consulter la liste des questions fréquemment posées (<a href="www.majordesk.fr/faq">www.majordesk.fr/faq</a>) ou à nous contacter par mail à l'adresse <a href="mailto:contact@majorclass.fr">contact@majorclass.fr</a> si vous avez besoin de plus amples renseignements (laissez-nous votre numéro de téléphone en cas d'urgence).
+				<br><br><br><br>
+				<h3>Rendez-vous dès maintenant sur votre espace personnel en <a href="{{ path('majordesk_app_index') }}">vous connectant</a>.</h3>
+		
+			</div>
 		</div>
-		<br>
-		Vous serez averti par mail ou contacté par téléphone dès lors qu'un professeur vous aura été trouvé. Votre compte portera alors la mention 
-		<br><br>
-		<div class="alert alert-success">
-			<i class="icon-thumbs-up"></i> Un professeur vous a été attribué
-		</div>
-		<br>
-		Ceci débloquera <strong>l'achat d'heures de cours</strong>.
-		<br><br><br>
-		<h3>Comment réserver son premier cours ?</h3><br>
-		Après avoir acheté votre premier pack d'heures de cours, vous disposez d'un calendrier qui vous permet de visualiser les disponibilités du professeur. Celles-ci ont été choisies pour coïncider avec les disponibilités de votre enfant.
-		<br><br>
-		Ce <strong>calendrier</strong> vous permet de commander un cours sur le créneau désiré. Le cours apparaîtra comme suit :
-		<br><br>
-		<div class="col-lg-offset-1 col-lg-11"><i class="icon-spinner icon-spin text-orange cursor-help" rel="tooltip" data-title="En attente d'une confirmation du professeur"></i> <em>Mardi 5 octobre 2013 de 19h00 à 20h30</em></div>
-		<br><br>
-		puis lorsque votre professeur aura confirmé sa disponibilité :
-		<br><br>
-		<div class="col-lg-offset-1 col-lg-11"><i class="icon-ok text-emerald cursor-help" rel="tooltip" data-title="Cours confirmé"></i> <em>Mardi 5 octobre 2013 de 19h00 à 20h30</em></div>
-		<br><br>
-		ou bien si le professeur n'est pas disponible :
-		<br><br>
-		<div class="col-lg-offset-1 col-lg-11"><i class="icon-remove text-pomegranate cursor-help" rel="tooltip" data-title="Votre professeur n'est pas disponible sur ce créneau"></i> <em>Mardi 5 octobre 2013 de 19h00 à 20h30</em></div>
-		<br><br><br><br>
-		<h3>Rendez-vous dès maintenant sur votre espace personnel en <a href="{{ path('majordesk_app_index') }}">vous connectant</a>.</h3>
+		
 		{% endif %}
 		<div class="clearfix"></div>
 			<br><br><br>
