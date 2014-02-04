@@ -1649,7 +1649,7 @@ class ParentsController extends Controller
 				$notification = "La famille ".$famille->getNom()." a enregistré un moyen de paiement.";
 				$message = \Swift_Message::newInstance()
 						->setSubject('Notification Plateforme')
-						->setFrom('ne-pas-repondre@majorclass.fr')
+						->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 						->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
 						->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
 					;
@@ -1693,7 +1693,7 @@ class ParentsController extends Controller
 							$telephone = $professeur->getTelephone();
 							$message = \Swift_Message::newInstance()
 									->setSubject('Notification Majorclass')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($mail)
 									->setBody($this->renderView('MajordeskAppBundle:Template:mise-en-relation.html.twig', array('gender' => $gender, 'nom' => $nom, 'telephone' => $telephone)), 'text/html')
 								;
@@ -1705,7 +1705,7 @@ class ParentsController extends Controller
 							
 							$message = \Swift_Message::newInstance()
 									->setSubject('Notification Majorclass')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($professeur->getMail())
 									->setBody($this->renderView('MajordeskAppBundle:Template:avertissement-professeur.html.twig', array('nom' => $nom, 'prenom_enfant' => $eleve->getUsername(), 'classe' => $eleve->getProgramme()->getNom(), 'representant' => $representant,  'telephone' => $famille->getTelephone(), 'adresse' => $adresse)), 'text/html')
 								;
@@ -2044,7 +2044,7 @@ class ParentsController extends Controller
 					$notification = "La famille ".$famille->getNom()." a annulé un moyen de paiement.";
 					$message = \Swift_Message::newInstance()
 							->setSubject('Notification Plateforme')
-							->setFrom('ne-pas-repondre@majorclass.fr')
+							->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 							->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
 							->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
 						;
@@ -2058,7 +2058,7 @@ class ParentsController extends Controller
 					$notification = "La famille ".$famille->getNom()." a mis à jour son moyen de paiement.";
 					$message = \Swift_Message::newInstance()
 							->setSubject('Notification Plateforme')
-							->setFrom('ne-pas-repondre@majorclass.fr')
+							->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 							->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
 							->setBody($this->renderView('MajordeskAppBundle:Template:notification.txt.twig', array('dateNotification' => $dateNotification, 'notification'=>$notification)))
 						;

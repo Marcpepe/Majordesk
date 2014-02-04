@@ -66,7 +66,7 @@ class SecurityController extends Controller
 				
 				$message = \Swift_Message::newInstance()
 						->setSubject('Majorclass - Mot de passe oublié')
-						->setFrom('ne-pas-repondre@majorclass.fr')
+						->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 						->setTo($mail)
 						->setBody($this->renderView('MajordeskAppBundle:Template:oubli-mdp.html.twig', array('encrypted_mail'=>$encrypted_mail)), 'text/html')
 					;

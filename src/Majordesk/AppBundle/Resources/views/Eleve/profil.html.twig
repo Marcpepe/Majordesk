@@ -10,7 +10,7 @@
 
 {% block body %}
 	
-	<br><br><span class="hidden-lg"><br></span>
+	<br><br><br><span class="hidden-lg"><br></span>
 
 	{% for message in app.session.flashbag.get('info') %}
 	<div class="col-lg-12">
@@ -20,6 +20,15 @@
 		</div>
 	</div>
 	{% endfor %}
+	{% for message in app.session.flashbag.get('warning') %}
+	<div class="col-lg-12">
+		<div class="alert alert-danger">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<i class="icon-warning-sign"></i> <strong>Erreur :</strong> {{ message }}<br><br>{{ form_errors(form.file) }}{{ form_errors(form2.file) }}{{ form_errors(form3.securite_sociale) }}{{ form_errors(form3.rib) }}
+		</div>
+	</div>
+	{% endfor %}
+	
 	<div class="col-lg-12">
 		<h3><i class="icon-user icon-large text-yellow"></i> Mon profil</h3><br>
 		<div class="col-lg-4">
@@ -68,6 +77,77 @@
 		</div>
 		
 		<div class="clearfix"></div><br><br>
+	{% elseif is_granted('ROLE_PROF') %}
+		<div class="col-lg-12">
+			<h3><i class="icon-file icon-large text-greensea"></i> Mes documents</h3><br>
+				<strong>Casier judiciaire</strong><br><br>
+				<div class="col-lg-6">
+				{% if user.hasCasier %}
+					<i class="icon-ok icon-large"></i> Tu as bien enregistré ton casier judiciaire.<br><br>
+				{% else %}
+					Tu n'as pas encore enregistré ton casier judiciaire.<br><br>
+				{% endif %}		
+				La demande s'effectue en ligne très simplement avec <a href="https://www.cjn.justice.gouv.fr/cjn/b3/EJE20c" target="_blank">ce formulaire</a>.
+				</div>			
+				<div class="col-lg-6">
+					<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}" {{ form_enctype(form) }}>
+						{% if user.hasCasier %}Mettre à jour ton casier judiciaire{% else %}Mettre en ligne ton casier judiciaire {% endif %}: <br><br>
+								{{ form_widget(form.file) }} <br><input type="submit" class="btn btn-success" value="Envoyer" />
+						{{ form_widget(form._token) }}
+					</form>
+				</div>
+				
+				<div class="clearfix"></div><br>
+				<strong>Carte d'Etudiant</strong><br><br>
+				<div class="col-lg-6">
+				{% if user.hasCarteEtudiant %}
+					<i class="icon-ok icon-large"></i> Tu as bien enregistré ta carte d'étudiant.<br><br>
+				{% else %}
+					Tu n'as pas encore enregistré ta carte d'étudiant.<br><br>
+				{% endif %}		
+				</div>			
+				<div class="col-lg-6">
+					<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}" {{ form_enctype(form2) }}>
+						{% if user.hasCarteEtudiant %}Mettre à jour ta carte d'étudiant{% else %}Mettre en ligne ta carte d'étudiant {% endif %}: <br><br>
+								{{ form_widget(form2.file) }} <br><input type="submit" class="btn btn-success" value="Envoyer" />
+						{{ form_widget(form2._token) }}
+					</form>
+				</div>
+			<div class="clearfix"></div><br>
+			
+			<h3><i class="icon-credit-card icon-large text-peterriver"></i> Mes informations</h3><br>
+				<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}">
+					<strong>N° Sécurité Sociale</strong><br><br>
+					<div class="col-lg-6">
+					{% if user.hasSecuriteSociale %}
+						<i class="icon-ok icon-large"></i> Tu as bien renseigné ton N° de Sécurité Sociale ({{ user.securiteSociale}}).<br><br>
+					{% else %}
+						Tu dois renseigner ton numéro de Sécurité Sociale afin que les charges que nous payons pour ton compte cotise effectivement pour la retraite.<br><br>
+					{% endif %}		
+					</div>	
+					<div class="col-lg-6">
+						{% if user.hasSecuriteSociale %}Modifier ton N° de Sécurité Sociale{% else %}Renseigner ton N° de Sécurité Sociale {% endif %}: <br><br>
+							{{ form_widget(form3.securite_sociale) }}
+					</div>
+					<div class="clearfix"></div><br>
+
+					<strong>Relevé d'Identité Bancaire (RIB)</strong><br><br>
+					<div class="col-lg-6">
+					{% if user.hasRib %}
+						<i class="icon-ok icon-large"></i> Tu as bien renseigné ton RIB ({{ user.rib }}).<br><br>
+					{% else %}
+						Nous avons besoin de ton Relevé d'Identité Bancaire (RIB) afin de pouvoir te payer à la fin de chaque mois.<br><br>
+					{% endif %}		
+					</div>	
+					<div class="col-lg-6">
+						{% if user.hasRib %}Modifier ton RIB{% else %}Renseigner ton RIB {% endif %}: <br><br>
+							{{ form_widget(form3.rib) }} <br><input type="submit" class="btn btn-success" value="Mettre à jour" />
+					</div>
+					
+					{{ form_widget(form3._token) }}	
+				</form>
+			<div class="clearfix"></div><br>
+		</div>
 	{% endif %}
 	
 

@@ -130,7 +130,7 @@ class SendRecapCommand extends ContainerAwareCommand
 			
 				$message = \Swift_Message::newInstance()
 									->setSubject('Majorclass - Compte-rendu de la semaine')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($mail)
 									->setBody($container->get('templating')->render('MajordeskAppBundle:Template:recap.html.twig', array('gender' => $gender, 'nom' => $nom, 'liste' => $liste)), 'text/html')
 								;

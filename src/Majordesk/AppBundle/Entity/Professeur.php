@@ -214,7 +214,7 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	 * @Assert\Length(
 	 *     min = "15",
 	 *     max = "15",
-	 *     exactMessage = "Le numéro d'immatriculation Urssaf doit contenir 15 caractères exactement."
+	 *     exactMessage = "Le numéro de Sécurité Sociale doit contenir 15 caractères exactement."
 	 *     )
      */
     private $securite_sociale;
@@ -282,6 +282,16 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	* @ORM\ManyToMany(targetEntity="Majordesk\AppBundle\Entity\Matiere", inversedBy="professeurs", cascade={"persist"})
 	*/
 	private $matieres;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Casier", mappedBy="professeur", cascade={"remove"})
+	 */
+	private $casier;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CarteEtudiant", mappedBy="professeur", cascade={"remove"})
+	 */
+	private $carteEtudiant;
 	
 
     /**
@@ -797,6 +807,11 @@ class Professeur implements AdvancedUserInterface, \Serializable
         return $this->securite_sociale;
     }
 	
+	public function hasSecuriteSociale()
+    {
+        return !empty($this->securite_sociale);
+    }
+	
 	/**
      * Set rib
      *
@@ -818,6 +833,11 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function getRib()
     {
         return $this->rib;
+    }
+	
+	public function hasRib()
+    {
+        return !empty($this->rib);
     }
 	
 	/**
@@ -887,6 +907,72 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function getDateInscription()
     {
         return $this->date_inscription;
+    }
+	
+	/**
+     * Set casier
+     *
+     * @param string $casier
+     * @return Famille
+     */
+    public function setCasier($casier)
+    {
+        $this->casier = $casier;
+    
+        return $this;
+    }
+
+    /**
+     * Get casier
+     *
+     * @return string 
+     */
+    public function getCasier()
+    {
+        return $this->casier;
+    }
+	
+	/**
+     * Get carteEtudiant
+     *
+     * @return string 
+     */
+    public function hasCasier()
+    {
+        return !empty($this->casier);
+    }
+	
+	/**
+     * Set carteEtudiant
+     *
+     * @param string $carteEtudiant
+     * @return Famille
+     */
+    public function setCarteEtudiant($carteEtudiant)
+    {
+        $this->carteEtudiant = $carteEtudiant;
+    
+        return $this;
+    }
+
+    /**
+     * Get carteEtudiant
+     *
+     * @return string 
+     */
+    public function getCarteEtudiant()
+    {
+        return $this->carteEtudiant;
+    }
+	
+	/**
+     * Get carteEtudiant
+     *
+     * @return string 
+     */
+    public function hasCarteEtudiant()
+    {
+        return !empty($this->carteEtudiant);
     }
 	
 	/**

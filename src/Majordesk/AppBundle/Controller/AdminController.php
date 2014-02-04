@@ -319,7 +319,7 @@ class AdminController extends Controller
 							$telephone = $professeur->getTelephone();
 							$message = \Swift_Message::newInstance()
 									->setSubject('Notification Majorclass')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($mail)
 									->setBody($this->renderView('MajordeskAppBundle:Template:assignation-et-mise-en-relation.html.twig', array('gender' => $gender, 'nom' => $nom, 'telephone' => $telephone)), 'text/html')
 								;
@@ -327,7 +327,7 @@ class AdminController extends Controller
 								
 							$message = \Swift_Message::newInstance()
 									->setSubject('Notification Majorclass')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($professeur->getMail())
 									->setBody($this->renderView('MajordeskAppBundle:Template:avertissement-professeur.html.twig', array('nom' => $nom, 'prenom_enfant' => $eleve->getUsername(), 'classe' => $eleve->getProgramme()->getNom(), 'representant' => $representant,  'telephone' => $famille->getTelephone(), 'adresse' => $adresse)), 'text/html')
 								;
@@ -335,7 +335,7 @@ class AdminController extends Controller
 						} else {
 							$message = \Swift_Message::newInstance()
 									->setSubject('Notification Majorclass')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($mail)
 									->setBody($this->renderView('MajordeskAppBundle:Template:assignation.html.twig', array('gender' => $gender, 'nom' => $nom, 'date_inscription' => $date_inscription)), 'text/html')
 								;

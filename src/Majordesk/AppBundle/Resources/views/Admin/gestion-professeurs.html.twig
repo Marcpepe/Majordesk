@@ -139,8 +139,10 @@
 						  <th>Prenom <i class="icon-caret-down pull-right icon-table-position"></i></th>
 						  <th>Nom <i class="icon-caret-down pull-right icon-table-position"></i></th>
 						  <th>Hrs données <i class="icon-caret-down pull-right icon-table-position"></i></th>
-						  <th>Nbr d'élèves <i class="icon-caret-down pull-right icon-table-position"></i></th>
-						  <th>Disponibilités <i class="icon-time pull-right icon-table-position"></i></th>
+						  <th>Elèves <i class="icon-caret-down pull-right icon-table-position"></i></th>
+						  <th>Dispos <i class="icon-time pull-right icon-table-position"></i></th>
+						  <th>Casier</th>
+						  <th>Carte Et.</th>
 						  <th>N° SS</th>
 						  <th>RIB</th>
 						  <th>Flag</th>
@@ -175,6 +177,16 @@
 									{% endif %}
 								{% endif %}
 							{% endfor %}
+						  </td>
+						  <td>
+							{% if professeur.hasCasier %}
+								<i class="icon-ok"></i>
+							{% endif %}
+						  </td>
+						  <td>
+							{% if professeur.hasCarteEtudiant %}
+								<i class="icon-ok"></i>
+							{% endif %}
 						  </td>
 						  <td>
 							{% if professeur.securiteSociale != null %}

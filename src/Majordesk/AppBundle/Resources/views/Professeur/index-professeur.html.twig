@@ -117,6 +117,59 @@
 </div>
 <div class="clearfix"></div><br><span class="hidden-xs"><br></span>
 </div>	
+
+	{% if not user.hasCasier or not user.hasCarteEtudiant %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/document.png') }}" style="height:80px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Enregistrer tes documents </h3>
+					Afin de pouvoir commencer les cours, tu dois préalablement enregistrer les documents suivants :
+					<ul>
+						<li>un scan (ou photo) de ta carte d'Etudiant</li>
+						<li>un scan (ou photo) de ton casier</li>
+					<ul></ul>
+					<br>
+					<br>
+					<a href="{{ path('majordesk_app_profil') }}" class="btn btn-warning">Enregistrer tes documents</a>
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	
+	{% if not user.hasSecuriteSociale or not user.hasRib %}
+	<div class="col-lg-12">
+		<div class="container">
+			<br><span class="hidden-xs"><br></span>
+			<div class="alert alert-info">
+				<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+					<span class="hidden-xs"><br></span>
+					<img src="{{ asset('img/common/cards.png') }}" style="height:40px;" />
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+					<h3 class="text-left-lg-center-xs"> Enregistrer tes informations </h3>
+					Nous avons également besoin des informations suivantes :
+					<ul>
+						<li>ton N° de Sécurité Sociale</li>
+						<li>ton RIB</li>
+					<ul></ul>
+					<br>
+					<br>
+					<a href="{{ path('majordesk_app_profil') }}" class="btn btn-warning">Enregistrer tes informations</a>
+				</div>
+				<div class="clearfix"></div><br>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
 <div class="col-lg-12">
 	<div class="container">
 		<br><span class="hidden-xs"><br></span>

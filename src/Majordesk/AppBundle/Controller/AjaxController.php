@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
 {
+
 	/**
 	 * @Secure(roles="ROLE_ELEVE")
 	 */

@@ -39,12 +39,12 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main_login:
-            pattern: ^/(accueil|les-cours-Majorclass|la-plateforme-Majorclass|les-tarifs|l-equipe|login|inscription|inscription-1|inscription-2|inscription-3|mentions-legales|faq)$
-            anonymous: true
+        # main_login:
+            # pattern: ^/(accueil|les-cours-Majorclass|la-plateforme-Majorclass|les-tarifs|l-equipe|login|inscription|inscription-1|inscription-2|inscription-3|mentions-legales|faq)$
+            # anonymous: true
 
         main:
-            pattern:        ^/(|connexion|login_check|logout|admin|eleve|professeur|parents)
+            pattern:        ^/(|connexion|login_check|logout|admin|eleve|professeur|parents|accueil|les-cours-Majorclass|la-plateforme-Majorclass|les-tarifs|l-equipe|login|inscription|inscription-1|inscription-2|inscription-3|mentions-legales|faq)
             anonymous:      ~
             provider:       chain_provider
             form_login:

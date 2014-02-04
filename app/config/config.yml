@@ -101,7 +101,8 @@ assetic:
     use_controller: false
     bundles:        [MajordeskAppBundle]
     # java: /usr/bin/java
-    java: C:\Program Files (x86)\Java\jre7\bin\java.exe
+    # java: C:\Program Files (x86)\Java\jre7\bin\java.exe
+    java: %java_path%
     filters:
         cssrewrite: ~
         yui_js:

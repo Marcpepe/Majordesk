@@ -216,6 +216,7 @@ class ProfesseurController extends Controller
 			return $this->render('MajordeskAppBundle:Professeur:index-professeur.html.twig', array(
 				'tickets' => $tickets,
 				'paiements' => $paiements,
+				'user' => $user,
 				'eleves' => $eleves,
 				'form' => $form->createView(),
 			));

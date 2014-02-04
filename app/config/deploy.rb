@@ -57,13 +57,15 @@ set :permission_method,   :chmod
 set :set_permissions, true
 set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
 
-set :shared_files,      ["app/config/parameters.yml", "composer.phar"]
+set :shared_files,      ["app/config/parameters.yml"]
+# set :shared_files,      ["app/config/parameters.yml", "composer.phar"]
 # set :use_composer,    false
 set :use_composer,    true
-# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader"
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress -d memory_limit=-1"
+# set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader -d memory_limit=-1"
 # set :composer_bin,    "/home/majorcla/var/www/majordesk/#{domain}/shared/composer.phar"
 set :update_vendors,  false
-# set :vendors_mode,    "install"
+set :vendors_mode,    "install"
 set :copy_vendors, false
 
 
@@ -100,9 +102,28 @@ set :keep_releases,  3
 
 
 
+set :parameters_dir, "app/config"
+set :parameters_file, false
 
+task :upload_parameters do
+  origin_file = parameters_dir + "/" + parameters_file if parameters_dir && parameters_file
+  if origin_file && File.exists?(origin_file)
+    ext = File.extname(parameters_file)
+    relative_path = "app/config/parameters" + ext
 
+    if shared_files && shared_files.include?(relative_path)
+      destination_file = shared_path + "/" + relative_path
+    else
+      destination_file = latest_release + "/" + relative_path
+    end
+    try_sudo "mkdir -p #{File.dirname(destination_file)}"
 
+    top.upload(origin_file, destination_file)
+  end
+end
+
+# before "deploy:share_childs", "upload_parameters"
+after 'deploy:setup', 'upload_parameters'
 
 
 

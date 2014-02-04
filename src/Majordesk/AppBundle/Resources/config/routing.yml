@@ -236,9 +236,6 @@ majordesk_app_cours_donnes:
     pattern:  /professeur/cours-donnes
     defaults: { _controller: MajordeskAppBundle:Professeur:coursDonnes }
 
-#ajax
-
-
 ## ROLE_ELEVE ##
 
 majordesk_app_index_eleve:

@@ -134,7 +134,7 @@ class HomeController extends Controller
 				
 				$message = \Swift_Message::newInstance()
 						->setSubject('Notification Majorclass')
-						->setFrom('ne-pas-repondre@majorclass.fr')
+						->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 						->setTo($prof->getMail())
 						->setBody($this->renderView('MajordeskAppBundle:Template:inscription-professeur.html.twig', array('prenom' => $prof->getUsername(), 'encrypted_mail' => $encrypted_mail)), 'text/html')
 					;
@@ -393,7 +393,7 @@ class HomeController extends Controller
 						
 						$message = \Swift_Message::newInstance()
 									->setSubject('Inscription Majorclass')
-									->setFrom('ne-pas-repondre@majorclass.fr')
+									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 									->setTo($client->getMail())
 									->setBody($this->renderView('MajordeskAppBundle:Template:bienvenue.html.twig'), 'text/html')
 								;
