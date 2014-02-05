@@ -24,7 +24,7 @@
 	<div class="col-lg-12">
 		<div class="alert alert-danger">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<i class="icon-warning-sign"></i> <strong>Erreur :</strong> {{ message }}<br><br>{{ form_errors(form.file) }}{{ form_errors(form2.file) }}{{ form_errors(form3.securite_sociale) }}{{ form_errors(form3.rib) }}
+			<i class="icon-warning-sign"></i> <strong>Erreur :</strong> {{ message }}<br><br>{{ form_errors(form.casier) }}{{ form_errors(form.carteEtudiant) }}{{ form_errors(form.securite_sociale) }}{{ form_errors(form.rib) }}
 		</div>
 	</div>
 	{% endfor %}
@@ -79,6 +79,8 @@
 		<div class="clearfix"></div><br><br>
 	{% elseif is_granted('ROLE_PROF') %}
 		<div class="col-lg-12">
+			<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}" {{ form_enctype(form) }}>
+			
 			<h3><i class="icon-file icon-large text-greensea"></i> Mes documents</h3><br>
 				<strong>Casier judiciaire</strong><br><br>
 				<div class="col-lg-6">
@@ -90,11 +92,10 @@
 				La demande s'effectue en ligne très simplement avec <a href="https://www.cjn.justice.gouv.fr/cjn/b3/EJE20c" target="_blank">ce formulaire</a>.
 				</div>			
 				<div class="col-lg-6">
-					<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}" {{ form_enctype(form) }}>
+					
 						{% if user.hasCasier %}Mettre à jour ton casier judiciaire{% else %}Mettre en ligne ton casier judiciaire {% endif %}: <br><br>
-								{{ form_widget(form.file) }} <br><input type="submit" class="btn btn-success" value="Envoyer" />
-						{{ form_widget(form._token) }}
-					</form>
+								{{ form_widget(form.casier) }} <br>
+						
 				</div>
 				
 				<div class="clearfix"></div><br>
@@ -107,16 +108,15 @@
 				{% endif %}		
 				</div>			
 				<div class="col-lg-6">
-					<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}" {{ form_enctype(form2) }}>
+
 						{% if user.hasCarteEtudiant %}Mettre à jour ta carte d'étudiant{% else %}Mettre en ligne ta carte d'étudiant {% endif %}: <br><br>
-								{{ form_widget(form2.file) }} <br><input type="submit" class="btn btn-success" value="Envoyer" />
-						{{ form_widget(form2._token) }}
-					</form>
+								{{ form_widget(form.carteEtudiant) }} <br>
+
 				</div>
 			<div class="clearfix"></div><br>
 			
 			<h3><i class="icon-credit-card icon-large text-peterriver"></i> Mes informations</h3><br>
-				<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}">
+			
 					<strong>N° Sécurité Sociale</strong><br><br>
 					<div class="col-lg-6">
 					{% if user.hasSecuriteSociale %}
@@ -127,7 +127,7 @@
 					</div>	
 					<div class="col-lg-6">
 						{% if user.hasSecuriteSociale %}Modifier ton N° de Sécurité Sociale{% else %}Renseigner ton N° de Sécurité Sociale {% endif %}: <br><br>
-							{{ form_widget(form3.securite_sociale) }}
+							{{ form_widget(form.securite_sociale) }}
 					</div>
 					<div class="clearfix"></div><br>
 
@@ -141,12 +141,13 @@
 					</div>	
 					<div class="col-lg-6">
 						{% if user.hasRib %}Modifier ton RIB{% else %}Renseigner ton RIB {% endif %}: <br><br>
-							{{ form_widget(form3.rib) }} <br><input type="submit" class="btn btn-success" value="Mettre à jour" />
+							{{ form_widget(form.rib) }} <br><br><input type="submit" class="btn btn-success pull-right" value="Enregistrer" />
 					</div>
 					
-					{{ form_widget(form3._token) }}	
-				</form>
 			<div class="clearfix"></div><br>
+			
+				{{ form_widget(form._token) }}
+			</form>
 		</div>
 	{% endif %}
 	

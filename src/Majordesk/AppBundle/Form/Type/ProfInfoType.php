@@ -7,6 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Majordesk\AppBundle\Entity\EleveRepository;
 
+use Majordesk\AppBundle\Form\Type\CasierType;
+use Majordesk\AppBundle\Form\Type\CarteEtudiantType;
+
 class ProfInfoType extends AbstractType
 {
 	
@@ -14,6 +17,16 @@ class ProfInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+			->add('casier'                 , new CasierType(), array(
+				'required' => false,
+				'attr' => array('class'=>'form-control')
+				))
+			->add('carteEtudiant'                 , new CarteEtudiantType(), array(
+				// 'class' => 'MajordeskAppBundle:CarteEtudiant',
+				// 'property' => 'file',
+				'required' => false,
+				'attr' => array('class'=>'form-control')
+				))
             ->add('securite_sociale'    , 'text', array(
 				'required' => false,
 				'attr' => array('class'=>'form-control')
@@ -21,7 +34,7 @@ class ProfInfoType extends AbstractType
             ->add('rib'                 , 'text', array(
 				'required' => false,
 				'attr' => array('class'=>'form-control')
-				))
+				))			
 			// ->add('transport'           , 'choice', array(
 				// 'choices'   => array('Transports en commun' => 'Transports en commun', 'Voiture' => 'Voiture', '2 roues' => '2 roues', 'Vélo' => 'Vélo', 'Autre' => 'Autre'),
 				// 'attr' => array('class'=>'form-control')

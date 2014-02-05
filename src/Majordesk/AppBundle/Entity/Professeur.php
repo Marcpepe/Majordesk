@@ -284,12 +284,12 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	private $matieres;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Casier", mappedBy="professeur", cascade={"remove"})
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Casier", mappedBy="professeur", cascade={"persist","remove"})
 	 */
 	private $casier;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CarteEtudiant", mappedBy="professeur", cascade={"remove"})
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CarteEtudiant", mappedBy="professeur", cascade={"persist","remove"})
 	 */
 	private $carteEtudiant;
 	

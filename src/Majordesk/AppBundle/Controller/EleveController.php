@@ -21,8 +21,6 @@ use Majordesk\AppBundle\Form\Type\CoursFilterType;
 use Majordesk\AppBundle\Form\Type\TicketType;
 use Majordesk\AppBundle\Form\Type\TicketNoFiltreType;
 use Majordesk\AppBundle\Form\Type\PasswordType;
-use Majordesk\AppBundle\Form\Type\CasierType;
-use Majordesk\AppBundle\Form\Type\CarteEtudiantType;
 use Majordesk\AppBundle\Form\Type\ProfInfoType;
 
 class EleveController extends Controller
@@ -299,57 +297,45 @@ class EleveController extends Controller
 			));
 		}
 		else if ($this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-			$casier = $user->getCasier();
-			$carteEtudiant = $user->getCarteEtudiant();
-			// $hasCasier = 1;
-			// $hasCarteEtudiant = 1;
 			
-			if (empty($casier)) {
-				$casier = new Casier();	
-				// $hasCasier = 0;
-			}
-			if (empty($carteEtudiant)) {
-				$carteEtudiant = new CarteEtudiant();	
-				// $hasCarteEtudiant = 0;
-			}
+			$user = $this->getUser();
+			// $casier = $user->getCasier();
+			// $carteEtudiant = $user->getCarteEtudiant();
 			
-			$form = $this->createForm( new CasierType(), $casier );
-			$form2 = $this->createForm( new CarteEtudiantType(), $carteEtudiant );
-			$form3 = $this->createForm( new ProfInfoType(), $user );
+			// if (empty($casier)) {
+				// $casier = new Casier();	
+				// $user->setCasier($casier);
+			// }
+			// if (empty($carteEtudiant)) {
+				// $carteEtudiant = new CarteEtudiant();	
+				// $user->setCarteEtudiant($carteEtudiant);
+			// }
+			
+			$form = $this->createForm( new ProfInfoType(), $user );
+			
+			// throw new \Exception(var_dump($form));
 			
 			$request = $this->getRequest();
 			if ($request->getMethod() == 'POST') 
 			{
 				$form->bind($request);
-				$form2->bind($request);
-				$form3->bind($request);
 
 				if ($form->isValid()) {
 					$em = $this->getDoctrine()->getManager();
-					$casier->setProfesseur($user);
-					$casier->preUpload();
-					$em->persist($casier);
-					$em->flush();
-					
-					$this->get('session')->getFlashBag()->add('info', ' Ton casier judiciaire a bien été enregistré.');
-					return $this->redirect($this->generateUrl('majordesk_app_profil'));
-				}
-				else if ($form2->isValid()) {
-					$em = $this->getDoctrine()->getManager();
-					$carteEtudiant->setProfesseur($user);
-					$carteEtudiant->preUpload();
-					$em->persist($carteEtudiant);
-					$em->flush();
-					
-					$this->get('session')->getFlashBag()->add('info', ' Ta carte d\'étudiant a bien été enregistrée.');
-					return $this->redirect($this->generateUrl('majordesk_app_profil'));
-				}
-				else if ($form3->isValid()) {
-					$em = $this->getDoctrine()->getManager();
+					$casier = $user->getCasier();
+					if (!empty($casier)) {
+						$casier->preUpload();
+						$casier->setProfesseur($user);
+					}
+					$carteEtudiant = $user->getCarteEtudiant();
+					if (!empty($carteEtudiant)) {
+						$carteEtudiant->preUpload();
+						$casier->setProfesseur($user);
+					}
 					$em->persist($user);
 					$em->flush();
 					
-					$this->get('session')->getFlashBag()->add('info', ' Information enregistrée.');
+					$this->get('session')->getFlashBag()->add('info', ' Tes documents et informations ont bien été enregistrés.');
 					return $this->redirect($this->generateUrl('majordesk_app_profil'));
 				}
 				else {
@@ -359,11 +345,7 @@ class EleveController extends Controller
 			
 			return $this->render('MajordeskAppBundle:Eleve:profil.html.twig', array(
 				'user' => $user,
-				// 'hasCasier' => $hasCasier,
-				// 'hasCarteEtudiant' => $hasCarteEtudiant,
 				'form' => $form->createView(),
-				'form2' => $form2->createView(),
-				'form3' => $form3->createView(),
 			));
 		}
 		else {
