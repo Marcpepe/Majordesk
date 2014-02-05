@@ -29,6 +29,8 @@
 								<i class="icon-warning-sign"></i> <strong>Erreur :</strong> Email ou Mot de passe incorrect.
 							{% elseif error.message == 'User account is disabled.' %}
 								<i class="icon-warning-sign"></i> <strong>Erreur :</strong> Ce compte n'est pas encore actif ou a été temporairement bloqué.
+							{% else %}
+								<i class="icon-warning-sign"></i> <strong>Erreur :</strong> <br><br> {{ error }}
 							{% endif %}
 							
 						</div>
