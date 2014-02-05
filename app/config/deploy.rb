@@ -55,9 +55,9 @@ set :dump_assetic_assets,   true
 set :writable_dirs,       [app_path + "/cache", app_path + "/logs"]
 set :permission_method,   :chmod
 set :set_permissions, true
-set :shared_children,   [app_path + "/logs", app_path + "/sessions"]
+set :shared_children,   [app_path + "/logs", app_path + "/sessions", "web/uploads"]
 
-set :shared_files,      ["app/config/parameters.yml"]
+set :shared_files,      ["app/config/parameters.yml","web/.htaccess"]
 # set :shared_files,      ["app/config/parameters.yml", "composer.phar"]
 # set :use_composer,    false
 set :use_composer,    true
@@ -122,15 +122,17 @@ task :upload_parameters do
   end
 end
 
-# before "deploy:share_childs", "upload_parameters"
 after 'deploy:setup', 'upload_parameters'
 
+task :upload_htaccess do
+  origin_file = "web/.htaccess"
+  destination_file = shared_path + "/web/.htaccess"
 
+  try_sudo "mkdir -p #{File.dirname(destination_file)}"
+  top.upload(origin_file, destination_file)
+end
 
-
-
-
-
+after "deploy:setup", "upload_htaccess"
 
 
 # namespace :post_deployment do

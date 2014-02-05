@@ -12,4 +12,5 @@ web/img/LOCAL/
 web/css/
 web/js/
 web/originals/
+web/.htaccess
 vendor/
