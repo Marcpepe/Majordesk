@@ -76,7 +76,7 @@
 	    //    -> Windows : $parm="$parm pathfile=c:/repertoire/pathfile";
 	    //    -> Unix    : $parm="$parm pathfile=/home/repertoire/pathfile";
 	    
-	$parm="$parm pathfile=/home/majorcla/mercanet/payment/param/pathfile"; // Si le chemin n.est pas fourni, alors le pathfile doit etre place dans le mm dossier
+	$parm="$parm pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/param/pathfile"; // Si le chemin n.est pas fourni, alors le pathfile doit etre place dans le mm dossier
 
 	//		Si aucun transaction_id n'est affecté, request en génère
 	//		un automatiquement à partir de heure/minutes/secondes
@@ -173,7 +173,7 @@
 	// -> Unix    : $path_bin = "/home/repertoire/bin/request";
 	//
 
-	$path_bin = "/home/majorcla/mercanet/payment/bin/request";
+	$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/bin/request";
 
 	//	Appel du binaire request
 	// La fonction escapeshellcmd() est incompatible avec certaines options avancées

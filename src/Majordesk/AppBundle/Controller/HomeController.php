@@ -474,7 +474,7 @@ class HomeController extends Controller
 	
 	public function cgvMajorclassAction()
     {
-		$file_path = '/home/majorcla/cgv/cgv_majorclass.pdf';
+		$file_path = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current/documents/cgv/cgv_majorclass.pdf';
 		
 		return new Response(file_get_contents($file_path), 200, array(
 			'Content-Type' => 'application/pdf'
@@ -483,7 +483,7 @@ class HomeController extends Controller
 	
 	public function cgvMajordeskAction()
     {
-		$file_path = '/home/majorcla/cgv/cgv_majordesk.pdf';
+		$file_path = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current/documents/cgv/cgv_majordesk.pdf';
 		
 		return new Response(file_get_contents($file_path), 200, array(
 			'Content-Type' => 'application/pdf'

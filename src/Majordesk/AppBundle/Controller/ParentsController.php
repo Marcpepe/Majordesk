@@ -515,7 +515,7 @@ class ParentsController extends Controller
 		$user = $this->getUser();
 		$famille = $user->getFamille();
 			
-		$extension = '/home/majorcla';
+		$extension = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current';
 		// $extension = 'C:/wamp/www/Symfony';
 		$file_path = $extension.'/documents/factures/'.$famille->getId().'/'.$annee_facture.'/'.$file_name.'.pdf';
 		
@@ -1074,7 +1074,7 @@ class ParentsController extends Controller
 			//    -> Windows : $pathfile="pathfile=c:/repertoire/pathfile"
 			//    -> Unix    : $pathfile="pathfile=/home/repertoire/pathfile"
 			
-		$pathfile="pathfile=/home/majorcla/mercanet/payment/param/pathfile";
+		$pathfile="pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/param/pathfile";
 
 		//Initialisation du chemin de l'executable response (à modifier)
 		//ex :
@@ -1082,7 +1082,7 @@ class ParentsController extends Controller
 		//-> Unix    : $path_bin = "/home/repertoire/bin/response"
 		//
 
-		$path_bin = "/home/majorcla/mercanet/payment/bin/response";
+		$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/bin/response";
 
 		// Appel du binaire response
 		$message = escapeshellcmd($message);
@@ -1143,10 +1143,10 @@ class ParentsController extends Controller
 		$log_name = date('Y-m-d_H-i-s');
 		
 		if ($response_code == '00') {
-			$logfile="/home/majorcla/mercanet/payment/autologs/".$log_name."_success.txt";
+			$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/autologs/".$log_name."_success.txt";
 		}
 		else {
-			$logfile="/home/majorcla/mercanet/payment/autologs/".$log_name."_fail.txt";
+			$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/autologs/".$log_name."_fail.txt";
 		}
 
 		// Ouverture du fichier de log en append
@@ -1320,7 +1320,7 @@ class ParentsController extends Controller
 			//    -> Windows : $pathfile="pathfile=c:/repertoire/pathfile";
 			//    -> Unix    : $pathfile="pathfile=/home/repertoire/pathfile";
 		   
-		   $pathfile="pathfile=/home/majorcla/mercanet/payment/param/pathfile";
+		   $pathfile="pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/param/pathfile";
 
 			// Initialisation du chemin de l'executable response (à modifier)
 			// ex :
@@ -1328,7 +1328,7 @@ class ParentsController extends Controller
 			// -> Unix    : $path_bin = "/home/repertoire/bin/response";
 			//
 
-			$path_bin = "/home/majorcla/mercanet/payment/bin/response";
+			$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/bin/response";
 
 			// Appel du binaire response
 			$message = escapeshellcmd($message);
@@ -1392,10 +1392,10 @@ class ParentsController extends Controller
 			$log_name = date('Y-m-d_H-i-s');
 			
 			if ($response_code == '00') {
-				$logfile="/home/majorcla/mercanet/payment/logs/".$log_name."_success.txt";
+				$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/logs/".$log_name."_success.txt";
 			}
 			else {
-				$logfile="/home/majorcla/mercanet/payment/logs/".$log_name."_fail.txt";
+				$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/payment/logs/".$log_name."_fail.txt";
 			}
 
 			// Ouverture du fichier de log en append
@@ -1496,9 +1496,9 @@ class ParentsController extends Controller
 		$DATA = $request->request->get('DATA');
 		$message="message=".$DATA;
 			
-		$pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+		$pathfile="pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/param/pathfile";
 
-		$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+		$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/bin/responseabo";
 
 		// Appel du binaire response
 		$message = escapeshellcmd($message);
@@ -1555,10 +1555,10 @@ class ParentsController extends Controller
 		$log_name = date('Y-m-d_H-i-s');
 		
 		if ($response_code == '00') {
-			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_success.txt";
+			$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/autologs/".$log_name."_success.txt";
 		}
 		else {
-			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_fail.txt";
+			$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/autologs/".$log_name."_fail.txt";
 		}
 
 		// Ouverture du fichier de log en append
@@ -1735,9 +1735,9 @@ class ParentsController extends Controller
 			// Récupération de la variable cryptée DATA
 			$message="message=".$DATA;
 		   
-		    $pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+		    $pathfile="pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/param/pathfile";
 
-			$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+			$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/bin/responseabo";
 
 			// Appel du binaire response
 			$message = escapeshellcmd($message);
@@ -1796,10 +1796,10 @@ class ParentsController extends Controller
 			$log_name = date('Y-m-d_H-i-s');
 			
 			if ($response_code == '00') {
-				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_success.txt";
+				$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/logs/".$log_name."_success.txt";
 			}
 			else {
-				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_fail.txt";
+				$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/logs/".$log_name."_fail.txt";
 			}
 
 			// Ouverture du fichier de log en append
@@ -1889,9 +1889,9 @@ class ParentsController extends Controller
 		$DATA = $request->request->get('DATA');
 		$message="message=".$DATA;
 			
-		$pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+		$pathfile="pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/param/pathfile";
 
-		$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+		$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/bin/responseabo";
 
 		// Appel du binaire response
 		$message = escapeshellcmd($message);
@@ -1948,10 +1948,10 @@ class ParentsController extends Controller
 		$log_name = date('Y-m-d_H-i-s');
 		
 		if ($response_code == '00') {
-			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_modification_success.txt";
+			$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/autologs/".$log_name."_modification_success.txt";
 		}
 		else {
-			$logfile="/home/majorcla/mercanet/subscription/autologs/".$log_name."_modification_fail.txt";
+			$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/autologs/".$log_name."_modification_fail.txt";
 		}
 
 		// Ouverture du fichier de log en append
@@ -2084,9 +2084,9 @@ class ParentsController extends Controller
 			// Récupération de la variable cryptée DATA
 			$message="message=".$DATA;
 		   
-		    $pathfile="pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+		    $pathfile="pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/param/pathfile";
 
-			$path_bin = "/home/majorcla/mercanet/subscription/bin/responseabo";
+			$path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/bin/responseabo";
 
 			// Appel du binaire response
 			$message = escapeshellcmd($message);
@@ -2145,10 +2145,10 @@ class ParentsController extends Controller
 			$log_name = date('Y-m-d_H-i-s');
 			
 			if ($response_code == '00') {
-				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_modification_success.txt";
+				$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/logs/".$log_name."_modification_success.txt";
 			}
 			else {
-				$logfile="/home/majorcla/mercanet/subscription/logs/".$log_name."_modification_fail.txt";
+				$logfile="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/logs/".$log_name."_modification_fail.txt";
 			}
 
 			// Ouverture du fichier de log en append

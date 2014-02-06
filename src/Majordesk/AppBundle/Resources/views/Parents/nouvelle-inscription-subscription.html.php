@@ -95,7 +95,7 @@
     //
     // This variable is optional. If not set, the API sets the value with "./pathfile"
 
-	$parm="$parm pathfile=/home/majorcla/mercanet/subscription/param/pathfile";
+	$parm="$parm pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/param/pathfile";
 
 	//	Si aucun transaction_id n'est affecté, recordabo en génère
 	//	un automatiquement à partir de heure/minutes/secondes
@@ -300,7 +300,7 @@
 	// -> Unix    : $path_bin = "/home/repertoire/bin/recordabo";
 	//
 
-	$path_bin="/home/majorcla/mercanet/subscription/bin/recordabo";
+	$path_bin="/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/bin/recordabo";
 
 	//	Appel du binaire recordabo
 	//	Recordabo binary call

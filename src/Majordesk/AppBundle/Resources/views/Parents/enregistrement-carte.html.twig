@@ -9,7 +9,7 @@
 <div class="container home-container">
 	{% set parm = "merchant_id=078949346700011" %}
 	{% set parm = parm ~ " merchant_country=fr" %}
-	{% set parm = parm ~ " pathfile=/home/majorcla/mercanet/subscription/param/pathfile" %}
+	{% set parm = parm ~ " pathfile=/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/param/pathfile" %}
 	{% set parm = parm ~ " sub_normal_return_url=http://www.majorclass.fr/enregistrement-carte-reponse" %}
 	{% set parm = parm ~ " sub_cancel_return_url=http://www.majorclass.fr" %}
 	{% set parm = parm ~ " sub_automatic_response_url=http://www.majorclass.fr/enregistrement-carte-autoreponse" %}
@@ -22,7 +22,7 @@
 	{% set parm = parm ~ " submit_logo=valider.jpg" %}
 	{% set parm = parm ~ " templatefile=subscription" %}
 	
-	{% set path_bin = "/home/majorcla/mercanet/subscription/bin/recordabo" %}
+	{% set path_bin = "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/subscription/bin/recordabo" %}
 	
 	{% set execParam = path_bin ~ " " ~ parm %}
 	
