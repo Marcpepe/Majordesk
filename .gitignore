@@ -4,7 +4,7 @@ app/sessions/
 app/config/parameters.yml
 cgv/
 fiches/
-mercanet/
+/mercanet/
 documents/
 web/bundles/
 web/uploads/

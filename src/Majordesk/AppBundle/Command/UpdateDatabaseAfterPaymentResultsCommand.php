@@ -25,12 +25,12 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 		$container = $this->getContainer(); 
 		$em = $container->get('doctrine')->getManager();
 	
-		$logs=fopen('/home/majorcla/mercanet/atos/reponse/logs.txt', 'a+');
+		$logs=fopen('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/logs.txt', 'a+');
 		
 		$date = date('d/m/Y \à H:m:i');		
 		fwrite( $logs, $date."  Ouverture du zip...\r\n");
 		$output->writeln('Ouverture du zip...');	
-		$zip = zip_open('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d').'/ABOREP01.ZIP');
+		$zip = zip_open('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d').'/ABOREP01.ZIP');
 		
 		// Ouverture du Zip
 		if (!is_int($zip)) {
@@ -52,7 +52,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 					$output->writeln('Ouverture OK...');
 					
 					// Extraction du fichier
-					$rep=fopen('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d').'/reponse', 'w+');
+					$rep=fopen('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d').'/reponse', 'w+');
 					fwrite($rep, zip_entry_read($zip_entry, zip_entry_filesize($zip_entry)));
 					fclose($rep);
 					$date = date('d/m/Y \à H:m:i');
@@ -60,7 +60,7 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 					$output->writeln('Extraction OK...');
 					
 					// Traitement
-					$reponse = file_get_contents('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d').'/reponse');
+					$reponse = file_get_contents('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d').'/reponse');
 
 					$code = substr($reponse, 41, 2);
 					fwrite( $logs, $date."  Code traitement : ".$code."\r\n");

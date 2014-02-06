@@ -24,7 +24,7 @@ class SendPaymentOrdersCommand extends ContainerAwareCommand
 		$ch = curl_init();
 		
 		// file
-		$file = '/home/majorcla/mercanet/atos/requete/'.date('Y-m-d').'/ABOREQ01.zip';
+		$file = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/'.date('Y-m-d').'/ABOREQ01.zip';
 		$file_handle = fopen($file, 'r');
 		
 		// Connexion settings
@@ -51,7 +51,7 @@ class SendPaymentOrdersCommand extends ContainerAwareCommand
 
 		curl_close($ch);
 		
-		$logs=fopen('/home/majorcla/mercanet/atos/requete/logs.txt', 'a+');
+		$logs=fopen('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/logs.txt', 'a+');
 		$date = date('d/m/Y \à H:m:i');
 		if ($error_no == 0) {
 			fwrite( $logs, $date.$returnCode."  Aucune erreur cURL\r\n");
