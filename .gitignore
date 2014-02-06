@@ -5,6 +5,7 @@ app/config/parameters.yml
 cgv/
 fiches/
 mercanet/
+documents/
 web/bundles/
 web/uploads/
 web/css/majordesk.less
