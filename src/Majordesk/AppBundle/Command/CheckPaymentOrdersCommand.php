@@ -26,7 +26,7 @@ class CheckPaymentOrdersCommand extends ContainerAwareCommand
 		$em = $this->getContainer()->get('doctrine')->getManager();
 		
 		// Nouvelle requete
-		$logs=fopen('/home/majorcla/mercanet/atos/requete/logs.txt', 'a+');
+		$logs=fopen('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/logs.txt', 'a+');
 		
 		$date = date('d/m/Y \à H:m:i');		
 		fwrite( $logs, $date."  Préparation d\'une nouvelle requete...\r\n");
@@ -77,14 +77,14 @@ class CheckPaymentOrdersCommand extends ContainerAwareCommand
         $paiements = $em->getRepository('MajordeskAppBundle:Paiement')
 						->getPendingPaiements();
 		
-		if (!file_exists('/home/majorcla/mercanet/atos/requete/'.date('Y-m-d'))) {
-			mkdir('/home/majorcla/mercanet/atos/requete/'.date('Y-m-d'), 0777, true);
+		if (!file_exists('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/'.date('Y-m-d'))) {
+			mkdir('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/'.date('Y-m-d'), 0777, true);
 		}
-		if (!file_exists('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d'))) {
-			mkdir('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d'), 0777, true);
+		if (!file_exists('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d'))) {
+			mkdir('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d'), 0777, true);
 		}
 		
-		$reqfile='/home/majorcla/mercanet/atos/requete/'.date('Y-m-d').'/requete';		
+		$reqfile='/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/'.date('Y-m-d').'/requete';		
 		
 		$req=fopen($reqfile, "w+");
 		
@@ -130,7 +130,7 @@ class CheckPaymentOrdersCommand extends ContainerAwareCommand
 		$output->writeln('"<info>'.$nb_enregistrements.'</info>" ordres de paiements ont ete ajoutes au fichier.');  
 
 		$zip = new \ZipArchive();
-		if ($zip->open('/home/majorcla/mercanet/atos/requete/'.date('Y-m-d').'/ABOREQ01.zip', \ZIPARCHIVE::CREATE) != true) {
+		if ($zip->open('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/requete/'.date('Y-m-d').'/ABOREQ01.zip', \ZIPARCHIVE::CREATE) != true) {
 			$date = date('d/m/Y \à H:m:i');
 			fwrite( $logs, $date.'  Echec de création du Zip.');
 		}

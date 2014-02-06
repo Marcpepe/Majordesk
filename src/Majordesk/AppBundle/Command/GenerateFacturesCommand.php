@@ -106,7 +106,7 @@ class GenerateFacturesCommand extends ContainerAwareCommand
 							'date'  => $date_facture,
 						)
 					),
-					'/home/majorcla/documents/factures/'.$id_famille.'/'.$year.'/'.$entete_facture.'-facture-'.$id_facture.'.pdf'
+					'/home/majorcla/public_html/majordesk/production/majorclass.fr/current/documents/factures/'.$id_famille.'/'.$year.'/'.$entete_facture.'-facture-'.$id_facture.'.pdf'
 				);
 				$output->writeln("Génération: Ok\n");
 				$output->writeln("//// ------------- ////\n");

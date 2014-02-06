@@ -55,7 +55,7 @@ set :dump_assetic_assets,   true
 set :writable_dirs,       [app_path + "/cache", app_path + "/logs"]
 set :permission_method,   :chmod
 set :set_permissions, true
-set :shared_children,   [app_path + "/logs", app_path + "/sessions", "web/uploads"]
+set :shared_children,   [app_path + "/logs", app_path + "/sessions", "web/uploads", "documents", "mercanet"]
 
 set :shared_files,      ["app/config/parameters.yml","web/.htaccess"]
 # set :shared_files,      ["app/config/parameters.yml", "composer.phar"]

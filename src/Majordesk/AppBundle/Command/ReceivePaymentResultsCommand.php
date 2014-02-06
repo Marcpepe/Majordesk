@@ -22,7 +22,7 @@ class ReceivePaymentResultsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 		$date = date('d/m/Y \à H:m:i');
-		$logs=fopen('/home/majorcla/mercanet/atos/reponse/logs.txt', 'a+');
+		$logs=fopen('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/logs.txt', 'a+');
 		
 		$MAX_ATTEMPTS = 5;
 		$attempt = 1;
@@ -36,7 +36,7 @@ class ReceivePaymentResultsCommand extends ContainerAwareCommand
 			$ch = curl_init();
 			
 			curl_setopt($ch, CURLOPT_URL,'ftp://ubzmjcla:Cx4x-2FzhW@ftpssl.pci.aw.atosorigin.com:10021');
-			curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
+			curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
 			curl_setopt($ch, CURLOPT_FTPLISTONLY, 1);
 			curl_setopt($ch, CURLOPT_SSLVERSION,3);
 			curl_setopt($ch, CURLOPT_FTP_SSL, CURLFTPSSL_TRY);
@@ -50,18 +50,18 @@ class ReceivePaymentResultsCommand extends ContainerAwareCommand
 			// ETAPE 2 : Download
 			$ch = curl_init();
 			
-			if (!file_exists('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d'))) { // ou alors CURLOPT_FTP_CREATE_MISSING_DIRS
-				mkdir('/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d'), 0777, true);
+			if (!file_exists('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d'))) { // ou alors CURLOPT_FTP_CREATE_MISSING_DIRS
+				mkdir('/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d'), 0777, true);
 			}
 			
-			$file_path = '/home/majorcla/mercanet/atos/reponse/'.date('Y-m-d').'/ABOREP01.ZIP';
+			$file_path = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/atos/reponse/'.date('Y-m-d').'/ABOREP01.ZIP';
 			$file = fopen($file_path, 'w+');
 
 			// Connexion and download to new filename
 			curl_setopt($ch, CURLOPT_URL,'ftp://ftpssl.pci.aw.atosorigin.com/'.$returnedFilename);
 			curl_setopt($ch, CURLOPT_PORT, 10021);
 			curl_setopt($ch, CURLOPT_USERPWD, "ubzmjcla:Cx4x-2FzhW");
-			curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
+			curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
 			curl_setopt($ch, CURLOPT_SSLVERSION,3);
 			curl_setopt($ch, CURLOPT_FTP_SSL, CURLFTPSSL_TRY);
 			curl_setopt($ch, CURLOPT_FTP_USE_EPSV, false);
