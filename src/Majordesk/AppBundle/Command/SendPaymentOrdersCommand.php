@@ -31,7 +31,7 @@ class SendPaymentOrdersCommand extends ContainerAwareCommand
 		curl_setopt($ch, CURLOPT_URL,'ftp://ftpssl.pci.aw.atosorigin.com/ABOREQ01.zip');
 		curl_setopt($ch, CURLOPT_PORT, 10021);
 		curl_setopt($ch, CURLOPT_USERPWD, "ubzmjcla:Cx4x-2FzhW");
-		curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
+		curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
 		curl_setopt($ch, CURLOPT_SSLVERSION,3);
 		curl_setopt($ch, CURLOPT_FTP_SSL, CURLFTPSSL_TRY);
 		curl_setopt($ch, CURLOPT_FTP_USE_EPSV, false);

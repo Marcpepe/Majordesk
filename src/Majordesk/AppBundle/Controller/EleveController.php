@@ -15,6 +15,7 @@ use Majordesk\AppBundle\Entity\Exercice;
 use Majordesk\AppBundle\Entity\Question;
 use Majordesk\AppBundle\Entity\Casier;
 use Majordesk\AppBundle\Entity\CarteEtudiant;
+use Majordesk\AppBundle\Entity\Contrat;
 
 use Majordesk\AppBundle\Form\Type\CoursType;
 use Majordesk\AppBundle\Form\Type\CoursFilterType;
@@ -299,22 +300,9 @@ class EleveController extends Controller
 		else if ($this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
 			
 			$user = $this->getUser();
-			// $casier = $user->getCasier();
-			// $carteEtudiant = $user->getCarteEtudiant();
-			
-			// if (empty($casier)) {
-				// $casier = new Casier();	
-				// $user->setCasier($casier);
-			// }
-			// if (empty($carteEtudiant)) {
-				// $carteEtudiant = new CarteEtudiant();	
-				// $user->setCarteEtudiant($carteEtudiant);
-			// }
-			
+
 			$form = $this->createForm( new ProfInfoType(), $user );
-			
-			// throw new \Exception(var_dump($form));
-			
+
 			$request = $this->getRequest();
 			if ($request->getMethod() == 'POST') 
 			{
@@ -330,7 +318,12 @@ class EleveController extends Controller
 					$carteEtudiant = $user->getCarteEtudiant();
 					if (!empty($carteEtudiant)) {
 						$carteEtudiant->preUpload();
-						$casier->setProfesseur($user);
+						$carteEtudiant->setProfesseur($user);
+					}
+					$contrat = $user->getContrat();
+					if (!empty($contrat)) {
+						$contrat->preUpload();
+						$contrat->setProfesseur($user);
 					}
 					$em->persist($user);
 					$em->flush();

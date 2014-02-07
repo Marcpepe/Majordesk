@@ -113,6 +113,22 @@
 								{{ form_widget(form.carteEtudiant) }} <br>
 
 				</div>
+				
+				<div class="clearfix"></div><br>
+				<strong>Contrat</strong><br><br>
+				<div class="col-lg-6">
+				{% if user.hasContrat %}
+					<i class="icon-ok icon-large"></i> Tu as bien enregistré ton contrat.<br><br>
+				{% else %}
+					Tu n'as pas encore enregistré ton contrat. Il te sera envoyé par mail après un entretien avec l'équipe Majorclass.<br><br>
+				{% endif %}		
+				</div>			
+				<div class="col-lg-6">
+
+						{% if user.hasContrat %}Mettre à jour ton contrat{% else %}Mettre en ligne ton contrat{% endif %}: <br><br>
+								{{ form_widget(form.contrat) }} <br>
+
+				</div>
 			<div class="clearfix"></div><br>
 			
 			<h3><i class="icon-credit-card icon-large text-peterriver"></i> Mes informations</h3><br>

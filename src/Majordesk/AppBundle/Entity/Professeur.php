@@ -139,6 +139,13 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	/**
      * @var string
      *
+     * @ORM\Column(name="nationalite", type="string", length=255, nullable=true)
+     */
+    private $nationalite;
+	
+	/**
+     * @var string
+     *
      * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
      */
     private $adresse;
@@ -292,6 +299,11 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CarteEtudiant", mappedBy="professeur", cascade={"persist","remove"})
 	 */
 	private $carteEtudiant;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Contrat", mappedBy="professeur", cascade={"persist","remove"})
+	 */
+	private $contrat;
 	
 
     /**
@@ -575,6 +587,29 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function getLycee()
     {
         return $this->lycee;
+    }
+	
+	/**
+     * Set nationalite
+     *
+     * @param string $nationalite
+     * @return Professeur
+     */
+    public function setNationalite($nationalite)
+    {
+        $this->nationalite = $nationalite;
+    
+        return $this;
+    }
+
+    /**
+     * Get nationalite
+     *
+     * @return string 
+     */
+    public function getNationalite()
+    {
+        return $this->nationalite;
     }
 	
 	/**
@@ -973,6 +1008,39 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function hasCarteEtudiant()
     {
         return !empty($this->carteEtudiant);
+    }
+	
+	/**
+     * Set contrat
+     *
+     * @param string $contrat
+     * @return Famille
+     */
+    public function setContrat($contrat)
+    {
+        $this->contrat = $contrat;
+    
+        return $this;
+    }
+
+    /**
+     * Get contrat
+     *
+     * @return string 
+     */
+    public function getContrat()
+    {
+        return $this->contrat;
+    }
+	
+	/**
+     * Get contrat
+     *
+     * @return string 
+     */
+    public function hasContrat()
+    {
+        return !empty($this->contrat);
     }
 	
 	/**

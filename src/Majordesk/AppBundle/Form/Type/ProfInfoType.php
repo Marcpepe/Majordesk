@@ -9,6 +9,7 @@ use Majordesk\AppBundle\Entity\EleveRepository;
 
 use Majordesk\AppBundle\Form\Type\CasierType;
 use Majordesk\AppBundle\Form\Type\CarteEtudiantType;
+use Majordesk\AppBundle\Form\Type\ContratType;
 
 class ProfInfoType extends AbstractType
 {
@@ -22,8 +23,10 @@ class ProfInfoType extends AbstractType
 				'attr' => array('class'=>'form-control')
 				))
 			->add('carteEtudiant'                 , new CarteEtudiantType(), array(
-				// 'class' => 'MajordeskAppBundle:CarteEtudiant',
-				// 'property' => 'file',
+				'required' => false,
+				'attr' => array('class'=>'form-control')
+				))
+			->add('contrat'                 , new ContratType(), array(
 				'required' => false,
 				'attr' => array('class'=>'form-control')
 				))
