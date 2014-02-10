@@ -10,8 +10,8 @@
 {% endblock %}
  
 {% block admin %}
-				<span class="visible-md"><br></span>
-				<span class="visible-lg"><br></span>
+		<br><br><span class="visible-xs"><br><br></span>
+			<div class="col-lg-12">
 				<h3>
 					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Profil : famille {% if parents[0] is defined %}{{ parents[0].nom }}{% endif %}</p>
 				</h3>	
@@ -306,7 +306,9 @@
 						</tbody>
 					</table>
 				</div>
-			{% endfor %}		
+			{% endfor %}
+
+		</div>
 			
 {% endblock %}
 

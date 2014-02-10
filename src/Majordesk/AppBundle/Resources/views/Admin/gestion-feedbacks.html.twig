@@ -9,8 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<span class="visible-md"><br><br></span>
-<span class="visible-lg"><br><br></span>
+<br><br><span class="visible-xs"><br><br></span>
 
 	<div class="col-lg-12">
 		<h3><i class="icon-flag icon-large text-orange"></i> Feedbacks</h3><br>
@@ -63,7 +62,7 @@
 								Admin
 							{% endif %}
 						</td>
-						<td>
+						<td style="width:80px">
 							{% if feedback.statut == 0 %}
 								<i rel="tooltip" data-title="Réfusé" class="icon-remove icon-large text-red"></i>
 							{% elseif feedback.statut == 2 %}

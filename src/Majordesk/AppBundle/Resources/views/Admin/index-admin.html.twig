@@ -5,8 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<span class="visible-md"><br><br></span>
-<span class="visible-lg"><br><br></span>
+<br><br><span class="visible-xs"><br><br></span>
 
 <div class="col-lg-12">
 	<h4>Utilisateurs</h4><br>
@@ -49,6 +48,9 @@
 </div>
 <div class="col-lg-4">
 	<a class="btn btn-success-inverted btn-block" href="{{ path('majordesk_app_gestion_paiements') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Gestion des paiements</span></a>
+</div>
+<div class="col-lg-4">
+	<a class="btn btn-primary-inverted btn-block" href="{{ path('majordesk_app_gestion_virements') }}"><i class="icon-money icon-4x"></i> <span class="position-relative-up-12">Gestion des virements</span></a>
 </div>
 
 <div class="clearfix"></div>

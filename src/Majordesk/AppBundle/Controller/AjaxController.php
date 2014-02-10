@@ -764,6 +764,29 @@ class AjaxController extends Controller
 		
 		return new Response();
 	}
+	
+	/**
+	 * @Secure(roles="ROLE_ELEVE")
+	 */
+    public function updateRegleAction($id_ticket)
+    {
+		$ticket = $this->getDoctrine()
+						 ->getManager()
+						 ->getRepository('MajordeskAppBundle:Ticket')
+						 ->find($id_ticket);
+	
+		$request = $this->getRequest();
+		if ( $request->isXmlHttpRequest() ) {	
+			$regle = $request->get('regle');
+			$ticket->setRegle($regle);
+			
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($ticket);
+			$em->flush();
+		}
+		
+		return new Response();
+	}
 
 	/**
 	 * @Secure(roles="ROLE_ADMIN")

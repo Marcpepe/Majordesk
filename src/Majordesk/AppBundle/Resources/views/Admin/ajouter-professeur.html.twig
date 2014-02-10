@@ -11,8 +11,8 @@
  
 {% block admin %}
 			<form method="post" action="{{ path('majordesk_app_ajouter_professeur') }}">
-				<span class="visible-md"><br></span>
-				<span class="visible-lg"><br></span>
+				<br><br><span class="visible-xs"><br><br></span>
+				<div class="col-lg-12">
 				<h3>
 					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Ajouter un professeur</p>
 				</h3>
@@ -236,6 +236,7 @@
 						<button type="submit" class="btn btn-success pull-right">Valider <i class="icon-ok"></i></button>
 					</div>
 				</div>
+			</div>
 				
 			{{ form_widget(form._token) }}
 			</form>

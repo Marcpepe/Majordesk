@@ -305,6 +305,11 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	 */
 	private $contrat;
 	
+	/**
+	* @ORM\OnetoMany(targetEntity="Majordesk\AppBundle\Entity\Ticket", mappedBy="professeur")
+	*/
+	private $tickets;
+	
 
     /**
      * Get id
@@ -1145,6 +1150,45 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function getDisponibilites()
     {
         return $this->disponibilites;
+    }
+	
+	/**
+     * Add ticket
+     *
+     * @param \Majordesk\AppBundle\Entity\Ticket $ticket
+     * @return Professeur
+     */
+    public function addTicket(\Majordesk\AppBundle\Entity\Ticket $ticket)
+    {
+		$this->tickets[] = $ticket;
+		$ticket->setProfesseur($this);
+			
+        return $this;
+    }
+
+    /**
+     * Remove ticket
+     *
+     * @param \Majordesk\AppBundle\Entity\Ticket $ticket
+     */
+    public function removeTicket(\Majordesk\AppBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets->removeElement($ticket);
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+	
+	public function getDernierTicket()
+    {
+        return $this->tickets[count($this->tickets)-1];
     }
 	
 	/**

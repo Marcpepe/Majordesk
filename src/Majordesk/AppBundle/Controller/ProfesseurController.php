@@ -111,7 +111,7 @@ class ProfesseurController extends Controller
 						$professeur = $user;
 						$professeur->setHeuresDonnees($professeur->getHeuresDonnees() + $quantite);
 						if ($quantite <= $heuresRestantes) {
-							$ticket->setRegle(true);
+							$ticket->setRegle(false);
 							$paiement = new Paiement();
 							$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il vous reste <strong>'.$heuresIncrementees.'</strong> heure(s) de cours.');
 							$paiement->setFamille($famille);
@@ -226,9 +226,18 @@ class ProfesseurController extends Controller
 	/**
 	 * @Secure(roles="ROLE_PROF")
 	 */
-    public function coursDonnesAction()
+    public function coursDonnesAction($id_professeur = null)
     {
-		$user = $this->getUser();
+		if ($this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {	
+			$user = $this->getUser();
+		} else if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$user = $this->getDoctrine()
+					     ->getManager()
+					     ->getRepository('MajordeskAppBundle:Professeur')
+					     ->find($id_professeur);
+		} else {
+			throw new AccessDeniedException();
+		}
 		
 		$first_day_this_month = new \Datetime("first day of this month", new \DateTimeZone('Europe/Paris'));
 		$first_day_last_month = new \Datetime("first day of last month", new \DateTimeZone('Europe/Paris'));

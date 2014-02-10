@@ -115,6 +115,26 @@ class AdminController extends Controller
 		));
     }
 	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function gestionVirementsAction()
+    {
+		$professeurs = $this->getDoctrine()
+						  ->getManager()
+						  ->getRepository('MajordeskAppBundle:Professeur')
+						  ->findAll();
+		
+		$first_day_this_month = new \Datetime("first day of this month", new \DateTimeZone('Europe/Paris'));
+		$first_day_last_month = new \Datetime("first day of last month", new \DateTimeZone('Europe/Paris'));
+		
+        return $this->render('MajordeskAppBundle:Admin:gestion-virements.html.twig', array(
+			'professeurs' => $professeurs,
+			'first_day_this_month' => $first_day_this_month,
+			'first_day_last_month' => $first_day_last_month,
+		));
+    }
+	
 
 /* ELEVES */
 

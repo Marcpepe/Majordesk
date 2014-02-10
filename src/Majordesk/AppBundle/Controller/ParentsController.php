@@ -101,7 +101,7 @@ class ParentsController extends Controller
 							$professeur = $ticket->getProfesseur();
 							$professeur->setHeuresDonnees($professeur->getHeuresDonnees() + $quantite);
 							if ($quantite <= $heuresRestantes) {
-								$ticket->setRegle(true);
+								$ticket->setRegle(false);
 								$paiement = new Paiement();
 								$paiement->setDescription($eleve->getUsername().' a pris un cours de '.$temps.'.<br>Il vous reste <strong>'.$heuresIncrementees.'</strong> heure(s) de cours.');
 								$paiement->setFamille($famille);

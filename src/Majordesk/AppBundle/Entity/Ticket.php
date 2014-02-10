@@ -63,7 +63,7 @@ class Ticket
 	private $eleve;
 	
 	/**
-	* @ORM\ManyToOne(targetEntity="Majordesk\AppBundle\Entity\Professeur")
+	* @ORM\ManyToOne(targetEntity="Majordesk\AppBundle\Entity\Professeur", inversedBy="tickets")
 	* @ORM\JoinColumn(nullable=false)
 	*/
 	private $professeur;
@@ -198,6 +198,26 @@ class Ticket
     public function getQuantite()
     {
         return $this->quantite;
+    }
+	
+	/**
+     * Get montant
+     *
+     * @return string 
+     */
+    public function getMontant()
+    {
+        return $this->quantite * 5.99;
+    }
+	
+	/**
+     * Get montant
+     *
+     * @return string 
+     */
+    public function getMontantProfesseur()
+    {
+        return $this->quantite * 2.5;
     }
 
     /**

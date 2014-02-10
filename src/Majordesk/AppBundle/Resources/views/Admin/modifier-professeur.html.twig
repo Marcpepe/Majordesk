@@ -11,8 +11,8 @@
  
 {% block admin %}
 			<form class="form-inline" method="post" action="{{ path('majordesk_app_modifier_professeur', {'id' : professeur.id}) }}">
-				<span class="visible-md"><br></span>
-				<span class="visible-lg"><br></span>
+				<br><br><span class="visible-xs"><br><br></span>
+					<div class="col-lg-12">
 				<h3>
 					<i class="icon-user-md icon-large text-red pull-left"></i> <p class="pull-left">Profil : <em>modification en cours...</em></p>
 				</h3>	
@@ -345,7 +345,8 @@
 						<span class="input-group-addon" style="position:relative;top:1px;"><i class="icon-calendar"></i></span>
 					</div>
 				</div>
-		
+			
+			</div>
 			
 			{{ form_widget(form._token) }}
 			</form>

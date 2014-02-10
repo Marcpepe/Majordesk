@@ -233,7 +233,7 @@ majordesk_app_gestion_devoirs:
         id_eleve:      \d{1,5}
 
 majordesk_app_cours_donnes:
-    pattern:  /professeur/cours-donnes
+    pattern:  /professeur/cours-donnes/{id_professeur}
     defaults: { _controller: MajordeskAppBundle:Professeur:coursDonnes }
 
 ## ROLE_ELEVE ##
@@ -673,6 +673,14 @@ majordesk_app_update_feedback:
     options:
         expose: true
 
+majordesk_app_update_regle:
+    pattern:  /admin/update-regle-{id_ticket}
+    defaults: { _controller: MajordeskAppBundle:Ajax:updateRegle }
+    requirements:
+        id_ticket:   \d{1,6}
+    options:
+        expose: true
+
 #--Heures--#
 majordesk_app_gestion_heures:
     pattern:  /admin/gestion-des-heures
@@ -682,6 +690,10 @@ majordesk_app_gestion_heures:
 majordesk_app_gestion_paiements:
     pattern:  /admin/gestion-des-paiements
     defaults: { _controller: MajordeskAppBundle:Admin:gestionPaiements }
+
+majordesk_app_gestion_virements:
+    pattern:  /admin/gestion-des-virements
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionVirements }
 
 #--Eleves--#
 majordesk_app_gestion_eleves:

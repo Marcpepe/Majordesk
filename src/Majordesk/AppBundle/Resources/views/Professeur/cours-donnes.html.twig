@@ -6,7 +6,10 @@
 {% endblock %}
 
 {% block navbar %}
-	{% if is_granted('ROLE_PROF') %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<li><a href="{{ path('majordesk_app_gestion_virements') }}"><i class="icon-angle-right"></i> Gestion des virements</a></li>
+		<li><a><i class="icon-angle-right"></i> Cours donnés</a></li>
+	{% elseif is_granted('ROLE_PROF') %}
 		<li><a><i class="icon-angle-right"></i> Cours donnés</a></li>
 	{% endif %}
 {% endblock %}
@@ -95,8 +98,27 @@
 											{% endif %}
 										</td>
 										<td>
-											<em>Non <i rel="tooltip" data-title="Règlement en fin de mois" class="icon-info-sign cursor-help text-grey"></i></em>
+											{% if ticket.regle %}
+												<em>Oui</em>
+											{% else %}
+												<em>Non <i rel="tooltip" data-title="Règlement en fin de mois" class="icon-info-sign cursor-help text-grey"></i></em>
+											{% endif %}
 										</td>
+										{% if is_granted('ROLE_ADMIN') %}
+											<td style="width:95px">
+												{% if ticket.regle %}
+													<div class="btn-group">
+														<button class="btn btn-success active"><i class="icon-ok"></i></button> 
+														<button class="btn btn-default"><i class="icon-remove text-pomegranate"></i></button> 
+													</div>
+												{% else %}
+													<div class="btn-group">
+														<button class="btn btn-default"><i class="icon-ok text-emerald"></i></button> 
+														<button class="btn btn-danger active"><i class="icon-remove"></i></button> 
+													</div>
+												{% endif %}
+											</td>
+										{% endif %}
 									</tr>
 							{% endfor %}
 						{% endfor %}
@@ -191,8 +213,27 @@
 											{% endif %}
 										</td>
 										<td>
-											<em>Non <i rel="tooltip" data-title="Règlement en fin de mois" class="icon-info-sign cursor-help text-grey"></i></em>
+											{% if ticket.regle %}
+												<em>Oui</em>
+											{% else %}
+												<em>Non</em>
+											{% endif %}
 										</td>
+										{% if is_granted('ROLE_ADMIN') %}
+											<td style="width:95px" data-id-ticket="{{ ticket.id }}">
+												{% if ticket.regle %}
+													<div class="btn-group">
+														<button class="btn btn-success active"><i class="icon-ok"></i></button> 
+														<button class="btn btn-default update-regle" data-regle="0"><i class="icon-remove text-pomegranate"></i></button> 
+													</div>
+												{% else %}
+													<div class="btn-group">
+														<button class="btn btn-default update-regle" data-regle="1"><i class="icon-ok text-emerald"></i></button> 
+														<button class="btn btn-danger active"><i class="icon-remove"></i></button> 
+													</div>
+												{% endif %}
+											</td>
+										{% endif %}
 									</tr>
 							{% endfor %}
 						{% endfor %}
@@ -208,3 +249,14 @@
 			
 		</div>
 {% endblock %}
+
+{% if is_granted('ROLE_ADMIN') %}
+	{% block javascripts %}
+		{{ parent() }}
+		{% javascripts filter='yui_js' output='js/*'
+			'../app/Resources/js/admin/cours-donnes.js'
+		%}
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
+	{% endblock %}
+{% endif %}

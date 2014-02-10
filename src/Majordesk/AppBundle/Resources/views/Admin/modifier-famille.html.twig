@@ -11,8 +11,8 @@
  
 {% block admin %}
 			<form class="form-inline" method="post" action="{{ path('majordesk_app_modifier_famille', {'id' : famille.id}) }}">
-				<span class="visible-md"><br></span>
-				<span class="visible-lg"><br></span>
+				<br><br><span class="visible-xs"><br><br></span>
+				<div class="col-lg-12">
 				<h3>
 					<i class="icon-group icon-large text-yellow pull-left"></i> <p class="pull-left">Profil : famille {{ parents[0].nom }}</p>
 				</h3>	
@@ -253,6 +253,8 @@
 					</table>
 				</div>
 			{% endfor %}
+		
+			</div>
 		
 			{{ form_rest(form) }}
 			</form>

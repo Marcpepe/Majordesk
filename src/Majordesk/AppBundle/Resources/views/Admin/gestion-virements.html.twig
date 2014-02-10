@@ -1,0 +1,81 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Gestion des virements - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des virements</a></li>
+{% endblock %}
+
+{% block body %}
+<br><br><span class="visible-xs"><br><br></span>
+
+	<div class="col-lg-12">
+		<h3>Liste des professeurs</h3><br>
+		{% if professeurs|length > 0 %}
+		<div class="table-responsive">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>Prénom Nom</th>
+						<th>Dernier cours</th>
+						<th>Total en cours</th>
+						<th>Total mois dernier</th>
+						<th>Mois dernier payé</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for professeur in professeurs %}
+					<tr>
+						<td>{{ professeur.username ~ ' ' ~ professeur.nom }}</td>
+						<td>{% if professeur.dernierTicket is not empty %}{{ professeur.dernierTicket.dateTicket|date('d/m/Y') }}{% endif %}</td>
+						<td>
+							{% set totalEnCours = 0 %}
+							{% for ticket in professeur.tickets %}
+								{% if ticket.dateTicket >= first_day_this_month %}
+									{% set totalEnCours = totalEnCours + ticket.montantProfesseur %}
+								{% endif %}
+							{% endfor %}
+							{{ totalEnCours|number_format(2, ',', ' ') }} €
+						</td>
+						<td>
+							{% set totalMoisDernier = 0 %}
+							{% for ticket in professeur.tickets %}
+								{% if ticket.dateTicket >= first_day_last_month and ticket.dateTicket < first_day_this_month %}
+									{% set totalMoisDernier = totalMoisDernier + ticket.montantProfesseur %}
+								{% endif %}
+							{% endfor %}
+							{{ totalMoisDernier|number_format(2, ',', ' ') }} €
+						</td>
+						<td>
+							{% set moisDernierPaye = true %}
+							{% for ticket in professeur.tickets %}
+								{% if ticket.dateTicket >= first_day_last_month and ticket.dateTicket < first_day_this_month and not ticket.regle %}
+									{% set moisDernierPaye = false %}
+								{% endif %}
+							{% endfor %}
+							{% if moisDernierPaye %}
+								<span class="text-emerald">Oui</span>
+							{% else %}
+								<strong class="text-pomegranate">Non</strong>
+							{% endif %}
+						</td>
+						<td><a href="{{ path('majordesk_app_cours_donnes', {'id_professeur' : professeur.id }) }}" class="btn btn-default"><i class="icon-gear"></i></a></td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% else %}
+			Aucun professeur à ce jour.
+		{% endif %}
+	</div>
+	<div class="clearfix"></div><br><br>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

@@ -5,6 +5,8 @@ set :default_stage, "staging"
 set :stage_dir,     "app/config"
 require 'capistrano/ext/multistage'
 
+set :maintenance_template_path, "web/maintenance.html.erb"
+
 # before "deploy:restart", "deploy:set_permissions"
 
 # namespace :deploy do
