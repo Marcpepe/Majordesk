@@ -57,7 +57,7 @@ class Ticket
     private $quantite;
 	
 	/**
-	* @ORM\ManyToOne(targetEntity="Majordesk\AppBundle\Entity\Eleve")
+	* @ORM\ManyToOne(targetEntity="Majordesk\AppBundle\Entity\Eleve", inversedBy="tickets")
 	* @ORM\JoinColumn(nullable=false)
 	*/
 	private $eleve;
@@ -69,7 +69,12 @@ class Ticket
 	private $professeur;
 	
 	/**
-	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CalEvent", mappedBy="ticket" )
+	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Paiement", mappedBy="ticket", cascade={"remove"})
+	*/
+	private $paiement;
+	
+	/**
+	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CalEvent", mappedBy="ticket")
 	*/
 	private $cal_event;
 	
@@ -265,6 +270,29 @@ class Ticket
     public function getCalEvent()
     {
         return $this->cal_event;
+    }
+	
+	/**
+     * Set paiement
+     *
+     * @param \Majordesk\AppBundle\Entity\Paiement $paiement
+     * @return Eleve
+     */
+    public function setPaiement(\Majordesk\AppBundle\Entity\Paiement $paiement)
+    {
+        $this->paiement = $paiement;
+    
+        return $this;
+    }
+
+    /**
+     * Get paiement
+     *
+     * @return \Majordesk\AppBundle\Entity\paiement 
+     */
+    public function getPaiement()
+    {
+        return $this->paiement;
     }
 
     /**

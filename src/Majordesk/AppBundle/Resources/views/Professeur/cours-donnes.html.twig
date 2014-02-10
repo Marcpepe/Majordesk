@@ -105,15 +105,15 @@
 											{% endif %}
 										</td>
 										{% if is_granted('ROLE_ADMIN') %}
-											<td style="width:95px">
+											<td style="width:95px" data-id-ticket="{{ ticket.id }}">
 												{% if ticket.regle %}
 													<div class="btn-group">
 														<button class="btn btn-success active"><i class="icon-ok"></i></button> 
-														<button class="btn btn-default"><i class="icon-remove text-pomegranate"></i></button> 
+														<button class="btn btn-default update-regle" data-regle="0"><i class="icon-remove text-pomegranate"></i></button> 
 													</div>
 												{% else %}
 													<div class="btn-group">
-														<button class="btn btn-default"><i class="icon-ok text-emerald"></i></button> 
+														<button class="btn btn-default update-regle" data-regle="1"><i class="icon-ok text-emerald"></i></button> 
 														<button class="btn btn-danger active"><i class="icon-remove"></i></button> 
 													</div>
 												{% endif %}

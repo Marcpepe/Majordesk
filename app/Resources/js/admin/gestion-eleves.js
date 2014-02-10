@@ -53,4 +53,20 @@ $(document).on('click', 'a.flag', function() {
 			alert('La requête n\'a pas abouti');
 		}
 	});
+})
+.on('click', '.delete-eleve', function() {
+	var $this = $(this);
+	var id_eleve = $this.closest("td").attr('data-id-eleve');
+	$this.closest('td').find('i').removeClass('icon-cogs').addClass('icon-spinner icon-spin text-orange');
+	
+	$.ajax({
+		type: "POST",
+		url: Routing.generate("majordesk_app_delete_eleve", {'id_eleve' : id_eleve}),
+		success: function(){
+			$this.closest('tr').fadeOut(function() { $(this).remove(); })
+		},
+		error: function() {
+			alert('La requête n\'a pas abouti');
+		}
+	});
 });

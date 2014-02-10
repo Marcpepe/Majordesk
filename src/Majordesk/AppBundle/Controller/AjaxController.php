@@ -1054,6 +1054,46 @@ class AjaxController extends Controller
 	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
+    public function deleteEleveAction($id_eleve)
+    {
+		$eleve = $this->getDoctrine()
+					  ->getManager()
+				      ->getRepository('MajordeskAppBundle:Eleve')
+					  ->find($id_eleve);
+		
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') 
+		{
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($eleve);
+			$em->flush();
+		}
+		return new Response();
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function deleteProfesseurAction($id_professeur)
+    {
+		$professeur = $this->getDoctrine()
+					  ->getManager()
+				      ->getRepository('MajordeskAppBundle:Professeur')
+					  ->find($id_professeur);
+		
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') 
+		{
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($professeur);
+			$em->flush();
+		}
+		return new Response();
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
     public function uploadExerciceAction($id)
     {
 		$en_ligne = $this->container->getParameter('statut_en_ligne');

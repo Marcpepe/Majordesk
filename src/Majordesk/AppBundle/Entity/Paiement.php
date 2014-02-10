@@ -63,7 +63,7 @@ class Paiement
 	private $famille;
 	
 	/**
-	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Ticket", cascade={"remove"})
+	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Ticket", inversedBy="paiement")
 	*/
 	private $ticket;
 	

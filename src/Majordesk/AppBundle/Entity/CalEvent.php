@@ -100,7 +100,7 @@ class CalEvent
 	private $chapitres;
 	
 	/**
-	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Ticket", inversedBy="cal_event", cascade={"remove"})
+	* @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Ticket", inversedBy="cal_event")
 	*/
 	private $ticket;
 

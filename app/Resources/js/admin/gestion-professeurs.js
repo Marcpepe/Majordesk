@@ -53,4 +53,20 @@ $(document).on('click', 'a.flag', function() {
 			alert('La requête n\'a pas abouti');
 		}
 	});
+})
+.on('click', '.delete-professeur', function() {
+	var $this = $(this);
+	var id_professeur = $this.closest("td").attr('data-id-professeur');
+	$this.closest('td').find('i').removeClass('icon-cogs').addClass('icon-spinner icon-spin text-orange');
+	
+	$.ajax({
+		type: "POST",
+		url: Routing.generate("majordesk_app_delete_professeur", {'id_professeur' : id_professeur}),
+		success: function(){
+			$this.closest('tr').fadeOut(function() { $(this).remove(); })
+		},
+		error: function() {
+			alert('La requête n\'a pas abouti');
+		}
+	});
 });

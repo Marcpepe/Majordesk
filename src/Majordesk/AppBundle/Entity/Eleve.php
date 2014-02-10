@@ -225,6 +225,11 @@ class Eleve implements AdvancedUserInterface, \Serializable
 	 * @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\EleveMatiere", mappedBy="eleve", cascade={"persist", "remove"})
 	 */
 	private $eleve_matieres;
+	
+	/**
+	* @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\Ticket", mappedBy="eleve", cascade={"remove"})
+	*/
+	private $tickets;
 
 
     /**

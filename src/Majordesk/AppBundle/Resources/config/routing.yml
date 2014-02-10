@@ -1033,11 +1033,27 @@ majordesk_app_delete_exercice:
     options:
         expose: true
 
+majordesk_app_delete_professeur:
+    pattern:  /admin/delete-professeur-{id_professeur}
+    defaults: { _controller: MajordeskAppBundle:Ajax:deleteProfesseur }
+    requirements:
+        id_professeur:   \d{1,5}
+    options:
+        expose: true
+
 majordesk_app_delete_famille:
     pattern:  /admin/delete-famille-{id}
     defaults: { _controller: MajordeskAppBundle:Ajax:deleteFamille }
     requirements:
         id:   \d{1,5}
+    options:
+        expose: true
+
+majordesk_app_delete_eleve:
+    pattern:  /admin/delete-eleve-{id_eleve}
+    defaults: { _controller: MajordeskAppBundle:Ajax:deleteEleve }
+    requirements:
+        id_eleve:   \d{1,5}
     options:
         expose: true
 
