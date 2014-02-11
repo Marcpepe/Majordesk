@@ -1034,12 +1034,12 @@ class AjaxController extends Controller
 	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
-    public function deleteFamilleAction($id)
+    public function deleteFamilleAction($id_famille)
     {
 		$famille = $this->getDoctrine()
 						->getManager()
 						->getRepository('MajordeskAppBundle:Famille')
-						->find($id);
+						->find($id_famille);
 		
 		$request = $this->getRequest();
 		if ($request->getMethod() == 'POST') 

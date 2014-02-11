@@ -54,26 +54,19 @@ $(document).on('click', 'a.flag', function() {
 		}
 	});
 })
-.on('click', ".remove-famille", function() {
-	var thisSelector = $(this);
-	var ligne_famille = thisSelector.closest(".ligne_famille");
-	var id = ligne_famille.attr('data-id');
-	ligne_famille.find('td .spinner').html('<i class="icon-spinner icon-spin icon-large text-red"></i>');
-	bootbox.confirm("<i class='icon-warning-sign icon-large text-yellow'></i> <strong>Confirmation</strong> <br><br>Souhaitez-vous supprimer définitivement cette famille ?", 'Non', 'Oui', function(result) {
-		if (result) {
-			$.ajax({
-				type: "POST",
-				url: Routing.generate("majordesk_app_delete_famille", {'id' : id}),
-				success: function(){
-					ligne_famille.fadeOut(400, function() { $(this).remove(); });
-				},
-				error: function() {
-					alert('La requête n\'a pas abouti');
-				}
-			});
+.on('click', '.delete-famille', function() {
+	var $this = $(this);
+	var id_famille = $this.closest("td").attr('data-id-famille');
+	$this.closest('td').find('i').removeClass('icon-cogs').addClass('icon-spinner icon-spin text-orange');
+	
+	$.ajax({
+		type: "POST",
+		url: Routing.generate("majordesk_app_delete_famille", {'id_famille' : id_famille}),
+		success: function(){
+			$this.closest('tr').fadeOut(function() { $(this).remove(); })
+		},
+		error: function() {
+			alert('La requête n\'a pas abouti');
 		}
-		else {
-			ligne_famille.find('td .spinner').html('');
-		}
-	});	
+	});
 });

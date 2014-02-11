@@ -88,7 +88,7 @@
 								<i class="icon-ban-circle icon-large text-red"></i>
 							{% endif %}
 						  </td>
-						  <td>
+						  <td data-id-famille="{{ famille.id }}">
 							<div class="btn-group">
 							  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
 								<i class="icon-cogs"></i> 
@@ -116,7 +116,7 @@
 									</a>
 								  </li>
 								  <li class="divider"></li>
-								  <li><a tabindex="-1" class="remove-famille cursor"><i class="icon-trash"></i> Supprimer cette famille</a></li>
+								  <li><a tabindex="-1" class="cursor delete-famille confirm-majorclass" data-message="Confirmez-vous la suppression de cette famille ?"><i class="icon-trash"></i> Supprimer cette famille</a></li>
 							  </ul> 
 							   <span class="spinner"></span>
 							</div>

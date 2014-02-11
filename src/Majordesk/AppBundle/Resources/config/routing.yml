@@ -1042,10 +1042,10 @@ majordesk_app_delete_professeur:
         expose: true
 
 majordesk_app_delete_famille:
-    pattern:  /admin/delete-famille-{id}
+    pattern:  /admin/delete-famille-{id_famille}
     defaults: { _controller: MajordeskAppBundle:Ajax:deleteFamille }
     requirements:
-        id:   \d{1,5}
+        id_famille:   \d{1,5}
     options:
         expose: true
 
