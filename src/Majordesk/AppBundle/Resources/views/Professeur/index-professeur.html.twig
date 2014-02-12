@@ -262,7 +262,7 @@
 			{% else %}
 				<em>Aucun cours donnés à ce jour</em>
 			{% endif %}
-			<a href="{{ path('majordesk_app_cours_donnes') }}" class="btn btn-warning pull-right">Plus de détails</a>
+			<a href="{{ path('majordesk_app_cours_donnes', {'id_professeur' : user.id }) }}" class="btn btn-warning pull-right">Plus de détails</a>
 		</div>
 		<div class="clearfix"></div><br>
 	</div>

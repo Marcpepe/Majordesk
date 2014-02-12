@@ -26,7 +26,7 @@ class ListOnlyCommand extends ContainerAwareCommand
 		$ch = curl_init();
 		
 		curl_setopt($ch, CURLOPT_URL,'ftp://ubzmjcla:Cx4x-2FzhW@ftpssl.pci.aw.atosorigin.com:10021');
-		curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
+		curl_setopt($ch, CURLOPT_CAINFO, "/home/majorcla/public_html/majordesk/production/majorclass.fr/current/mercanet/certificates/root-ftpssl.pci.aw.atosorigin.com.cer");	
 		curl_setopt($ch, CURLOPT_FTPLISTONLY, 1);
 		curl_setopt($ch, CURLOPT_SSLVERSION,3);
 		curl_setopt($ch, CURLOPT_FTP_SSL, CURLFTPSSL_TRY);

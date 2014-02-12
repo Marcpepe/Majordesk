@@ -8,7 +8,7 @@
 {% block navbar %}
 	{% if is_granted('ROLE_ADMIN') %}
 		<li><a href="{{ path('majordesk_app_gestion_virements') }}"><i class="icon-angle-right"></i> Gestion des virements</a></li>
-		<li><a><i class="icon-angle-right"></i> Cours donnés</a></li>
+		<li><a><i class="icon-angle-right"></i> Cours (im)payés</a></li>
 	{% elseif is_granted('ROLE_PROF') %}
 		<li><a><i class="icon-angle-right"></i> Cours donnés</a></li>
 	{% endif %}

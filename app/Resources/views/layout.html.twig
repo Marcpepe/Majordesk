@@ -78,8 +78,10 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li><a tabindex="-1" href="{{ path('majordesk_app_profil') }}"><i class="icon-user"></i> Profil</a></li>
+							{% if is_granted('ROLE_PARENTS') and not is_granted('ROLE_ADMIN') %}
 							<li><a tabindex="-1" href="{{ path('majordesk_app_parametres_compte') }}"><i class="icon-cog"></i> Paramètres</a></li>
 							<li><a tabindex="-1" href="{{ path('majordesk_app_presentation_tarifs') }}"><i class="icon-money"></i> Tarif</a></li>
+							{% endif %}
 							<li class="divider"></li>
 							<li><a tabindex="-1" href="{{ path('logout') }}"><i class="icon-signout"></i> Déconnexion</a></li>
 						</ul>

@@ -28,6 +28,9 @@ class ParentsController extends Controller
 	public function indexParentsAction()
     {
 		if ($this->get('security.context')->isGranted('ROLE_PARENTS') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+		
+			
+		
 			$user = $this->getUser();
 			$famille = $user->getFamille();
 			$eleves = $famille->getEleves();
@@ -42,7 +45,6 @@ class ParentsController extends Controller
 			}	
 
 			if (count($eleves) > 1) {
-
 				$ticket = new Ticket();
 
 				$form = $this->createForm( new TicketSelectNoFiltreType($famille->getId()), $ticket );
