@@ -121,9 +121,9 @@ class AdminController extends Controller
     public function gestionVirementsAction()
     {
 		$professeurs = $this->getDoctrine()
-						  ->getManager()
-						  ->getRepository('MajordeskAppBundle:Professeur')
-						  ->findAll();
+						    ->getManager()
+						    ->getRepository('MajordeskAppBundle:Professeur')
+						    ->findAll();
 		
 		$first_day_this_month = new \Datetime("first day of this month", new \DateTimeZone('Europe/Paris'));
 		$first_day_last_month = new \Datetime("first day of last month", new \DateTimeZone('Europe/Paris'));
@@ -132,6 +132,50 @@ class AdminController extends Controller
 			'professeurs' => $professeurs,
 			'first_day_this_month' => $first_day_this_month,
 			'first_day_last_month' => $first_day_last_month,
+		));
+    }
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function gestionDocumentsAction()
+    {
+		$professeurs = $this->getDoctrine()
+						    ->getManager()
+						    ->getRepository('MajordeskAppBundle:Professeur')
+						    ->findAll();
+
+        return $this->render('MajordeskAppBundle:Admin:gestion-documents.html.twig', array(
+			'professeurs' => $professeurs
+		));
+    }
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function viewDocumentAction($type, $id_document)
+    {
+		if ($type == 1) {
+			$document = $this->getDoctrine()
+							 ->getManager()
+							 ->getRepository('MajordeskAppBundle:Casier')
+							 ->find($id_document);
+		} else if ($type == 2) {
+			$document = $this->getDoctrine()
+							 ->getManager()
+							 ->getRepository('MajordeskAppBundle:CarteEtudiant')
+							 ->find($id_document);
+		} else if ($type == 3) {
+			$document = $this->getDoctrine()
+							 ->getManager()
+							 ->getRepository('MajordeskAppBundle:Contrat')
+							 ->find($id_document);
+		}
+		
+		$file_path = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current/web/uploads/'.$document->getChemin();
+		
+		return new Response(file_get_contents($file_path), 200, array(
+			'Content-Type' => 'application/pdf'
 		));
     }
 	

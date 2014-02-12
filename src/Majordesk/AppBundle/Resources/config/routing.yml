@@ -682,6 +682,15 @@ majordesk_app_update_regle:
         expose: true
 
 #--Heures--#
+majordesk_app_gestion_documents:
+    pattern:  /admin/gestion-des-documents
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionDocuments }
+
+majordesk_app_view_document:
+    pattern:  /admin/voir-document/{type}/{id_document}
+    defaults: { _controller: MajordeskAppBundle:Admin:viewDocument }
+
+#--Heures--#
 majordesk_app_gestion_heures:
     pattern:  /admin/gestion-des-heures
     defaults: { _controller: MajordeskAppBundle:Admin:gestionHeures }

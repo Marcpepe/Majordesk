@@ -274,7 +274,7 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	private $eleves;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\Disponibilite", mappedBy="professeur", cascade={"persist"})
+	 * @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\Disponibilite", mappedBy="professeur", cascade={"persist", "remove"})
 	 * @Assert\Valid()
 	 */
 	private $disponibilites;
