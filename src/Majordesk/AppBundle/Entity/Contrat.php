@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Contrat
  *
- * @ORM\Table()
+ * @ORM\Table(name="contrat")
  * @ORM\Entity(repositoryClass="Majordesk\AppBundle\Entity\ContratRepository")
  */
 class Contrat
