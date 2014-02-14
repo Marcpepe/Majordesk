@@ -72,7 +72,7 @@ set :copy_vendors, false
 
 
 set :model_manager, "doctrine"
-set :keep_releases,  3
+set :keep_releases,  1
 
 
 # after "deploy:update_code" do
