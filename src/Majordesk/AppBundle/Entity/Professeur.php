@@ -301,6 +301,11 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	private $carteEtudiant;
 	
 	/**
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\CarteIdentite", mappedBy="professeur", cascade={"persist","remove"})
+	 */
+	private $carteIdentite;
+	
+	/**
 	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Contrat", mappedBy="professeur", cascade={"persist","remove"})
 	 */
 	private $contrat;
@@ -1013,6 +1018,39 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function hasCarteEtudiant()
     {
         return !empty($this->carteEtudiant);
+    }
+	
+	/**
+     * Set carteIdentite
+     *
+     * @param string $carteIdentite
+     * @return Famille
+     */
+    public function setCarteIdentite($carteIdentite)
+    {
+        $this->carteIdentite = $carteIdentite;
+    
+        return $this;
+    }
+
+    /**
+     * Get carteIdentite
+     *
+     * @return string 
+     */
+    public function getCarteIdentite()
+    {
+        return $this->carteIdentite;
+    }
+	
+	/**
+     * Get carteIdentite
+     *
+     * @return string 
+     */
+    public function hasCarteIdentite()
+    {
+        return !empty($this->carteIdentite);
     }
 	
 	/**

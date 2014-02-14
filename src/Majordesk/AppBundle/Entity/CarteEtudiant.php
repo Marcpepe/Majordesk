@@ -48,7 +48,7 @@ class CarteEtudiant
 	private $file;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Professeur", inversedBy="professeur")
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Professeur", inversedBy="carteEtudiant")
 	 */
 	private $professeur;
 

@@ -320,6 +320,11 @@ class EleveController extends Controller
 						$carteEtudiant->preUpload();
 						$carteEtudiant->setProfesseur($user);
 					}
+					$carteIdentite = $user->getCarteIdentite();
+					if (!empty($carteIdentite)) {
+						$carteIdentite->preUpload();
+						$carteIdentite->setProfesseur($user);
+					}
 					$contrat = $user->getContrat();
 					if (!empty($contrat)) {
 						$contrat->preUpload();

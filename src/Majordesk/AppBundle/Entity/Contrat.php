@@ -47,7 +47,7 @@ class Contrat
 	private $file;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Professeur", inversedBy="professeur")
+	 * @ORM\OneToOne(targetEntity="Majordesk\AppBundle\Entity\Professeur", inversedBy="contrat")
 	 */
 	private $professeur;
 

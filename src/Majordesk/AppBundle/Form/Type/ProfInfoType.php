@@ -26,6 +26,10 @@ class ProfInfoType extends AbstractType
 				'required' => false,
 				'attr' => array('class'=>'form-control')
 				))
+			->add('carteIdentite'                 , new CarteIdentiteType(), array(
+				'required' => false,
+				'attr' => array('class'=>'form-control')
+				))
 			->add('contrat'                 , new ContratType(), array(
 				'required' => false,
 				'attr' => array('class'=>'form-control')

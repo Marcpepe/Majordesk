@@ -313,7 +313,9 @@
 						<li>Vous ne serez jamais débités autrement que pour les cours qui ont effectivement eu lieu</li>
 					</ul>
 					<br>
-					<a href="{{ path('majordesk_app_enregistrement_carte') }}" class="btn btn-warning">Enregistrer un moyen de paiement</a>
+					<div class="text-left-lg-right-xs">
+						<a href="{{ path('majordesk_app_enregistrement_carte') }}" class="btn btn-warning">Enregistrer un moyen de paiement</a>
+					</div>
 				</div>
 				<div class="clearfix"></div><br>
 			</div>
@@ -410,10 +412,14 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 				<h3 class="text-left-lg-center-xs">Rejoignez-nous sur Facebook</h3>
-				<div class="fb-like" data-href="https://www.facebook.com/MajorclassOfficialPage" data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
+				<div class="col-lg-12 text-left-lg-center-xs">
+					<div class="fb-like" data-href="https://www.facebook.com/MajorclassOfficialPage" data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
+				</div>
 				<br><br>
 				<h3 class="text-left-lg-center-xs">Et recommandez-nous !</h3>
-				<div class="fb-share-button" data-href="https://www.facebook.com/MajorclassOfficialPage" data-type="button_count">Partager</div>
+				<div class="col-lg-12 text-left-lg-center-xs">
+					<div class="fb-share-button" data-href="https://www.facebook.com/MajorclassOfficialPage" data-type="button_count">Partager</div>
+				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div><br><span class="hidden-xs"><br></span>
@@ -426,7 +432,9 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 				<h3 class="text-left-lg-center-xs">Posez-nous vos questions sur Twitter</h3>
-				<a href="https://twitter.com/Majorclass_" class="twitter-follow-button" data-show-count="false" data-lang="fr" data-size="large" data-dnt="true">Suivre @Majorclass_</a>
+				<div class="col-lg-12 text-left-lg-center-xs">
+					<a href="https://twitter.com/Majorclass_" class="twitter-follow-button" data-show-count="false" data-lang="fr" data-size="large" data-dnt="true">Suivre @Majorclass_</a>
+				</div>
 				<br><br>	
 			</div>
 		</div>
@@ -442,12 +450,12 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 				<h3 class="text-left-lg-center-xs">Ou recommandez-nous par mail</h3><br>
-				<div class="col-lg-12">
+				<div class="col-lg-12 text-left-lg-center-xs">
 					<a href="{{ path('majordesk_app_recommandez_nous') }}" class="btn btn-purple"><i class="icon-thumbs-up"></i> Nous Recommander</a>
 				</div>
 			</div>
 		</div>
-		<div class="clearfix"></div><br><span class="hidden-xs"><br></span>
+		<div class="clearfix"></div><br><br><span class="visible-xs"><br></span>
 	</div>
 
 {% endblock %}

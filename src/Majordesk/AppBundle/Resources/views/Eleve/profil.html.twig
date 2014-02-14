@@ -43,6 +43,7 @@
 			{% else %}
 				<strong class="text-red">Inactif</strong>
 			{% endif %}
+			<br><br>
 		</div>
 		<div class="col-lg-4">
 			<a href="{{ path('majordesk_app_modifier_password') }}" class="btn btn-default"><i class="icon-gear"></i> Modifier mon mot de passe</a>
@@ -65,6 +66,7 @@
 					{% else %}
 						<strong class="text-red">Inactif</strong>
 					{% endif %}
+					<br><br>
 				</div>
 				{% if loop.last %}
 					<div class="col-lg-4">
@@ -82,20 +84,20 @@
 			<form role="form-inline" method="post" action="{{ path('majordesk_app_profil') }}" {{ form_enctype(form) }}>
 			
 			<h3><i class="icon-file icon-large text-greensea"></i> Mes documents</h3><br>
-				<strong>Extrait de casier judiciaire</strong><br><br>
+				
+				<strong>Carte d'Identité</strong><br><br>
 				<div class="col-lg-6">
-				{% if user.hasCasier %}
-					<i class="icon-ok icon-large"></i> Tu as bien enregistré ton casier judiciaire.<br><br>
+				{% if user.hasCarteIdentite %}
+					<i class="icon-ok icon-large"></i> Tu as bien enregistré ta carte d'identité.<br><br>
 				{% else %}
-					Tu n'as pas encore enregistré ton casier judiciaire.<br><br>
+					Tu n'as pas encore enregistré ta carte d'identité (CNI, passeport,..).<br><br>
 				{% endif %}		
-				La demande s'effectue en ligne très simplement avec <a href="https://www.cjn.justice.gouv.fr/cjn/b3/eje20" target="_blank">ce formulaire</a>.
 				</div>			
 				<div class="col-lg-6">
-					
-						{% if user.hasCasier %}Mettre à jour ton casier judiciaire{% else %}Mettre en ligne ton casier judiciaire {% endif %}: <br><br>
-								{{ form_widget(form.casier) }} <br>
-						
+				
+						{% if user.hasCarteIdentite %}Mettre à jour ta carte d'identité{% else %}Mettre en ligne ta carte d'identité {% endif %}: <br><br>
+								{{ form_widget(form.carteIdentite) }} <br>
+
 				</div>
 				
 				<div class="clearfix"></div><br>
@@ -112,6 +114,23 @@
 						{% if user.hasCarteEtudiant %}Mettre à jour ta carte d'étudiant{% else %}Mettre en ligne ta carte d'étudiant {% endif %}: <br><br>
 								{{ form_widget(form.carteEtudiant) }} <br>
 
+				</div>
+				
+				<div class="clearfix"></div><br>
+				<strong>Casier judiciaire (Extrait de)</strong><br><br>
+				<div class="col-lg-6">
+				{% if user.hasCasier %}
+					<i class="icon-ok icon-large"></i> Tu as bien enregistré ton casier judiciaire.<br><br>
+				{% else %}
+					Tu n'as pas encore enregistré ton casier judiciaire.<br><br>
+				{% endif %}		
+				La demande s'effectue en ligne très simplement avec <a href="https://www.cjn.justice.gouv.fr/cjn/b3/eje20" target="_blank">ce formulaire</a>.
+				</div>			
+				<div class="col-lg-6">
+					
+						{% if user.hasCasier %}Mettre à jour ton casier judiciaire{% else %}Mettre en ligne ton casier judiciaire {% endif %}: <br><br>
+								{{ form_widget(form.casier) }} <br>
+						
 				</div>
 				
 				<div class="clearfix"></div><br>
