@@ -906,6 +906,16 @@ body.preview {
 		background-color: #8e4c9b;
 		color: white;
 	}*/
+/* Make Facebook like button responsive */
+#fb-root {
+  display: none;
+}
+/* To fill the container and nothing else */
+.fb_iframe_widget,
+.fb_iframe_widget span,
+.fb_iframe_widget span iframe[style] {
+  width: 100% !important;
+}
 .font-family-logo {
   font-family: 'yaahowu_boldregular';
 }
