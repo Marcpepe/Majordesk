@@ -911,9 +911,9 @@ body.preview {
   display: none;
 }
 /* To fill the container and nothing else */
-.fb_iframe_widget,
-.fb_iframe_widget span,
-.fb_iframe_widget span iframe[style] {
+.fb_iframe_widget.fb-responsive,
+.fb_iframe_widget.fb-responsive span,
+.fb_iframe_widget.fb-responsive span iframe[style] {
   width: 100% !important;
 }
 .font-family-logo {
