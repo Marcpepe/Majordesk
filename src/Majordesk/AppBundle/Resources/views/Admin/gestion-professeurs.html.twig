@@ -140,9 +140,10 @@
 						  <th>Nom <i class="icon-caret-down pull-right icon-table-position"></i></th>
 						  <th>Hrs données <i class="icon-caret-down pull-right icon-table-position"></i></th>
 						  <th>Elèves <i class="icon-caret-down pull-right icon-table-position"></i></th>
-						  <th>Dispos <i class="icon-time pull-right icon-table-position"></i></th>
-						  <th>Casier</th>
+						  <th>Dispos <i class="icon-time pull-right icon-table-position"></i></th> 
 						  <th>Carte Et.</th>
+						  <th>Carte Id.</th>
+						  <th>Casier</th>
 						  <th>N° SS</th>
 						  <th>RIB</th>
 						  <th>Flag</th>
@@ -179,12 +180,17 @@
 							{% endfor %}
 						  </td>
 						  <td>
-							{% if professeur.hasCasier %}
+							{% if professeur.hasCarteIdentite %}
 								<i class="icon-ok"></i>
 							{% endif %}
 						  </td>
 						  <td>
 							{% if professeur.hasCarteEtudiant %}
+								<i class="icon-ok"></i>
+							{% endif %}
+						  </td>
+						  <td>
+							{% if professeur.hasCasier %}
 								<i class="icon-ok"></i>
 							{% endif %}
 						  </td>

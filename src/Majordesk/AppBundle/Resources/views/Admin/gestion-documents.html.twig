@@ -29,9 +29,10 @@
 				<tbody>
 				{% for professeur in professeurs %}
 					<tr>
-						<td>{{ professeur.username ~ ' ' ~ professeur.nom }}</td>
-						<td>{% if professeur.hasCasier %}<a href="{{ path('majordesk_app_view_document', {'type': 1, 'id_document' : professeur.casier.id}) }}"><i class="icon-file"></i></a> ({{ professeur.casier.dateEnregistrement|date('d/m/Y') }}){% endif %}</td>
+						<td>{{ professeur.username ~ ' ' ~ professeur.nom }}</td>					
+						<td>{% if professeur.hasCarteIdentite %}<a href="{{ path('majordesk_app_view_document', {'type': 2, 'id_document' : professeur.carteIdentite.id}) }}"><i class="icon-file"></i></a> ({{ professeur.carteIdentite.dateEnregistrement|date('d/m/Y') }}){% endif %}</td>
 						<td>{% if professeur.hasCarteEtudiant %}<a href="{{ path('majordesk_app_view_document', {'type': 2, 'id_document' : professeur.carteEtudiant.id}) }}"><i class="icon-file"></i></a> ({{ professeur.carteEtudiant.dateEnregistrement|date('d/m/Y') }}){% endif %}</td>
+						<td>{% if professeur.hasCasier %}<a href="{{ path('majordesk_app_view_document', {'type': 1, 'id_document' : professeur.casier.id}) }}"><i class="icon-file"></i></a> ({{ professeur.casier.dateEnregistrement|date('d/m/Y') }}){% endif %}</td>
 						<td>{% if professeur.hasContrat %}<a href="{{ path('majordesk_app_view_document', {'type': 3, 'id_document' : professeur.contrat.id}) }}"><i class="icon-file"></i></a> ({{ professeur.contrat.dateEnregistrement|date('d/m/Y') }}){% endif %}</td>
 						<td>{% if professeur.hasRib %}<i class="icon-ok text-emerald"></i>{% endif %}</td>
 						<td>{% if professeur.hasSecuriteSociale %}<i class="icon-ok text-emerald"></i>{% endif %}</td>
