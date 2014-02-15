@@ -5,6 +5,8 @@ namespace Majordesk\AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Majordesk\AppBundle\Form\Type\EleveType;
 use Majordesk\AppBundle\Form\Type\AddEleveType;
 use Majordesk\AppBundle\Form\Type\GererProfesseursType;
@@ -158,7 +160,7 @@ class AdminController extends Controller
 		if ($type == 1) {
 			$document = $this->getDoctrine()
 							 ->getManager()
-							 ->getRepository('MajordeskAppBundle:Casier')
+							 ->getRepository('MajordeskAppBundle:CarteIdentite')
 							 ->find($id_document);
 		} else if ($type == 2) {
 			$document = $this->getDoctrine()
@@ -168,14 +170,39 @@ class AdminController extends Controller
 		} else if ($type == 3) {
 			$document = $this->getDoctrine()
 							 ->getManager()
+							 ->getRepository('MajordeskAppBundle:Casier')
+							 ->find($id_document);
+		} else if ($type == 4) {
+			$document = $this->getDoctrine()
+							 ->getManager()
 							 ->getRepository('MajordeskAppBundle:Contrat')
 							 ->find($id_document);
 		}
 		
+		if (empty($document)) {
+			$this->get('session')->getFlashBag()->add('warning', 'Ouverture du document impossible.');
+			return $this->redirect($this->generateUrl('majordesk_app_gestion_documents'));
+		}
 		$file_path = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current/web/uploads/'.$document->getChemin();
+		// $file_path = 'C:/wamp/www/Symfony/web/uploads/'.$document->getChemin();
+		
+		if ( strpos($document->getChemin(), "pdf") ) {
+			$contentType = 'application/pdf';
+		} else if ( strpos($document->getChemin(), "png") ) {
+			$contentType = 'image/png';
+		} else if ( strpos($document->getChemin(), "jpeg") ) {
+			$contentType = 'image/jpeg';
+		} else if ( strpos($document->getChemin(), "jpg") ) {
+			$contentType = 'image/jpg';
+		} else if ( strpos($document->getChemin(), "gif") ) {
+			$contentType = 'image/gif';
+		} else {
+			$this->get('session')->getFlashBag()->add('warning', ' Type du document inconnu.');
+			return $this->redirect($this->generateUrl('majordesk_app_gestion_documents'));
+		}
 		
 		return new Response(file_get_contents($file_path), 200, array(
-			'Content-Type' => 'application/pdf'
+			'Content-Type' => $contentType
 		));
     }
 	
