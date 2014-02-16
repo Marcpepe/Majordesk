@@ -1,13 +1,51 @@
 <html>
-	<body>
-	<img src="http://majorclass.fr/img/home/logo-sm.png" style="height:25px" /><br><br>
-	Bonjour,
-	<br><br>
-	Suite à votre demande de mot de passe oublié, veuillez suivre le lien ci-dessous afin de créer un nouveau mot de passe :
-	<br><br>
-	http://www.majorclass.fr/mdp-reset/{{ encrypted_mail }}
-	<br><br>
-	Bien à vous,<br>
-	L'équipe Majorclass
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	.btn {
+	  display: inline-block;
+	  padding: 6px 12px;
+	  margin-bottom: 0;
+	  font-size: 14px;
+	  font-weight: normal;
+	  line-height: 1.428571429;
+	  text-align: center;
+	  white-space: nowrap;
+	  vertical-align: middle;
+	  cursor: pointer;
+	  background-image: none;
+	  border: 1px solid transparent;
+	  border-radius: 4px;
+	  -webkit-user-select: none;
+		 -moz-user-select: none;
+		  -ms-user-select: none;
+		   -o-user-select: none;
+			  user-select: none;
+	}
+	.btn-success {
+	  color: #ffffff;
+	  background-color: #5cb85c;
+	  border-color: #4cae4c;
+	}
+	</style>
+	<body style="background-color: #fafafa;">
+		 <br><br><br>
+		<div style="width: 600px;margin-left:auto;margin-right:auto;background-color:#ffffff;border: 1px solid #dddddd;padding-left:30px;padding-right:30px;padding-top:30px;padding-bottom:10px;">
+			<div style="width:80%;margin-left:auto;margin-right:auto;"><a href="http://www.majorclass.fr"><img src="http://majorclass.fr/img/home/logo.png" style="width:100%" /></a></div><br><br>
+			Bonjour,
+			<br><br>
+			Suite à votre demande de mot de passe oublié, veuillez suivre le lien ci-dessous afin de créer un nouveau mot de passe :
+			<br><br>
+			<a href="http://www.majorclass.fr/mdp-reset/{{ encrypted_mail }}" class="btn btn-success">Changer de mot de passe</a>
+			<br><br>
+			Bien à vous,<br>
+			L'équipe Majorclass
+			<br><br><br>
+		</div>
+		<div style="height:20px;width:626px;margin-left:auto;margin-right:auto;padding:5px;padding-left:30px;background-color:#687080;">
+			<a href="https://www.facebook.com/MajorclassOfficialPage" target="blank_"><img style="height:20px;" src="http://majorclass.fr/img/home/facebook.png"></a>
+			<a href="https://www.twitter.com/Majorclass_" target="blank_"><img style="height:20px;" src="http://majorclass.fr/img/home/twitter.png"></a>
+			<a href="http://www.linkedin.com/company/majorclass" target="blank_"><img style="height:20px;" src="http://majorclass.fr/img/home/linkedin.png"></a>
+		</div>
+		<br><br><br>
 	</body>
 </html>

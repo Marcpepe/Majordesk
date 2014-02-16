@@ -1,19 +1,42 @@
 <html>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	.btn {
+	  display: inline-block;
+	  padding: 6px 12px;
+	  margin-bottom: 0;
+	  font-size: 14px;
+	  font-weight: normal;
+	  line-height: 1.428571429;
+	  text-align: center;
+	  white-space: nowrap;
+	  vertical-align: middle;
+	  cursor: pointer;
+	  background-image: none;
+	  border: 1px solid transparent;
+	  border-radius: 4px;
+	  -webkit-user-select: none;
+		 -moz-user-select: none;
+		  -ms-user-select: none;
+		   -o-user-select: none;
+			  user-select: none;
+	}
+	.btn-success {
+	  color: #ffffff;
+	  background-color: #5cb85c;
+	  border-color: #4cae4c;
+	}
+	</style>
 	<body style="background-color: #fafafa;">
 		 <br><br><br>
 		<div style="width: 600px;margin-left:auto;margin-right:auto;background-color:#ffffff;border: 1px solid #dddddd;padding-left:30px;padding-right:30px;padding-top:30px;padding-bottom:10px;">
 			<div style="width:80%;margin-left:auto;margin-right:auto;"><a href="http://www.majorclass.fr"><img src="http://majorclass.fr/img/home/logo.png" style="width:100%" /></a></div><br><br>
-				{{ gender }} {{ nom }},
-				<br><br>
-				Suite à votre inscription le {{ date_inscription|date('d/m/y') }}, nous avons le plaisir de vous informer qu'un professeur a été choisi pour suivre votre enfant.
-				<br><br>
-				Il ne vous reste plus qu'à enregistrer un moyen de paiement depuis l'accueil de votre espace personnel.<br>
-				Dès que ceci sera fait, vous serez immédiatement mis(e) en relation avec votre professeur et vous pourrez convenir avec lui d'une date pour le premier cours.
-				<br><br>
-				Bien à vous,<br>
-				L'équipe Majorclass
-				<br><br><br>
+			<h4>Notification de la plateforme ({{ dateNotification|date('d/m/y H:m:s')}}):</h4>
+			<br>
+			{{ notification }}
+			<br><br>
+			<a href="http://www.majorclass.fr/admin/" class="btn btn-success">Se connecter en tant qu'Admin</a>
+			<br><br><br>
 		</div>
 		<div style="height:20px;width:626px;margin-left:auto;margin-right:auto;padding:5px;padding-left:30px;background-color:#687080;">
 			<a href="https://www.facebook.com/MajorclassOfficialPage" target="blank_"><img style="height:20px;" src="http://majorclass.fr/img/home/facebook.png"></a>

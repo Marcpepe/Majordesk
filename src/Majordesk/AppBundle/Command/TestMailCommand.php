@@ -28,8 +28,8 @@ class TestMailCommand extends ContainerAwareCommand
 		
 		$message = \Swift_Message::newInstance()
 				->setSubject('Mail essai')
-				->setFrom('test@majorclass.fr')
-				->setTo(array('marc@majorclass.fr','marc.perrinpelletier@gmail.com', 'jonathan@majorclass.fr'))
+				->setFrom(array('test@majorclass.fr'=>'Majorclass'))
+				->setTo(array('marc@majorclass.fr','marc.perrinpelletier@gmail.com'))
 				// ->setBody($container->get('templating')->render('MajordeskAppBundle:Template:bienvenue.html.twig', array('gender' => $gender, 'nom' => $nom, 'liste' => $liste)), 'text/html')
 				->setBody($container->get('templating')->render('MajordeskAppBundle:Template:bienvenue.html.twig'), 'text/html')
 			;
