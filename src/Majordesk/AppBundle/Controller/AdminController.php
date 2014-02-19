@@ -364,12 +364,6 @@ class AdminController extends Controller
 					  ->getManager()
 					  ->getRepository('MajordeskAppBundle:Eleve')
 					  ->find($id_eleve);
-					  
-		$professeurs = $eleve->getProfesseurs();
-		$prof_array = array();
-		foreach($professeurs as $professeur) {
-			$prof_array[] = $professeur->getId();
-		}
 		
 		$form = $this->createForm(new GererProfesseursType(), $eleve);
 		
@@ -380,59 +374,49 @@ class AdminController extends Controller
 			
 			if ($form->isValid()) 
 			{
-				$new_professeurs = $form->getData()->getProfesseurs();
-				$new_prof_array = array();
-				foreach($new_professeurs as $professeur) {
-					$new_prof_array[] = $professeur->getId();
+				$whichMail = $form->get('mail')->getData();
+				
+				$famille = $eleve->getFamille();
+				$mail = $famille->getMail();
+				$nom = $famille->getNom();
+				$date_inscription = $famille->getDateInscription();
+				$adresse = $famille->getAdresse().' '.$famille->getCodePostal().' '.$famille->getVille();
+				$abonnement = $famille->getAbonnement();
+				$parente = $famille->getGender();
+				if ($parente % 2 == 0) {
+					$gender = 'Cher M.';
+				} else {
+					$gender = 'Chère Mme.';
 				}
 				
-				$array_diff = array_diff($new_prof_array,$prof_array);
-				if (!empty($array_diff)) {
-					$famille = $eleve->getFamille();
-					$mail = $famille->getMail();
-					$nom = $famille->getNom();
-					$date_inscription = $famille->getDateInscription();
-					$adresse = $famille->getAdresse().' '.$famille->getCodePostal().' '.$famille->getVille();
-					$abonnement = $famille->getAbonnement();
-					$parente = $famille->getGender();
-					if ($parente % 2 == 0) {
-						$gender = 'Cher M.';
-					} else {
-						$gender = 'Chère Mme.';
-					}
-					
-					foreach($array_diff as $id_professeur) {
-						$professeur = $this->getDoctrine()
-										   ->getManager()
-										   ->getRepository('MajordeskAppBundle:Professeur')
-										   ->find($id_professeur);
-						if (!empty($abonnement)) {
-							$telephone = $professeur->getTelephone();
-							$message = \Swift_Message::newInstance()
-									->setSubject('Notification Majorclass')
-									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
-									->setTo($mail)
-									->setBody($this->renderView('MajordeskAppBundle:Template:assignation-et-mise-en-relation.html.twig', array('gender' => $gender, 'nom' => $nom, 'telephone' => $telephone)), 'text/html')
-								;
-								$this->get('mailer')->send($message);
+				if ($whichMail == 1) {
+					$professeurs = $eleve->getProfesseurs();
+					$professeur = $professeurs->last();
+					$telephone = $professeur->getTelephone();
+				
+					$message = \Swift_Message::newInstance()
+							->setSubject('Notification Majorclass')
+							->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
+							->setTo($mail)
+							->setBody($this->renderView('MajordeskAppBundle:Template:assignation-et-mise-en-relation.html.twig', array('gender' => $gender, 'nom' => $nom, 'telephone' => $telephone)), 'text/html')
+						;
+						$this->get('mailer')->send($message);
 								
-							$message = \Swift_Message::newInstance()
-									->setSubject('Notification Majorclass')
-									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
-									->setTo($professeur->getMail())
-									->setBody($this->renderView('MajordeskAppBundle:Template:avertissement-professeur.html.twig', array('nom' => $nom, 'prenom_enfant' => $eleve->getUsername(), 'classe' => $eleve->getProgramme()->getNom(), 'representant' => $representant,  'telephone' => $famille->getTelephone(), 'adresse' => $adresse)), 'text/html')
-								;
-								$this->get('mailer')->send($message);
-						} else {
-							$message = \Swift_Message::newInstance()
-									->setSubject('Notification Majorclass')
-									->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
-									->setTo($mail)
-									->setBody($this->renderView('MajordeskAppBundle:Template:assignation.html.twig', array('gender' => $gender, 'nom' => $nom, 'date_inscription' => $date_inscription)), 'text/html')
-								;
-								$this->get('mailer')->send($message);
-						}
-					}
+					$message = \Swift_Message::newInstance()
+							->setSubject('Notification Majorclass')
+							->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
+							->setTo($professeur->getMail())
+							->setBody($this->renderView('MajordeskAppBundle:Template:avertissement-professeur.html.twig', array('nom' => $nom, 'prenom_enfant' => $eleve->getUsername(), 'classe' => $eleve->getProgramme()->getNom(), 'representant' => $representant,  'telephone' => $famille->getTelephone(), 'adresse' => $adresse)), 'text/html')
+						;
+						$this->get('mailer')->send($message);
+				} else if ($whichMail == 2) {
+					$message = \Swift_Message::newInstance()
+							->setSubject('Notification Majorclass')
+							->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
+							->setTo($mail)
+							->setBody($this->renderView('MajordeskAppBundle:Template:assignation.html.twig', array('gender' => $gender, 'nom' => $nom, 'date_inscription' => $date_inscription)), 'text/html')
+						;
+						$this->get('mailer')->send($message);
 				}
 			
 				$em = $this->getDoctrine()->getManager();

@@ -131,9 +131,16 @@
 			{% else %}
 				<em>Aucun cours donnés à ce jour</em>
 			{% endif %}
-				
+			
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="clearfix"></div>
+				<br><br>
+				<span class="pull-right">Signaler par mail au professeur qu'il a été payé : <button type="button" class="btn btn-warning send-payment-confirmation confirm-majorclass" data-message="Envoyer un mail de confirmation de paiement?" data-id-professeur="{{ id_professeur }}"><i class="icon-envelope-alt"></i></button></span>
+			{% endif %}
+			
 			<div class="clearfix"></div>
 			<br><br>
+			
 			<h3>Cours donnés le mois dernier</h3><br>
 					
 			{% if tickets_last_month|length > 0 %}

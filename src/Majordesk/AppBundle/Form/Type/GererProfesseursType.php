@@ -30,6 +30,13 @@ class GererProfesseursType extends AbstractType
 					'required' => false,
 					'by_reference' => false
 					))
+			->add('mail','choice', array(
+				'choices'   => array('1' => 'Cas "Famille a enregistré sa carte" : On envoi un mail à la Famille et au Prof pour les mettre en relation.', '2' => 'Cas "Famille n\'a pas encore enregistré sa carte : On envoi un mail à la Famille pour lui signaler qu\'un prof a été trouvé.', '3' => 'Pas d\'envoi de mail'),
+				'attr' => array('class'=>'form-control'),
+				'data' => 3,
+				'expanded' => true,
+				'mapped' => false
+			))
         ;
     }
 

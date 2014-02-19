@@ -141,11 +141,17 @@
 						  <th>Hrs données <i class="icon-caret-down pull-right icon-table-position"></i></th>
 						  <th>Elèves <i class="icon-caret-down pull-right icon-table-position"></i></th>
 						  <th>Dispos <i class="icon-time pull-right icon-table-position"></i></th> 
+						  <th>Ville (Semaine)</th>
+						  <th>Ville (We)</th>
+						  
+						  {#
 						  <th>Carte Id.</th>
 						  <th>Carte Et.</th>
 						  <th>Casier</th>
 						  <th>N° SS</th>
 						  <th>RIB</th>
+						  #}
+						  
 						  <th>Flag</th>
 						  <th>Bloqué</th>
 						  <th></th>
@@ -179,6 +185,12 @@
 								{% endif %}
 							{% endfor %}
 						  </td>
+						  
+						  
+						  <td>{{ professeur.ville }}</td>
+						  <td>{{ professeur.villeWe }}</td>
+						  
+						  {#
 						  <td>
 							{% if professeur.hasCarteIdentite %}
 								<i class="icon-ok"></i>
@@ -204,6 +216,8 @@
 								<i class="icon-ok"></i>
 							{% endif %}
 						  </td>
+						  #}
+						  
 						  <td>
 							{% if professeur.flag %}
 								<i class="icon-flag icon-large text-yellow"></i>

@@ -23,12 +23,12 @@
 								<span class="input-group-addon"><i class="icon-user"></i></span>
 							</div>
 						</div>
-						<button type="button" class="btn btn-danger remove-eleve-btn"><i class="icon-remove"></i></button>
+						<button type="button" class="btn btn-danger remove-prof-btn"><i class="icon-remove"></i></button>
 						<br><br>
 					</span>
 				{% endfor %}	
 			  
-				  <span class="eleves" data-prototype='
+				  <span class="profs" data-prototype='
 					<span>
 						<div class="col-lg-5">
 							<div class="input-group">
@@ -36,22 +36,35 @@
 								<span class="input-group-addon"><i class="icon-user"></i></span>
 							</div>
 						</div>
-						<button type="button" class="btn btn-danger remove-eleve-btn"><i class="icon-remove"></i></button>
+						<button type="button" class="btn btn-danger remove-prof-btn"><i class="icon-remove"></i></button>
 						<br><br>
 					</span>							
 				  '></span>
-
+			
+			<br><br><br>
+			<h4>Puis envoyer le mail approprié</h4><br>
+			
+			{% for mailChoice in form.mail %}
+				<div class="radio">
+				  <label>
+					{{ form_widget(mailChoice) }} {{ form_label(mailChoice) }}
+				  </label>
+				</div>
+				<br><br>
+			{% endfor %}
+			
+			<br><br>
+			
 			{{ form_widget(form._token) }}
 			<button type="submit" class="btn btn-success">Valider</button>
 			</form>
-			<br><br>
 			
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
 	{% javascripts filter='yui_js' output='js/*'
-		'../app/Resources/js/admin/modifier-professeur.js' 
+		'../app/Resources/js/admin/gerer-professeurs.js' 
 	%}
 		<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}

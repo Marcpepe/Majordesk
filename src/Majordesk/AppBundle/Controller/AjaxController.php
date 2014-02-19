@@ -787,6 +787,30 @@ class AjaxController extends Controller
 		
 		return new Response();
 	}
+	
+	/**
+	 * @Secure(roles="ROLE_ELEVE")
+	 */
+    public function sendPaymentConfirmationAction($id_professeur)
+    {
+		$professeur = $this->getDoctrine()
+						   ->getManager()
+						   ->getRepository('MajordeskAppBundle:Professeur')
+						   ->find($id_professeur);
+	
+		$request = $this->getRequest();
+		if ( $request->isXmlHttpRequest() ) {	
+			$message = \Swift_Message::newInstance()
+					->setSubject('Notification Majorclass')
+					->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
+					->setTo($professeur->getMail())
+					->setBody($this->renderView('MajordeskAppBundle:Template:confirmation-paiement.html.twig', array('nom' => $professeur->getUsername(), 'id' => $id_professeur)), 'text/html')
+				;
+				$this->get('mailer')->send($message);
+		}
+		
+		return new Response();
+	}
 
 	/**
 	 * @Secure(roles="ROLE_ADMIN")

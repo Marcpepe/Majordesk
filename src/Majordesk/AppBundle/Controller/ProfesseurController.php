@@ -284,6 +284,7 @@ class ProfesseurController extends Controller
 			'paiements' => $paiements,
 			'encours' => $encours,
 			'total' => $total,
+			'$id_professeur' => $$id_professeur,
 		));
 	}
 	
