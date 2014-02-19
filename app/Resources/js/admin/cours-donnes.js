@@ -25,7 +25,7 @@ $(document)
 })
 .on('click', '.send-payment-confirmation', function() {
 	thisButton = $(this);
-	var id_professeur = thisButton.closest('td').attr('data-id-professeur');
+	var id_professeur = thisButton.attr('data-id-professeur');
 	$.ajax({
 		type: "POST",
 		url: Routing.generate("majordesk_app_send_payment_confirmation", {'id_professeur' : id_professeur}),

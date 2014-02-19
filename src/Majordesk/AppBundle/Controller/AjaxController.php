@@ -804,7 +804,7 @@ class AjaxController extends Controller
 					->setSubject('Notification Majorclass')
 					->setFrom(array('ne-pas-repondre@majorclass.fr' => 'Majorclass'))
 					->setTo($professeur->getMail())
-					->setBody($this->renderView('MajordeskAppBundle:Template:confirmation-paiement.html.twig', array('nom' => $professeur->getUsername(), 'id' => $id_professeur)), 'text/html')
+					->setBody($this->renderView('MajordeskAppBundle:Template:confirmation-paiement.html.twig', array('prenom' => $professeur->getUsername(), 'id' => $id_professeur)), 'text/html')
 				;
 				$this->get('mailer')->send($message);
 		}

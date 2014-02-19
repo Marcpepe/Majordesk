@@ -681,6 +681,14 @@ majordesk_app_update_regle:
     options:
         expose: true
 
+majordesk_app_send_payment_confirmation:
+    pattern:  /admin/send-payment-confirmation/{id_professeur}
+    defaults: { _controller: MajordeskAppBundle:Ajax:sendPaymentConfirmation }
+    requirements:
+        id_professeur:   \d{1,6}
+    options:
+        expose: true
+
 #--Heures--#
 majordesk_app_gestion_documents:
     pattern:  /admin/gestion-des-documents
