@@ -9,7 +9,8 @@ $.blockUI({ message: '<h3><span class="hidden-xs">Chargement <img src="/img/admi
 	'-moz-border-radius': '10px', 
 	'border-radius': '10px', 
 	opacity: .5, 
-	color: '#fff' 
+	color: '#fff',
+	baseZ: 2000 //essai (vain) pour changer le z-index
 } });
  
 MathJax.Hub.Queue(function () {

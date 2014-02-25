@@ -131,7 +131,7 @@ var editCell0Button = '<div class="btn-group interaction-btn"> <button type="but
 var editCell1Button = '<div class="btn-group interaction-btn"> <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"> <i class="icon-gear"></i> <span class="caret"></span> </button> <ul class="dropdown-menu" role="menu"> <li><a class="cursor select-cell-type-textnmaths">Passer en cellule de type : text & maths</a></li> <li class="divider"></li> <li><a class="cursor remove-cell-row">Supprimer cette ligne</a></li> <li><a class="cursor remove-cell-col">Supprimer cette colonne</a></li> </ul> </div>';
 var editTableauButton = '<div class="btn-group interaction-btn"> <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown"> <i class="icon-plus"></i> <span class="caret"></span> </button> <ul class="dropdown-menu" role="menu"> <li><a class="cursor add-tableau-row">Ajouter une ligne</a></li> <li><a class="cursor add-tableau-col">Ajouter une colonne</a></li> </ul> </div>';
 var editTableauAnalyseButton = '<div class="btn-group interaction-btn"> <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown"> <i class="icon-plus"></i> <span class="caret"></span> </button> <ul class="dropdown-menu" role="menu"> <li><a class="cursor add-tableau-analyse-row-signes">Ajouter une ligne : "signes"</a></li> <li><a class="cursor add-tableau-analyse-row-variations">Ajouter une ligne : "variations"</a></li> <li><a class="cursor remove-tableau-analyse-row">Supprimer la dernière ligne</a></li> <li class="divider"></li> <li><a class="cursor add-tableau-analyse-col">Ajouter une valeur intermédiaire</a></li> <li><a class="cursor remove-tableau-analyse-col">Retirer une valeur intermédiaire</a></li> </ul> </div> <button type="button" rel="tooltip" data-title="Synchroniser" class="btn btn-greensea btn-xs interaction-btn synchroniser-tableau-analyse">Synchroniser</button>';
-var addBriqueButton = '<div class="btn-group interaction-btn"> <button rel="tooltip" data-title="Insérer une nouvelle brique" type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i></button> <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"> <!--<li class="dropdown-header">Construction énoncé</li>--> <li><a tabindex="-1" class="add-textnmaths cursor"><i class="icon-magic"></i> Texte & Maths</a></li> <li><a tabindex="-1" class="add-equations cursor"><i class="icon-superscript"></i> Equations</a></li> <li><a tabindex="-1" class="add-systeme cursor"><strong class="width-12 display-inline-block">{</strong> Systèmes</a></li> <li><a tabindex="-1" class="add-retour-ligne cursor"><i class="icon-mail-reply icon-flip-vertical"></i> Retour à la ligne</a></li><li><a tabindex="-1" class="add-saut-ligne cursor"><i class="icon-mail-reply-all icon-flip-vertical"></i> Saut de ligne</a></li> <li> <a href="#add-figure-graph" tabindex="-1" data-toggle="modal" class="add-figure-graphe cursor"><i class="icon-bar-chart"></i> Figure / Graphe</a> </li> <!--<li><a tabindex="-1"><i class="icon-link"></i> Lien</a></li> <li><a tabindex="-1"><i class="icon-picture"></i> Image</a></li>--> <li> <a href="#add-case" tabindex="-1" data-toggle="modal" class="add-case cursor"><i class="icon-pencil"></i> Case</a> </li> <!--<li> <a href="#add-case-puissance" tabindex="-1" data-toggle="modal" class="add-case cursor"><i class="icon-pencil"></i> Case puissance</a> </li> <li> <a href="#add-case-indice" tabindex="-1" data-toggle="modal" class="add-case cursor"><i class="icon-pencil"></i> Case indice</a> </li>--> <li><a tabindex="-1" class="add-case-maths cursor"><span class="width-12 display-inline-block">∫</span> Case dans des maths</a></li> <li> <a tabindex="-1" class="add-liste cursor"><i class="icon-list-ul"></i> Liste</a> </li> <li> <a tabindex="-1" class="add-liste-ordonnee cursor"><i class="icon-list-ol"></i> Liste ordonnée</a> </li> <li> <a tabindex="-1" class="add-liste-deroulante cursor"><i class="icon-reorder"></i> Liste déroulante</a> </li> <li> <a tabindex="-1" data-toggle="modal" class="cursor add-radio"><i class="icon-circle-blank"></i> Créer un QCU</a> </li> <li> <a tabindex="-1" data-toggle="modal" class="cursor add-checkbox"><i class="icon-check"></i> Créer un QCM</a> </li> <li> <a tabindex="-1" data-toggle="modal" class="cursor add-vignettes"><i class="icon-list-alt"></i> Créer des vignettes</a> </li> <li> <a tabindex="-1" class="cursor add-tableau"><i class="icon-table"></i> Créer un tableau</a> </li> <li> <a tabindex="-1" class="cursor add-tableau-analyse"><i class="icon-table"></i>↗± Créer un tableau d\'analyse</a> </li> </ul> </div>';
+var addBriqueButton = '<div class="btn-group interaction-btn"> <button rel="tooltip" data-title="Insérer une nouvelle brique" type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown"><i class="icon-plus"></i></button> <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"> <!--<li class="dropdown-header">Construction énoncé</li>--> <li><a tabindex="-1" class="add-textnmaths cursor"><i class="icon-magic"></i> Texte & Maths</a></li> <li><a tabindex="-1" class="add-equations cursor"><i class="icon-superscript"></i> Equations</a></li> <li><a tabindex="-1" class="add-systeme cursor"><strong class="width-12 display-inline-block">{</strong> Systèmes</a></li> <li><a tabindex="-1" class="add-retour-ligne cursor"><i class="icon-mail-reply icon-flip-vertical"></i> Retour à la ligne</a></li><li><a tabindex="-1" class="add-saut-ligne cursor"><i class="icon-mail-reply-all icon-flip-vertical"></i> Saut de ligne</a></li> <li> <a tabindex="-1" data-toggle="modal" class="add-figure-graphe cursor"><i class="icon-bar-chart"></i> Figure / Graphe</a> </li> <!--<li><a tabindex="-1"><i class="icon-link"></i> Lien</a></li> <li><a tabindex="-1"><i class="icon-picture"></i> Image</a></li>--> <li> <a href="#add-case" tabindex="-1" data-toggle="modal" class="add-case cursor"><i class="icon-pencil"></i> Case</a> </li> <!--<li> <a href="#add-case-puissance" tabindex="-1" data-toggle="modal" class="add-case cursor"><i class="icon-pencil"></i> Case puissance</a> </li> <li> <a href="#add-case-indice" tabindex="-1" data-toggle="modal" class="add-case cursor"><i class="icon-pencil"></i> Case indice</a> </li>--> <li><a tabindex="-1" class="add-case-maths cursor"><span class="width-12 display-inline-block">∫</span> Case dans des maths</a></li> <li> <a tabindex="-1" class="add-liste cursor"><i class="icon-list-ul"></i> Liste</a> </li> <li> <a tabindex="-1" class="add-liste-ordonnee cursor"><i class="icon-list-ol"></i> Liste ordonnée</a> </li> <li> <a tabindex="-1" class="add-liste-deroulante cursor"><i class="icon-reorder"></i> Liste déroulante</a> </li> <li> <a tabindex="-1" data-toggle="modal" class="cursor add-radio"><i class="icon-circle-blank"></i> Créer un QCU</a> </li> <li> <a tabindex="-1" data-toggle="modal" class="cursor add-checkbox"><i class="icon-check"></i> Créer un QCM</a> </li> <li> <a tabindex="-1" data-toggle="modal" class="cursor add-vignettes"><i class="icon-list-alt"></i> Créer des vignettes</a> </li> <li> <a tabindex="-1" class="cursor add-tableau"><i class="icon-table"></i> Créer un tableau</a> </li> <li> <a tabindex="-1" class="cursor add-tableau-analyse"><i class="icon-table"></i>↗± Créer un tableau d\'analyse</a> </li> </ul> </div>';
 var removeBriqueButton = '<button type="button" rel="tooltip" data-title="Supprimer cette brique" class="btn btn-danger btn-xs interaction-btn remove-brique"><i class="icon-remove"></i></button>';
 var removeBriqueAndReponsesButton = '<button type="button" rel="tooltip" data-title="Supprimer cette brique-réponse" class="btn btn-danger btn-xs interaction-btn remove-brique-and-reponses"><i class="icon-remove"></i></button>';
 var addChoice = '<button type="button" rel="tooltip" data-title="Ajouter un choix" class="btn btn-success btn-xs interaction-btn add-choice"><i class="icon-plus"></i></button>';
@@ -436,6 +436,13 @@ $(document)
 
 // =========================== //
 
+// Ajouter un(e) figure/graphe
+.on('click', ".add-figure-graphe", function() {
+	addBrique($(this).closest('div.brique'), 'figure graphe', 0);
+})
+
+// =========================== //
+
 
 
 /* Functions
@@ -529,8 +536,38 @@ function tickReponse(thisSelector) {
 
 $(document).on('focus', '.mathquill-editable', function() {
 	b4Sync = $(this).mathquill('latex');
-});
-$(document)
+})
+// Geogebra
+.on('click', '.update-geogebra', function() {
+	$.blockUI({ message: '<h3><span class="hidden-xs">Synchronisation <img src="/img/admin/exercices/loading.gif" /></span><span class="visible-xs"><img src="/img/admin/exercices/loading.gif" /></span></h3>', css: { 
+		border: 'none', 
+		padding: '15px', 
+		backgroundColor: '#000', 
+		'-webkit-border-radius': '10px', 
+		'-moz-border-radius': '10px', 
+		'border-radius': '10px', 
+		opacity: .5, 
+		color: '#fff' 
+	} });
+	var existingBrique= new Brique( $(this).closest('div.brique') );
+	// var contenu = $(this).next().attr('data-param-ggbbase64');
+	// alert('contenu : '+parameters.ggbBase64);
+	$.ajax({
+		type: "POST",
+		// dataType: "json",
+		// data: { 'contenu' : ggbApplet.getBase64() },
+		data: { 'contenu' : document.ggbApplet.getBase64() },
+		url: Routing.generate("majordesk_app_editor_update_brique", {'id_brique' : parseInt(existingBrique.id) }),
+		success: function(){
+			$.unblockUI();
+		},
+		error: function() {
+			$.unblockUI();
+			alert('La requête n\'a pas abouti : les changements ne sont pas sauvegardés..');
+		}
+	});
+})
+// Mathquill
 .on('blur', '.mathquill-editable', function() {
 	$('.editing').removeClass('editing');
 	if (usingSlideOutKeyboard) {
@@ -1717,6 +1754,12 @@ function NewBrique(id, numero, type, clavier, couche) {
 		this.content = this.content + '</tbody></table></div>';
 		this.content = this.content + '</div> </div> <br>';
 	}
+	else if (this.type == 'figure graphe') {
+		this.content = '<div class="brique position-relative" data-brique-id="'+this.id+'" data-brique-numero="'+this.numero+'" data-brique-type="'+this.type+'" data-brique-couche="0"> ';
+		this.content = this.content + '<div class="add-remove-brique">';
+		this.content = this.content + '<article class="geogebraweb" data-param-width="500" data-param-height="400" data-param-showResetIcon="false" data-param-enableRightClick="true" data-param-enableLabelDrags="true" data-param-showMenuBar="true" data-param-showToolBar="true" data-param-showAlgebraInput="true" data-param-useBrowserForJS="false" data-param-ggbbase64="UEsDBBQACAAIAEiSV0QAAAAAAAAAAAAAAAAWAAAAZ2VvZ2VicmFfamF2YXNjcmlwdC5qc0srzUsuyczPU0hPT/LP88zLLNHQVKiuBQBQSwcI1je9uRkAAAAXAAAAUEsDBBQACAAIAEiSV0QAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1svVbbbtw2EH12vmKgZ3tXFHVbQ+sgCRAggBsEdVoUfaMkWstaKwoi9+LCP9Tv6I91hpR213ZaNHZR2NrRkHM7w5kRi7f7dQtbORilu2XAZmEAsqt0rbpmGWzs7UUevL16UzRSN7IcBNzqYS3sMohnUXDUQ26WhqSs6mUgKrmQvOIXWSzqi5hX1cUiY9VFyeskXUR5lnMZAOyNuuz0Z7GWpkeVm2ol1+JaV8I6mytr+8v5fLfbzSbvMz0086YpZ3tTB4CRd2YZjC+XaO6R0o478SgM2fyXH669+QvVGSu6Cv0Tqo26enNW7FRX6x3sVG1XyyAPEcZKqmaFMFNi5iTUI9ZeVlZtpUHVE9Zhtus+cGKio/0z/wbtAU4AtdqqWg7LIJxFSQB6ULKz4y4bvcwn/WKr5M4bojfnIw4XGSZdGVW2chncitYgDtXdDphDDGHYIGvsfStLMUz8MQJ2jn8ooH6XZAuBeeC4E4bn9GT4JMmI+NRxAFbr1lkNIVnAwwNEYRTCORHmSYQkTf1W6NdC7knkSexJ4mVirx570djLxF4m5v+Ac+SPQMeFR0gnnPxbOPFUz+PwOc78BCcjEA/AKHpHOFDczMVPJB7Z1LOZIyz0hI2bOf24fKWvRMRfhIidePX18D1OJ5dJmv97l9FrXB5QRt9CGSV/g/KVyZ2csuTEKfpy/+555pJH3+PyWSu+wGMav6b3X+AwC/8Ph8V8mnTF2HtgViQ71o6Va0NThy/c4AEGCTZmmuGcSIAtkGTUoBGwBOIEWZZDSjQDTj0ZA4ccSI5xcOMlyfEndv2aQoK2aDHzjQs8hoQDc0MpBhxF4AYbDrmIo0SSQIJK5J2RW55CnCLDc4gxQBppGY0NjnrIo/MIOANOuiyDKIU0gozGIotpWqY5xY5GI0hDSEkV5yLORD8PUSMHTmiwwntt1CG5K9n2h1NxeVRdv7GPclet6+nV6ifSta7u3j/JtRTGTu8ohB+j40fOf5wefQPPilaUssWbwg2VAcBWtNTBzv6t7ixMJRD5tWYQ/UpV5kZai1oGfhNbcS2s3H9EaTMF6Fy7T3MhN1WraiW6n7FGyAQZhOlL7cbS9KWO49FLpfVQ39wbLBzY/yoHjcOEJXQ3ufcc95ypBBV24q4t96ecMyO3hzDFXpopL81ArTFmkphP5r1uj0u9Vp39IHq7GdwVCgfaQAG+65pWujy548PLSHVX6v2NTxD3tr7e98iNAZTNB93qAbC5ogTvC81IS0+dDEV2kAqdTOgkwinjqj7ss0XkJBwtPXVSeIQ+tBEpm2CycHKjjBsJlLaTgnHnT1ebTafs9cRYVd0dkZL85826xNIZ1R6bZP+RyWL+pFiKOzl0svUl0eFJbvTG+Bo91NlZsTHyi7Crd139o2ywub4Imm8WTXvRY8S1rNQaFf36mDpBx/oThupXa9kMckLYujurT6zbDU8L9NmyM/Vx0OtP3fYr1syTUIv5hKcw1aB6Kk0oceDeyWP11coIHNf1qR6CN4iiotGBibSUxADExq704K6l2ICIh8PHP//Y4p10wKHH4oA8nqq6phzv4Vd/AVBLBwjFpeoqnAQAADcMAABQSwECFAAUAAgACABIkldE1je9uRkAAAAXAAAAFgAAAAAAAAAAAAAAAAAAAAAAZ2VvZ2VicmFfamF2YXNjcmlwdC5qc1BLAQIUABQACAAIAEiSV0TFpeoqnAQAADcMAAAMAAAAAAAAAAAAAAAAAF0AAABnZW9nZWJyYS54bWxQSwUGAAAAAAIAAgB+AAAAMwUAAAAA"></article>';
+		this.content = this.content + '</div> </div>';
+	}
 }
 
 function addBrique(thisSelector, type, clavier) {
@@ -1746,6 +1789,8 @@ function addBrique(thisSelector, type, clavier) {
 		} else if (type == 'tableau analyse') {
 			var contenu = {1:{'type':'entete','contenu':{1:{'input':0,'contenu':''},2:{'input':0,'contenu':''},3:{'input':0,'contenu':''},4:{'input':0,'contenu':''},5:{'input':0,'contenu':''},6:{'input':0,'contenu':''}}}};
 			contenu = JSON.stringify(contenu);
+		} else if (type == 'figure graphe') {
+			var contenu = "UEsDBBQACAAIAEiSV0QAAAAAAAAAAAAAAAAWAAAAZ2VvZ2VicmFfamF2YXNjcmlwdC5qc0srzUsuyczPU0hPT/LP88zLLNHQVKiuBQBQSwcI1je9uRkAAAAXAAAAUEsDBBQACAAIAEiSV0QAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1svVbbbtw2EH12vmKgZ3tXFHVbQ+sgCRAggBsEdVoUfaMkWstaKwoi9+LCP9Tv6I91hpR213ZaNHZR2NrRkHM7w5kRi7f7dQtbORilu2XAZmEAsqt0rbpmGWzs7UUevL16UzRSN7IcBNzqYS3sMohnUXDUQ26WhqSs6mUgKrmQvOIXWSzqi5hX1cUiY9VFyeskXUR5lnMZAOyNuuz0Z7GWpkeVm2ol1+JaV8I6mytr+8v5fLfbzSbvMz0086YpZ3tTB4CRd2YZjC+XaO6R0o478SgM2fyXH669+QvVGSu6Cv0Tqo26enNW7FRX6x3sVG1XyyAPEcZKqmaFMFNi5iTUI9ZeVlZtpUHVE9Zhtus+cGKio/0z/wbtAU4AtdqqWg7LIJxFSQB6ULKz4y4bvcwn/WKr5M4bojfnIw4XGSZdGVW2chncitYgDtXdDphDDGHYIGvsfStLMUz8MQJ2jn8ooH6XZAuBeeC4E4bn9GT4JMmI+NRxAFbr1lkNIVnAwwNEYRTCORHmSYQkTf1W6NdC7knkSexJ4mVirx570djLxF4m5v+Ac+SPQMeFR0gnnPxbOPFUz+PwOc78BCcjEA/AKHpHOFDczMVPJB7Z1LOZIyz0hI2bOf24fKWvRMRfhIidePX18D1OJ5dJmv97l9FrXB5QRt9CGSV/g/KVyZ2csuTEKfpy/+555pJH3+PyWSu+wGMav6b3X+AwC/8Ph8V8mnTF2HtgViQ71o6Va0NThy/c4AEGCTZmmuGcSIAtkGTUoBGwBOIEWZZDSjQDTj0ZA4ccSI5xcOMlyfEndv2aQoK2aDHzjQs8hoQDc0MpBhxF4AYbDrmIo0SSQIJK5J2RW55CnCLDc4gxQBppGY0NjnrIo/MIOANOuiyDKIU0gozGIotpWqY5xY5GI0hDSEkV5yLORD8PUSMHTmiwwntt1CG5K9n2h1NxeVRdv7GPclet6+nV6ifSta7u3j/JtRTGTu8ohB+j40fOf5wefQPPilaUssWbwg2VAcBWtNTBzv6t7ixMJRD5tWYQ/UpV5kZai1oGfhNbcS2s3H9EaTMF6Fy7T3MhN1WraiW6n7FGyAQZhOlL7cbS9KWO49FLpfVQ39wbLBzY/yoHjcOEJXQ3ufcc95ypBBV24q4t96ecMyO3hzDFXpopL81ArTFmkphP5r1uj0u9Vp39IHq7GdwVCgfaQAG+65pWujy548PLSHVX6v2NTxD3tr7e98iNAZTNB93qAbC5ogTvC81IS0+dDEV2kAqdTOgkwinjqj7ss0XkJBwtPXVSeIQ+tBEpm2CycHKjjBsJlLaTgnHnT1ebTafs9cRYVd0dkZL85826xNIZ1R6bZP+RyWL+pFiKOzl0svUl0eFJbvTG+Bo91NlZsTHyi7Crd139o2ywub4Imm8WTXvRY8S1rNQaFf36mDpBx/oThupXa9kMckLYujurT6zbDU8L9NmyM/Vx0OtP3fYr1syTUIv5hKcw1aB6Kk0oceDeyWP11coIHNf1qR6CN4iiotGBibSUxADExq704K6l2ICIh8PHP//Y4p10wKHH4oA8nqq6phzv4Vd/AVBLBwjFpeoqnAQAADcMAABQSwECFAAUAAgACABIkldE1je9uRkAAAAXAAAAFgAAAAAAAAAAAAAAAAAAAAAAZ2VvZ2VicmFfamF2YXNjcmlwdC5qc1BLAQIUABQACAAIAEiSV0TFpeoqnAQAADcMAAAMAAAAAAAAAAAAAAAAAF0AAABnZW9nZWJyYS54bWxQSwUGAAAAAAIAAgB+AAAAMwUAAAAA";
 		}
 		else {
 			var contenu;
@@ -1788,6 +1833,8 @@ function addBrique(thisSelector, type, clavier) {
 		} else if (type == 'tableau analyse') {
 			var contenu = {1:{'type':'entete','contenu':{1:{'input':0,'contenu':''},2:{'input':0,'contenu':''},3:{'input':0,'contenu':''},4:{'input':0,'contenu':''},5:{'input':0,'contenu':''},6:{'input':0,'contenu':''}}}};
 			contenu = JSON.stringify(contenu);
+		} else if (type == 'figure graphe') {
+			var contenu = "UEsDBBQACAAIAEiSV0QAAAAAAAAAAAAAAAAWAAAAZ2VvZ2VicmFfamF2YXNjcmlwdC5qc0srzUsuyczPU0hPT/LP88zLLNHQVKiuBQBQSwcI1je9uRkAAAAXAAAAUEsDBBQACAAIAEiSV0QAAAAAAAAAAAAAAAAMAAAAZ2VvZ2VicmEueG1svVbbbtw2EH12vmKgZ3tXFHVbQ+sgCRAggBsEdVoUfaMkWstaKwoi9+LCP9Tv6I91hpR213ZaNHZR2NrRkHM7w5kRi7f7dQtbORilu2XAZmEAsqt0rbpmGWzs7UUevL16UzRSN7IcBNzqYS3sMohnUXDUQ26WhqSs6mUgKrmQvOIXWSzqi5hX1cUiY9VFyeskXUR5lnMZAOyNuuz0Z7GWpkeVm2ol1+JaV8I6mytr+8v5fLfbzSbvMz0086YpZ3tTB4CRd2YZjC+XaO6R0o478SgM2fyXH669+QvVGSu6Cv0Tqo26enNW7FRX6x3sVG1XyyAPEcZKqmaFMFNi5iTUI9ZeVlZtpUHVE9Zhtus+cGKio/0z/wbtAU4AtdqqWg7LIJxFSQB6ULKz4y4bvcwn/WKr5M4bojfnIw4XGSZdGVW2chncitYgDtXdDphDDGHYIGvsfStLMUz8MQJ2jn8ooH6XZAuBeeC4E4bn9GT4JMmI+NRxAFbr1lkNIVnAwwNEYRTCORHmSYQkTf1W6NdC7knkSexJ4mVirx570djLxF4m5v+Ac+SPQMeFR0gnnPxbOPFUz+PwOc78BCcjEA/AKHpHOFDczMVPJB7Z1LOZIyz0hI2bOf24fKWvRMRfhIidePX18D1OJ5dJmv97l9FrXB5QRt9CGSV/g/KVyZ2csuTEKfpy/+555pJH3+PyWSu+wGMav6b3X+AwC/8Ph8V8mnTF2HtgViQ71o6Va0NThy/c4AEGCTZmmuGcSIAtkGTUoBGwBOIEWZZDSjQDTj0ZA4ccSI5xcOMlyfEndv2aQoK2aDHzjQs8hoQDc0MpBhxF4AYbDrmIo0SSQIJK5J2RW55CnCLDc4gxQBppGY0NjnrIo/MIOANOuiyDKIU0gozGIotpWqY5xY5GI0hDSEkV5yLORD8PUSMHTmiwwntt1CG5K9n2h1NxeVRdv7GPclet6+nV6ifSta7u3j/JtRTGTu8ohB+j40fOf5wefQPPilaUssWbwg2VAcBWtNTBzv6t7ixMJRD5tWYQ/UpV5kZai1oGfhNbcS2s3H9EaTMF6Fy7T3MhN1WraiW6n7FGyAQZhOlL7cbS9KWO49FLpfVQ39wbLBzY/yoHjcOEJXQ3ufcc95ypBBV24q4t96ecMyO3hzDFXpopL81ArTFmkphP5r1uj0u9Vp39IHq7GdwVCgfaQAG+65pWujy548PLSHVX6v2NTxD3tr7e98iNAZTNB93qAbC5ogTvC81IS0+dDEV2kAqdTOgkwinjqj7ss0XkJBwtPXVSeIQ+tBEpm2CycHKjjBsJlLaTgnHnT1ebTafs9cRYVd0dkZL85826xNIZ1R6bZP+RyWL+pFiKOzl0svUl0eFJbvTG+Bo91NlZsTHyi7Crd139o2ywub4Imm8WTXvRY8S1rNQaFf36mDpBx/oThupXa9kMckLYujurT6zbDU8L9NmyM/Vx0OtP3fYr1syTUIv5hKcw1aB6Kk0oceDeyWP11coIHNf1qR6CN4iiotGBibSUxADExq704K6l2ICIh8PHP//Y4p10wKHH4oA8nqq6phzv4Vd/AVBLBwjFpeoqnAQAADcMAABQSwECFAAUAAgACABIkldE1je9uRkAAAAXAAAAFgAAAAAAAAAAAAAAAAAAAAAAZ2VvZ2VicmFfamF2YXNjcmlwdC5qc1BLAQIUABQACAAIAEiSV0TFpeoqnAQAADcMAAAMAAAAAAAAAAAAAAAAAF0AAABnZW9nZWJyYS54bWxQSwUGAAAAAAIAAgB+AAAAMwUAAAAA";
 		}
 		else {
 			var contenu;

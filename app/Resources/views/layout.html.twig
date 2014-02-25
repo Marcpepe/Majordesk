@@ -3,10 +3,11 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=10" />
 	<title>{% block title %}Majorclass - Cours particuiliers de qualité{% endblock %}</title>
 	
 	<link rel="icon" type="image/png" href="{{ asset('img/home/favicon.png') }}" />
-	{# DISABLED jusqu'à réactivation de la plateforme<script type="text/x-mathjax-config">
+	{# DISABLED jusqu'à réactivation de la plateforme #}<script type="text/x-mathjax-config">
 	MathJax.Hub.Config({
 	  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 	});
@@ -15,7 +16,7 @@
 	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=TeX-AMS-MML_HTMLorMML-full"></script>-->
 	<!--<script type="text/javascript" src="/mathjax/Mathjax.js?config=default"></script>-->
-	#}
+	
 	{% block stylesheets %}
 		{% stylesheets filter='yui_css' output='css/*'  
 			'../app/Resources/css/common/bootstrap.min.css' 
@@ -31,6 +32,10 @@
 			<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
 		{% endstylesheets %}
 	{% endblock %}
+	
+	<!--Geogebra-->
+	<script type="text/javascript" language="javascript" src="http://www.geogebra.org/web/4.4/web/web.nocache.js"></script>
+	<!--<script type="text/javascript" src="http://www.geogebratube.org/scripts/deployggb.js"></script>-->
 	
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
