@@ -1031,7 +1031,7 @@ majordesk_app_test_exercice:
     requirements:
         id:   \d+
 
-majordesk_app_test_exercice:
+majordesk_app_reinit_test_exercice:
     pattern: /admin/reinit-test-exercice/{id_exercice}
     defaults: { _controller: MajordeskAppBundle:Admin:reinitialiserTestExercice }
     requirements:

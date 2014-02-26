@@ -432,7 +432,7 @@ class AdminController extends Controller
 		
         return $this->render('MajordeskAppBundle:Admin:gerer-professeurs.html.twig', array(
 			'form' => $form->createView(),
-			'id_eleve' => $id_eleve
+			'eleve' => $eleve
 		));
 	}
 	

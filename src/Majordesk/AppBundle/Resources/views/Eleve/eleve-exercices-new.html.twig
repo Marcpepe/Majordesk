@@ -212,7 +212,7 @@
 						<h4>Exercice (Id : {{ mod_exercice.id }})</h4>	
 						{% if is_granted('ROLE_ADMIN') %}
 						<span class="pull-right">
-							<a href="{{ path('majordesk_app_test_exercice', {'id_exercice' : exercice.id}) }}" class="btn btn-warning">Réinit <i class="icon-refresh"></i></a>
+							<a href="{{ path('majordesk_app_reinit_test_exercice', {'id_exercice' : exercice.id}) }}" class="btn btn-warning">Réinit <i class="icon-refresh"></i></a>
 						</span>
 						{% endif %}
 					</div>

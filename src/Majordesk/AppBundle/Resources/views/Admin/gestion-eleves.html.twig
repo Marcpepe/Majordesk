@@ -132,11 +132,14 @@
 							  <ul class="dropdown-menu">
 								  <li><a tabindex="-1" href="{{ path('majordesk_app_profil_eleve', {'id' : eleve.id} ) }}"><i class="icon-plus"></i> Profil complet</a></li>
 								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_familles_filter_eleve', {'id' : eleve.famille.id } ) }}"><i class="icon-user"></i> Famille associée</a></li>
-								  {% if eleve.isAssigned %}
-								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_professeurs_filter_eleve', {'id' : eleve.id } ) }}"><i class="icon-user-md"></i> Professeur(s) assigné(s)</a></li>
-								  {% else %}
-								  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_professeurs_filter_disponibilites', dispo ) }}"><i class="icon-user-md"></i> Assigner un professeur</a></li>
-								  {% endif %}
+								  {#
+									  {% if eleve.isAssigned %}
+									  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_professeurs_filter_eleve', {'id' : eleve.id } ) }}"><i class="icon-user-md"></i> Professeur(s) assigné(s)</a></li>
+									  {% else %}
+									  <li><a tabindex="-1" href="{{ path('majordesk_app_gestion_professeurs_filter_disponibilites', dispo ) }}"><i class="icon-user-md"></i> Assigner un professeur</a></li>
+									  {% endif %}
+								  #}
+								  <li><a tabindex="-1" href="{{ path('majordesk_app_gerer_professeurs', {'id_eleve' : eleve.id}) }}"><i class="icon-user-md"></i> Gérer les professeurs</a></li>
 								  <li><a tabindex="-1" href="{{ path('majordesk_app_deblocage_exercices', { 'id_eleve' : eleve.id }) }}"><i class="icon-book"></i> Déblocage d'exercices</a></li>
 								  <li>
 									<a tabindex="-1" class="cursor flag"><i class="icon-flag"></i> 

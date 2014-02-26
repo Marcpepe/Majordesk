@@ -6,13 +6,14 @@
 
 {% block navbar %}
 	<li><a href="{{ path("majordesk_app_gestion_eleves") }}"><i class="icon-angle-right"></i> Gestion des élèves</a></li>
-	<li><a href="{{ path("majordesk_app_profil_eleve", {'id' : id_eleve }) }}"><i class="icon-angle-right"></i> Profil élève</a></li>
+	<li><a href="{{ path("majordesk_app_profil_eleve", {'id' : eleve.id }) }}"><i class="icon-angle-right"></i> Profil élève</a></li>
 	<li><a><i class="icon-angle-right"></i> Gérer les professeurs</a></li>
 {% endblock %}
  
 {% block admin %}
-			<form class="form-inline" method="post" action="{{ path('majordesk_app_gerer_professeurs', {'id_eleve' : id_eleve}) }}">
-				<br><br><br><br><br>
+		<br><br><br><span class="visible-xs"><br><br></span>
+		<div class="col-lg-12">
+			<form class="form-inline" method="post" action="{{ path('majordesk_app_gerer_professeurs', {'id_eleve' : eleve.id}) }}">
 				<h4>Assigner ou désassigner un professeur</h4><br>
 				<!--<i class="icon-warning"></i> Dans le cas d'un "échange" de professeur, commercer par retirer le professeur qui n'exercera plus !<br><br>-->
 				{% for prof in form.professeurs %}
@@ -53,11 +54,14 @@
 				<br><br>
 			{% endfor %}
 			
-			<br><br>
+			<br>
 			
 			{{ form_widget(form._token) }}
 			<button type="submit" class="btn btn-success">Valider</button>
 			</form>
+			<br><br><br>
+		</div>
+			
 			
 {% endblock %}
 
