@@ -434,4 +434,22 @@ class ExerciceRepository extends EntityRepository
 		return $qb->getQuery()
 			      ->getResult();
 	}
+	
+	/**
+	 * @return 
+	 */
+	public function getExerciceByModExerciceAndEleve($id_eleve, $id_mod_exercice)
+	{
+		$qb = $this->createQueryBuilder('ex')
+				   ->join('ex.eleve', 'el')
+				   ->join('ex.mod_exercice', 'me')
+				   ->where('el.id = :id_eleve')
+				   ->andWhere('me.id = :id_mod_exercice')
+				   ->setParameter('id_eleve', $id_eleve)
+				   ->setParameter('id_mod_exercice', $id_mod_exercice)
+				   ;
+			
+		return $qb->getQuery()
+			      ->getOneOrNullResult();
+	}
 }

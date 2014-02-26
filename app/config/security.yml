@@ -58,6 +58,7 @@ security:
             remember_me:
                 key:      %secret%
                 lifetime: 31536000
+            # switch_user: true
 
     access_control:
         - { path: ^/eleve/, role: ROLE_ELEVE }

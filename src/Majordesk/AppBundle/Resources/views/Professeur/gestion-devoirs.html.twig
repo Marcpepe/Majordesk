@@ -15,7 +15,9 @@
 	{% if is_granted('ROLE_ADMIN') %}
 		<li><a href="{{ path("majordesk_app_gestion_eleves") }}"><i class="icon-angle-right"></i> Gestion des élèves</a></li>
 	{% endif %}
-	{% if is_granted('ROLE_PROF') %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<li><a><i class="icon-angle-right"></i> Déblocage d'un élève</a></li>
+	{% elseif is_granted('ROLE_PROF') %}
 		<li><a><i class="icon-angle-right"></i> Gestion des devoirs et exercices faits</a></li>
 	{% elseif is_granted('ROLE_PARENTS') %}
 		<li><a><i class="icon-angle-right"></i> Suivi de votre enfant</a></li>
@@ -25,8 +27,8 @@
 {% endblock %}
 
 {% block body %}
-		<span class="visible-md"><br></span>
-		<span class="visible-lg"><br></span>
+		<br><br><br><span class="visible-xs"><br></span>
+		
 		{% if not is_granted('ROLE_ADMIN') and is_granted('ROLE_PROF') %}
 		<div class="col-lg-12">
 			<a class="btn btn-default" disabled>{{ eleve.username }} {{ eleve.nom }}</a> 
@@ -91,12 +93,12 @@
 							<th><i class="icon-eye-open"></i></th>
 							<th>Chapitre</th>
 							<th>Partie</th>
-							<th>Niveau</th>
-							<th>Essai(s)</th>
-							<th>Temps</th>
-							<th>Date</th>
+							<th>Niv.</th>
+							<th style="width:100px;">Essai(s)</th>
+							<th style="width:100px;">Temps</th>
+							<th style="width:80px;">Date</th>
 							{% if is_granted('ROLE_ADMIN') %}
-								<th>Réinit</th>
+								<th style="width:100px;">Réinit</th>
 							{% endif %}
 						</tr>
 					</thead>
@@ -126,7 +128,7 @@
 							<td>{{ exercice.temps|date("i\\m\\i\\n s\\s") }}</td>
 							<td>{{ exercice.getDerniereDate|date("d/m/y \\à G:i")}}</td>
 							{% if is_granted('ROLE_ADMIN') %}
-								<td data-id-exercice="{{ exercice.id }}"><button rel="tooltip" data-title="Remettre à zéro" data-placement="right" class="btn btn-default reinit" type="button"><i class="icon-refresh"></i></button> <a href="{{ path('majordesk_app_deblocage_remove', { 'id_exercice' : exercice.id, 'id_eleve' : exercice.eleve.id }) }}" rel="tooltip" data-title="Supprimer" data-placement="right" class="btn btn-default dump" type="button"><i class="icon-trash"></i></a></td>
+								<td data-id-exercice="{{ exercice.id }}"><button rel="tooltip" data-title="Remettre à zéro" data-placement="right" class="btn btn-default reinit" type="button"><i class="icon-refresh"></i></button> <a href="{{ path('majordesk_app_deblocage_remove', { 'id_exercice' : exercice.id, 'id_eleve' : exercice.eleve.id }) }}" rel="tooltip" data-message="Voulez-vous supprimer définitivement cet exercice ?" data-title="Supprimer" data-placement="right" class="btn btn-default dump confirm-majorclass" type="button"><i class="icon-trash"></i></a></td>
 							{% endif %}
 						</tr>
 						{% endfor %}

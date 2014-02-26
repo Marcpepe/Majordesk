@@ -7,16 +7,21 @@
 {% block navbar %}
 	{% if is_granted("ROLE_ELEVE") and not is_granted("ROLE_PROF") %}
 		{% if app.session.get('etape_cours') is not empty and app.session.get('etape_cours') == 1 %}
-			<li><a href="{{ path("majordesk_app_verification_devoirs") }}"><i class="icon-angle-right"></i> Vérification des devoirs</a></li>
+			<li><a href="{{ path('majordesk_app_verification_devoirs') }}"><i class="icon-angle-right"></i> Vérification des devoirs</a></li>
 			<li><a><i class="icon-angle-right"></i> Exercice en cours</a></li>
 		{% else %}
-			<li><a href="{{ path("majordesk_app_chapitres") }}"><i class="icon-angle-right"></i> Liste des chapitres</a></li>
-			<li><a href="{{ path("majordesk_app_parties", {'id_chapitre' : mod_exercice.chapitre.id}) }}"><i class="icon-angle-right"></i> Liste des exercices</a></li>
+			<li><a href="{{ path('majordesk_app_chapitres') }}"><i class="icon-angle-right"></i> Liste des chapitres</a></li>
+			<li><a href="{{ path('majordesk_app_parties', {'id_chapitre' : mod_exercice.chapitre.id}) }}"><i class="icon-angle-right"></i> Liste des exercices</a></li>
 			<li><a><i class="icon-angle-right"></i> Exercice en cours</a></li>
 		{% endif %}	
 	{% elseif is_granted("ROLE_PROF") and not is_granted('ROLE_ADMIN') %}
-		<li><a href="{{ path("majordesk_app_gestion_devoirs", {'id_eleve' : exercice.eleve.id }) }}"><i class="icon-angle-right"></i> Gestion des devoirs et exercices faits</a></li>
+		<li><a href="{{ path('majordesk_app_gestion_devoirs', {'id_eleve' : exercice.eleve.id }) }}"><i class="icon-angle-right"></i> Gestion des devoirs et exercices faits</a></li>
 		<li><a><i class="icon-angle-right"></i> Exercice en cours</a></li>
+	{% elseif is_granted('ROLE_ADMIN') %}
+		<li><a href="{{ path('majordesk_app_gestion_contenu') }}"><i class="icon-angle-right"></i> Gestion du contenu</a></li>
+		<li><a href="{{ path('majordesk_app_gestionnaire_exercices') }}"><i class="icon-angle-right"></i> Gestionnaire d'exercices</a></li>
+		<li><a href="{{ path('majordesk_app_afficher_exercice', {'id' : exercice.modExercice.id }) }}"><i class="icon-angle-right"></i> Afficher un exercice</a></li>
+		<li><a><i class="icon-angle-right"></i> Test de l'exercice</a></li>
 	{% endif %}
 {% endblock %}
 {% block controlbar %}
@@ -36,8 +41,7 @@
 
 {% block eleve %}
 	{% if is_granted("ROLE_ELEVE") %}
-				<span class="visible-md"><br></span>
-				<span class="visible-lg"><br></span>
+				<br><br><br><span class="visible-xs"><br></span>
 				
 				<div id="intro" data-id-matiere="{{ id_matiere }}"></div>
 				
@@ -206,6 +210,11 @@
 					</div>
 					<div class="col-sm-11 col-md-11 col-lg-11">		
 						<h4>Exercice (Id : {{ mod_exercice.id }})</h4>	
+						{% if is_granted('ROLE_ADMIN') %}
+						<span class="pull-right">
+							<a href="{{ path('majordesk_app_test_exercice', {'id_exercice' : exercice.id}) }}" class="btn btn-warning">Réinit <i class="icon-refresh"></i></a>
+						</span>
+						{% endif %}
 					</div>
 				</div>
 				<div class="clearfix"></div>
@@ -522,7 +531,7 @@
 						<!---------->
 						
 					{% if mod_question.type == 'question' %}	
-							{% if is_granted("ROLE_ELEVE") and not is_granted("ROLE_PROF") %}
+							{% if (is_granted("ROLE_ELEVE") and not is_granted("ROLE_PROF")) or is_granted('ROLE_ADMIN') %}
 								{% if question.statut != statut_resolu %}<span><br><button class="btn btn-success pull-right valider" type="button" data-loading-text="Validation..." data-id-exercice="{{ exercice.id }}" data-id-question="{{ question.id }}" >Valider <i class="icon-ok text-white"></i></button></span>{% endif %}
 							{% endif %}
 							</form>

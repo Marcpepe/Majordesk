@@ -701,7 +701,16 @@ class EleveController extends Controller
 	 */
     public function generateExerciceAction($id)
     {
-		$eleve = $this->getUser();
+		$ID_ELEVE_ADMIN = 32;
+	
+		if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$eleve = $this->getUser();
+		} else {
+			$eleve = $this->getDoctrine()
+						  ->getManager()
+						  ->getRepository('MajordeskAppBundle:ELEVE')
+						  ->find($ID_ELEVE_ADMIN);
+		}
 		$mod_exercice = $this->getDoctrine()
 							 ->getManager()
 							 ->getRepository('MajordeskAppBundle:ModExercice')
@@ -786,9 +795,12 @@ class EleveController extends Controller
 		
         $mod_exercice = $exercice->getModExercice();
 		
-		$statut_en_ligne = $this->container->getParameter('statut_en_ligne');
-		if ($mod_exercice->getStatut() != $statut_en_ligne) {
-			throw new \Exception('L\'exercice recherché est en maintenance et sera disponible prochainement !');
+		// Si l'on n'est pas en train de tester l'exercice (ROLE_ADMIN), on vérifie que l'exercice est bien en ligne
+		if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+			$statut_en_ligne = $this->container->getParameter('statut_en_ligne');
+			if ($mod_exercice->getStatut() != $statut_en_ligne) {
+				throw new \Exception('L\'exercice recherché est en maintenance et sera disponible prochainement !');
+			}
 		}
 		
 		$id = $mod_exercice->getId();

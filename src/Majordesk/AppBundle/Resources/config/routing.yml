@@ -1025,6 +1025,18 @@ majordesk_app_modifier_exercice:
     options:
         expose: true
 
+majordesk_app_test_exercice:
+    pattern: /admin/test-exercice/{id}
+    defaults: { _controller: MajordeskAppBundle:Admin:testExercice }
+    requirements:
+        id:   \d+
+
+majordesk_app_test_exercice:
+    pattern: /admin/reinit-test-exercice/{id_exercice}
+    defaults: { _controller: MajordeskAppBundle:Admin:reinitialiserTestExercice }
+    requirements:
+        id_exercice:   \d+
+
 majordesk_app_dupliquer_exercice:
     pattern:  /admin/dupliquer-exercice-{id}
     defaults: { _controller: MajordeskAppBundle:Admin:dupliquerExercice }

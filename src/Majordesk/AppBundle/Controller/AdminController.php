@@ -997,6 +997,68 @@ class AdminController extends Controller
 	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
+	public function testExerciceAction($id)
+    {
+		$ID_ELEVE_ADMIN = 32;
+	
+		$exercice = $this->getDoctrine()
+						 ->getManager()
+						 ->getRepository('MajordeskAppBundle:Exercice')
+						 ->getExerciceByModExerciceAndEleve($ID_ELEVE_ADMIN, $id);
+						 
+		if (!empty($exercice)) {
+			return $this->redirect($this->generateUrl('majordesk_app_exercice', array('id_exercice' => $exercice->getId())));
+		} else {
+			return $this->redirect($this->generateUrl('majordesk_app_generate_exercice', array('id' => $id)));
+		}
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+	public function reinitialiserTestExerciceAction($id_exercice)
+    {
+		$non_commence = $this->container->getParameter('statut_non_commence');
+
+		$em = $this->getDoctrine()->getManager();
+		
+		$exercice = $this->getDoctrine()
+						 ->getManager()
+						 ->getRepository('MajordeskAppBundle:Exercice')
+						 ->find($id_exercice);
+		
+		$questions = $exercice->getQuestions();
+		foreach($questions as $question) {
+			$question->setNombreEssais(0);
+			$question->setCommentaire('');
+			$question->setCouche(1);
+			$question->setStatut($non_commence);
+			
+			$reponses = $question->getReponses(); // A supprimer au prochain clean up
+			foreach($reponses as $reponse) {
+				$question->removeReponse($reponse);
+				$em->remove($reponse);
+			}
+			$reps = $question->getReps();
+			foreach($reps as $rep) {
+				$question->removeRep($rep);
+				$em->remove($rep);
+			}
+		}
+		
+		$exercice->setTemps(new \Datetime("00:00:00"));
+		$exercice->setStatut($non_commence);
+		$exercice->setQueue(1);
+		
+		$em->persist($exercice);
+		$em->flush();
+		
+		return $this->redirect($this->generateUrl('majordesk_app_exercice', array('id_exercice' => $id_exercice)));
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
 	public function dupliquerExerciceAction($id)
     {
 		$mod_exercice = $this->getDoctrine()

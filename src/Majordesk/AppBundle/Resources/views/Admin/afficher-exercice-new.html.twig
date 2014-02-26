@@ -103,7 +103,7 @@
 							<strong>Id</strong> : {% if mod_exercice.id is not null %}{{ mod_exercice.id }}{% endif %}
 						</div>
 						<div class="pull-right">
-							<a href="" class="btn btn-warning"><i class="icon-play-sign"></i></a>
+							<a href="{{ path('majordesk_app_test_exercice', {'id' : mod_exercice.id }) }}" class="btn btn-warning"><i class="icon-play-sign"></i></a>
 						</div>
 					</div>
 				</div>
