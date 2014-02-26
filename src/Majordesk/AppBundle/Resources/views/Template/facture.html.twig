@@ -41,74 +41,28 @@
 			<th>Total</th>
 		</tr>
 	{% set total = 0 %}
-	{% set row = 1 %}
+
 	{% for achat in achats %}
-		{% if row == 12 %}
-		</table>
-			<br><br>
-		<table>
 			<tr>
 				<td>{{ achat.designation }}</td>
 				<td style="text-align:right;">{{ achat.quantite }} h</td>
 				<td style="text-align:center;">{{ (achat.puht / 100)|number_format(2, ',', ' ') }} €</td> 
 				<td style="text-align:right;">{{ (achat.quantite * achat.puht / 100)|number_format(2, ',', ' ') }} €</td>		
 			</tr>
-		{% else %}
-			<tr>
-				<td>{{ achat.designation }}</td>
-				<td style="text-align:right;">{{ achat.quantite }} h</td>
-				<td style="text-align:center;">{{ (achat.puht / 100)|number_format(2, ',', ' ') }} €</td> 
-				<td style="text-align:right;">{{ (achat.quantite * achat.puht / 100)|number_format(2, ',', ' ') }} €</td>		
-			</tr>
-		{% endif %}
 		{% set total = total + achat.quantite * achat.puht %}
-		{% set row = row + 1 %}
 	{% endfor %}
-	
-		{% if row == 12 %}
-		</table>
-			<br><br>
-		<table>
 			<tr style="height:12px;border-left:0;border-right:0;">
 				<td style="border-left:0;border-right:0;border-bottom:0"></td>
 				<td style="border-left:0;border-right:0;border-bottom:0"></td>
 				<td style="border-left:0;border-right:0;"></td>
 				<td style="border-left:0;border-right:0;"></td>
 			</tr>
-		{% else %}
-			<tr style="height:12px;border-left:0;border-right:0;">
-				<td style="border-left:0;border-right:0;border-bottom:0"></td>
-				<td style="border-left:0;border-right:0;border-bottom:0"></td>
-				<td style="border-left:0;border-right:0;"></td>
-				<td style="border-left:0;border-right:0;"></td>
-			</tr>
-		{% endif %}
-		{% set row = row + 1 %}
-		
-		{% if row == 12 %}
-		</table>
-			<br><br>
-		<table>
 			<tr>
 				<td style="border:0"></td>
 				<td style="border:0"></td>
 				<td>Total HT</td>
 				<td style="text-align:right;">{{ (total / 100)|number_format(2, ',', ' ') }} €</td>
 			</tr>
-		{% else %}
-			<tr>
-				<td style="border:0"></td>
-				<td style="border:0"></td>
-				<td>Total HT</td>
-				<td style="text-align:right;">{{ (total / 100)|number_format(2, ',', ' ') }} €</td>
-			</tr>
-		{% endif %}
-		{% set row = row + 1 %}
-		
-		{% if row == 12 %}
-		</table>
-			<br><br>
-		<table>
 			<tr>
 				<td style="border:0"></td>
 				<td style="border:0"></td>			
@@ -117,22 +71,6 @@
 				<td style="text-align:right;">0,00 €</td>
 				<!--<td style="text-align:right;">{{ (total / 100 * 0.1)|number_format(2, ',', ' ') }} €</td>-->
 			</tr>
-		{% else %}
-			<tr>
-				<td style="border:0"></td>
-				<td style="border:0"></td>			
-				<td>TVA non applicable : <br>Article 293 B du CGI</td>
-				<!--<td>TVA 10%</td>-->
-				<td style="text-align:right;">0,00 €</td>
-				<!--<td style="text-align:right;">{{ (total / 100 * 0.1)|number_format(2, ',', ' ') }} €</td>-->
-			</tr>
-		{% endif %}
-		{% set row = row + 1 %}
-		
-		{% if row == 12 %}
-		</table>
-			<br><br>
-		<table>
 			<tr>
 				<td style="border:0"></td>
 				<td style="border:0"></td>
@@ -140,16 +78,6 @@
 				<td style="text-align:right;">{{ (total / 100)|number_format(2, ',', ' ') }} €</td>
 				<!--<td style="text-align:right;">{{ (total / 100 * 1.1)|number_format(2, ',', ' ') }} €</td>-->
 			</tr>
-		{% else %}
-			<tr>
-				<td style="border:0"></td>
-				<td style="border:0"></td>
-				<td>Total TTC</td>
-				<td style="text-align:right;">{{ (total / 100)|number_format(2, ',', ' ') }} €</td>
-				<!--<td style="text-align:right;">{{ (total / 100 * 1.1)|number_format(2, ',', ' ') }} €</td>-->
-			</tr>
-		{% endif %}
-		{% set row = row + 1 %}
 	</table>
 	<br><br>
 	Statut : Réglé

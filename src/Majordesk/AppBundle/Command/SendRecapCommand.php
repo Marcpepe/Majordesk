@@ -28,7 +28,7 @@ class SendRecapCommand extends ContainerAwareCommand
 					        ->getDestinatairesRecap();
 		
 		$nb_destinataires = count($destinataires);
-		$output->writeln("Nombre de destinataire(s) ".$nb_destinataires."\n");
+		$output->writeln("Nombre de destinataire(s) ".$nb_destinataires);
 		
 		foreach($destinataires as $destinataire) {
 			if ($input->getOption('test')) {
@@ -50,8 +50,8 @@ class SendRecapCommand extends ContainerAwareCommand
 			$liste = '';
 			
 			$nb_tickets = count($tickets);
-			$output->writeln("Famille : ".$nom." (".$mail.")\n");
-			$output->writeln("Nombre de ticket(s) ".$nb_tickets."\n\n");
+			$output->writeln("\n\nFamille : ".$nom." (".$mail.")");
+			$output->writeln("Nombre de ticket(s) ".$nb_tickets);
 			
 			if (!empty($tickets)){			
 				
