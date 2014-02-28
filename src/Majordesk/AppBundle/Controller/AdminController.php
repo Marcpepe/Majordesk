@@ -140,6 +140,21 @@ class AdminController extends Controller
 	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
+    public function gestionFacturesAction()
+    {
+		$factures = $this->getDoctrine()
+						 ->getManager()
+						 ->getRepository('MajordeskAppBundle:Facture')
+						 ->findAll();
+
+        return $this->render('MajordeskAppBundle:Admin:gestion-factures.html.twig', array(
+			'factures' => $factures
+		));
+    }
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
     public function gestionDocumentsAction()
     {
 		$professeurs = $this->getDoctrine()

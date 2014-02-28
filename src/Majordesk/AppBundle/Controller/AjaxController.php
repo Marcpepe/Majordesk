@@ -1700,19 +1700,19 @@ class AjaxController extends Controller
 			$questionAnalysis = $reponse_validator->evaluateAndPersistReponses($question, $reponses_, $temps_, $isLastCouche);
 			
 			// //MODE DEBUG ON
-			// $em = $this->getDoctrine()->getManager();
+			$em = $this->getDoctrine()->getManager();
 			
-			// $mod_question = $question->getModQuestion();
-			// $mod_reponses = array();
-			// foreach($mod_question->getModMappings() as $mod_mapping) {
-				// foreach($mod_mapping->getModReponses() as $mod_reponse) {
-					// $mod_reponses[] = $mod_reponse->getContenu();
-				// }
-			// }		
-			// return new JsonResponse(array('reponses_' => $reponses_, 'mod_reponses' => $mod_reponses, 'valeur_question' => $questionAnalysis[0], 'commentaire' => $questionAnalysis[1], 'exercice_termine' => $questionAnalysis[2], 'CR' => $questionAnalysis[3]));
+			$mod_question = $question->getModQuestion();
+			$mod_reponses = array();
+			foreach($mod_question->getModMappings() as $mod_mapping) {
+				foreach($mod_mapping->getModReponses() as $mod_reponse) {
+					$mod_reponses[] = $mod_reponse->getContenu();
+				}
+			}		
+			return new JsonResponse(array('reponses_' => $reponses_, 'mod_reponses' => $mod_reponses, 'valeur_question' => $questionAnalysis[0], 'commentaire' => $questionAnalysis[1], 'exercice_termine' => $questionAnalysis[2], 'CR' => $questionAnalysis[3]));
 			
 			// MODE DEBUG OFF
-			return new JsonResponse(array('etape_cours' => $etape_cours, 'valeur_question' => $questionAnalysis[0], 'commentaire' => $questionAnalysis[1], 'exercice_termine' => $questionAnalysis[2], 'CR' => $questionAnalysis[3]));
+			// return new JsonResponse(array('etape_cours' => $etape_cours, 'valeur_question' => $questionAnalysis[0], 'commentaire' => $questionAnalysis[1], 'exercice_termine' => $questionAnalysis[2], 'CR' => $questionAnalysis[3]));
 		}
 	}
 	

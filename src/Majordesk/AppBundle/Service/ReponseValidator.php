@@ -1269,12 +1269,12 @@ class ReponseValidator
 		$contenu = str_replace('</msqrt>', ')', $contenu);	
 		
 		// latex
-		// $contenu = preg_replace('#\\text{(.*)}#', '$1', $contenu);		
-		// $contenu = preg_replace('#\\\frac{(.*)}{(.*)}#', '($1)/($2)', $contenu);	
-		// $contenu = preg_replace('#\\\widehat{(.*)}#', 'ang($1)', $contenu);
-		// $contenu = preg_replace('#\\\overline{(.*)}#', 'barre($1)', $contenu);
-		// $contenu = preg_replace('#\\\vec{(.*)}#', 'vect($1)', $contenu);		
-		// $contenu = preg_replace('#\\\sqrt{(.*)}#', 'sqrt($1)', $contenu);		
+		$contenu = preg_replace('#\\text{(.*)}#', '$1', $contenu);		
+		$contenu = preg_replace('#\\\frac{(.*)}{(.*)}#', '($1)/($2)', $contenu);	
+		$contenu = preg_replace('#\\\widehat{(.*)}#', 'ang($1)', $contenu);
+		$contenu = preg_replace('#\\\overline{(.*)}#', 'barre($1)', $contenu);
+		$contenu = preg_replace('#\\\vec{(.*)}#', 'vect($1)', $contenu);		
+		$contenu = preg_replace('#\\\sqrt{(.*)}#', 'sqrt($1)', $contenu);		
 		
 		for($i=0;$i<=strlen($contenu)-1;$i++){
 			if ($contenu[$i] == '*') {

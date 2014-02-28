@@ -712,6 +712,10 @@ majordesk_app_gestion_virements:
     pattern:  /admin/gestion-des-virements
     defaults: { _controller: MajordeskAppBundle:Admin:gestionVirements }
 
+majordesk_app_gestion_factures:
+    pattern:  /admin/gestion-des-factures
+    defaults: { _controller: MajordeskAppBundle:Admin:gestionFactures }
+
 #--Eleves--#
 majordesk_app_gestion_eleves:
     pattern:  /admin/gestion-des-eleves

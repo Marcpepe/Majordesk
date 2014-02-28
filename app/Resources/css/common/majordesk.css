@@ -185,6 +185,20 @@ fieldset[disabled] .btn-orange.active {
   border-color: #474949;
   color: #ffffff;
 }
+.btn-light-default-inverted:hover,
+.btn-light-default-inverted:focus,
+.btn-light-default-inverted:active,
+.btn-light-default-inverted.active {
+  background-color: #8f9292;
+  border-color: #8f9292;
+  color: #ffffff;
+}
+
+.btn-light-default-inverted {
+  color: #8f9292;
+  background-color: #ffffff;
+  border-color: #E6E6E6;
+}
 .btn-primary-inverted {
   color: #428bca;
   background-color: #ffffff;

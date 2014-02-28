@@ -27,9 +27,8 @@ $(document)
 })
 .on('click', '.touche', function() {
 	// $(this).mousedown(function(e) { e.stopImmediatePropagation(); return false; }); // éviter le clignotement ?
-	var latex = $(this).attr('latex');
 	var left = parseInt($(this).attr('left'));
-	console.log('latex : '+latex+' left : '+left);
+	var latex = $(this).attr('latex');
 	$('.editing').mathquill('write', latex).find('textarea').focus();
 	if (left) {
 		e = jQuery.Event("keydown");

@@ -139,7 +139,7 @@
 			<ul>
 			{% for facture in factures %}
 				<li>
-					<a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}">Facture</a> du {{ facture.dateEmission|date('d/m/Y') }}
+					<a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}">Facture du {{ facture.dateEmission|date('d/m/Y') }}</a>
 				</li>
 			{% endfor %}
 			</ul>

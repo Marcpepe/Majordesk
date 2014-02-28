@@ -1,0 +1,53 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Gestion des heures de cours - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des heures de cours</a></li>
+{% endblock %}
+
+{% block body %}
+<br><br><br><span class="visible-xs"><br></span>
+
+<div class="col-lg-12">
+	<h3>Liste des factures</h3><br>
+	{% if factures is not empty %}
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Date</th>
+					<th>Montant</th>
+					<th>Famille</th>
+					<th>Lien</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for facture in factures %}
+					<tr>
+						<td>
+							{{ facture.id }}
+						</td>
+						<td>
+							{{ facture.dateEmission|date("d/m/y") }}
+						</td>
+						<td>
+							{{ (facture.total / 100 )|number_format(2, ',', ' ') }} €
+						</td>
+						<td>{{ facture.famille.getNom }}</td>
+						<td><a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}"><i class="icon-file-text text-peterriver"></i></a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% else %}
+	Aucune factures émises pour l'instant.
+	{% endif %}
+
+</div>
+
+{% endblock %}

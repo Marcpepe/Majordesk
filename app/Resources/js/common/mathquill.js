@@ -2107,6 +2107,8 @@ LatexCmds.rangle =
 LatexCmds.rang = bind(CloseBracket, '&lang;','&rang;','\\langle ','\\rangle ');
 
 var parenMixin = function(_, _super) {
+  // _.init = function(open, close, ctrlSeq, end) {
+    // _super.init.call(this, open, close, ctrlSeq, end);
   _.init = function(open, close) {
     _super.init.call(this, open, close, open, close);
   };
@@ -2116,31 +2118,19 @@ var Paren = P(Bracket, parenMixin);
 
 LatexCmds.lparen =
 CharCmds['('] = bind(Paren, '(', ')');
+CharCmds['('] = bind(Paren, '(', ')', '(', ')');
 LatexCmds.lbrack =
 LatexCmds.lbracket =
 CharCmds['['] = bind(Paren, '[', ']');
-// LatexCmds.lorcbrack = LatexCmds.lorcbracket = bind(Paren, ']', ']'); // FIXME
-// LatexCmds.lorobrack = LatexCmds.lorobracket = bind(Paren, ']', '[');
-// LatexCmds.lcrobrack = LatexCmds.lcrobracket = bind(Paren, '[', '[');
-// LatexCmds.interfo = bind(Paren, '[', '['); // CHANGED // FIXME
-// LatexCmds.interof = bind(Paren, ']', ']'); // CHANGED
-// LatexCmds.interff = bind(Paren, ']', '['); // CHANGED
 
-var interFO =
-LatexCmds.interfo = P(Paren, function(_, _super) {
-  _.init = function() {
-    _super.init.call(this, '[', '[');
-  };
-  _.createLeftOf = CloseBracket.prototype.createLeftOf;
-});
+LatexCmds.interof = bind(Paren, ']', ']')
+LatexCmds.interfo = bind(Paren, '[', '[')
+LatexCmds.interoo = bind(Paren, ']', '[')
 
 var CloseParen = P(CloseBracket, parenMixin);
 
 LatexCmds.rparen =
 CharCmds[')'] = bind(CloseParen, '(', ')');
-LatexCmds.rbrack =
-LatexCmds.rbracket =
-CharCmds[']'] = bind(CloseParen, '[', ']');
 
 var Pipes =
 LatexCmds.lpipe =
