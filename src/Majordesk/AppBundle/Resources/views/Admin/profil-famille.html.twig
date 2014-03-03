@@ -116,6 +116,23 @@
 						  <td>{{ famille.abonnement }}</td>
 						</tr>
 						
+						<tr>
+						  <td>Factures</td>
+						  <td>
+							{% if factures is not empty %}
+								<ul>
+								{% for facture in factures %}
+									<li>
+										<a href="{{ path('majordesk_app_view_facture', { 'id_famille' : famille.id, 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}">Facture du {{ facture.dateEmission|date('d/m/Y') }}</a>
+									</li>
+								{% endfor %}
+								</ul>
+							{% else %}
+								Aucune pour l'instant.
+							{% endif %}
+						  </td>
+						</tr>
+						
 						<!--<tr>
 						  <td>N° Immatriculation Urssaf</td>
 						  <td>{{ famille.immatriculationUrssaf }}</td>

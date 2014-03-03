@@ -716,6 +716,10 @@ majordesk_app_gestion_factures:
     pattern:  /admin/gestion-des-factures
     defaults: { _controller: MajordeskAppBundle:Admin:gestionFactures }
 
+majordesk_app_view_facture:
+    pattern:  /admin/voir-facture
+    defaults: { _controller: MajordeskAppBundle:Admin:viewFacture }
+
 #--Eleves--#
 majordesk_app_gestion_eleves:
     pattern:  /admin/gestion-des-eleves

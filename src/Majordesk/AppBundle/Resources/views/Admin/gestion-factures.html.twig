@@ -38,7 +38,7 @@
 							{{ (facture.total / 100 )|number_format(2, ',', ' ') }} €
 						</td>
 						<td>{{ facture.famille.getNom }}</td>
-						<td><a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}"><i class="icon-file-text text-peterriver"></i></a></td>
+						<td><a href="{{ path('majordesk_app_view_facture', { 'id_famille' : facture.famille.id, 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}"><i class="icon-file-text text-peterriver"></i></a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

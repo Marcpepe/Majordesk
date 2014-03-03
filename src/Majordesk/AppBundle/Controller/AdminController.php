@@ -153,6 +153,19 @@ class AdminController extends Controller
     }
 	
 	/**
+	 * @Secure(roles="ROLE_PARENTS")
+	 */
+	public function viewFactureAction($id_famille, $annee_facture, $file_name)
+    {	
+		$extension = '/home/majorcla/public_html/majordesk/production/majorclass.fr/current';
+		$file_path = $extension.'/documents/factures/'.$id_famille.'/'.$annee_facture.'/'.$file_name.'.pdf';
+		
+		return new Response(file_get_contents($file_path), 200, array(
+			'Content-Type' => 'application/pdf'
+		));
+    }
+	
+	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
     public function gestionDocumentsAction()
@@ -578,6 +591,8 @@ class AdminController extends Controller
 						   ->getManager()
 						   ->getRepository('MajordeskAppBundle:Famille')
 						   ->find($id);
+		
+		$factures = $famille->getFactures();
 						   
 		$parents = $this->getDoctrine()
 						   ->getManager()
@@ -586,6 +601,7 @@ class AdminController extends Controller
 		
         return $this->render('MajordeskAppBundle:Admin:profil-famille.html.twig', array(
 			'famille' => $famille,
+			'factures' => $factures,
 			'parents' => $parents
 		));
     }
