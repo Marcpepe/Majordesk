@@ -153,7 +153,7 @@ class AdminController extends Controller
     }
 	
 	/**
-	 * @Secure(roles="ROLE_PARENTS")
+	 * @Secure(roles="ROLE_ADMIN")
 	 */
 	public function viewFactureAction($id_famille, $annee_facture, $file_name)
     {	
