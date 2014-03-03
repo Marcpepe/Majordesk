@@ -2013,14 +2013,16 @@ LatexCmds.nthroot = P(SquareRoot, function(_, _super) {
 // Round/Square/Curly/Angle Brackets (aka Parens/Brackets/Braces)
 var Bracket = P(MathCommand, function(_, _super) {
   _.init = function(open, close, ctrlSeq, end) {
-    _super.init.call(this, '\\left'+ctrlSeq,
+    // _super.init.call(this, '\\left'+ctrlSeq,
+    _super.init.call(this, '\\interfo',
         '<span class="non-leaf">'
       +   '<span class="scaled paren">'+open+'</span>'
       +   '<span class="non-leaf">&0</span>'
       +   '<span class="scaled paren">'+close+'</span>'
       + '</span>',
       [open, close]);
-    this.end = '\\right'+end;
+    // this.end = '\\right'+end;
+    this.end = end;
   };
   _.jQadd = function() {
     _super.jQadd.apply(this, arguments);
@@ -2028,7 +2030,8 @@ var Bracket = P(MathCommand, function(_, _super) {
     this.bracketjQs = jQ.children(':first').add(jQ.children(':last'));
   };
   _.latex = function() {
-    return this.ctrlSeq + this.endChild[L].latex() + this.end;
+    // return this.ctrlSeq + this.endChild[L].latex() + this.end;
+    return this.ctrlSeq + this.end + this.endChild[L].latex();
   };
   _.redraw = function() {
     var blockjQ = this.endChild[L].jQ;
@@ -2107,8 +2110,6 @@ LatexCmds.rangle =
 LatexCmds.rang = bind(CloseBracket, '&lang;','&rang;','\\langle ','\\rangle ');
 
 var parenMixin = function(_, _super) {
-  // _.init = function(open, close, ctrlSeq, end) {
-    // _super.init.call(this, open, close, ctrlSeq, end);
   _.init = function(open, close) {
     _super.init.call(this, open, close, open, close);
   };
@@ -2122,6 +2123,7 @@ CharCmds['('] = bind(Paren, '(', ')', '(', ')');
 LatexCmds.lbrack =
 LatexCmds.lbracket =
 CharCmds['['] = bind(Paren, '[', ']');
+CharCmds[']'] = bind(Paren, ']', '[');
 
 LatexCmds.interof = bind(Paren, ']', ']')
 LatexCmds.interfo = bind(Paren, '[', '[')

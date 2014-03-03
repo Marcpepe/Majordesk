@@ -398,9 +398,39 @@ class ParentsController extends Controller
 						$eleve->setSalt(time());
 							$encoder = $factory->getEncoder($eleve);
 							$pass = $encoder->encodePassword($eleve->getPassword(), $eleve->getSalt()); 
+						$eleve->setPassword($pass);
+						
+						$em = $this->getDoctrine()->getManager();
+						
+						if (!empty($matiere_maths)) {
+							$matiere = $this->getDoctrine()
+											->getManager()
+											->getRepository('MajordeskAppBundle:Matiere')
+											->find(1);
+							$eleve_matiere = new EleveMatiere();
+							$eleve_matiere->setCours(1);
+							$eleve_matiere->setPrelevementCours(1);
+							$matiere->addEleveMatiere($eleve_matiere);
+							$eleve->addEleveMatiere($eleve_matiere);
+							$em->persist($matiere);
+							$em->persist($eleve_matiere);
+						} 
+						if (!empty($matiere_physique)) {
+							$matiere = $this->getDoctrine()
+											->getManager()
+											->getRepository('MajordeskAppBundle:Matiere')
+											->find(2);
+							$eleve_matiere = new EleveMatiere();
+							$eleve_matiere->setCours(1);
+							$eleve_matiere->setPrelevementCours(1);
+							$matiere->addEleveMatiere($eleve_matiere);
+							$eleve->addEleveMatiere($eleve_matiere);
+							$em->persist($matiere);
+							$em->persist($eleve_matiere);
+						} 					
 						
 						$famille->addEleve($eleve);
-						$em = $this->getDoctrine()->getManager();
+						
 						$em->persist($famille);
 						$em->flush();
 						
