@@ -717,7 +717,7 @@ majordesk_app_gestion_factures:
     defaults: { _controller: MajordeskAppBundle:Admin:gestionFactures }
 
 majordesk_app_view_facture:
-    pattern:  /admin/voir-facture
+    pattern:  /admin/voir-facture/{id_famille}/{annee_facture}/{file_name}
     defaults: { _controller: MajordeskAppBundle:Admin:viewFacture }
 
 #--Eleves--#
