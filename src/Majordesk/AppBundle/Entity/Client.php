@@ -127,6 +127,13 @@ class Client implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="ville", type="string", length=255, nullable=true)
      */
     private $ville;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="geocode", type="string", length=255, nullable=true)
+     */
+    private $geocode;
 
     /**
      * @var string
@@ -437,6 +444,29 @@ class Client implements AdvancedUserInterface, \Serializable
     public function getVille()
     {
         return $this->ville;
+    }
+	
+	/**
+     * Set geocode
+     *
+     * @param string $geocode
+     * @return Professeur
+     */
+    public function setGeocode($geocode)
+    {
+        $this->geocode = $geocode;
+    
+        return $this;
+    }
+
+    /**
+     * Get geocode
+     *
+     * @return string 
+     */
+    public function getGeocode()
+    {
+        return $this->geocode;
     }
 
     /**

@@ -17,6 +17,82 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
 {
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function addGeocodeToParentAction($id_parent)
+    {
+		$parent = $this->getDoctrine()
+					   ->getManager()
+					   ->getRepository('MajordeskAppBundle:Client')
+					   ->find($id_parent);
+		
+		$request = $this->getRequest();
+		if ( $request->isXmlHttpRequest() ) {	
+			$geocode = $request->get('geocode');
+			$geocode = json_decode($geocode);
+			// throw new \Exception(var_dump($geocode->e));
+			$parent->setGeocode($geocode->d.', '.$geocode->e);
+			
+			$em = $this->getDoctrine()->getManager(); 
+			$em->persist($parent);
+			$em->flush();		
+		}
+		
+		return new Response();
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function addGeocodeToProfAction($id_professeur)
+    {
+		$professeur = $this->getDoctrine()
+						   ->getManager()
+						   ->getRepository('MajordeskAppBundle:Professeur')
+						   ->find($id_professeur);
+		
+		$request = $this->getRequest();
+		if ( $request->isXmlHttpRequest() ) {	
+			$geocode = $request->get('geocode');
+			$geocode = json_decode($geocode);
+			// throw new \Exception(var_dump($geocode->e));
+			$professeur->setGeocode($geocode->d.', '.$geocode->e);
+			
+			$em = $this->getDoctrine()->getManager(); 
+			$em->persist($professeur);
+			$em->flush();		
+		}
+		
+		return new Response();
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
+    public function addGeocodeWeToProfAction($id_professeur)
+    {
+		$professeur = $this->getDoctrine()
+						   ->getManager()
+						   ->getRepository('MajordeskAppBundle:Professeur')
+						   ->find($id_professeur);
+		
+		$request = $this->getRequest();
+		if ( $request->isXmlHttpRequest() ) {	
+			$geocodeWe = $request->get('geocodeWe');
+			$professeur->setGeocodeWe($geocodeWe);
+			$geocodeWe = json_decode($geocodeWe);
+			// throw new \Exception(var_dump($geocodeWe->e));
+			$professeur->setGeocodeWe($geocodeWe->d.', '.$geocodeWe->e);
+			
+			$em = $this->getDoctrine()->getManager(); 
+			$em->persist($professeur);
+			$em->flush();		
+		}
+		
+		return new Response();
+	}
+
 
 	/**
 	 * @Secure(roles="ROLE_ELEVE")

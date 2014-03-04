@@ -720,6 +720,34 @@ majordesk_app_view_facture:
     pattern:  /admin/voir-facture/{id_famille}/{annee_facture}/{file_name}
     defaults: { _controller: MajordeskAppBundle:Admin:viewFacture }
 
+majordesk_app_view_map:
+    pattern:  /admin/voir-map
+    defaults: { _controller: MajordeskAppBundle:Admin:viewMap }
+
+majordesk_app_add_geocode_to_parent:
+    pattern:  /admin/add-geocode-to-parent/{id_parent}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addGeocodeToParent }
+    requirements:
+        id_parent:   \d+
+    options:
+        expose: true
+
+majordesk_app_add_geocode_to_prof:
+    pattern:  /admin/add-geocode-to-prof/{id_professeur}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addGeocodeToProf }
+    requirements:
+        id_professeur:   \d+
+    options:
+        expose: true
+
+majordesk_app_add_geocode_we_to_prof:
+    pattern:  /admin/add-geocode-we-to-prof/{id_professeur}
+    defaults: { _controller: MajordeskAppBundle:Ajax:addGeocodeWeToProf }
+    requirements:
+        id_professeur:   \d+
+    options:
+        expose: true
+
 #--Eleves--#
 majordesk_app_gestion_eleves:
     pattern:  /admin/gestion-des-eleves

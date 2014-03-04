@@ -696,17 +696,88 @@ class AdminController extends Controller
 	/**
 	 * @Secure(roles="ROLE_ADMIN")
 	 */
+    public function viewMapAction()
+    {
+		$professeurs = $this->getDoctrine()
+						    ->getManager()
+						    ->getRepository('MajordeskAppBundle:Professeur')
+						    ->findAll();
+		
+		$profs = array();
+		
+		$i=0;
+		foreach($professeurs as $professeur) {
+			$profs[$i]['id'] = $professeur->getId();
+			$profs[$i]['nom'] = $professeur->getUsername().' '.$professeur->getNom();
+			$geocode = $professeur->getGeocode();
+			if (!empty($geocode)) {
+				$profs[$i]['hasGeocode'] = 1;
+				$profs[$i]['geocode'] = $professeur->getGeocode();
+			}
+			else {
+				$profs[$i]['adresse'] = $professeur->getAdresse().', '.$professeur->getCodePostal().', '.$professeur->getVille().', France';
+			}
+			$adresseWe = $professeur->getAdresseWe();
+			$geocodeWe = $professeur->getGeocodeWe();
+			if (!empty($adresseWe)) {
+				if (!empty($geocodeWe)) {
+					$profs[$i]['hasGeocodeWe'] = 1;
+					$profs[$i]['geocodeWe'] = $professeur->getGeocodeWe();
+				}
+				else {
+					$profs[$i]['adresseWe'] = $professeur->getAdresseWe().', '.$professeur->getCodePostalWe().', '.$professeur->getVilleWe().', France';
+				}
+			}
+			$i++;
+		}
+		
+		$clients = $this->getDoctrine()
+						->getManager()
+						->getRepository('MajordeskAppBundle:Client')
+			            ->findAll();
+		
+		$parents = array();
+		
+		$j=0;
+		foreach($clients as $client) {
+			$parents[$j]['id'] = $client->getId();
+			$parents[$j]['nom'] = $client->getUsername().' '.$client->getNom();
+			$geocode = $client->getGeocode();
+			if (!empty($geocode)) {
+				$parents[$j]['hasGeocode'] = 1;
+				$parents[$j]['geocode'] = $client->getGeocode();
+			}
+			else {
+				$parents[$j]['adresse'] = $client->getAdresse().', '.$client->getCodePostal().', '.$client->getVille().', France';
+			}
+			$j++;
+		}	
+		
+		$profs = json_encode($profs, true);
+		$parents = json_encode($parents, true);		
+		
+        return $this->render('MajordeskAppBundle:Admin:view-map.html.twig', array(
+			'professeurs' => $professeurs,
+			'profs' => $profs,
+			'clients' => $clients,
+			'parents' => $parents
+		));
+    }
+
+	/**
+	 * @Secure(roles="ROLE_ADMIN")
+	 */
     public function gestionProfesseursAction()
     {
 		$professeurs = $this->getDoctrine()
-						 ->getManager()
-						 ->getRepository('MajordeskAppBundle:Professeur')
-		                 ->findAll();
+							->getManager()
+							->getRepository('MajordeskAppBundle:Professeur')
+							->findAll();
 		
 		$disponibilites = $this->getDoctrine()
-						->getManager()
-						->getRepository('MajordeskAppBundle:Disponibilite')
-			            ->findAll();
+							   ->getManager()
+							   ->getRepository('MajordeskAppBundle:Disponibilite')
+							   ->findAll();
 		
         return $this->render('MajordeskAppBundle:Admin:gestion-professeurs.html.twig', array(
 			'professeurs' => $professeurs,

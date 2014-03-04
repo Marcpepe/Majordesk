@@ -1,0 +1,161 @@
+{% extends "MajordeskAppBundle:Admin:admin.html.twig" %}
+
+{% block title %}
+	Gestion des professeurs - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a><i class="icon-angle-right"></i> Gestion des professeurs</a></li>
+{% endblock %}
+ 
+{% block admin %}
+	<br><br><span class="visible-xs"><br><br></span>
+	<div class="col-lg-12">
+				<h3><i class="icon-user-md icon-large text-red"></i> Carte des inscrits</h3><br>
+				Nombre de professeurs : <strong>{{ professeurs|length }}</strong><br>
+				Nombre de familles : <strong>{{ clients|length }}</strong>
+				<br><br>
+				<div id="map-canvas" style="height:1000px;" ></div>
+				<br><br>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}	
+	<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAWFFKStzuRNCw21_MD1ZTM-LsLfgdIn0&sensor=false">
+    </script>
+    <script type="text/javascript">
+		var profs = JSON.parse('{{ profs|raw }}');
+		var parents = JSON.parse('{{ parents|raw }}');
+	    
+	    var geocoder;
+        var map;
+        function initialize() {
+				var mapOptions = {
+				  center: new google.maps.LatLng(48.853607, 2.343455),
+				  zoom: 12
+				};
+			map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+			geocoder = new google.maps.Geocoder();
+
+			for( var i=0; i<Object.keys(profs).length; i++ ) {
+				var nom_prof = profs[i]['nom'];
+				var id_prof = profs[i]['id'];
+				if (profs[i]['hasGeocode'] === 1) {
+					  var marker = new google.maps.Marker({
+						  map: map,
+						  position: new google.maps.LatLng(profs[i]['geocode']),
+						  title: nom_prof
+					  });
+					  console.log('geocode from database used');
+				} else {
+					geocoder.geocode( { 'address': profs[i]['adresse']}, function(results, status) {						
+						if (status == google.maps.GeocoderStatus.OK) {
+							console.log('geocode query returned : lat/long = '+results[0].geometry.location);
+						    //map.setCenter(results[0].geometry.location);
+						    var marker = new google.maps.Marker({
+							  map: map,
+							  position: results[0].geometry.location,
+							  title: nom_prof
+						    });
+							// On ajoute le géocode trouvé à la base de données
+							console.log("On ajoute le géocode trouvé à la base de données");
+						    $.ajax({
+								type: "POST",
+								data: { 'geocode' : JSON.stringify(results[0].geometry.location) },
+								url: Routing.generate("majordesk_app_add_geocode_to_prof", {'id_professeur' : id_prof}),
+								success: function() {	
+									console.log('Le géocode n\'a bien été ajouté.');
+								},
+								error: function() {
+									console.log('Le géocode n\'a pas été ajouté.');
+								}
+							});
+						} else {
+						  console.log('Geocode status : ' + status );
+						}	
+					});	
+				}
+					
+				if (profs[i]['hasAdresseWe'] === 1) {				
+					if (profs[i]['hasGeocodeWe'] === 1) {
+						  var marker = new google.maps.Marker({
+							  map: map,
+							  position: new google.maps.LatLng(profs[i]['geocodeWe']),
+							  title: nom_prof
+						  });
+						  console.log('geocode from database used');
+					} else {
+						geocoder.geocode( { 'address': profs[i]['adresseWe']}, function(results, status) {						
+							if (status == google.maps.GeocoderStatus.OK) {
+								console.log('geocode query returned : lat/long = '+results[0].geometry.location);
+							  //map.setCenter(results[0].geometry.location);
+							  var marker = new google.maps.Marker({
+								  map: map,
+								  position: results[0].geometry.location,
+								  title: nom_prof
+							  });
+							  // On ajoute le géocode trouvé à la base de données
+						      $.ajax({
+								type: "POST",
+								data: { 'geocodeWe' : JSON.stringify(results[0].geometry.location) },
+								url: Routing.generate("majordesk_app_add_geocode_we_to_prof", {'id_professeur' : id_prof}),
+								success: function() {	
+									console.log('Le géocode n\'a bien été ajouté.');
+								},
+								error: function() {
+									console.log('Le géocode n\'a pas été ajouté.');
+								}
+							  });
+							} else {
+							  console.log('Geocode status : ' + status );
+							}	
+						});	
+					}
+				}
+			  
+			}
+			
+			for( var i=0; i<Object.keys(parents).length; i++ ) {
+				var nom_parent = parents[i]['nom'];
+				var id_parent = parents[i]['id'];
+				if (parents[i]['hasGeocode'] === 1) {
+					  var marker = new google.maps.Marker({
+						  map: map,
+						  position: new google.maps.LatLng(parents[i]['geocode']),
+						  title: nom_parent
+					  });
+					  console.log('geocode from database used');
+				} else {
+					geocoder.geocode( { 'address': parents[i]["adresse"]}, function(results, status) {					
+						if (status == google.maps.GeocoderStatus.OK) {
+							console.log('geocode query returned : lat/long = '+results[0].geometry.location);
+						    //map.setCenter(results[0].geometry.location);
+						    var marker = new google.maps.Marker({
+							  map: map,
+							  position: results[0].geometry.location,
+							  title: nom_parent
+						    });
+							// On ajoute le géocode trouvé à la base de données
+						    $.ajax({
+								type: "POST",
+								data: { 'geocode' : JSON.stringify(results[0].geometry.location) },
+								url: Routing.generate("majordesk_app_add_geocode_to_parent", {'id_parent' : id_parent}),
+								success: function() {	
+									console.log('Le géocode n\'a bien été ajouté.');
+								},
+								error: function() {
+									console.log('Le géocode n\'a pas été ajouté.');
+								}
+							});
+						} else {
+						  console.log('Geocode status : ' + status );
+						}	
+					});	
+				}
+			}
+		  }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+{% endblock %}

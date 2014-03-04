@@ -167,6 +167,13 @@ class Professeur implements AdvancedUserInterface, \Serializable
 	/**
      * @var string
      *
+     * @ORM\Column(name="geocode", type="string", length=255, nullable=true)
+     */
+    private $geocode;
+	
+	/**
+     * @var string
+     *
      * @ORM\Column(name="adresse_we", type="string", length=255, nullable=true)
      */
     private $adresse_we;
@@ -184,6 +191,13 @@ class Professeur implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="ville_we", type="string", length=255, nullable=true)
      */
     private $ville_we;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="geocode_we", type="string", length=255, nullable=true)
+     */
+    private $geocode_we;
 
     /**
      * @var string
@@ -692,6 +706,29 @@ class Professeur implements AdvancedUserInterface, \Serializable
     }
 	
 	/**
+     * Set geocode
+     *
+     * @param string $geocode
+     * @return Professeur
+     */
+    public function setGeocode($geocode)
+    {
+        $this->geocode = $geocode;
+    
+        return $this;
+    }
+
+    /**
+     * Get geocode
+     *
+     * @return string 
+     */
+    public function getGeocode()
+    {
+        return $this->geocode;
+    }
+	
+	/**
      * Set adresse
      *
      * @param string $adresse
@@ -758,6 +795,29 @@ class Professeur implements AdvancedUserInterface, \Serializable
     public function getVilleWe()
     {
         return $this->ville_we;
+    }
+	
+	/**
+     * Set geocode_we
+     *
+     * @param string $geocode_we
+     * @return Professeur
+     */
+    public function setGeocodeWe($geocode_we)
+    {
+        $this->geocode_we = $geocode_we;
+    
+        return $this;
+    }
+
+    /**
+     * Get geocode_we
+     *
+     * @return string 
+     */
+    public function getGeocodeWe()
+    {
+        return $this->geocode_we;
     }
 
     /**
