@@ -12,8 +12,17 @@
 	<br><br><span class="visible-xs"><br><br></span>
 	<div class="col-lg-12">
 				<h3><i class="icon-user-md icon-large text-red"></i> Carte des inscrits</h3><br>
-				Nombre de professeurs : <strong>{{ professeurs|length }}</strong><br>
-				Nombre de familles : <strong>{{ clients|length }}</strong>
+				
+				<div class="col-lg-3">
+					Nombre de professeurs : <strong>{{ professeurs|length }}</strong><br>
+					Nombre de familles : <strong>{{ clients|length }}</strong>
+				</div>
+				<div class="col-lg-8">
+					<img src="{{ asset('img/admin/markers/pink-marker.png') }}" /> : Famille<br>
+					<img src="{{ asset('img/admin/markers/green-marker.png') }}" /> : Professeur (semaine)<br>
+					<img src="{{ asset('img/admin/markers/blue-marker.png') }}" /> : Professeur (week-end)<br>
+				</div>
+				<div class="clearfix"></div>
 				<br><br>
 				<div id="map-canvas" style="height:1000px;" ></div>
 				<br><br>
@@ -31,6 +40,10 @@
 	    
 	    var geocoder;
         var map;
+		var markPlaced = 0;
+		var icon_prof = 'http://www.majorclass.fr/img/admin/markers/green-marker.png';
+		var icon_prof_we = 'http://www.majorclass.fr/img/admin/markers/blue-marker.png';
+		var icon_parent = 'http://www.majorclass.fr/img/admin/markers/pink-marker.png';
 		
 		function findGeocodeProf(adresse, nom, id) {
 			geocoder.geocode( { 'address': adresse}, function(results, status) {						
@@ -40,12 +53,16 @@
 					var marker = new google.maps.Marker({
 					  map: map,
 					  position: results[0].geometry.location,
-					  title: nom
+					  title: nom+' ('+id+')',
+					  icon: icon_prof
 					});
+					markPlaced++;
+					console.log('Marqueur n°'+markPlaced+' placé (prof #'+id+')!');
 					// On ajoute le géocode trouvé à la base de données
 					addGeocodeToProf(results[0].geometry.location, id);
 				} else {
-				  console.log('Geocode status pour prof #'+id+': ' + status );
+				  markPlaced++;
+			      console.log('Le marqueur n°'+markPlaced+' n\'a pas été placé (prof #'+id+', statut: ' + status + ').');
 				}	
 			});	
 		}
@@ -73,12 +90,16 @@
 					var marker = new google.maps.Marker({
 					  map: map,
 					  position: results[0].geometry.location,
-					  title: nom
+					  title: nom+' ('+id+')',
+					  icon: icon_prof
 					});
+					markPlaced++;
+					console.log('Marqueur We n°'+markPlaced+' placé (prof #'+id+')!');
 					// On ajoute le géocode trouvé à la base de données
 					addGeocodeWeToProf(results[0].geometry.location, id);
 				} else {
-				  console.log('Geocode status pour prof #'+id+': ' + status );
+				  markPlaced++;
+			      console.log('Le marqueur we n°'+markPlaced+' n\'a pas été placé (prof #'+id+', statut: ' + status + ').');
 				}	
 			});	
 		}
@@ -102,16 +123,20 @@
 			geocoder.geocode( { 'address': adresse}, function(results, status) {						
 				if (status == google.maps.GeocoderStatus.OK) {
 					console.log('geocode query returned : lat/long = '+results[0].geometry.location);
-					//map.setCenter(results[0].geometry.location);
+					// On place le marqueur
 					var marker = new google.maps.Marker({
 					  map: map,
 					  position: results[0].geometry.location,
-					  title: nom
+					  title: nom+' ('+id+')',
+					  icon: icon_parent
 					});
+					markPlaced++;
+					console.log('Marqueur n°'+markPlaced+' placé (parent #'+id+')!');
 					// On ajoute le géocode trouvé à la base de données
 					addGeocodeToParent(results[0].geometry.location, id);
 				} else {
-				  console.log('Geocode status pour parent #'+id+': ' + status );
+				  markPlaced++;
+			      console.log('Le marqueur n°'+markPlaced+' n\'a pas été placé (parent #'+id+', statut: ' + status + ').');
 				}	
 			});	
 		}
@@ -141,24 +166,35 @@
 			
 			for( i=0; i<Object.keys(profs).length; i++ ) {
 				if (profs[i]['hasGeocode'] === 1) {
+					  var latlong = profs[i]['geocode'].split(", ");
+					  var lat = latlong[0];
+					  var lng = latlong[1];
 					  var marker = new google.maps.Marker({
 						  map: map,
-						  position: new google.maps.LatLng(profs[i]['geocode']),
-						  title: profs[i]['nom']
+						  position: new google.maps.LatLng(lat, lng),
+						  title: profs[i]['nom']+' ('+profs[i]['id']+')',
+					      icon: icon_prof
 					  });
-					  console.log('geocode from database used');
+					  markPlaced++;
+					  console.log('Marqueur connu n°'+markPlaced+' placé (prof #'+profs[i]['id']+')!');
 				} else {
 					findGeocodeProf(profs[i]['adresse'], profs[i]['nom'], profs[i]['id']);
 				}
 					
-				if (profs[i]['hasAdresseWe'] === 1) {				
+				if (profs[i]['hasAdresseWe'] === 1) {	
+					console.log('Ce professeur a une adresse we.');
 					if (profs[i]['hasGeocodeWe'] === 1) {
+						  var latlong = profs[i]['geocodeWe'].split(", ");
+							var lat = latlong[0];
+							var lng = latlong[1];
 						  var marker = new google.maps.Marker({
 							  map: map,
-							  position: new google.maps.LatLng(profs[i]['geocodeWe']),
-							  title: nom_prof
+							  position: new google.maps.LatLng(lat, lng),
+							  title: profs[i]['nom']+' ('+profs[i]['id']+')',
+					          icon: icon_prof_we
 						  });
-						  console.log('geocode from database used');
+						  markPlaced++;
+					      console.log('Marqueur We connu n°'+markPlaced+' placé (prof #'+profs[i]['id']+')!');
 					} else {
 						findGeocodeWeProf(profs[i]['adresse'], profs[i]['nom'], profs[i]['id']);
 					}
@@ -168,14 +204,19 @@
 			
 			for( var i=0; i<Object.keys(parents).length; i++ ) {
 				if (parents[i]['hasGeocode'] === 1) {
+					  var latlong = parents[i]['geocode'].split(", ");
+					  var lat = latlong[0];
+					  var lng = latlong[1];
 					  var marker = new google.maps.Marker({
 						  map: map,
-						  position: new google.maps.LatLng(parents[i]['geocode']),
-						  title: nom_parent
+						  position: new google.maps.LatLng(lat, lng),
+						  title: parents[i]['nom']+' ('+parents[i]['id']+')',
+					      icon: icon_parent
 					  });
-					  console.log('geocode from database used');
+					  markPlaced++;
+					  console.log('Marqueur connu n°'+markPlaced+' placé (parent #'+parents[i]['id']+')!');
 				} else {
-					findGeocodeProf(parents[i]['adresse'], parents[i]['nom'], parents[i]['id']);
+					findGeocodeParent(parents[i]['adresse'], parents[i]['nom'], parents[i]['id']);
 				}
 			}
 		  }

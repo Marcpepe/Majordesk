@@ -720,6 +720,7 @@ class AdminController extends Controller
 			$adresseWe = $professeur->getAdresseWe();
 			$geocodeWe = $professeur->getGeocodeWe();
 			if (!empty($adresseWe)) {
+				$profs[$i]['hasAdresseWe'] = 1;
 				if (!empty($geocodeWe)) {
 					$profs[$i]['hasGeocodeWe'] = 1;
 					$profs[$i]['geocodeWe'] = $professeur->getGeocodeWe();

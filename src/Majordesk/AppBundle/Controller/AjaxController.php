@@ -31,7 +31,6 @@ class AjaxController extends Controller
 		if ( $request->isXmlHttpRequest() ) {	
 			$geocode = $request->get('geocode');
 			$geocode = json_decode($geocode);
-			// throw new \Exception(var_dump($geocode->e));
 			$parent->setGeocode($geocode->d.', '.$geocode->e);
 			
 			$em = $this->getDoctrine()->getManager(); 
@@ -56,7 +55,6 @@ class AjaxController extends Controller
 		if ( $request->isXmlHttpRequest() ) {	
 			$geocode = $request->get('geocode');
 			$geocode = json_decode($geocode);
-			// throw new \Exception(var_dump($geocode->e));
 			$professeur->setGeocode($geocode->d.', '.$geocode->e);
 			
 			$em = $this->getDoctrine()->getManager(); 
@@ -80,9 +78,7 @@ class AjaxController extends Controller
 		$request = $this->getRequest();
 		if ( $request->isXmlHttpRequest() ) {	
 			$geocodeWe = $request->get('geocodeWe');
-			$professeur->setGeocodeWe($geocodeWe);
 			$geocodeWe = json_decode($geocodeWe);
-			// throw new \Exception(var_dump($geocodeWe->e));
 			$professeur->setGeocodeWe($geocodeWe->d.', '.$geocodeWe->e);
 			
 			$em = $this->getDoctrine()->getManager(); 
