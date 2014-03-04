@@ -753,8 +753,8 @@ class AdminController extends Controller
 			$j++;
 		}	
 		
-		$profs = json_encode($profs, true);
-		$parents = json_encode($parents, true);		
+		$profs = addslashes(json_encode($profs, true));
+		$parents = addslashes(json_encode($parents, true));		
 		
         return $this->render('MajordeskAppBundle:Admin:view-map.html.twig', array(
 			'professeurs' => $professeurs,
