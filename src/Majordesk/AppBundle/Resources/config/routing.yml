@@ -58,6 +58,10 @@ majordesk_app_faq:
     pattern:  /faq
     defaults: { _controller: MajordeskAppBundle:Home:faq }
 
+majordesk_app_faq_professeurs:
+    pattern:  /professeur/faq-des-professeurs
+    defaults: { _controller: MajordeskAppBundle:Professeur:faqProfesseurs }
+
 majordesk_app_cgv_majorclass:
     pattern:  /cvg-majorclass
     defaults: { _controller: MajordeskAppBundle:Home:cgvMajorclass }

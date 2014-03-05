@@ -226,6 +226,14 @@ class ProfesseurController extends Controller
 	/**
 	 * @Secure(roles="ROLE_PROF")
 	 */
+	public function faqProfesseursAction()
+    {
+		return $this->render('MajordeskAppBundle:Professeur:faq-des-professeurs.html.twig');
+	}
+	
+	/**
+	 * @Secure(roles="ROLE_PROF")
+	 */
     public function coursDonnesAction($id_professeur = null)
     {
 		if ($this->get('security.context')->isGranted('ROLE_PROF') && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {	

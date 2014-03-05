@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block navbar %}
-	<li><a><i class="icon-angle-right"></i> Gestion des professeurs</a></li>
+	<li><a><i class="icon-angle-right"></i> Carte des inscrits</a></li>
 {% endblock %}
  
 {% block admin %}
@@ -164,6 +164,9 @@
 			map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 			geocoder = new google.maps.Geocoder();
 			
+			var transitLayer = new google.maps.TransitLayer();
+			transitLayer.setMap(map);
+			
 			for( i=0; i<Object.keys(profs).length; i++ ) {
 				if (profs[i]['hasGeocode'] === 1) {
 					  var latlong = profs[i]['geocode'].split(", ");
@@ -196,7 +199,7 @@
 						  markPlaced++;
 					      console.log('Marqueur We connu n°'+markPlaced+' placé (prof #'+profs[i]['id']+')!');
 					} else {
-						findGeocodeWeProf(profs[i]['adresse'], profs[i]['nom'], profs[i]['id']);
+						findGeocodeWeProf(profs[i]['adresseWe'], profs[i]['nom'], profs[i]['id']);
 					}
 				}
 			  

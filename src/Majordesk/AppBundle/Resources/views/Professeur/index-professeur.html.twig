@@ -56,7 +56,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 				<h3 class="text-left-lg-center-xs"> Mot de passe incorrect</h3>
-				Le mot de passe doit être celui d'un parent de l'élève.
+				Le mot de passe doit être celui de ton élève ou de ses parents.
 			</div>
 			<div class="clearfix"></div><br>
 		</div>
@@ -72,7 +72,9 @@
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
 		<form role="form-inline" method="post" action="{{ path('majordesk_app_index_professeur') }}">
-			<h3 class="text-left-lg-center-xs">Déclarer un cours</h3><br>
+			<h3 class="text-left-lg-center-xs">Déclarer un cours</h3>
+			<small>Pour plus d'informations sur la déclaration des cours, consulte la <a href="{{ path('majordesk_app_faq_professeurs') }}"><strong class="text-white">FAQ des professeurs</strong></a>.</small>
+			<br><br>
 			<div class="row">
 				<label class="col-lg-1"><span class="pull-right">De</span></label>
 				<div class="col-lg-3">
@@ -325,9 +327,49 @@
 			<br><br>
 		</div>
 	</div>
+	<div class="clearfix"></div><br><br><br>
+</div>
+<div class="col-lg-12">
+	<div class="container">
+		<br><span class="hidden-xs"><br></span>
+		<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 text-center">
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">	
+			<h3 class="text-left-lg-center-xs">Pour tout savoir sur :</h3>
+			<div class="col-lg-12 text-left-lg-center-xs">
+				<ul>
+					<li>la déclaration de cours et ta rémunération</li>
+					<li>les documents à nous fournir</li>
+					<li>comment nous contacter</li>
+				</ul>
+				Consulte la <a href="{{ path('majordesk_app_faq_professeurs') }}">FAQ des professeurs</a>
+			</div>
+			<br><br>
+		</div>
+	</div>
 	<div class="clearfix"></div><br><br>
 </div>
 
+{% endblock %}
+
+{% block footer %}
+<footer>
+	<div id="home-banner-3"></div>	
+	<div class="no-padding-horizontal-xs">
+		<div class="container home-container">
+			<section class="col-lg-12 position-relative-down-5">
+				<div class="col-lg-6">
+					© Majorclass 2014 - 
+					<a href="{{ path('majordesk_app_faq_professeurs') }}">FAQ des professeurs</a>
+				</div>
+				<div class="col-lg-6">
+					<div class="fb-like fb-responsive" data-href="https://www.facebook.com/MajorclassOfficialPage" data-colorscheme="dark" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>	
+				</div>
+			</section>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</footer>
 {% endblock %}
 
 {% block javascripts %}
