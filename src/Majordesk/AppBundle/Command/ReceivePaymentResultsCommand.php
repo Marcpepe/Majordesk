@@ -83,18 +83,22 @@ class ReceivePaymentResultsCommand extends ContainerAwareCommand
 			$date = date('d/m/Y \à H:m:i');
 			if ($error_no == 0) {
 				fwrite( $logs, $date."  Aucune erreur cURL\r\n");
-				$output->writeln('Aucune erreur cURL');
+				$output->writeln('Aucune erreur cURL');			
+			
+				$em = $this->getContainer()->get('doctrine')->getManager();
+				$last_requete = $em->getRepository('MajordeskAppBundle:Requete')
+								   ->getLastRequete();
+				$last_requete->setStatutReception(1);
+				$em->persist($last_requete);
+				$em->flush();
+				
+				fwrite( $logs, $date."  Statut de réception mis a jour.\r\n");
+				$output->writeln('Statut de réception mis a jour.');
+				
 			} else {
 				fwrite( $logs, $date."  Code erreur : ".$error_no."\r\n");
 				$output->writeln("Code erreur : ".$error_no);
-			}
-			
-			$em = $this->getContainer()->get('doctrine')->getManager();
-			$last_requete = $em->getRepository('MajordeskAppBundle:Requete')
-							   ->getLastRequete();
-			$last_requete->setStatutReception(1);
-			$em->persist($last_requete);
-			$em->flush();
+			}			
 			
 			$attempt++;
 		}
@@ -103,8 +107,9 @@ class ReceivePaymentResultsCommand extends ContainerAwareCommand
 			$output->writeln("Les 5 tentatives ont échouées");
 		}
 		
-		$date = date('d/m/Y \à H:m:i');
-		fwrite( $logs, $date."  Statut de réception mis a jour.\r\n");
+		fwrite( $logs, $date."  Passage au script de traitement du zip.\r\n");
+		$output->writeln('Passage au script de traitement du zip.');
+				
 		
 		fclose($logs);
     }
