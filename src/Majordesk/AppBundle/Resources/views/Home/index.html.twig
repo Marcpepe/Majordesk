@@ -1,68 +1,66 @@
 {% extends "::layout-main.html.twig" %}
-				
-				{% block title %}
-					{{ parent() }}
-				{% endblock %}
-				
-				{% block navbar %}
-				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
-				    {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
-				{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Le Tarif</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_equipe') }}" rel="nofollow">Qui sommes-nous?</a></li>
+	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}" rel="nofollow">Se connecter <i class="icon-off"></i></a></li>{% endif %}
+{% endblock %}
 
 {% block body %}
-	<div id="home-banner-0" class="hidden-xs">
+	<section id="home-banner-0" class="hidden-xs">
 		<div class="home-container intro-container">
 			<div class="col-lg-12 text-center">
 				<span class="hidden-xs marque-tall">Majorclass</span>
-				<span class="font-size-28">Cours particuliers de qualité.</span>
+				<span class="font-size-28">Cours particuliers de <strong>qualité</strong> à Paris.</span>
 				<br><br>
 			</div>
 		</div>
-	</div>	
-	<div id="home-banner-1" class="col-lg-6 cursor">
+	</section>	
+	<section id="home-banner-1" class="col-lg-6 cursor">
 		<a href="{{ path('majordesk_app_presentation_cours') }}" style="text-decoration:none;">
 		<div class="container col-lg-offset-1 col-lg-11 home-container cours-container">
 			<div class="col-sm-4 col-md-4 col-lg-4 text-right-lg-center-xs">
-				<img src="{{ asset('img/home/prof.png') }}" style="height:155px;" />
+				<img alt="Cours particuliers" src="{{ asset('img/home/prof.png') }}" style="height:155px;" />
 			</div>
 			<div class="col-sm-8 col-md-8 col-lg-8 text-left-lg-center-xs text-white">
 				<h1 class="font-responsive-26">Cours particuliers</h1>
-				<span class="hidden-xs font-size-20">Des professeurs issus des Grandes Ecoles françaises</span>
+				<h2 class="hidden-xs font-size-20">Des professeurs issus des Grandes Ecoles françaises</h2>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 		</a>
-	</div>	
-	<div id="home-banner-2" class="col-lg-6 cursor">
-		<a href="{{ path('majordesk_app_presentation_plateforme') }}" style="text-decoration:none;">
+	</section>	
+	<section id="home-banner-2" class="col-lg-6 cursor">
+		<a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow" style="text-decoration:none;">
 		<div class="container col-lg-offset-1 col-lg-11 home-container plateforme-container">
 			<div class="col-sm-4 col-md-4 col-lg-4 text-right-lg-center-xs">
-				<img src="{{ asset('img/home/plateforme.png') }}" style="height:155px;" />
+				<img alt="Démarche simplifiée" src="{{ asset('img/home/plateforme.png') }}" style="height:155px;" />
 			</div>
 			<div class="col-sm-8 col-md-8 col-lg-8 text-left-lg-center-xs text-white">
-				<h1 class="font-responsive-26">Gestion simplifiée</h1>
-				<span class="hidden-xs font-size-20">Inscription, paiement et suivi en ligne</span>
+				<h1 class="font-responsive-26">Démarche simplifiée</h1>
+				<h2 class="hidden-xs font-size-20">Inscription, paiement et suivi en ligne</h2>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 
 		</a>
-	</div>	
+	</section>	
 	<div class="clearfix"></div>
 	<br>
-	<div class="container">
+	<section class="container">
 		<div class="col-lg-9">
-			<h3><i class="icon-laptop"></i> Inscription</h3>
+			<h3><i class="icon-laptop"></i> Inscription gratuite</h3>
 			Lorsque vous vous inscrivez, nous sommes immédiatement avertis et nous vous contactons dans les plus brefs délais. 
 			<br><br>
-			<div class="text-center"><a href="{{ path('majordesk_app_inscription') }}" class="btn btn-warning btn-lg">S'inscrire <i class="icon-unlock-alt"></i></a></div>
+			<div class="text-center"><a href="{{ path('majordesk_app_inscription') }}" class="btn btn-warning btn-lg" rel="nofollow">S'inscrire <i class="icon-unlock-alt"></i></a></div>
 		</div>
 		<div class="col-lg-3 text-center">
 			<br><br>
-			<a href="http://www.servicesalapersonne.gouv.fr"><img src="{{ asset('img/home/traceur.png') }}" style="width:80px;" /></a>
+			<a href="http://www.servicesalapersonne.gouv.fr" rel="nofollow"><img alt="Services à la personne" src="{{ asset('img/home/traceur.png') }}" style="width:80px;margin-right:30px;" /></a>
+			<a href="http://www.education.gouv.fr/pid24239/les-programmes-du-lycee.html" rel="nofollow"><img alt="Education nationale" src="{{ asset('img/home/education-nationale.jpg') }}" style="width:80px;" /></a>
 		</div>
-	</div>
+	</section>
 	<br><br><br>
 {% endblock %}	

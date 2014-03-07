@@ -1,15 +1,19 @@
 {% extends "::layout-main.html.twig" %}
 				
-				{% block title %}
-					FAQ
-				{% endblock %}
-				
-				{% block navbar %}
-				    <li><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
-				    {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
-				{% endblock %}
+{% block title %}
+	FAQ
+{% endblock %}
+{% block metadescription %}
+	Les questions fréquemment posées par nos clients.
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}"> Le Tarif</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
+{% endblock %}
 
 {% block body %}
 	<div id="home-banner-0">
@@ -26,7 +30,7 @@
 		<div class="col-lg-12">
 			<h3>Comment l'inscription se déroule-t-elle ?</h3>
 			<br>
-			Elle se fait en ligne, rapidement et gratuitement, depuis <a href="{{ path('majordesk_app_inscription') }}">ce lien</a>. 
+			Elle se fait <strong>en ligne</strong>, <strong>rapidement</strong> et <strong>gratuitement</strong>, depuis <a href="{{ path('majordesk_app_inscription') }}">ce lien</a>. 
 			<br><br>
 			<em>Etape n°1</em> : Une fois inscrit(e), nous vous confirmons par mail dans les meilleurs délais qu’un professeur de notre équipe peut bien prendre en charge votre enfant compte tenu de votre situation géographique et de vos disponibilités.
 			<br><br>
@@ -42,7 +46,7 @@
 				<li>nous vous avons confirmé votre prise en charge par un de nos professeurs</li>
 				<li>vous avez renseigné vos coordonnées bancaires</li>
 			</ul>
-			Alors nous vous mettons en contact avec votre professeur, qui pourra organiser avec vous votre premier cours. 
+			Alors <strong>nous vous mettons en contact avec votre professeur</strong>, qui pourra organiser avec vous votre premier cours. 
 			<br><br>
 			<h3>Comment se déroule la déclaration d'un cours ?</h3>
 			<br>A la fin d'un cours, le cours doit être déclaré en ligne depuis l'un des trois espaces suivants :

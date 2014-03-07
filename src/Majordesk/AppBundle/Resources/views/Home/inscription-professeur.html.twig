@@ -1,12 +1,15 @@
 {% extends "::layout-main.html.twig" %}
 				
-				{% block title %}
-					Inscription Professeur
-				{% endblock %}
+{% block title %}
+	Inscription Professeur
+{% endblock %}
+{% block metadescription %}
+	Page d'inscription des professeurs; Page de recrutement de Majorclass.
+{% endblock %}
+
 
 {% block body %}
 	<br><br>
-	
 	<div class="container home-container">
 
 			<form method="post" action="{{ path('majordesk_app_inscription_professeur') }}">

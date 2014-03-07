@@ -4,23 +4,26 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="google-site-verification" content="X6-J3UGd-qKc5TIgil0A_72rHQj-4PMnJJEqmVwcnOQ" />
-	<title>{% block title %}Majorclass - Cours particuliers de qualité{% endblock %}</title>
 	
+	<title>{% block title %}Majorclass - Meilleurs Cours particuliers de Mathématiques à Paris{% endblock %}</title>	
+	<meta name="description" content="{% block metadescription %}Spécialistes des Mathématiques, nous proposons des Cours particuliers de Qualité par des professeurs issus des Grandes Ecoles françaises.{% endblock %}" />
+	<meta name="keywords" content="cours particuliers, soutien scolaire, cours, Paris, Puteaux, Courbevoie, 16eme, cours paris 16eme, 75016, cours particuliers 75016, 15eme, cours paris 15eme, 75015, cours particuliers 75015, 17eme, cours paris 17eme, 75017, cours particuliers 75017, maths, mathématiques, cours mathématiques, cours à domicile, soutien scolaire à domicile, professeur particulier, cours particuliers maths, cours particuliers à domicile, tarif cours particulier, tarifs cours particuliers, tarif cours particuliers, soutien scolaire paris, cours particuliers tarifs" />
+	{% block extrametas %}{% endblock %}
 	<link rel="icon" type="image/png" href="{{ asset('img/home/favicon.png') }}" />
 	
-	{% block stylesheets %}
-		{% stylesheets filter='yui_css' output='css/*'   
-			'../app/Resources/css/common/bootstrap.min.css' 
-			'../app/Resources/css/common/bootstrap-calendar.min.css' 
-			'../app/Resources/css/common/bootstrap-timepicker.min.css'
-			'../app/Resources/css/common/bootstrap-datepicker.min.css'
-			'../app/Resources/css/common/majordesk.css' 
-			'../app/Resources/css/common/font-awesome.min.css' 
-			'../app/Resources/css/common/typeahead.css' 
-		%}
-			<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-		{% endstylesheets %}
-	{% endblock %}
+{% block stylesheets %}
+	{% stylesheets filter='yui_css' output='css/*'   
+		'../app/Resources/css/common/bootstrap.min.css' 
+		'../app/Resources/css/common/bootstrap-calendar.min.css' 
+		'../app/Resources/css/common/bootstrap-timepicker.min.css'
+		'../app/Resources/css/common/bootstrap-datepicker.min.css'
+		'../app/Resources/css/common/majordesk.css' 
+		'../app/Resources/css/common/font-awesome.min.css' 
+		'../app/Resources/css/common/typeahead.css' 
+	%}
+<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+	{% endstylesheets %}
+{% endblock %}
 	
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
@@ -39,12 +42,11 @@
 	<div class="container home-container">		
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-			  <span class="sr-only">Activer la navigation</span>
 			  <span class="icon-bar"></span>
 			  <span class="icon-bar"></span>
 			  <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" style="padding:0" href="{{ path('majordesk_app_gate_index') }}"><img src="{{ asset('img/home/bar-logo.png') }}" style="height:50px" /><!--<span class="brand">majorClass</span>--></a>
+			<a class="navbar-brand" style="padding:0" href="{{ path('majordesk_app_gate_index') }}"><img alt="Logo Majorclass" src="{{ asset('img/home/bar-logo.png') }}" style="height:50px" /></a>
 		</div>
 
 		<nav class="collapse navbar-collapse navbar-responsive-collapse" role="navigation">
@@ -105,8 +107,8 @@
 					<section class="col-lg-12 position-relative-down-5">
 						<div class="col-lg-6">
 							© Majorclass 2014 - 
-							<a href="{{ path('majordesk_app_mentions_legales') }}">Mentions légales</a> - 
-							<a href="{{ path('majordesk_app_faq') }}">FAQ</a> -
+							<a href="{{ path('majordesk_app_mentions_legales') }}" rel="nofollow">Mentions légales</a> - 
+							<a href="{{ path('majordesk_app_faq') }}" rel="nofollow">FAQ</a> -
 							<a href="{{ path('majordesk_app_inscription_professeur') }}">Inscription Professeur</a> 
 						</div>
 						<div class="col-lg-6">

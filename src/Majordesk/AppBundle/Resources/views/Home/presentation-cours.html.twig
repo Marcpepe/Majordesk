@@ -1,54 +1,60 @@
 {% extends "::layout-main.html.twig" %}
 				
-				{% block title %}
-					Plateforme
-				{% endblock %}
-				
-				{% block navbar %}
-				    <li class="active"><a href="{{ path('majordesk_app_presentation_cours') }}">Cours</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Tarif</a></li>
-				    <li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
-				    {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
-				{% endblock %}
+{% block title %}
+	Les Cours particuliers
+{% endblock %}
+{% block metadescription %}
+	Nos Cours sont assurés avec sérieux par des professeurs en Grandes Ecoles.
+{% endblock %}
+
+{% block navbar %}
+	<li class="active"><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Le Tarif</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
+{% endblock %}
 
 {% block body %}
-	<div id="home-banner-1" class="col-lg-12">
+	<section id="home-banner-1" class="col-lg-12">
 		<div class="container col-lg-offset-1 col-lg-11 home-container cours-container">
 			<div class="col-sm-4 col-md-4 col-lg-4 text-right-lg-center-xs">
-				<img src="{{ asset('img/home/prof.png') }}" style="height:155px;" />
+				<img alt="Cours particuliers" src="{{ asset('img/home/prof.png') }}" style="height:155px;" />
 			</div>
 			<div class="col-sm-8 col-md-8 col-lg-8 text-left-lg-center-xs text-white">
 				<h1 class="font-responsive-26">Cours particuliers</h1>
-				<span class="hidden-xs font-size-20 font-responsive-26">Des professeurs issus des Grandes Ecoles françaises</span>
+				<h2 class="hidden-xs font-size-20 font-responsive-26">Des professeurs issus des Grandes Ecoles françaises</h2>
 			</div>
 		</div>
 		<div class="clearfix"></div>
-	</div>	
-	<div class="container home-container">
+	</section>	
+	<section class="container home-container">
 		<br>
 		<span class="hidden-xs"><br><br></span>
 		<div class="col-lg-12">	
-			<h3>Notre périmètre d'action :</h3>
-			<small>Dernière mise à jour: 05/03/2014</small><br><br><br>
-			Nos cours sont proposés à :
-			<ul><li>Paris et en région parisienne.</li></ul>
+			<h3>Notre gage de qualité :</h3><br>
+			<strong class="font-majorclass">Majorclass</strong> propose exclusivement des <strong>cours de Mathématiques</strong>, ce qui signifie que nos professeurs sont <strong> spécialistes de la pédagogie</strong> dans cette discipline et qu'ils reçoivent de surcroît une formation spécifique sur le programme qu'ils enseignent.
 			<br><br>
 			<h3>Nos professeurs :</h3><br>
-			<div><i class="icon-ok text-orange"></i> ont suivi un cursus d'excellence dans les Grandes Ecoles françaises (Polytechnique, Centrale Paris, HEC, les Mines de Paris, les Ponts et Chaussées, Télécom Paris);</div>
-			<br>
-			<div><i class="icon-ok text-orange"></i> sont sélectionnés par <strong class="font-majorclass">Majorclass</strong> en entretien individuel selon les critères suivants :<br>
+			<i class="icon-ok text-orange"></i> ont suivi un cursus d'excellence dans les Grandes Ecoles françaises (Polytechnique, Centrale Paris, HEC, les Mines de Paris, les Ponts et Chaussées, Télécom Paris);
+			<br><br>
+			<i class="icon-ok text-orange"></i> sont sélectionnés par <strong class="font-majorclass">Majorclass</strong> en entretien individuel selon les critères suivants :<br>
 			<ul>
 				<li>leur pédagogie</li>
 				<li>leur connaissance des programmes scolaires</li>
 			</ul>
-			</div>
-			<br>
-			<div><i class="icon-ok text-orange"></i> apprécient l'enseignement et sont enthousiastes à l'idée de transmettre;</div>
-			<br>
-			<div><i class="icon-ok text-orange"></i> ont une proximité en âge qui mettra votre enfant à l'aise plus rapidement et il exprimera plus facilement ce qu'il n'a pas compris.</div>
+			<br><br>
+			<i class="icon-ok text-orange"></i> apprécient l'enseignement et sont enthousiastes à l'idée de transmettre;
+			<br><br>
+			<i class="icon-ok text-orange"></i> ont une proximité en âge qui mettra votre enfant à l'aise plus rapidement et il exprimera plus facilement ce qu'il n'a pas compris.
+			<br><br>
+			<h3>Notre périmètre d'action :</h3>
+			<small>Dernière mise à jour: 05/03/2014</small><br><br><br>
+			Nos cours sont proposés :
+			<ul><li>à Paris et en région parisienne.</li></ul>			
 		</div>
 		<br><br><br>
-	</div>
+	</section>
 {% endblock %}	
 
 {#{% block javascripts %}
