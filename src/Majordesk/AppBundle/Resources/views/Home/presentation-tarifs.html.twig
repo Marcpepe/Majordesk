@@ -4,15 +4,15 @@
 	Le Tarif
 {% endblock %}
 {% block metadescription %}
-	Nos Cours sont assurés avec sérieux par des professeurs en Grandes Ecoles.
+	Un tarif clair, une prestation de qualité
 {% endblock %}
 
 {% block navbar %}
 	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
-	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche Simplifiée</a></li>
 	<li class="active"><a href="{{ path('majordesk_app_presentation_tarifs') }}"> Le Tarif</a></li>
 	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
-	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
+	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}" rel="nofollow">Se connecter <i class="icon-off"></i></a></li>{% endif %}
 {% endblock %}
 
 {% block body %}

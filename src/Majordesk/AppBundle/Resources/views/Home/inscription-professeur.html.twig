@@ -7,6 +7,13 @@
 	Page d'inscription des professeurs; Page de recrutement de Majorclass.
 {% endblock %}
 
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}"> Le Tarif</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}" rel="nofollow">Se connecter <i class="icon-off"></i></a></li>{% endif %}
+{% endblock %}
 
 {% block body %}
 	<br><br>
@@ -17,8 +24,8 @@
 				<div class="row">
 					<div class="col-md-offset-3 col-lg-6">
 						N'oubliez pas de nous suivre sur LinkedIn et Facebook: 
-						<a href="http://www.linkedin.com/company/majorclass" target="_blank"><img src="{{ asset('img/home/linkedin.png') }}" style="height:30px" /></a> 
-						<a href="https://www.facebook.com/MajorclassOfficialPage" target="_blank"><img src="{{ asset('img/home/facebook.png') }}" style="height:30px" /></a>
+						<a href="http://www.linkedin.com/company/majorclass" target="_blank"><img alt="LinkedIn Majorclass" src="{{ asset('img/home/linkedin.png') }}" style="height:30px" /></a> 
+						<a href="https://www.facebook.com/MajorclassOfficialPage" target="_blank"><img alt="Facebook Majorclass" src="{{ asset('img/home/facebook.png') }}" style="height:30px" /></a>
 						<br><br>
 						<h3><i class="icon-user icon-large text-yellow pull-left"></i> <p class="pull-left">Inscription Professeur</p></h3>
 						
