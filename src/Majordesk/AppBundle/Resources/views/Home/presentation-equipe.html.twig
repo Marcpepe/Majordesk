@@ -27,34 +27,44 @@
 	<div class="container home-container">
 		<br><span class="hidden-xs"><br><br></span>		
 		<div class="col-lg-12">
-			<strong class="font-majorclass">Majorclass</strong> se spécialise dans l'enseignement des matières scientifiques et met un point d'honneur à <strong>exiger le meilleur</strong> de ses professeurs.
-			<br><br><br>
-			<h3>Les fondateurs</h3>	<br>	
-			<strong>Marc Perrin-Pelletier</strong> et <strong>Jonathan Menet</strong> sont deux entrepreneurs diplômés de l'Ecole Centrale Paris. Après avoir suivi la filière Centrale Entrepreneurs, et forts d'une longue expérience de professeur particulier, ils décident de mettre en commun
-			 leurs expériences pour se lancer dans l'aventure en créant leur propre organisme. 
-			 <br><br><br>
-			 <div class="col-lg-6 text-center">
-				<img src="{{ asset('img/home/photo-vide.jpg') }}" alt="Marc Perrin-Pelletier, Majorclass" class="img-circle" style="border:5px solid #19bc9c;height:120px;">
-				<br><br>
-				<strong>Marc Perrin-Pelletier</strong><br>
-				Classe préparatoire au Lycée Saint Louis (Paris 5<sup>ème</sup>)<br>
-				Ecole Centrale Paris (promotion 2012)<br>
-				<a href="https://www.facebook.com/perrinpelletier" target="_blank"><img src="{{ asset('img/home/facebook.png') }}" style="height:20px;" /></a>
-				<a href="https://twitter.com/Marcpepe19" target="_blank"><img src="{{ asset('img/home/twitter.png') }}" style="height:20px;" /></a>
-				<a href="http://fr.linkedin.com/in/marcperrinpelletier" target="_blank"><img src="{{ asset('img/home/linkedin.png') }}" style="height:20px;" /></a>
-				<a href="https://plus.google.com/+MarcPerrinPelletier" target="_blank"><img src="{{ asset('img/home/google-plus.png') }}" style="height:20px;" /></a>
-				<a href="mailto:marc@majorclass.fr"><img src="{{ asset('img/home/mail.png') }}" style="height:20px;" /></a>
-			 </div>
-			 <div class="col-lg-6 text-center">
-				<img src="{{ asset('img/home/photo-vide.jpg') }}" alt="Jonathan Menet, Majorclass" class="img-circle" style="border:5px solid #19bc9c;height:120px;">
-				<br><br>
-				<strong>Jonathan Menet</strong><br>
-				Classe préparatoire au Lycée Fénelon Sainte-Marie (Paris 8<sup>ème</sup>)<br>
-				Ecole Centrale Paris (promotion 2012)<br>
-				<a href="http://fr.linkedin.com/in/jonathanmenet" target="_blank"><img src="{{ asset('img/home/linkedin.png') }}" style="height:20px;" /></a>
-				<a href="mailto:jonathan@majorclass.fr"><img src="{{ asset('img/home/mail.png') }}" style="height:20px;" /></a>
-			 </div>
+			<div itemscope itemtype="http://schema.org/EducationalOrganization">
+				<strong itemprop="name" class="font-majorclass">Majorclass</strong> <span itemprop="description">se spécialise dans l'enseignement des matières scientifiques et met un point d'honneur à <strong>exiger le meilleur</strong> de ses professeurs.</span>
+				<br><br><br>
+				<h2>Les fondateurs</h2><br>	
+				<div itemprop="founders">
+					<strong>Marc Perrin-Pelletier</strong> et <strong>Jonathan Menet</strong> sont deux entrepreneurs diplômés de l'Ecole Centrale Paris. Après avoir suivi la filière Centrale Entrepreneurs, et forts d'une longue expérience de professeur particulier, ils décident de mettre en commun
+					 leurs expériences pour se lancer dans l'aventure en créant leur propre organisme. 
+					 <br><br><br>
+					 <div class="col-lg-6 text-center">
+						<img src="{{ asset('img/home/photo-vide.jpg') }}" alt="Marc Perrin-Pelletier, Majorclass" class="img-circle" style="border:5px solid #19bc9c;height:120px;">
+						<br><br>
+						<div itemscope itemtype="http://schema.org/Person">
+						<strong>Marc Perrin-Pelletier</strong><br>
+							Classe préparatoire au Lycée Saint Louis (Paris 5<sup>ème</sup>)<br>
+							Ecole Centrale Paris (promotion 2012)<br>
+							<a href="https://www.facebook.com/perrinpelletier" target="_blank"><img alt="Marc Perrin-Pelletier Facebook" src="{{ asset('img/home/facebook.png') }}" style="height:20px;" /></a>
+							<a href="https://twitter.com/Marcpepe19" target="_blank"><img alt="Marc Perrin-Pelletier Twitter" src="{{ asset('img/home/twitter.png') }}" style="height:20px;" /></a>
+							<a href="http://fr.linkedin.com/in/marcperrinpelletier" target="_blank"><img alt="Marc Perrin-Pelletier LinkedIn" src="{{ asset('img/home/linkedin.png') }}" style="height:20px;" /></a>
+							<a href="https://plus.google.com/+MarcPerrinPelletier" target="_blank"><img alt="Marc Perrin-Pelletier Google+" src="{{ asset('img/home/google-plus.png') }}" style="height:20px;" /></a>
+							<a href="mailto:marc@majorclass.fr"><img alt="Marc Perrin-Pelletier Mail" src="{{ asset('img/home/mail.png') }}" style="height:20px;" /></a>
+						</div>
+					 </div>
+					 <span class="visible-xs"><br><br><br></span>
+					 <div class="col-lg-6 text-center">
+						<img src="{{ asset('img/home/photo-vide.jpg') }}" alt="Jonathan Menet, Majorclass" class="img-circle" style="border:5px solid #19bc9c;height:120px;">
+						<br><br>
+						<div itemscope itemtype="http://schema.org/Person">
+							<strong>Jonathan Menet</strong><br>
+							Classe préparatoire au Lycée Fénelon Sainte-Marie (Paris 8<sup>ème</sup>)<br>
+							<span itemprop="alumniOf">Ecole Centrale Paris</span> (promotion 2012)<br>
+							<a href="http://fr.linkedin.com/in/jonathanmenet" target="_blank"><img alt="Marc Perrin-Pelletier LinkedIn" src="{{ asset('img/home/linkedin.png') }}" style="height:20px;" /></a>
+							<a href="mailto:jonathan@majorclass.fr"><img alt="Marc Perrin-Pelletier Mail" src="{{ asset('img/home/mail.png') }}" style="height:20px;" /></a>
+						</div>
+					 </div>
+				</div>
+			</div>
 		</div>
-		<br><br>
+		<div class="clearfix"></div>
+		<br><br><br><br>
 	</div>
 {% endblock %}	
