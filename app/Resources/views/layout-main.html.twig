@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="google-site-verification" content="X6-J3UGd-qKc5TIgil0A_72rHQj-4PMnJJEqmVwcnOQ" />
 	
-	<title>{% block title %}Majorclass - Meilleurs Cours particuliers de Mathématiques à Paris{% endblock %}</title>	
+	<title>{% block title %}Majorclass - Cours particuliers de Mathématiques à Paris{% endblock %}</title>	
 	<meta name="description" content="{% block metadescription %}Spécialistes des Mathématiques, nous proposons des Cours particuliers de Qualité par des professeurs issus des Grandes Ecoles françaises.{% endblock %}" />
 	<meta name="keywords" content="cours particuliers, soutien scolaire, cours, Paris, Puteaux, Courbevoie, 16eme, cours paris 16eme, 75016, cours particuliers 75016, 15eme, cours paris 15eme, 75015, cours particuliers 75015, 17eme, cours paris 17eme, 75017, cours particuliers 75017, maths, mathématiques, cours mathématiques, cours à domicile, soutien scolaire à domicile, professeur particulier, cours particuliers maths, cours particuliers à domicile, tarif cours particulier, tarifs cours particuliers, tarif cours particuliers, soutien scolaire paris, cours particuliers tarifs" />
 	{% block extrametas %}{% endblock %}
@@ -52,7 +52,16 @@
 	}(document, 'script', 'facebook-jssdk'));</script>
 	<!---Twitter-->
 	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
+	<!--Google+-->
+	<script type="text/javascript">
+	  window.___gcfg = {lang: 'fr'};
+	  (function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://apis.google.com/js/platform.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
+	
 	<header class="navbar navbar-inverse navbar-fixed-top" role="banner">
 		<div class="container home-container">		
 			<div class="navbar-header">
@@ -105,14 +114,17 @@
 			<div class="no-padding-horizontal-xs">
 				<div class="container home-container">
 					<section class="col-lg-12 position-relative-down-5">
-						<div class="col-lg-6">
+						<div class="col-sm-9 col-md-9 col-lg-10">
 							© Majorclass 2014 - 
 							<a href="{{ path('majordesk_app_mentions_legales') }}" rel="nofollow">Mentions légales</a> - 
 							<a href="{{ path('majordesk_app_faq') }}" rel="nofollow">FAQ</a> -
 							<a href="{{ path('majordesk_app_inscription_professeur') }}">Inscription Professeur</a> 
 						</div>
-						<div class="col-lg-6">
-							<div class="fb-like fb-responsive" data-href="https://www.facebook.com/MajorclassOfficialPage" data-colorscheme="dark" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>	
+						<div class="col-sm-2 col-md-2 col-lg-1">
+							<div class="fb-like fb-responsive" data-href="https://www.facebook.com/MajorclassOfficialPage" data-colorscheme="dark" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>		
+						</div>
+						<div class="col-sm-1 col-md-1 col-lg-1">
+							<div class="g-plusone pull-right" data-size="medium" data-annotation="none"></div>
 						</div>
 					</section>
 				</div>
