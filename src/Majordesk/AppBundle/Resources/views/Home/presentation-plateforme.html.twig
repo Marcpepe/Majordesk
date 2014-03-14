@@ -15,7 +15,7 @@
 	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
 	<li class="active"><a href="{{ path('majordesk_app_presentation_plateforme') }}">Démarche Simplifiée</a></li>
 	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}"> Le Tarif</a></li>
-	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Contact</a></li>
 	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}">Se connecter <i class="icon-off"></i></a></li>{% endif %}
 {% endblock %}
 
@@ -33,197 +33,53 @@
 		<div class="clearfix"></div>
 	</section>	
 	<section class="container home-container">
-		<br><br><br>
-		<!--<div class="col-lg-12">	
-			<h3>De quoi s'agit-il ?</h3><br>
-			
-			<strong class="font-majorclass">Majorclass</strong> a conçu sa propre plateforme sur internet qui permet à l'élève et à son professeur de travailler dans les meilleurs conditions possibles.
+		<br><br>
+		<div class="col-md-12 col-lg-12">
+			<h3>Comment démarrer ?</h3>
+			<br>
+			L'inscription se fait <strong>en ligne</strong>, <strong>rapidement</strong> et <strong>gratuitement</strong>, depuis <a href="{{ path('majordesk_app_inscription') }}" rel="nofollow">ce lien</a>. 
 			<br><br>
-			<div class="table-responsive">
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<td>
-								Cours classique
-							</td>
-							<td>
-								Cours <strong class="font-majorclass">Majorclass</strong> avec sa plateforme
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<i class="icon-ok text-grey"></i> 
-								l'élève passe du temps à retrouver ce qu'il n'a pas compris			
-							</td>
-							<td>
-								<i class="icon-ok text-green"></i>
-								l'élève met de côté les exercices où il bute et peut poser ses questions instantanément
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon-ok text-grey"></i> 
-								le professeur ne donne pas toujours du travail
-							</td>
-							<td>
-								<i class="icon-ok text-green"></i>
-								la plateforme suit un cheminement de cours qui comprend une étape "correction des devoirs", puis à la fin du cours une étape "devoirs pour la prochaine fois"
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon-ok text-grey"></i> 
-								le professeur passe du temps à resituer les difficultés de l'élève
-							</td>
-							<td>
-								<i class="icon-ok text-green"></i>
-								le professeur est efficace dès la première minute en suivant les étapes de cours de la plateforme
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="icon-ok text-grey"></i> 
-								le professeur peut répondre au téléphone à son élève, mais ce dernier n'ose en général pas appeler
-							</td>
-							<td>
-								<i class="icon-ok text-green"></i>
-								le professeur est prévenu de l'avancée des devoirs et peut aider son élève à distance, tout cela grâce à la plateforme et est prévenu
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		
+			<em>Etape n°1</em> : Une fois inscrit(e), nous vous confirmons par mail dans les meilleurs délais qu’un professeur de notre équipe peut bien prendre en charge votre enfant compte tenu de votre situation géographique et de vos disponibilités.
 			<br><br>
-			<i class="icon-warning-sign"></i> <strong>Attention</strong> : Vous devez disposer d'une <u>connexion à Internet</u> pour que votre enfant puisse utiliser la plateforme !
+			<em>Etape n°2</em> : Vous confirmez votre inscription en enregistrant un moyen de paiement (cf le "<a href="#module">module de paiements facilité</a>") depuis votre espace personnel.
+			<br><br>
+			<em>Etape n°3</em> : Vous êtes mis en relation avec le professeur de votre enfant, afin de convenir du premier cours.
 		</div>
-		<br><br>
-		<div class="col-lg-12">
-			<h3>La plateforme a été conçue en réponse aux différents besoins de l'élève</h3>
-		</div>
-		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-lg-2">
-			<div class="text-center">
-				<strong class="text-red">Compréhension</strong>
-			</div>
-		</div>
-		<div class="col-lg-10">
-			La plateforme présente chaque notion simplement, et indépendamment du reste du chapitre, permettant une compréhension du cours point par point.
-		</div>
-		<div class="col-lg-2">
-			<br>
-			<div class="text-center">
-				<i class="icon-double-angle-down icon-large"></i>
-			</div>
-		</div>
-		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-lg-2">
-			<div class="text-center">
-				<strong class="text-orange">Prise en main</strong>
-			</div>
-		</div>
-		<div class="col-lg-10">
-			La plateforme permet à l’élève de faire son premier exercice lui-même, parce qu’il est très simple et que le cours est affiché au-dessus de l’exercice. 
-		</div>
-		<div class="col-lg-2">
-			<br>
-			<div class="text-center">
-				<i class="icon-double-angle-down icon-large"></i>
-			</div>
-		</div>
-		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-lg-2">
-			<div class="text-center">
-				<strong class="text-mid-grey">Mémorisation</strong>
-			</div>
-		</div>
-		<div class="col-lg-10">
-			La plateforme aide l’élève à mémoriser son cours en faisant une suite d’exercices simples avec le cours, puis des exercices du même type sans le support de cours. 
-		</div>
-		<div class="col-lg-2">
-			<br>
-			<div class="text-center">
-				<i class="icon-double-angle-down icon-large"></i>
-			</div>
-		</div>
-		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-lg-2">
-			<div class="text-center">
-				<strong class="text-green">Entraînement</strong>
-			</div>
-		</div>
-		<div class="col-lg-10">
-			La plateforme guide l’élève de façon intelligente en sélectionnant les exercices adéquats au rythme de sa progression. Le niveau des exercices s'adapte sans cesse aux dernières performances de l'élève. 
-		</div>
-		<div class="col-lg-2">
-			<br>
-			<div class="text-center">
-				<i class="icon-double-angle-down icon-large"></i>
-			</div>
-		</div>
-		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-lg-2">
-			<div class="text-center">
-				<strong class="text-blue">Maîtrise</strong>
-			</div>
-		</div>
-		<div class="col-lg-10">
-			La plateforme permet d’atteindre un niveau de maîtrise de tous les points de cours en étant capable de détecter les incompréhensions en analysant les erreurs des élèves. 
-		</div>
-		<div class="clearfix"></div>
 		<br><br><br>
-		<div class="col-lg-2">
-			<div class="text-center">
-				<strong>Bonus</strong>
-			</div>
-		</div>
-		<div class="col-lg-10">
-			Fiches, résumés de cours, module de révisions et de nombreuses autres fonctionnalités pour aider l'élève
-		</div>
-		
-		<div class="clearfix"></div>
-		<br><br>-->
-		<div class="col-lg-12">
+		<div class="col-md-12 col-lg-12">
 			<h3>Notre plateforme internet vous simplifie la vie</h3>
 		</div>
 		<div class="clearfix"></div>
 		<br><br>
-		<div class="col-lg-2">
+		<div class="col-md-2 col-lg-2">
 			<i class="icon-ok text-emerald icon-large"></i> <strong>Inscription</strong>
 		</div>
-		<div class="col-lg-10">
+		<div class="col-md-10 col-lg-10">
 			L'inscription est rapide, simple, <u>sans frais</u> et vous n'avez pas à vous déplacer. Une fois inscrit, nous sélectionnons un professeur de qualité dans notre équipe et vous commandez alors votre premier cours depuis la plateforme !
 		</div>
 		<div class="clearfix"></div>
 		<br>
-		<div class="col-lg-2">
+		<!--<div class="col-md-2 col-lg-2">
 			<i class="icon-ok text-emerald icon-large"></i> <strong>Calendrier</strong>
 		</div>
-		<div class="col-lg-10">
-			Les créneaux de cours sont facilement consultables dans un calendrier récapitulatif. <!--Le prochain cours est demandé par l'élève ou le parent depuis ce calendrier.-->
+		<div class="col-md-10 col-lg-10">
+			Les créneaux de cours sont facilement consultables dans un calendrier récapitulatif.
 		</div>
 		<div class="clearfix"></div>
-		<br>
-		<div class="col-lg-2">
+		<br>-->
+		<div class="col-md-2 col-lg-2">
 			<i class="icon-ok text-emerald icon-large"></i> <strong>Suivi</strong>
 		</div>
-		<div class="col-lg-10">
-			La plateforme vous permet de piloter facilement la fréquence des cours de votre enfant.<!--la motivation, l'implication et les progrès de votre enfant dans son travail.-->
+		<div class="col-md-10 col-lg-10">
+			La plateforme vous permet de piloter facilement la fréquence des cours de votre enfant.
 		</div>
 		<br><br>
-		<div class="col-lg-2">
+		<div class="col-md-2 col-lg-2">
 			<i class="icon-ok text-emerald icon-large"></i> <strong>Paiements</strong>
 		</div>
-		<div class="col-lg-10">
+		<div class="col-md-10 col-lg-10">
 			Grâce au <strong>module de paiements facilités</strong> de <strong>BNP Paribas</strong>, vous payez exactement le nombre d'heures dont vous avez besoin sans avoir à ressortir votre carte.
-			<!-- sans devoir viser juste.Vous consultez et créditez votre compte d'heures de cours en quelques clics en ligne.--> (Consultez <a href="{{ path('majordesk_app_presentation_tarifs') }}">les Tarifs</a>).
+			(Consultez <a href="{{ path('majordesk_app_presentation_tarifs') }}">les Tarifs</a>).
 		</div>
 		<div class="clearfix"></div>
 		<br><br><br>
@@ -231,78 +87,6 @@
 			***
 		</div>
 		<br><br>
-		<!--
-		<div class="col-lg-12">
-			<h3>La plateforme en images</h3>
-		</div>
-		<div class="clearfix"></div>
-		<br><br>
-		<div class="col-lg-12">
-			<div id="carousel-example-generic" class="carousel slide">
-			  <ol class="carousel-indicators text-grey">
-				<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-				<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-				<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-				<li data-target="#carousel-example-generic" data-slide-to="3"></li>
-				<li data-target="#carousel-example-generic" data-slide-to="4"></li>
-				<li data-target="#carousel-example-generic" data-slide-to="5"></li>
-				<li data-target="#carousel-example-generic" data-slide-to="6"></li>
-			  </ol>
-
-			  <div class="carousel-inner">
-				<div class="item active">
-				  <img src="{{ asset('img/home/caroussel/1.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">La plateforme de l'élève</h3>
-				  </div>
-				</div>
-				<div class="item">
-				  <img src="{{ asset('img/home/caroussel/2.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">Le calendrier des cours</h3>
-				  </div>
-				</div>
-				<div class="item">
-				  <img src="{{ asset('img/home/caroussel/3.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">Exemple d'exercice (1)</h3>
-				  </div>
-				</div>
-				<div class="item">
-				  <img src="{{ asset('img/home/caroussel/4.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">Exemple d'exercice</h3>
-				  </div>
-				</div>
-				<div class="item">
-				  <img src="{{ asset('img/home/caroussel/5.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">Exemple d'exercice</h3>
-				  </div>
-				</div>
-				<div class="item">
-				  <img src="{{ asset('img/home/caroussel/6.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">Résumé de cours</h3>
-				  </div>
-				</div>
-				<div class="item">
-				  <img src="{{ asset('img/home/caroussel/7.jpg') }}">
-				  <div class="carousel-caption">
-					<h3 class="text-grey">Fiche de cours</h3>
-				  </div>
-				</div>
-			  </div>
-
-			  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-				<span class="icon-prev"></span>
-			  </a>
-			  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-				<span class="icon-next"></span>
-			  </a>
-			</div>
-		</div>
-		-->
 		<br><br><br>
 	</section>
 {% endblock %}	

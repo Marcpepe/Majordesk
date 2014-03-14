@@ -11,7 +11,7 @@
 	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
 	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche Simplifiée</a></li>
 	<li class="active"><a href="{{ path('majordesk_app_presentation_tarifs') }}"> Le Tarif</a></li>
-	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Qui sommes-nous?</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Contact</a></li>
 	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}" rel="nofollow">Se connecter <i class="icon-off"></i></a></li>{% endif %}
 {% endblock %}
 
@@ -27,7 +27,7 @@
 	<section class="container home-container">
 		<br><br>
 		<div class="col-lg-12">
-			<strong class="font-majorclass">Majorclass</strong> est un organisme de soutien scolaire agréé. Dans le cadre des services à la personne, vous avez droit selon certaines conditions à une <strong>déduction d'impôts</strong> à hauteur de 50% des dépenses engagées. 
+			<strong class="font-majorclass">Majorclass</strong> est un organisme de soutien scolaire agréé (SAP789493467). Conformément à l'article 199 sexdecies du Code Général des Impôts, vous avez droit à <strong>une réduction (ou à un crédit) d'impôts</strong> à hauteur de 50% des dépenses engagées. 
 			Nous vous rappelons qu'il n'y a <strong>aucun frais d'inscription</strong>.
 		</div>
 		<br><br>
@@ -43,15 +43,16 @@
 			<h2 class="font-size-26 font-responsive-20">Prix de l'heure</h2>
 		</div>
 		<div class="col-lg-8 text-center">
-			<span class="font-size-28">59,90€</span> <i class="icon-tag icon-2x text-orange"></i>
+			<span class="font-size-28">59,90€</span> <i class="icon-tag icon-2x text-orange position-relative-down-12"></i>
 		</div>
 		<div class="clearfix"></div>
 		<br><br>
 		<div class="col-lg-4">
-			<h2 class="font-size-26 font-responsive-20">Prix de l'heure après impôts</h2>
+			<h2 class="font-size-26 font-responsive-20">Prix de l'heure après impôts<span class="text-pomegranate">*</span></h2>
+			<small class="text-pomegranate">* Nous vous aidons le moment venu à remplir la bonne case de votre déclaration d'impôts.</small>
 		</div>
 		<div class="col-lg-8 text-center">
-			<span class="font-size-50">29,95€</span> <i class="icon-tag icon-3x  text-emerald"></i> 
+			<span class="font-size-50">29,95€</span> <i class="icon-tag icon-3x text-emerald position-relative-down-12"></i> 
 		</div>
 		<div class="clearfix"></div>
 		<br><br>
