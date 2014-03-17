@@ -9,7 +9,7 @@
 
 {% block navbar %}
 	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
-	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche simple</a></li>
 	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}"> Le Tarif</a></li>
 	<li class="active"><a href="{{ path('majordesk_app_presentation_equipe') }}">Contact</a></li>
 	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}" rel="nofollow">Se connecter <i class="icon-off"></i></a></li>{% endif %}

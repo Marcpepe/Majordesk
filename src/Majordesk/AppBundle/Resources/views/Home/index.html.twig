@@ -2,7 +2,7 @@
 
 {% block navbar %}
 	<li><a href="{{ path('majordesk_app_presentation_cours') }}">Les Cours</a></li>
-	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche Simplifiée</a></li>
+	<li><a href="{{ path('majordesk_app_presentation_plateforme') }}" rel="nofollow">Démarche simple</a></li>
 	<li><a href="{{ path('majordesk_app_presentation_tarifs') }}">Le Tarif</a></li>
 	<li><a href="{{ path('majordesk_app_presentation_equipe') }}">Contact</a></li>
 	{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('majordesk_app_index') }}" rel="nofollow">Se connecter <i class="icon-off"></i></a></li>{% endif %}
@@ -51,7 +51,7 @@
 				<img alt="Démarche simplifiée" src="{{ asset('img/home/plateforme.png') }}" style="height:155px;" />
 			</div>
 			<div class="col-sm-8 col-md-8 col-lg-8 text-left-lg-center-xs text-white">
-				<h1 class="font-responsive-26">Démarche simplifiée</h1>
+				<h1 class="font-responsive-26">Démarche simple</h1>
 				<h2 class="hidden-xs font-size-20">Inscription, paiement et suivi en ligne</h2>
 			</div>
 		</div>
