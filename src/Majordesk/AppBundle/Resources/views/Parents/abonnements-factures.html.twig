@@ -9,10 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<span class="visible-md"><br><br></span>
-<span class="visible-lg"><br><br></span>
-
-	
+<br><br><br>
 	<div id="passer-carte" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -133,23 +130,6 @@
 	</div>
 	<div class="clearfix"></div><br>
 	<div class="col-lg-12">
-		<h3>Factures</h3><br>
-		
-		{% if factures is not empty %}
-			<ul>
-			{% for facture in factures %}
-				<li>
-					<a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}">Facture du {{ facture.dateEmission|date('d/m/Y') }}</a>
-				</li>
-			{% endfor %}
-			</ul>
-		{% else %}
-			Aucune facture disponible pour l'instant. Leur émission est mensuelle.
-		{% endif %}
-	</div>
-	<div class="clearfix"></div><br>
-		
-	<div class="col-lg-12">
 		<h3>Abonnements <i class="icon-question-sign cursor" rel="tooltip" data-placement="right" data-title="Notre Plateforme d'entraînement sera lancée pour la rentrée 2014"></i></h3><br>
 	</div>
 	<div class="clearfix"></div>
@@ -167,7 +147,31 @@
 	<div class="col-lg-4">
 		<a class="btn btn-info-inverted btn-block inactif" rel="tooltip" data-title="Lancement à la rentrée 2014" href="{#{{ path('majordesk_app_gestion_abonnements') }}#}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Gérer vos abonnements</span></a>
 	</div>
+	<div class="clearfix"></div>
+	<div class="col-lg-12">
+		<h3>Factures</h3><br>
+		
+		{% if factures is not empty %}
+			<ul>
+			{% for facture in factures %}
+				<li>
+					<a href="{{ path('majordesk_app_facture', { 'annee_facture' : facture.dateEmission|date('Y'), 'file_name' : facture.dateEmission|date('Ymd') ~  '-facture-' ~ facture.id }) }}">Facture du {{ facture.dateEmission|date('d/m/Y') }}</a>
+				</li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			Aucune facture disponible pour l'instant. Leur émission est mensuelle.
+		{% endif %}
+	</div>
+	<div class="clearfix"></div><br>
+	<div class="col-lg-12">
+		<h3>Impôts</h3><br>
+		<strong class="font-majorclass">Majorclass</strong> est un organisme de soutien scolaire agréé (SAP789493467). <br>Conformément à l'article 199 sexdecies du Code Général des Impôts, vous avez droit à une réduction (ou à un crédit) d'impôts à hauteur de 50% des dépenses engagées. 
+		<br><br>
+		Pour faire valoir votre réduction ou crédit d'impôts, voici un peu d'aide : <a href="{{ path('majordesk_app_aide_impots') }}" class="btn btn-warning">Afficher l'aide</a>
+	</div>
 	<div class="clearfix"></div><br><br>
+	
 
 {% endblock %}
 

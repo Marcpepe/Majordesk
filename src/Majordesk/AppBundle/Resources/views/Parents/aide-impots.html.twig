@@ -1,0 +1,55 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+	Paiements et factures - {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+	<li><a href="{{ path('majordesk_app_abonnements_factures') }}"><i class="icon-angle-right"></i> Paiements et factures</a></li>
+	<li><a><i class="icon-angle-right"></i> Faire valoir votre réduction/crédit d'impôts</a></li>
+{% endblock %}
+
+{% block body %}
+<br><br><br>
+	<div class="col-lg-12">
+		<h3>Faire valoir votre réduction/crédit d'impôts</h3><br>
+		Lorsque vous payez des cours Majorclass, vous pouvez bénéficier d'un réduction ou d'un crédit d'impôts de 50% de la somme totale de ces dépenses. 
+		<br>Cet avantage fiscal intervient sur la déclaration de l'année au cours de laquelle a eu lieu l'achat des heures de cours.
+		<br><br>Vous recevez de notre part une attestation fiscale entre mars et mai de l'année suivant vos dépenses :
+		<br><br>
+		<div class="col-lg-2">
+			Exemple : 
+		</div>
+		<div class="col-lg-10 text-left-lg-center-xs">
+			<img src="{{ asset('img/parents/exemple-attestation.jpg') }}" style="width:250px" />
+		</div>
+		<br><br>
+		Cette attestation indique le montant total de vos dépenses et le montant que vous pouvez indiquer dans votre déclaration d'impôts. L'image ci-dessous montre un extrait du formulaire de déclaration d'impôts 2012. 
+		<br><br>
+		<div class="col-lg-12 text-center">
+			<img src="{{ asset('img/parents/declaration-impots.jpg') }}" />
+		</div>
+		<br><br>
+		<em>Remarque</em> : Le formulaire de déclaration des impôts de l'année 2013 n'est pas encore en ligne. Même si la démarche reste sensiblement la même, nous mettrons à jour ce paragraphe dès sa parution.
+		<br><br><br>
+		<h4>Ce qu'il faut faire :</h4><br>
+		Voici les cases que vous devez remplir :<br><br>
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<tr>
+					<td style="width:100px"><strong>7DB</strong> ou <strong>7DF</strong></td>
+					<td>Remplissez le montant <u>total</u> de vos dépenses - c'est-à-dire celui affiché sur l'attestation fiscale que vous avez reçu de la part de Majorclass - dans la case :
+						<ul>
+							<li>7DB si vous avez exercé une activité professionnelle ou si vous avez été demandeur d'emploi au cours de l'année concernée</li>
+							<li>7DF si vous étiez sans activité et non demandeur d'emploi, ou retraité au cours de l'année concernée</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>7DQ</strong></td>
+					<td>Cochez cette case si c'est la première année où vous défiscalisez pour un employé à domicile (toute catégorie confondue). Si tel est le cas, votre plafond sera légèrement augmenté.</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+{% endblock %}

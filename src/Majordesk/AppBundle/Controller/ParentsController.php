@@ -542,6 +542,14 @@ class ParentsController extends Controller
 	/**
 	 * @Secure(roles="ROLE_PARENTS")
 	 */
+	public function aideImpotsAction()
+    {
+		return $this->render('MajordeskAppBundle:Parents:aide-impots.html.twig');
+    }
+	
+	/**
+	 * @Secure(roles="ROLE_PARENTS")
+	 */
 	public function factureAction($annee_facture, $file_name)
     {
 		$user = $this->getUser();
