@@ -1671,10 +1671,13 @@ class ParentsController extends Controller
 								->getManager()
 								->getRepository('MajordeskAppBundle:Famille')
 								->find($caddie);  // caddie vaut id_famille
-				fwrite( $fp, "Récupération famille via Id...\n");
+				fwrite( $fp, "Récupération famille via Id...OK");
 				$famille->setAbonnement($sub_subscriber_id);	
-					$dateExpiration = DateTime::createFromFormat('Ymd', $card_validity.'01');
+				fwrite( $fp, "Creating dateExpiration...\n");
+					$dateExpiration = \DateTime::createFromFormat('Ymd', $card_validity.'01', new \DateTimeZone('Europe/Paris'));
+				fwrite( $fp, "Setting dateExpiration...\n");
 				$famille->setDateExpiration($dateExpiration);
+
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($famille);
 				fwrite( $fp, "Preparing to flush...\n");
