@@ -2095,7 +2095,7 @@ class ParentsController extends Controller
 									->getManager()
 									->getRepository('MajordeskAppBundle:Famille')
 									->find($caddie);  // caddie vaut id_famille
-						$dateExpiration = DateTime::createFromFormat('Ymd', $card_validity.'01');
+						$dateExpiration = \DateTime::createFromFormat('Ymd', $card_validity.'01', new \DateTimeZone('Europe/Paris'));
 					$famille->setDateExpiration($dateExpiration);
 					$em = $this->getDoctrine()->getManager();
 					$em->persist($famille);
