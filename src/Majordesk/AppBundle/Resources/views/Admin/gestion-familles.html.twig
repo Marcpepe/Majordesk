@@ -46,6 +46,7 @@
 						  <th>Hrs restantes</th>
 						  <th>Hrs prises</th>
 						  <th>N° Abonné</th>
+						  <th>D. Expiration</th>
 						  <th>Flag</th>
 						  <th>Bloqué</th>
 						  <th></th>
@@ -70,6 +71,7 @@
 						  <td>{{ famille.heuresRestantes / 10}}</td>
 						  <td>{{ famille.heuresPrises / 10 }}</td>
 						  <td>{{ famille.abonnement }}</td>
+						  <td>{% if famille.dateExpiration is not null %}{{ famille.dateExpiration|date('d/m/Y') }}{% else %} - {% endif %}</td>
 						  <td>
 							{% if famille.flag %}
 								<i class="icon-flag icon-large text-yellow"></i>
