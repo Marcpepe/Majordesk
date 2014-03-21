@@ -134,6 +134,13 @@ class Famille
     private $flag;
 	
 	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_expiration", type="date", nullable=true)
+     */
+    private $date_expiration;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="Majordesk\AppBundle\Entity\Client", mappedBy="famille", cascade={"persist", "remove"})
 	 * @Assert\Valid()
 	 */
@@ -418,6 +425,32 @@ class Famille
     {
         return $this->flag;
     }
+	
+	
+	/**
+     * Set date_expiration
+     *
+     * @param \DateTime $dateExpiration
+     * @return Client
+     */
+    public function setDateExpiration($dateExpiration)
+    {
+        $this->date_expiration = $dateExpiration;
+    
+        return $this;
+    }
+
+    /**
+     * Get date_expiration
+     *
+     * @return \DateTime 
+     */
+    public function getDateExpiration()
+    {
+        return $this->date_expiration;
+    }
+	
+	
 	
 	/**
      * Add clients

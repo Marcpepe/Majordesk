@@ -1664,20 +1664,17 @@ class ParentsController extends Controller
 			fwrite( $fp, "sub_telephone : $sub_telephone\n");
 			fwrite( $fp, "sub_email : $sub_email\n");
 			fwrite( $fp, "sub_description : $sub_description\n\n");
-
-			// fwrite( $fp, "----------------INSCRIPTION----------------\n");
-			// $infos = unserialize(base64_decode($caddie));
-			// fwrite( $fp, "id_famille: ".$infos[0]."\n");
 			
 			if ($response_code == '00') {
 				fwrite( $fp, "Récupération famille via Id...\n");
 				$famille = $this->getDoctrine()
 								->getManager()
 								->getRepository('MajordeskAppBundle:Famille')
-								// ->find($infos[0]);
 								->find($caddie);  // caddie vaut id_famille
 				fwrite( $fp, "Récupération famille via Id...\n");
-				$famille->setAbonnement($sub_subscriber_id);				
+				$famille->setAbonnement($sub_subscriber_id);	
+					$dateExpiration = DateTime::createFromFormat('Ymd', $card_validity.'01');
+				$famille->setDateExpiration($dateExpiration);
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($famille);
 				fwrite( $fp, "Preparing to flush...\n");
@@ -2057,10 +2054,6 @@ class ParentsController extends Controller
 			fwrite( $fp, "sub_telephone : $sub_telephone\n");
 			fwrite( $fp, "sub_email : $sub_email\n");
 			fwrite( $fp, "sub_description : $sub_description\n\n");
-
-			// fwrite( $fp, "----------------INSCRIPTION----------------\n");
-			// $infos = unserialize(base64_decode($caddie));
-			// fwrite( $fp, "id_famille: ".$infos[0]."\n");
 			
 			if ($response_code == '00') {			
 				if ( $sub_operation_code == 4 ) { // Annulation Carte
@@ -2069,10 +2062,10 @@ class ParentsController extends Controller
 					$famille = $this->getDoctrine()
 									->getManager()
 									->getRepository('MajordeskAppBundle:Famille')
-									// ->find($infos[0]);
 									->find($caddie);  // caddie vaut id_famille
 					fwrite( $fp, "Récupération famille via Id...\n");
-					$famille->setAbonnement('');				
+					$famille->setAbonnement('');	
+					$famille->setDateExpiration(null);
 					$em = $this->getDoctrine()->getManager();
 					$em->persist($famille);
 					fwrite( $fp, "Preparing to flush...\n");
@@ -2094,6 +2087,17 @@ class ParentsController extends Controller
 					fwrite( $fp, "Notif Admin : OK\n\n");
 				} else { // $sub_operation_code == 6 --> Modification Carte
 					// Notif Admin
+					
+					$famille = $this->getDoctrine()
+									->getManager()
+									->getRepository('MajordeskAppBundle:Famille')
+									->find($caddie);  // caddie vaut id_famille
+						$dateExpiration = DateTime::createFromFormat('Ymd', $card_validity.'01');
+					$famille->setDateExpiration($dateExpiration);
+					$em = $this->getDoctrine()->getManager();
+					$em->persist($famille);
+					$em->flush();
+					
 					$dateNotification = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
 					$notification = "La famille ".$famille->getNom()." a mis à jour son moyen de paiement.";
 					$message = \Swift_Message::newInstance()

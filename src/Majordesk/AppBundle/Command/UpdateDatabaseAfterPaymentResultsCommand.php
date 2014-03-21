@@ -74,6 +74,9 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 							fwrite( $logs, $date."  Taille enregistrements : ".strlen($results)." et nb enregistrements : ".$nb_enregistrements."\r\n");
 							$output->writeln("Taille enregistrements : ".strlen($results)." et nb enregistrements : ".$nb_enregistrements);
 							
+							$messageCron = '';
+							$problemCron = 0;
+							
 							for($i=0;$i<=$nb_enregistrements-1;$i++) {
 								$date = date('d/m/Y \à H:m:i');
 								$id_paiement = trim(substr($results, 200*$i + 33, 6));
@@ -93,45 +96,20 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 													$data_abo->add(new \DateInterval('P1MT3H'));
 												$eleve_matiere->setDateAbonnement($data_abo);
 												$em->persist($eleve_matiere);
-												
-												$erreur = 'Aucun (1 renouvellement de plateforme)';
-												$message = \Swift_Message::newInstance()
-													->setSubject('Traitement Cron OK')
-													->setFrom('cron@majorclass.fr')
-													->setTo('marc@majorclass.fr')
-													->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-												;
-												$container->get('mailer')->send($message);
-												$transport = $container->get('swiftmailer.transport.real');						
-												$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+													$nom_famille = $paiement->getFamille()->getNom();
+												$messageCron .= '<li>Paiement n°'.$paiement->getId().' : 1 renouvellement de plateforme (Famille: '.$nom_famille.', $id_eleve_matiere : '.$id_elevematiere.')</li>';
 											}
 											else {
-												$erreur = 'Aucun elevematiere associé (#'.$id_elevematiere.') pour le paiement #'.$id_paiement;
-												$message = \Swift_Message::newInstance()
-													->setSubject('Urgent : Erreur Cron')
-													->setFrom('cron@majorclass.fr')
-													->setTo('marc@majorclass.fr')
-													->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-												;
-												$container->get('mailer')->send($message);
-												$transport = $container->get('swiftmailer.transport.real');						
-												$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+												$problemCron++;
+													$nom_famille = $paiement->getFamille()->getNom();
+												$messageCron .= '<li>Paiement n°'.$paiement->getId().' : 1 renouvellement de plateforme (Famille: '.$nom_famille.', ATTENTION: aucun eleve_matiere associé, la date de validité n\'a pas été mise à jour)</li>';
 											}
 											$em->persist($paiement);
 										}
 										else {
-											$erreur = 'Paiement #'.$id_paiement.' introuvable (paiement accepté)';
-											$message = \Swift_Message::newInstance()
-												->setSubject('Urgent : Erreur Cron')
-												->setFrom('cron@majorclass.fr')
-												->setTo('marc@majorclass.fr')
-												->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-											;
-											$container->get('mailer')->send($message);
-											$transport = $container->get('swiftmailer.transport.real');						
-											$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
-										}
-										
+											$problemCron++;
+											$messageCron .= '<li>Paiement n°XXX : 1 renouvellement de plateforme (ATTENTION: $id_paiement introuvable)</li>';
+										}								
 									}
 									else {
 										fwrite( $logs, $date."  Paiement #".$id_paiement." accepté sans id_elevematiere.\r\n");
@@ -141,33 +119,19 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 										if (!empty($paiement)) {
 											$paiement->setTransaction(2);
 											$em->persist($paiement);
-											
-											$erreur = 'Aucun (1 cours à la carte payé)';
-											$message = \Swift_Message::newInstance()
-												->setSubject('Traitement Cron OK')
-												->setFrom('cron@majorclass.fr')
-												->setTo('marc@majorclass.fr')
-												->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-											;
-											$container->get('mailer')->send($message);
-											$transport = $container->get('swiftmailer.transport.real');						
-											$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+												$nom_famille = $paiement->getFamille()->getNom();
+												$montant = $paiement->getMontant() / 100;
+												$montant = number_format($montant, 2, ',', ' ');
+											$messageCron .= '<li>Paiement n°'.$paiement->getId().' : 1 cours payé (Famille: '.$nom_famille.', Montant: '.$montant.'€)</li>';
 										}
 										else {
-											$erreur = 'Paiement #'.$id_paiement.' introuvable (paiement sans elevematiere accepté)';
-											$message = \Swift_Message::newInstance()
-												->setSubject('Urgent : Erreur Cron')
-												->setFrom('cron@majorclass.fr')
-												->setTo('marc@majorclass.fr')
-												->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-											;
-											$container->get('mailer')->send($message);
-											$transport = $container->get('swiftmailer.transport.real');						
-											$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+											$problemCron++;
+											$messageCron .= '<li>Paiement n°XXX : 1 cours payé (ATTENTION: $id_paiement introuvable)</li>';
 										}
 									}
 								}
 								else { // paiement refusé
+									$problemCron++;
 									fwrite( $logs, $date."  Paiement #".$id_paiement." REFUSE.\r\n");
 									$output->writeln("Paiement #".$id_paiement." REFUSE.");
 									$paiement = $em->getRepository('MajordeskAppBundle:Paiement')
@@ -175,32 +139,39 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 									if (!empty($paiement)) {
 										$paiement->setTransaction(3);
 										$em->persist($paiement);
+											$nom_famille = $paiement->getFamille()->getNom();
+											$montant = $paiement->getMontant() / 100;
+											$montant = number_format($montant, 2, ',', ' ');
+										$messageCron .= '<li>Paiement n°'.$paiement->getId().' REFUSE : Famille '.$nom_famille.', Montant '.$montant.'€ (ATTENTION PAIEMENT REFUSE)</li>';
 									}
 									else {
-										$erreur = 'Paiement #'.$id_paiement.' introuvable (paiement refusé)';
-										$message = \Swift_Message::newInstance()
-											->setSubject('Urgent : Erreur Cron')
-											->setFrom('cron@majorclass.fr')
-											->setTo('marc@majorclass.fr')
-											->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-										;
-										$container->get('mailer')->send($message);
-										$transport = $container->get('swiftmailer.transport.real');						
-										$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+										$messageCron .= '<li>Paiement n°XXX : 1 cours payé (ATTENTION: $id_paiement introuvable, LE PAIEMENT AVAIT ETE REFUSE)</li>';
 									}
-									$erreur = 'Paiement #'.$id_paiement.' refusé';
-									$message = \Swift_Message::newInstance()
-										->setSubject('Urgent : Erreur Cron')
-										->setFrom('cron@majorclass.fr')
-										->setTo('marc@majorclass.fr')
-										->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
-									;
-									$container->get('mailer')->send($message);
-									$transport = $container->get('swiftmailer.transport.real');						
-									$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
 								}
 							}
 							$em->flush();
+							
+							$dateRapport = date('d/m/Y');
+							
+							if ($problemCron == 0) {
+								$message = \Swift_Message::newInstance()
+									->setSubject('Rapport du Cron')
+									->setFrom(array('cron@majorclass.fr' => 'Majorclass Cron'))
+									->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+									->setBody($container->get('templating')->render('MajordeskAppBundle:Template:rapport-cron.html.twig', array('dateRapport' => $dateRapport, 'messageCron' => $messageCron)), 'text/html')
+								;
+							} else {
+								$message = \Swift_Message::newInstance()
+									->setSubject('Rapport du Cron ('.$problemCron.' problème(s))')
+									->setFrom(array('cron@majorclass.fr' => 'Majorclass Cron'))
+									->setTo(array('marc@majorclass.fr','jonathan@majorclass.fr'))
+									->setBody($container->get('templating')->render('MajordeskAppBundle:Template:rapport-cron.html.twig', array('dateRapport' => $dateRapport, 'messageCron' => $messageCron)), 'text/html')
+								;
+							}
+							$container->get('mailer')->send($message);
+							$transport = $container->get('swiftmailer.transport.real');						
+							$container->get('mailer')->getTransport()->getSpool()->flushQueue($transport);
+							
 						}
 						else {
 							$date = date('d/m/Y \à H:m:i');
@@ -211,8 +182,6 @@ class UpdateDatabaseAfterPaymentResultsCommand extends ContainerAwareCommand
 								->setSubject('Traitement Cron OK')
 								->setFrom('cron@majorclass.fr')
 								->setTo('marc@majorclass.fr')
-								// ->setCharset('UTF-8')
-								// ->setContentType('text/html') 
 								->setBody($container->get('templating')->render('MajordeskAppBundle:Template:erreur-cron.html.twig', array('erreur' => $erreur)), 'text/html')
 							;
 							$container->get('mailer')->send($message);
