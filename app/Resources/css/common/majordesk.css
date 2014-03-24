@@ -902,7 +902,7 @@ body.preview {
 }
 @media (min-width: 1200px) and (max-width: 1336px) {
   #home-banner-1 {
-    height: 315px;
+    min-height: 315px;
   }
 }
 #home-banner-2 {

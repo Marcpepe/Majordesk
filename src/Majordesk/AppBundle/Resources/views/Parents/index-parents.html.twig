@@ -57,21 +57,21 @@
 						<h3 class="text-left-lg-center-xs">Déclarer un cours</h3><br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">De</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.quantite) }}</span>
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">Pour</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							    {{ form_widget(form.eleve) }}
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">Avec</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							    {% if form.professeur is defined %}
 									{{ form_widget(form.professeur) }} 
 								{% else %}
@@ -82,7 +82,7 @@
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">En</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							    {% if form.matiere is defined %}
 									{{ form_widget(form.matiere) }}
 								{% else %}
@@ -93,7 +93,7 @@
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">Le</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							  {{ form_widget(form.dateCours) }}
 							</div>
 							<span class="hidden-lg"><br></span>
@@ -107,10 +107,9 @@
 						</div>
 						{{ form_widget(form._token) }}
 					</form>
-					<div class="clearfix"></div>
 				</div>			
 			</div>
-			<div class="clearfix"></div><br><span class="hidden-xs"><br></span>
+			<br><span class="hidden-xs"><br></span>
 		</div>	
 	{% else %}
 		<div id="home-banner-1" class="col-lg-12">
@@ -124,32 +123,32 @@
 						<h3 class="text-left-lg-center-xs">Déclarer un cours</h3><br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">De</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							  <span class="bootstrap-timepicker" style="color:black;">{{ form_widget(form.quantite) }}</span>
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">En</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							  {{ form_widget(form.matiere) }} 
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">Avec</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							  {{ form_widget(form.professeur) }} 
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<label class="col-lg-1"><span class="pull-right">Le</span></label>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 							  {{ form_widget(form.dateCours) }}
 							</div>
 							<span class="hidden-lg"><br></span>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 								{% if famille.abonnement is empty or famille.heuresRestantes <= 0.5 %}
 									<button type="button" class="btn btn-primary pull-right cursor-forbidden" rel="tooltip" data-title="Vous ne pouvez pas déclarer de cours avant d'avoir enregistré un moyen de paiement."><i class="icon-ok"></i> Valider</button>
 								{% else %}
