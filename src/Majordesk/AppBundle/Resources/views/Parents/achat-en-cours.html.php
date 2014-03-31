@@ -37,7 +37,7 @@
 						<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a tabindex="-1" href="#"><i class="icon-user"></i> Profil</a></li>
+							<li><a tabindex="-1" href="#"><i class="icon-user"></i> Compte</a></li>
 							<li class="disabled"><a tabindex="-1" href="#"><i class="icon-cog"></i> Préférences</a></li>
 							<li class="divider"></li>
 							<li><a tabindex="-1" href="<?php echo $view['router']->generate('logout') ?>"><i class="icon-signout"></i> Déconnexion</a></li>

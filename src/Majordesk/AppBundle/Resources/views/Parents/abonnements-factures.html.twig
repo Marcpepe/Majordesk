@@ -1,42 +1,15 @@
 {% extends "::layout.html.twig" %}
 
 {% block title %}
-	Paiements et factures - {{ parent() }}
+	Mon Compte - {{ parent() }}
 {% endblock %}
 
 {% block navbar %}
-	<li><a><i class="icon-angle-right"></i> Paiements et factures</a></li>
+	<li><a><i class="icon-angle-right"></i> Mon Compte</a></li>
 {% endblock %}
 
 {% block body %}
 <br><br><br>
-	<div id="passer-carte" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			  <div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 id="myModalLabel"><i class="icon-time icon-large text-blue"></i> Passer "à la carte"</h3>
-			  </div>
-			  <div class="modal-body">
-				<p>
-					Vous êtes sur point de passer "à la carte".<br><br>
-					Ce qui changera pour vous :
-					<ul>
-						<li>vous n'aurez plus à vous soucier de racheter des heures de cours ;</li>
-						<li>les heures vous seront débitées automatiquement au fur et à mesure que votre enfant en dispose ; </li>
-					</ul>
-					<small>N.B: S'il vous reste des heures non consommées, elles seront utilisées en priorité</small>
-					<br><br>
-					<span class="pull-right">
-						<a href="{{ path('majordesk_app_passer_carte') }}" class="btn btn-primary"><i class="icon-ok"></i> Passer à la carte</a>
-						<button class="btn btn-default" data-dismiss="modal" aria-hidden="true"> Annuler</button>
-					</span>
-					<br>
-				</p>
-			  </div>
-			</div>
-		</div>
-	</div>
 	
 	{% for flashMessage in app.session.flashbag.get('info') %}
 		<div class="container">
@@ -54,86 +27,21 @@
 		Nombre d'heures de cours restantes : <strong>{% if famille.abonnement is empty or famille.heuresRestantes > 0 %}{{ famille.heuresRestantes / 10 }}h{% else %}<span style="font-size:25px;position:relative;top:5px;">&infin;</span>{% endif %}</strong><br><br>
 		Nombre total d'heures de cours prises : <strong> {{ famille.heuresPrises / 10 }}h</strong><br><br>
 	</div>
-	<div class="col-lg-4">
-		<a href="{{ path('majordesk_app_details_heures') }}" class="btn btn-success-inverted btn-block" ><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Voir l'historique des heures prises</span></a>
+	<div class="col-sm-6 col-md-6 col-lg-4">
+		<a href="{{ path('majordesk_app_details_heures') }}" class="btn btn-primary-inverted btn-block" ><i class="icon-time icon-4x"></i> <span class="position-relative-up-12">Voir l'historique des paiements</span></a>
 	</div>
-	<div class="col-lg-4">
-		<a class="btn btn-info-inverted btn-block" href="{{ path('majordesk_app_parametres_compte') }}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Paramètres du compte</span></a>
-	</div>
-	<div class="clearfix"></div><br>
-	<div class="col-lg-12">
-		<h3>Historique des paiements</h3><br>
-		{% if paiements|length > 0 %}
-		<div class="table-responsive">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>Date du paiement</th>
-						<th>Description</th>
-						<th>Montant</th>
-						<th>Statut</th>
-					</tr>
-				</thead>
-				<tbody>
-				{% for paiement in paiements %}
-					<tr>
-						<td>{{ paiement.datePaiement|date('d/m/Y') }}</td>
-						<td>
-							{{ paiement.description|raw }}
-						</td>
-						<td>
-							{% if paiement.pack >= 100 and paiement.pack < 200 %}
-								<em>Décompte
-								{% if paiement.pack == 110 %}
-									1h
-								{% elseif paiement.pack == 115 %}
-									1h30
-								{% elseif paiement.pack == 120 %}
-									2h 
-								{% elseif paiement.pack == 125 %}
-									2h30 
-								{% elseif paiement.pack == 130 %}
-									3h
-								{% elseif paiement.pack == 140 %}
-									4h 
-								{% elseif paiement.pack == 150 %}
-									5h
-								{% elseif paiement.pack == 195 %} <!--spécial Carazo : à supprimer plus tard -->
-								    19.5h
-								{% endif %}
-								</em>
-							{% else %}
-								{{ (paiement.montant / 100)|number_format(2, ',', ' ') }} €
-							{% endif %}
-						</td>
-						<td>
-							{% if paiement.transaction == 0 %}
-								<i rel="tooltip" data-title="Paiement annulé" class="icon-remove text-red cursor-help"></i>
-							{% elseif paiement.transaction == 1 %}
-								<i rel="tooltip" data-title="Paiement en cours" class="icon-spin icon-spinner text-orange cursor-help"></i>
-							{% elseif paiement.transaction == 2 %}
-								<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
-							{% elseif paiement.transaction == 3 %}
-								<i rel="tooltip" data-title="Paiement non validé" class="icon-exclamation-sign text-red cursor-help"></i>
-							{% else %}
-								<i rel="tooltip" data-title="Paiement validé" class="icon-ok text-green cursor-help"></i>
-							{% endif %}
-						</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-		{% else %}
-			Aucun paiement à ce jour.
-		{% endif %}
+	<div class="col-sm-6 col-md-6 col-lg-4">
+		<a class="btn btn-info-inverted btn-block" href="{{ path('majordesk_app_parametres_compte') }}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Gérer mon moyen de paiement</span></a>
 	</div>
 	<div class="clearfix"></div><br>
+	
+	
+	<!--
 	<div class="col-lg-12">
 		<h3>Abonnements <i class="icon-question-sign cursor" rel="tooltip" data-placement="right" data-title="Notre Plateforme d'entraînement sera lancée pour la rentrée 2014"></i></h3><br>
 	</div>
 	<div class="clearfix"></div>
-	<div class="col-lg-8">
+	<div class="col-md-6 col-lg-8">
 		{% for eleve in eleves %}
 			{% for eleve_matiere in eleve.eleveMatieres if eleve_matiere.plateforme == 1 and eleve_matiere.prelevementPlateforme == 1 %}
 				<i class="icon-ok icon-large"></i> {{ eleve.username }} est abonné(e) à la Plateforme <span class="label label-info">Mathématiques</span> 
@@ -144,10 +52,69 @@
 			{% endfor %}
 		{% endfor %}
 	</div>
-	<div class="col-lg-4">
+	<div class="col-md-6 col-lg-4">
 		<a class="btn btn-info-inverted btn-block inactif" rel="tooltip" data-title="Lancement à la rentrée 2014" href="{#{{ path('majordesk_app_gestion_abonnements') }}#}"><i class="icon-gear icon-4x"></i> <span class="position-relative-up-12">Gérer vos abonnements</span></a>
 	</div>
 	<div class="clearfix"></div>
+	-->
+	
+	<div class="col-lg-12">
+		<h3>Mon Compte</h3><br>
+		<strong><i class="icon-user icon-large text-yellow"></i> Mon profil</strong><br><br>
+		<div class="col-md-4 col-lg-4">
+			Prénom : <strong>{{ app.user.username }}</strong><br>
+			Nom : <strong>{{ app.user.nom }}</strong>
+		</div>
+		<div class="col-md-4 col-lg-4">
+			Date d'inscription : <strong>{{ app.user.dateInscription|date('d/m/Y') }}</strong><br>
+			Statut : 
+			{% if app.user.actif %}
+				<strong class="text-green">Actif</strong>
+			{% else %}
+				<strong class="text-red">Inactif</strong>
+			{% endif %}
+			<br><br>
+		</div>
+		<div class="col-md-4 col-lg-4">
+			<a href="{{ path('majordesk_app_modifier_password') }}" class="btn btn-default"><i class="icon-gear"></i> Modifier mon mot de passe</a>
+		</div>
+		<div class="clearfix"></div><br>
+		<strong><i class="icon-group icon-large text-greensea"></i> Mes enfants</strong><br><br>
+			{% for eleve in eleves %}
+				<div class="col-md-4 col-lg-4">
+					Prénom : <strong>{{ eleve.username }}</strong><br>
+					Nom : <strong>{{ eleve.nom }}</strong>
+				</div>
+				<div class="col-md-4 col-lg-4">
+					Date d'inscription : <strong>{{ eleve.dateInscription|date('d/m/Y') }}</strong><br>
+					Statut : 
+					{% if eleve.actif %}
+						<strong class="text-green">Actif</strong>
+					{% else %}
+						<strong class="text-red">Inactif</strong>
+					{% endif %}
+					<br><br>
+				</div>
+				{% if loop.last %}
+					<div class="col-md-4 col-lg-4">
+						<a href="{{ path('majordesk_app_nouvel_eleve') }}" class="btn btn-default"><i class="icon-plus"></i> Inscrire un autre enfant</a>
+					</div>
+				{% else %}
+					<div class="clearfix"></div><br>
+				{% endif%}
+			{% endfor %}	
+		<div class="clearfix"></div><br>
+		<strong><i class="icon-heart icon-large text-pomegranate"></i> Soutenez-nous</strong><br><br>
+		<div class="col-md-8 col-lg-8">
+			Notre développement dépend de vos paroles de soutien, alors n'hésitez pas à parler de nous !
+			<br><br>
+		</div>
+		<div class="col-md-4 col-lg-4">
+			<a href="{{ path('majordesk_app_soutenez_nous') }}" class="btn btn-default"><i class="icon-thumbs-up"></i> Parler de nous</a>
+		</div>
+	</div>
+	<div class="clearfix"></div><br>
+	
 	<div class="col-lg-12">
 		<h3>Factures</h3><br>
 		
@@ -168,7 +135,7 @@
 		<h3>Impôts</h3><br>
 		<strong class="font-majorclass">Majorclass</strong> est un organisme de soutien scolaire agréé (SAP789493467). <br>Conformément à l'article 199 sexdecies du Code Général des Impôts, vous avez droit à une réduction (ou à un crédit) d'impôts à hauteur de 50% des dépenses engagées. 
 		<br><br>
-		Pour faire valoir votre réduction ou crédit d'impôts, voici un peu d'aide : <a href="{{ path('majordesk_app_aide_impots') }}" class="btn btn-warning">Afficher l'aide</a>
+		Pour faire valoir votre réduction ou crédit d'impôts, voici un peu d'aide : <a href="{{ path('majordesk_app_aide_impots') }}" class="btn btn-default"><i class="icon-question-sign"></i> Afficher l'aide</a>
 	</div>
 	<div class="clearfix"></div><br><br>
 	

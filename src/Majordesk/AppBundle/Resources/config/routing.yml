@@ -121,6 +121,10 @@ majordesk_app_abonnements_factures:
     pattern:  /parents/abonnements-et-factures
     defaults: { _controller: MajordeskAppBundle:Parents:abonnementsFactures }
 
+majordesk_app_soutenez_nous:
+    pattern:  /parents/soutenez-nous
+    defaults: { _controller: MajordeskAppBundle:Parents:soutenezNous }
+
 majordesk_app_aide_impots:
     pattern:  /parents/aide-impots
     defaults: { _controller: MajordeskAppBundle:Parents:aideImpots }

@@ -520,10 +520,10 @@ class ParentsController extends Controller
 			$user = $this->getUser();
 			$famille = $user->getFamille();
 			$eleves = $famille->getEleves();
-			$paiements = $this->getDoctrine()
-							  ->getManager()
-							  ->getRepository('MajordeskAppBundle:Paiement')
-							  ->getDescPaiementsLimit($famille->getId(), 15);
+			// $paiements = $this->getDoctrine()
+							  // ->getManager()
+							  // ->getRepository('MajordeskAppBundle:Paiement')
+							  // ->getDescPaiementsLimit($famille->getId(), 15);
 			
 			$factures = $this->getDoctrine()
 							 ->getManager()
@@ -533,7 +533,7 @@ class ParentsController extends Controller
 			return $this->render('MajordeskAppBundle:Parents:abonnements-factures.html.twig', array(
 				'famille' => $famille,
 				'eleves' => $eleves,
-				'paiements' => $paiements,
+				// 'paiements' => $paiements,
 				'factures' => $factures,
 			));
 		}
@@ -545,6 +545,14 @@ class ParentsController extends Controller
 	public function aideImpotsAction()
     {
 		return $this->render('MajordeskAppBundle:Parents:aide-impots.html.twig');
+    }
+	
+	/**
+	 * @Secure(roles="ROLE_PARENTS")
+	 */
+	public function soutenezNousAction()
+    {
+		return $this->render('MajordeskAppBundle:Parents:soutenez-nous.html.twig');
     }
 	
 	/**
@@ -1032,10 +1040,16 @@ class ParentsController extends Controller
 					    ->getManager()
 					    ->getRepository('MajordeskAppBundle:Ticket')
 					    ->getTicketsByFamille($famille->getId());
+		
+		$paiements = $this->getDoctrine()
+							  ->getManager()
+							  ->getRepository('MajordeskAppBundle:Paiement')
+							  ->getDescPaiementsLimit($famille->getId(), 15);
 			   
 		return $this->render('MajordeskAppBundle:Parents:details-heures.html.twig', array(
 			'famille' => $famille,
 			'tickets' => $tickets,
+			'paiements' => $paiements,
 		));
     }
 	
