@@ -149,8 +149,12 @@
 							</div>
 							<span class="hidden-lg"><br></span>
 							<div class="col-lg-4">
-								{% if famille.abonnement is empty or famille.heuresRestantes <= 0.5 %}
-									<button type="button" class="btn btn-primary pull-right cursor-forbidden" rel="tooltip" data-title="Vous ne pouvez pas déclarer de cours avant d'avoir enregistré un moyen de paiement."><i class="icon-ok"></i> Valider</button>
+								{% if famille.abonnement is empty %}
+									{% if famille.heuresRestantes > 0.5 %}
+										<button type="button" class="btn btn-primary pull-right cursor-forbidden" rel="tooltip" data-title="Vous ne pouvez pas déclarer de cours avant d'avoir enregistré un moyen de paiement."><i class="icon-ok"></i> Valider</button>
+									{% else %}
+										<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
+									{% endif %}
 								{% else %}
 									<button type="submit" class="btn btn-primary pull-right confirm-majorclass" data-message="Confirmez-vous la déclaration de ce cours ?"><i class="icon-ok"></i> Valider</button>
 								{% endif %}
@@ -399,7 +403,7 @@
 					Aucune activité récente.
 				{% endif %}
 				<br><br>
-				<a href="{{ path('majordesk_app_abonnements_factures') }}" class="btn btn-warning pull-right">Accéder à votre compte <i class="icon-angle-right"></i><i class="icon-angle-right"></i> </a>
+				<a href="{{ path('majordesk_app_abonnements_factures') }}" class="btn btn-warning pull-right">Accéder à mon compte <i class="icon-angle-right"></i><i class="icon-angle-right"></i> </a>
 			</div>
 		</div>		
 	</div>
