@@ -322,7 +322,11 @@ class HomeController extends Controller
 						$eleve->setActif(true);
 						$eleve->setUsername($session->get('username'));
 						$eleve->setNom($session->get('nom'));
-						$eleve->setMail($session->get('mail'));
+						if ($session->get('mail') != $client->getMail()) {
+							$eleve->setMail($session->get('mail'));
+						} else {
+							$eleve->setMail('z'.$session->get('mail'));
+						}
 						$eleve->setTelephone($session->get('telephone'));
 						$eleve->setSalt(time());
 							$encoder = $factory->getEncoder($eleve);
