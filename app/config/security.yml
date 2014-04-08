@@ -19,7 +19,7 @@ security:
     providers:
         chain_provider:
             chain:
-                providers: [eleve, client, admin, professeur, in_memory]
+                providers: [client, eleve, professeur, admin, in_memory]
 
         eleve:
             entity: { class: Majordesk\AppBundle\Entity\Eleve, property: mail }
