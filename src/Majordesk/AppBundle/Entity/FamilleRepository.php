@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class FamilleRepository extends EntityRepository
 {
+	public function getFamillesWhoseCardExpiresNextMonth()
+	{
+		$date_expiration = new \Datetime("now", new \DateTimeZone('Europe/Paris'));
+		$date_expiration->add(new \DateInterval('P1M'));
+		$date_expiration->format('Y-m-01');
+	
+		$qb = $this->createQueryBuilder('f')
+				   ->where('f.dateExpiration = :date_expiration')
+				   ->setParameter('date_expiration', $date_expiration)
+				   ;
+			
+		return $qb->getQuery()
+			      ->getResult();
+	}
 }
