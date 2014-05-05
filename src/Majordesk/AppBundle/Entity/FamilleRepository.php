@@ -19,7 +19,7 @@ class FamilleRepository extends EntityRepository
 		$date_expiration->format('Y-m-01');
 	
 		$qb = $this->createQueryBuilder('f')
-				   ->where('f.dateExpiration = :date_expiration')
+				   ->where('f.date_expiration = :date_expiration')
 				   ->setParameter('date_expiration', $date_expiration)
 				   ;
 			
